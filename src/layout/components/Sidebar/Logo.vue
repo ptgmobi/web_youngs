@@ -16,6 +16,7 @@
 <script setup lang="ts">
 import { toRefs, reactive } from 'vue'
 import setting from '@/settings'
+import img from '@/assets/logo.svg'
 defineProps({
   collapse: {
     type: Boolean,
@@ -24,7 +25,7 @@ defineProps({
 })
 const state = reactive({
   title: setting.title,
-  logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+  logo: img
 })
 //export to page for
 let { title, logo } = toRefs(state)

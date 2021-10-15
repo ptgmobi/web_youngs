@@ -10,7 +10,7 @@ import { useStore } from 'vuex'
 
 let store = useStore()
 const username = computed(() => {
-  return store.state.user.username
+  return store.state.user.email
 })
 </script>
 

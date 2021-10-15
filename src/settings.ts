@@ -15,7 +15,7 @@ interface settingTy {
 }
 
 const setting: settingTy = {
-  title: 'Vue3 Admin Ts',
+  title: 'Yeahmobi',
   /**
    * @type {boolean} true | false
    * @description Whether fix the header
