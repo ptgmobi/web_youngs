@@ -2,6 +2,7 @@ import store from '@/store'
 import axios from 'axios'
 import { ElLoading, ElMessage, ElMessageBox } from 'element-plus'
 import { getToken, setToken } from '@/utils/auth'
+import qs from 'qs'
 let requestData
 let loadingE
 
@@ -14,7 +15,11 @@ service.interceptors.request.use(
   (request) => {
     // console.log('request', request)
     // token配置
-    request.headers['AUTHORIZE_TOKEN'] = getToken()
+    const token = getToken()
+    if (token) {
+      request.headers['token'] = getToken()
+      request.headers['Authorization'] = `Bearer ${getToken()}`
+    }
     /* 下载文件*/
     if (request.isDownLoadFile) {
       request.responseType = 'blob'
@@ -37,6 +42,9 @@ service.interceptors.request.use(
     if (request.isParams) {
       request.params = request.data
       request.data = {}
+    }
+    if (request.method === 'post') {
+      request.data = qs.stringify(request.data)
     }
     return request
   },

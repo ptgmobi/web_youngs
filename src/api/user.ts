@@ -3,20 +3,21 @@ import { ObjTy } from '@/types/common'
 
 export function loginReq(data: ObjTy) {
   return request({
-    url: '/ty-user/user/loginValid',
+    url: '/sites/login',
     data,
     method: 'post',
     bfLoading: false,
-    isParams: true,
+    isParams: false,
     isAlertErrorMsg: false
   })
 }
 
-export function getInfoReq() {
+export function getInfoReq(params: ObjTy, data?: ObjTy) {
   return request({
-    url: '/ty-user/user/getUserInfo',
+    url: `/sites/page-config/${params}`,
+    data,
     bfLoading: false,
-    method: 'post'
+    method: 'get'
   })
 }
 

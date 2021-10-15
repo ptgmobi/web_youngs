@@ -1,7 +1,8 @@
 import { loginReq, logoutReq, getInfoReq } from '@/api/user'
-import { setToken, removeToken } from '@/utils/auth'
+import { setToken, getToken, removeToken } from '@/utils/auth'
 // import { resetRouter } from '@/router'
 import { ObjTy } from '@/types/common'
+import jwtDecode from 'jwt-decode'
 
 //token: getToken(),
 
@@ -9,7 +10,9 @@ const getDefaultState = () => {
   return {
     //token: getToken(),
     username: '',
-    avatar: ''
+    avatar: '',
+    email: '',
+    id: ''
   }
 }
 
@@ -21,6 +24,12 @@ const mutations = {
   },
   SET_AVATAR: (state: UserTy, avatar: string) => {
     state.avatar = avatar
+  },
+  SET_EMAIL: (state: UserTy, email: string) => {
+    state.email = email
+  },
+  SET_ID: (state: UserTy, id: string) => {
+    state.id = id
   }
 }
 
@@ -31,9 +40,9 @@ const actions = {
     return new Promise((resolve, reject) => {
       loginReq(data)
         .then((res: ObjTy) => {
-          if (res.code === 20000) {
+          if (res.code === 200) {
             //commit('SET_Token', res.data?.jwtToken)
-            setToken(res.data?.jwtToken)
+            setToken(res.data?.token)
             resolve(null)
           } else {
             reject(res)
@@ -45,17 +54,22 @@ const actions = {
     })
   },
   // get user info
-  getInfo({ commit }: ObjTy) {
+  getInfo({ commit, state }: ObjTy) {
+    const token = getToken()
+    const decodeToken: any = jwtDecode(token)
+    const user = decodeToken.user
+    const { email, id, name } = user
+    commit('SET_EMAIL', email)
+    commit('SET_ID', id)
+    commit('SET_NAME', name)
     return new Promise((resolve, reject) => {
-      getInfoReq()
+      console.log(state)
+      getInfoReq(user.id)
         .then((response: ObjTy) => {
           const { data } = response
           if (!data) {
             return reject('Verification failed, please Login again.')
           }
-          const { username } = data
-          commit('SET_NAME', username)
-          // commit('SET_AVATAR', avatar)
           resolve(data)
         })
         .catch((error: any) => {

@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, createWebHistory, Router } from 'vue-router'
+import { createRouter, createWebHistory, Router } from 'vue-router'
 import Layout from '@/layout'
 import { RouterTy } from '@/types/router'
 import demo from './modules/demo'

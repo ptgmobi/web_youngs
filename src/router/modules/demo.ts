@@ -1,4 +1,3 @@
-import { RouterTy } from '@/types/router'
 import Layout from '@/layout'
 export default [
   {
