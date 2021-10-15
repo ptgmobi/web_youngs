@@ -1,7 +1,8 @@
-import { createRouter, createWebHistory, Router } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory, Router } from 'vue-router'
 import Layout from '@/layout'
 import { RouterTy } from '@/types/router'
-import demo from './modules/demo'
+import test from './modules/test'
+
 export const constantRoutes: RouterTy = [
   {
     path: '/redirect',
@@ -41,10 +42,14 @@ export const constantRoutes: RouterTy = [
         meta: { title: 'Dashboard', icon: 'table' }
       }
     ]
-  }
+  },
 ]
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
 export const asyncRoutes: RouterTy = [
-  // ...demo,
+  ...test,
   // 404 page must be placed at the end !!!
   // using pathMatch install of "*" in vue-router 4.0
   { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }

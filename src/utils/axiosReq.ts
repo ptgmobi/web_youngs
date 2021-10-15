@@ -3,9 +3,8 @@ import axios from 'axios'
 import { ElLoading, ElMessage, ElMessageBox } from 'element-plus'
 import { getToken, setToken } from '@/utils/auth'
 import { AxiosConfigTy, AxiosReqTy } from '@/types/common'
-import qs from 'qs'
 let requestData: any
-let loadingE: any
+let loadingE: boolean
 
 const service: any = axios.create({
   // baseURL: process.env.VUE_APP_BASE_URL,
@@ -14,7 +13,7 @@ const service: any = axios.create({
 // 请求拦截
 service.interceptors.request.use(
   (request: AxiosReqTy) => {
-    console.log('request', request)
+    // console.log('request', request)
     // token配置
     request.headers['AUTHORIZE_TOKEN'] = getToken()
     /* 下载文件*/
@@ -40,9 +39,6 @@ service.interceptors.request.use(
     if (request.isParams) {
       request.params = request.data
       request.data = {}
-    }
-    if (request.method === 'post') {
-      request.data = qs.stringify(request.data)
     }
     return request
   },

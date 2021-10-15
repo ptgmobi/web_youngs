@@ -2,6 +2,7 @@ import { loginReq, logoutReq, getInfoReq } from '@/api/user'
 import { setToken, getToken, removeToken } from '@/utils/auth'
 // import { resetRouter } from '@/router'
 import { ObjTy } from '@/types/common'
+import { UserTy } from '@/types/store'
 import jwtDecode from 'jwt-decode'
 
 //token: getToken(),
@@ -82,7 +83,9 @@ const actions = {
       //   })
     // })
     const userInfo = await getInfoReq(user.id)
-    return userInfo
+    return {
+      roles: [1]
+    }
   },
   // user logout
   logout({ commit, state }: ObjTy) {
