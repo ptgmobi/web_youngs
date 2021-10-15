@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, createWebHashHistory, Router } from 'vu
 import Layout from '@/layout'
 import { RouterTy } from '@/types/router'
 import test from './modules/test'
+import publisher from './modules/publisher'
 
 export const constantRoutes: RouterTy = [
   {
@@ -30,26 +31,13 @@ export const constantRoutes: RouterTy = [
     component: () => import('@/views/error-page/401'),
     hidden: true
   },
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        name: 'Dashboard',
-        component: () => import('@/views/dashboard/index'),
-        meta: { title: 'Dashboard', icon: 'table' }
-      }
-    ]
-  },
 ]
 /**
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes: RouterTy = [
-  ...test,
+  ...publisher,
   // 404 page must be placed at the end !!!
   // using pathMatch install of "*" in vue-router 4.0
   { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }

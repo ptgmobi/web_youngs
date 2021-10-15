@@ -1,5 +1,6 @@
 /*使用vue3.0 jsx语法书写*/
-import { defineComponent } from 'vue'
+import { iconProps } from 'element-plus'
+import { defineComponent, h } from 'vue'
 
 export default defineComponent({
   props: {
@@ -30,6 +31,10 @@ export default defineComponent({
         //   return <svg-icon icon-class={icon} className="nav-icon" />
         // }
         return <svg-icon icon-class={icon} className="nav-icon" />
+        // return h(
+        //   icon
+        // )
+        return 
       }
     }
     return () => {

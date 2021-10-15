@@ -12,6 +12,15 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 app.use(ElementPlus, { size: 'mini', locale: zhCn })
+// element-plus/icons
+// 统一导入el-icon图标
+import * as ElIconModules from '@element-plus/icons'
+import { transElIconName } from './utils/icon'
+// 统一注册el-icon图标
+for(let iconName in ElIconModules){
+  // app.component(transElIconName(iconName), ElIconModules[iconName])
+  app.component(iconName, ElIconModules[iconName])
+}
 
 //global mixin
 import elementMixin from '@/mixins/elementMixin'
@@ -37,6 +46,10 @@ import directive from '@/directive'
 directive(app)
 //import router  intercept
 import './permission'
+
+// 全局样式
+import '@/styles/common.scss'
+app.use()
 
 //error log  collection
 import errorLog from '@/hooks/errorLogHook'

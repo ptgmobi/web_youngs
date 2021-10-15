@@ -12,7 +12,7 @@
     <!--nav title-->
     <div class="heardCenterTitle" v-if="settings.showTitle">{{ settings.showTitle }}</div>
     <div class="right-menu" v-if="settings.ShowDropDown">
-      <el-dropdown trigger="click" size="medium">
+      <!-- <el-dropdown trigger="click" size="medium">
         <div class="avatar-wrapper">
           <img
             src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
@@ -31,11 +31,23 @@
             <a target="_blank" href="https://github.com/jzfai/vue3-admin-template">
               <el-dropdown-item>Docs</el-dropdown-item>
             </a>
-            <!--<el-dropdown-item>修改密码</el-dropdown-item>-->
+            <el-dropdown-item>修改密码</el-dropdown-item>
             <el-dropdown-item divided @click="loginOut">login out</el-dropdown-item>
           </el-dropdown-menu>
         </template>
-      </el-dropdown>
+      </el-dropdown> -->
+      <div class='w100 flex'>
+        <div class="p10">
+          <router-link
+            to="/password"
+          >
+            <span v-text="email" />
+          </router-link>
+        </div>
+        <div class="p10">
+          <el-button type="warning" plain round @click="loginOut">Login Out</el-button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -47,6 +59,10 @@ import { computed, getCurrentInstance } from 'vue'
 import settings from '@/settings'
 import { useStore } from 'vuex'
 import { ElMessage } from 'element-plus'
+
+const username = computed(() => {
+  return store.state.user.username
+})
 let { proxy }: any = getCurrentInstance()
 
 const opened = computed(() => {
@@ -55,6 +71,10 @@ const opened = computed(() => {
 const toggleSideBar = () => {
   proxy.$store.commit('app/M_toggleSideBar')
 }
+
+const email = computed(() => {
+  return store.state.user.email
+})
 
 /*
  * 退出登录
