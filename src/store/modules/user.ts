@@ -8,7 +8,7 @@ import jwtDecode from 'jwt-decode'
 
 const getDefaultState = () => {
   return {
-    //token: getToken(),
+    token: getToken(),
     username: '',
     avatar: '',
     email: '',
@@ -30,6 +30,10 @@ const mutations = {
   },
   SET_ID: (state: UserTy, id: string) => {
     state.id = id
+  },
+  SET_TOKEN: (state: UserTy, token: string) => {
+    state.token = token
+    setToken(token)
   }
 }
 
@@ -41,8 +45,8 @@ const actions = {
       loginReq(data)
         .then((res: ObjTy) => {
           if (res.code === 200) {
-            //commit('SET_Token', res.data?.jwtToken)
-            setToken(res.data?.token)
+            const token = res.data?.token
+            commit('SET_TOKEN', token)
             resolve(null)
           } else {
             reject(res)
@@ -54,7 +58,7 @@ const actions = {
     })
   },
   // get user info
-  getInfo({ commit, state }: ObjTy) {
+  async getInfo({ commit, state }: ObjTy) {
     const token = getToken()
     const decodeToken: any = jwtDecode(token)
     const user = decodeToken.user
@@ -62,34 +66,38 @@ const actions = {
     commit('SET_EMAIL', email)
     commit('SET_ID', id)
     commit('SET_NAME', name)
-    return new Promise((resolve, reject) => {
-      console.log(state)
-      getInfoReq(user.id)
-        .then((response: ObjTy) => {
-          const { data } = response
-          if (!data) {
-            return reject('Verification failed, please Login again.')
-          }
-          resolve(data)
-        })
-        .catch((error: any) => {
-          reject(error)
-        })
-    })
+    // return new Promise((resolve, reject) => {
+      // getInfoReq(user.id)
+      //   .then((response: ObjTy) => {
+      //     const { data } = response
+      //     if (!data) {
+      //       return reject('Verification failed, please Login again.')
+      //     }
+      //     commit('SET_NAME', 'username')
+      //     resolve(data)
+      //   })
+      //   .catch((error: any) => {
+      //     console.log(error)
+      //     reject(error)
+      //   })
+    // })
+    const userInfo = await getInfoReq(user.id)
+    return userInfo
   },
   // user logout
-  logout() {
-    return new Promise((resolve, reject) => {
-      logoutReq()
-        .then(() => {
-          removeToken() // must remove  token  first
-          // resetRouter()
-          resolve(null)
-        })
-        .catch((error: any) => {
-          reject(error)
-        })
-    })
+  logout({ commit, state }: ObjTy) {
+    // return new Promise((resolve, reject) => {
+    //   logoutReq()
+    //     .then(() => {
+    //       removeToken() // must remove  token  first
+    //       // resetRouter()
+    //       resolve(null)
+    //     })
+    //     .catch((error: any) => {
+    //       reject(error)
+    //     })
+    // })
+    removeToken()
   },
   // remove token
   resetToken() {

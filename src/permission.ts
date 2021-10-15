@@ -4,6 +4,7 @@ import settings from './settings'
 import { getToken } from '@/utils/auth'
 import { RouterRowTy, RouterTy } from '@/types/router'
 import { ObjTy } from '@/types/common'
+import { handleRouteTree } from '@/utils/format'
 
 router.beforeEach(async (to: ObjTy, from: ObjTy, next: any) => {
   /*
@@ -27,10 +28,11 @@ router.beforeEach(async (to: ObjTy, from: ObjTy, next: any) => {
         next()
       } else {
         try {
-          await store.dispatch('user/getInfo')
+          const userInfo = await store.dispatch('user/getInfo')
           //过滤权限
           const permissionCodeArr: Array<number> = await reqPermission()
           const asyncRoutesAf: RouterTy = await filterPermissionFunc(permissionCodeArr, asyncRoutes)
+          // const asyncRoutesAf = handleRouteTree(asyncRoutes, userInfo)
           //保存过滤后的路由到vuex中供菜单使用
           store.commit('permission/M_routes', asyncRoutesAf)
           store.commit('permission/M_isSettingPermission', true)
@@ -43,6 +45,7 @@ router.beforeEach(async (to: ObjTy, from: ObjTy, next: any) => {
           })
           next({ ...to, replace: true })
         } catch (err) {
+          console.log(err)
           await store.dispatch('user/resetToken')
           next(`/login?redirect=${to.path}`)
         }

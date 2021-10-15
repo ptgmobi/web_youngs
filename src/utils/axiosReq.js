@@ -63,24 +63,49 @@ service.interceptors.response.use(
     if (requestData.isDownLoadFile) {
       return res.data
     }
-    const { flag, msg, code, isNeedUpdateToken, updateToken } = res.data
-    //更新token保持登录状态
-    if (isNeedUpdateToken) {
-      setToken(updateToken)
-    }
-    if (flag || code === 0) {
-      return res.data
-    } else {
-      if (requestData.isAlertErrorMsg) {
-        ElMessage({
-          message: msg,
-          type: 'error',
-          duration: 2 * 1000
+    // const { flag, msg, code, isNeedUpdateToken, updateToken } = res.data
+    // //更新token保持登录状态
+    // if (isNeedUpdateToken) {
+    //   setToken(updateToken)
+    // }
+    // if (flag || code === 0) {
+    //   return res.data
+    // } else {
+    //   if (requestData.isAlertErrorMsg) {
+    //     ElMessage({
+    //       message: msg,
+    //       type: 'error',
+    //       duration: 2 * 1000
+    //     })
+    //     return Promise.reject(msg)
+    //   } else {
+    //     return res.data
+    //   }
+    // }
+    const { code, data } = res.data
+    console.log(code, data)
+    if (code !== 200) {
+      Message({
+        message: res.message || 'Error',
+        type: 'error',
+        duration: 5 * 1000
+      })
+      if (res.code === 400) {
+        // to re-login
+        Message.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
+          confirmButtonText: '重新登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          store.dispatch('user/resetToken').then(() => {
+            location.reload()
+          })
+        }).catch((err) => {
+          console.log(err)
         })
-        return Promise.reject(msg)
-      } else {
-        return res.data
       }
+    } else {
+      return res.data
     }
   },
   (err) => {
