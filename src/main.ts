@@ -49,7 +49,6 @@ import './permission'
 
 // 全局样式
 import '@/styles/common.scss'
-app.use()
 
 //error log  collection
 import errorLog from '@/hooks/errorLogHook'
