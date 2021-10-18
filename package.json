@@ -13,11 +13,11 @@
     },
     "dependencies": {
         "@element-plus/icons": "^0.0.11",
-        "@types/jwt-decode": "^3.1.0",
         "axios": "0.18.1",
         "core-js": "^3.6.5",
         "echarts": "4.2.1",
         "element-plus": "^1.1.0-beta.19",
+        "file-saver": "^2.0.5",
         "js-cookie": "2.2.0",
         "jwt-decode": "^3.1.2",
         "mitt": "^3.0.0",
@@ -30,7 +30,8 @@
         "tinymce": "^4.9.11",
         "vue": "3.2.20",
         "vue-router": "^4.0.11",
-        "vuex": "^4.0.2"
+        "vuex": "^4.0.2",
+        "xlsx": "^0.17.3"
     },
     "devDependencies": {
         "@fullcalendar/vue3": "^5.8.0",
@@ -38,7 +39,8 @@
         "@types/clipboard": "^2.0.1",
         "@types/dom-to-image": "^2.6.2",
         "@types/echarts": "^4.9.7",
-        "@types/file-saver": "^2.0.2",
+        "@types/file-saver": "^2.0.3",
+        "@types/jwt-decode": "^3.1.0",
         "@types/lodash": "^4.14.170",
         "@types/marked": "^2.0.3",
         "@types/mockjs": "^1.0.3",

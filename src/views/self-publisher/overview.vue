@@ -71,6 +71,13 @@
   </el-table>
   <div class="mb-10">
     <el-button icon="el-icon-download" type="primary">Export</el-button>
+    <WwExportExcel
+      :button-name="exportExcel.buttonName"
+      :list="tableData.one"
+      :t-header="exportExcel.tHeader"
+      :filter-val="exportExcel.filterVal"
+      :filename="exportExcel.fileName"
+    ></WwExportExcel>
   </div>
   <!-- one -->
   <el-table :data="tableData.one" border style="width: 100%">
@@ -88,7 +95,14 @@
   </el-table>
 </template>
 <script setup lang="ts">
-import { getCurrentInstance, reactive } from 'vue'
+import { getCurrentInstance, reactive, defineComponent } from 'vue'
+import WwExportExcel from '@/components/Self/Excel/Export/index.vue'
+// 导出组件
+defineComponent({
+  components: {
+    WwExportExcel
+  }
+})
 let { proxy }: any = getCurrentInstance()
 const end = new Date()
 const start = new Date()
@@ -158,6 +172,17 @@ let tableData = {
       revenue: 0.15
     }
   ]
+}
+// 导出
+let exportExcel = {
+  buttonName: '导出',
+  tHeader: [
+    '日期'
+  ],
+  filterVal: [
+    'date'
+  ],
+  fileName: 'text'
 }
 </script>
 

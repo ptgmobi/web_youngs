@@ -8,14 +8,14 @@ $size-ss:380px;
 //宽度
 @for $i from 1 through $size {
   .col-auto-#{$i}{
-      width:(100%/$size)*$i;
+      width:math.div(100%, $size)*$i;
       min-height:1px;
       margin:0 auto;
   }
 
   @media (min-width:$size-l) {
       .col-xl-#{$i}{
-          width:(100%/$size)*$i !important;
+          width:math.div(100%, $size)*$i !important;
           min-height:1px;
           margin:0 auto;
       }
@@ -26,7 +26,7 @@ $size-ss:380px;
 
   @media (max-width:$size-l) {
       .col-l-#{$i}{
-          width:(100%/$size)*$i !important;
+          width:math.div(100%, $size)*$i !important;
           min-height:1px;
           margin:0 auto;
       }
@@ -37,7 +37,7 @@ $size-ss:380px;
 
   @media (max-width:$size-m) {
       .col-m-#{$i}{
-          width:(100%/$size)*$i !important;
+          width:math.div(100%, $size)*$i !important;
           min-height:1px;
           margin:0 auto;
       }
@@ -48,7 +48,7 @@ $size-ss:380px;
 
   @media (max-width:$size-s) {
       .col-s-#{$i}{
-          width:(100%/$size)*$i !important;
+          width:math.div(100%, $size)*$i !important;
           min-height:1px;
           margin:0 auto;
       }
@@ -59,7 +59,7 @@ $size-ss:380px;
 
   @media (max-width:$size-ss) {
       .col-ss-#{$i}{
-          width:(100%/$size)*$i !important;
+          width:math.div(100%, $size)*$i !important;
           min-height:1px;
           margin:0 auto;
       }

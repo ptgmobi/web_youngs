@@ -94,7 +94,8 @@ export default ({ command }: any) => {
       preprocessorOptions: {
         //define global scss variable
         scss: {
-          additionalData: `@import "@/styles/variables.scss";`
+          additionalData: `@use "sass:math";@import "@/styles/variables.scss";`
+          
         }
       }
     },
