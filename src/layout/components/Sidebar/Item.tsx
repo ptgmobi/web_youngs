@@ -1,6 +1,7 @@
 /*使用vue3.0 jsx语法书写*/
-import { iconProps } from 'element-plus'
-import { defineComponent, h } from 'vue'
+// import { iconProps } from 'element-plus'
+// import { defineComponent, h } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   props: {
@@ -35,7 +36,7 @@ export default defineComponent({
         // return h(
         //   icon
         // )
-        return 
+        return
       }
     }
     return () => {

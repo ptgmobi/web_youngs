@@ -36,11 +36,9 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown> -->
-      <div class='w100 flex'>
+      <div class="w100 flex">
         <div class="p10">
-          <router-link
-            to="/password"
-          >
+          <router-link to="/password">
             <span v-text="email" />
           </router-link>
         </div>
@@ -60,9 +58,6 @@ import settings from '@/settings'
 import { useStore } from 'vuex'
 import { ElMessage } from 'element-plus'
 
-const username = computed(() => {
-  return store.state.user.username
-})
 let { proxy }: any = getCurrentInstance()
 
 const opened = computed(() => {

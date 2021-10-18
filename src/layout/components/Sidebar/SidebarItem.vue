@@ -98,10 +98,10 @@ let resolvePath = (routePath: string) => {
   .is-active>.el-submenu__title {
     color: $subMenuActiveText !important;
   }*/
-  .sidebar-icon {
-    width: 15px !important;
-    height: 15px !important;
-    margin-right: 12px !important;
-    font-size: 15px !important;
-  }
+.sidebar-icon {
+  width: 15px !important;
+  height: 15px !important;
+  margin-right: 12px !important;
+  font-size: 15px !important;
+}
 </style>

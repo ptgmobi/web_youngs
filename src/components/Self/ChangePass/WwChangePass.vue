@@ -11,7 +11,7 @@
         <el-input v-model="formData.checkPass" placeholder="" type="password" />
       </el-form-item>
     </el-form>
-    <div style="text-align:right;">
+    <div style="text-align: right">
       <el-button v-if="isDialog" type="danger" @click="cancelFun">退出</el-button>
       <el-button type="primary" @click="confirmFun('ruleFormPass')">提交</el-button>
     </div>
@@ -19,7 +19,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'ChangePass',
   props: {
@@ -59,9 +58,7 @@ export default {
         checkPass: ''
       },
       rules: {
-        oldPass: [
-          { required: this.isChange, message: '必填', trigger: 'blur' }
-        ],
+        oldPass: [{ required: this.isChange, message: '必填', trigger: 'blur' }],
         pass: [
           { required: true, message: '必填', trigger: 'blur' },
           { validator: validatePass, min: 3 }
@@ -99,5 +96,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -18,7 +18,7 @@
         :show-overflow-tooltip="true"
       />
       <el-table-column
-        v-for="(item) in tHeader"
+        v-for="item in tHeader"
         :key="`${item.value}-${Math.random()}`"
         :prop="item.value"
         :fixed="fixed.includes(item.value)"
@@ -118,7 +118,7 @@ export default {
         this.table = newval
       }
     },
-    '$attrs': {
+    $attrs: {
       immediate: true,
       handler(newval) {
         // console.log(newval)
@@ -127,7 +127,7 @@ export default {
   },
   mounted() {
     const newSet = new Set()
-    this.tHeader.map(ele => {
+    this.tHeader.map((ele) => {
       newSet.add(ele.value)
     })
     this.table = this._.cloneDeep(this.tableData)
@@ -137,7 +137,7 @@ export default {
     judgeFn(data) {
       if (data.length !== 0) {
         this.rowMap = new Map([])
-        data.map(ele => {
+        data.map((ele) => {
           let num = this.rowMap.get(ele.date) ? this.rowMap.get(ele.date) : 0
           num = num + 1
           this.rowMap.set(ele.date, num)
@@ -226,7 +226,7 @@ export default {
 }
 </script>
 <style lang="scss">
-  .el-table .highlight-row {
-    background:#d7d7d7
-  }
+.el-table .highlight-row {
+  background: #d7d7d7;
+}
 </style>

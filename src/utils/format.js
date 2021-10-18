@@ -7,10 +7,10 @@ import moment from 'moment'
  * n 保留几位
  */
 export function toFixedFn(num, n) {
-  if (typeof (num) === 'number') {
+  if (typeof num === 'number') {
     return num.toFixed(n)
   }
-  if (typeof (num) === 'string') {
+  if (typeof num === 'string') {
     if (isNaN(num)) {
       return num
     } else {
@@ -73,7 +73,7 @@ export function getSectionTimeArrForOneDay() {
 /**
  * 处理获取到的报表数据
  * ? params
-*/
+ */
 export function handleChartData(date, columns, rows) {
   const obj = {}
   for (const key in columns) {
@@ -83,7 +83,7 @@ export function handleChartData(date, columns, rows) {
         columns: [date, key],
         rows: []
       }
-      rows.forEach(ele => {
+      rows.forEach((ele) => {
         obj[key].rows.push({
           [date]: ele[date],
           [key]: ele[key]
@@ -115,7 +115,7 @@ export function handleTableDataObj(ele) {
 export function handleTableData(data) {
   console.log(data)
   if (data && data.length !== 0) {
-    data.map(ele => {
+    data.map((ele) => {
       ele = handleTableDataObj(ele)
       return ele
     })
@@ -150,7 +150,7 @@ export function handlePowerTree(data) {
       }
     }
   }
-  data.map(ele => {
+  data.map((ele) => {
     ele.path = ele.content.split('/')
     toTree(ele, arr)
     return ele
@@ -162,7 +162,7 @@ export function handleRouteTree(data, getInfo) {
   const menu = getInfo.menu
   const fn = (arr) => {
     if (Array.isArray(arr)) {
-      arr.map(ele => {
+      arr.map((ele) => {
         if (ele.meta) {
           if (process.env.NODE_ENV === 'development') {
             ele.meta.roles = [getInfo.role_id]
@@ -189,7 +189,7 @@ export function handleIdTree(data) {
   const filterArray = (data, parent) => {
     const tree = []
     let temp
-    data.map(ele => {
+    data.map((ele) => {
       ele.value = ele.url
       ele.label = ele.name
       if (ele.pid) {
@@ -265,9 +265,15 @@ export function getCurrentWeekArr(options) {
     // 第几周的周一当天是周几
     const weekDay = moment(week).day()
     // 第几周的周一
-    const firstDay = moment().isoWeek(number).subtract((weekDay - 1), 'days').format('YYYY/MM/DD')
+    const firstDay = moment()
+      .isoWeek(number)
+      .subtract(weekDay - 1, 'days')
+      .format('YYYY/MM/DD')
     // 第几周的周日
-    const lastDay = moment().isoWeek(number).add((7 - weekDay), 'days').format('YYYY/MM/DD')
+    const lastDay = moment()
+      .isoWeek(number)
+      .add(7 - weekDay, 'days')
+      .format('YYYY/MM/DD')
     // 第几周
     const weekDataFormat = `${week.format('YYYY')}-${week.isoWeek()}`
     let str = `${firstDay}${handleWeekDay(firstDay)}-${lastDay}${handleWeekDay(lastDay)}`
@@ -290,10 +296,10 @@ export function getCurrentWeekArr(options) {
 // 从产品数组中选择
 export function choiceDefaultProduct(arr) {
   // 默认选择游戏
-  return arr.find(ele => ele.id === '1') ? '1' : '2'
+  return arr.find((ele) => ele.id === '1') ? '1' : '2'
 }
 // 素材类型
 export function choiceDefaultMaterialType(arr) {
   // 默认视频
-  return arr.find(ele => ele.id === '1') ? '1' : '2'
+  return arr.find((ele) => ele.id === '1') ? '1' : '2'
 }

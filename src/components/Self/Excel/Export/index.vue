@@ -90,9 +90,7 @@ export default {
           autoWidth: true,
           bookType: 'xlsx'
         },
-        rules: {
-
-        }
+        rules: {}
       },
       downloadLoading: false
     }
@@ -103,7 +101,7 @@ export default {
   methods: {
     handleDownload() {
       this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
+      import('@/vendor/Export2Excel').then((excel) => {
         const list = this.list
         const data = this.formatJson(this.filterVal, list)
         excel.export_json_to_excel({
@@ -118,13 +116,15 @@ export default {
       })
     },
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        // if (j === 'date') {
-        //   return parseTime(v[j])
-        // } else {
-        return v[j]
-        // }
-      }))
+      return jsonData.map((v) =>
+        filterVal.map((j) => {
+          // if (j === 'date') {
+          //   return parseTime(v[j])
+          // } else {
+          return v[j]
+          // }
+        })
+      )
     }
   }
 }

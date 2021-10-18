@@ -55,13 +55,8 @@ export default {
       })
     }
   },
-  mounted() {
-  },
-  methods: {
-
-  }
+  mounted() {},
+  methods: {}
 }
 </script>
-<style scoped lang='scss'>
-
-</style>
+<style scoped lang="scss"></style>

@@ -85,24 +85,26 @@ service.interceptors.response.use(
     const { code, data } = res.data
     console.log(code, data)
     if (code !== 200) {
-      Message({
+      ElMessage({
         message: res.message || 'Error',
         type: 'error',
         duration: 5 * 1000
       })
       if (res.code === 400) {
         // to re-login
-        Message.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
+        ElMessage.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
-        }).catch((err) => {
-          console.log(err)
         })
+          .then(() => {
+            store.dispatch('user/resetToken').then(() => {
+              location.reload()
+            })
+          })
+          .catch((err) => {
+            console.log(err)
+          })
       }
     } else {
       return res.data

@@ -1,16 +1,15 @@
 <template>
   <div class="search-box">
-    <div class=" mb-10">
+    <div class="mb-10">
       <el-date-picker
         v-model="search.date"
         type="daterange"
         range-separator="至"
         start-placeholder="开始日期"
         end-placeholder="结束日期"
-      >
-      </el-date-picker>
+      ></el-date-picker>
     </div>
-    <div class=" mb-10">
+    <div class="mb-10">
       <el-checkbox-group v-model="search.checkList">
         <el-checkbox label="Date"></el-checkbox>
         <el-checkbox label="Hour"></el-checkbox>
@@ -28,8 +27,7 @@
             :key="item.value"
             :label="item.label"
             :value="item.value"
-          >
-          </el-option>
+          ></el-option>
         </el-select>
         <el-select v-model="search.filter.Country" filterable placeholder="Platform" class="mr-10">
           <el-option
@@ -37,8 +35,7 @@
             :key="item.value"
             :label="item.label"
             :value="item.value"
-          >
-          </el-option>
+          ></el-option>
         </el-select>
         <el-select v-model="search.filter.Country" filterable placeholder="Pkg" class="mr-10">
           <el-option
@@ -46,8 +43,7 @@
             :key="item.value"
             :label="item.label"
             :value="item.value"
-          >
-          </el-option>
+          ></el-option>
         </el-select>
         <el-select v-model="search.filter.Country" filterable placeholder="Offer" class="mr-10">
           <el-option
@@ -55,8 +51,7 @@
             :key="item.value"
             :label="item.label"
             :value="item.value"
-          >
-          </el-option>
+          ></el-option>
         </el-select>
       </div>
       <el-button type="primary" @click="searchFun">Run</el-button>
@@ -112,23 +107,23 @@ let options = {
   Country: [
     {
       value: '选项1',
-      label: '黄金糕',
+      label: '黄金糕'
     },
     {
       value: '选项2',
-      label: '双皮奶',
+      label: '双皮奶'
     },
     {
       value: '选项3',
-      label: '蚵仔煎',
+      label: '蚵仔煎'
     },
     {
       value: '选项4',
-      label: '龙须面',
+      label: '龙须面'
     },
     {
       value: '选项5',
-      label: '北京烤鸭',
+      label: '北京烤鸭'
     }
   ]
 }
@@ -141,7 +136,6 @@ let search = reactive({
     Pkg: '',
     Offer: ''
   }
-
 })
 // search
 let searchFun = () => {
@@ -154,7 +148,7 @@ let tableData = {
       impression: 0,
       click: 1200,
       revenue: '1.259%',
-      conversion: 15,
+      conversion: 15
     }
   ],
   one: [
@@ -176,12 +170,8 @@ let tableData = {
 // 导出
 let exportExcel = {
   buttonName: '导出',
-  tHeader: [
-    '日期'
-  ],
-  filterVal: [
-    'date'
-  ],
+  tHeader: ['日期'],
+  filterVal: ['date'],
   fileName: 'text'
 }
 </script>

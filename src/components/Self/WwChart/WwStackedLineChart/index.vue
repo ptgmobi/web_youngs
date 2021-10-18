@@ -13,25 +13,17 @@
               placement="bottom"
             >
               <el-button
-                :type="
-                  item.value === select.data.choiceBtn ? 'primary' : 'default'
-                "
+                :type="item.value === select.data.choiceBtn ? 'primary' : 'default'"
                 @click="changeSelectBtn(item.value)"
-              >{{ item.label }}</el-button>
+              >
+                {{ item.label }}
+              </el-button>
             </el-tooltip>
           </el-button-group>
         </div>
         <div>
-          <el-popover
-            placement="right"
-            trigger="click"
-          >
-            <el-button
-              slot="reference"
-              type="primary"
-              icon="el-icon-setting"
-              circle
-            />
+          <el-popover placement="right" trigger="click">
+            <el-button slot="reference" type="primary" icon="el-icon-setting" circle />
             <!-- 内容 -->
             <!-- 搜索 -->
             <div class="serach-box mb-10">
@@ -54,14 +46,20 @@
                 <div class="con-box">
                   <div v-for="group in handleGroupArr" :key="group.level">
                     <h3>{{ group.label }}</h3>
-                    <el-checkbox-group v-model="select.data.checkList" class="flex flex-wrap jc-start" @change="handleChangeSelected">
+                    <el-checkbox-group
+                      v-model="select.data.checkList"
+                      class="flex flex-wrap jc-start"
+                      @change="handleChangeSelected"
+                    >
                       <template v-for="(item, index) in handleSelectCheckListBtn">
                         <el-checkbox
                           v-if="!group.level || group.level === item.settings.level"
                           :key="index"
                           :label="item.value"
                           class="checkbox-one mb-10"
-                        >{{ item.label }}</el-checkbox>
+                        >
+                          {{ item.label }}
+                        </el-checkbox>
                       </template>
                     </el-checkbox-group>
                   </div>
@@ -186,8 +184,10 @@ export default {
   computed: {
     // 处理为需要展示的btn
     handleSelectCheckListBtn() {
-      return this.selectOptions.filter(ele => {
-        return ele.label.toLocaleLowerCase().includes(this.search.input.trim().toLocaleLowerCase()) || !this.search.input
+      return this.selectOptions.filter((ele) => {
+        return (
+          ele.label.toLocaleLowerCase().includes(this.search.input.trim().toLocaleLowerCase()) || !this.search.input
+        )
       })
     },
     // chart
@@ -201,10 +201,12 @@ export default {
       if (this.groupArr.length !== 0) {
         return this.groupArr
       } else {
-        return [{
-          level: undefined,
-          label: ''
-        }]
+        return [
+          {
+            level: undefined,
+            label: ''
+          }
+        ]
       }
     },
     // 拖拽数组的长度
@@ -213,14 +215,14 @@ export default {
     }
   },
   watch: {
-    'selectOptions': {
+    selectOptions: {
       immediate: false,
       handler(newval) {
         this.setDefaultCheckList()
         this.setDefaultDraggableArr(this.select.data.checkList)
       }
     },
-    'draggableList': {
+    draggableList: {
       immediate: false,
       handler(newval) {
         this.$emit('draggableArr', newval)
@@ -238,12 +240,14 @@ export default {
     // 设置默认选中项
     setDefaultCheckList() {
       // 判断cookie中是否有
-      this.select.data.checkList = getLocalStorage(this.locationName) ? JSON.parse(getLocalStorage(this.locationName)) : this.filterDefaultShow()
+      this.select.data.checkList = getLocalStorage(this.locationName)
+        ? JSON.parse(getLocalStorage(this.locationName))
+        : this.filterDefaultShow()
     },
     // 如果当前所在指标被移除，则选择列表中的第一个
     setchoiceBtn() {
       const defaultStart = this.select.data.choiceBtn
-      const start = this.select.data.checkList.find(ele => {
+      const start = this.select.data.checkList.find((ele) => {
         return ele === defaultStart
       })
       this.select.data.choiceBtn = start || this.select.data.checkList[0]
@@ -251,7 +255,7 @@ export default {
     // 全选
     selectAll() {
       this.select.data.checkList.splice(0)
-      this.select.data.checkList = this.selectOptions.map(ele => {
+      this.select.data.checkList = this.selectOptions.map((ele) => {
         return ele.value
       })
       this.handleChangeSelected(this.select.data.checkList)
@@ -260,7 +264,7 @@ export default {
     selectZero() {
       this.select.data.checkList.splice(0)
       const arr = []
-      this.selectOptions.filter(ele => {
+      this.selectOptions.filter((ele) => {
         if (ele.value === this.select.data.choiceBtn) {
           arr.push(ele.value)
         }
@@ -277,7 +281,7 @@ export default {
     // 默认展示指标数组
     filterDefaultShow() {
       const checkArr = []
-      this.selectOptions.map(ele => {
+      this.selectOptions.map((ele) => {
         if (ele.show) {
           checkArr.push(ele.value)
         }
@@ -298,9 +302,9 @@ export default {
     // 默认设置拖拽数组
     setDefaultDraggableArr(data) {
       const newArr = []
-      data.map(o => {
+      data.map((o) => {
         // 只取selectOptions中有的
-        const one = this.selectOptions.find(ele => {
+        const one = this.selectOptions.find((ele) => {
           return ele.value === o
         })
         if (one) {
@@ -308,7 +312,7 @@ export default {
         }
       })
       this.draggableList = [...newArr]
-      this.beforeSelectList = this.draggableList.map(ele => {
+      this.beforeSelectList = this.draggableList.map((ele) => {
         return ele.value
       })
     },
@@ -325,13 +329,13 @@ export default {
     setDraggableList(data) {
       if (data.add) {
         // +
-        const addArr = this.selectOptions.filter(ele => {
+        const addArr = this.selectOptions.filter((ele) => {
           return data.arr.includes(ele.value)
         })
         this.draggableList = [...this.draggableList, ...addArr]
       } else {
         // -
-        this.draggableList = this.draggableList.filter(ele => {
+        this.draggableList = this.draggableList.filter((ele) => {
           return !data.arr.includes(ele.value)
         })
       }
@@ -344,7 +348,7 @@ export default {
     },
     // 保存拖拽数组的value组成的数组到缓存
     setLocalStorageFn() {
-      const draggableValueList = this.draggableList.map(ele => {
+      const draggableValueList = this.draggableList.map((ele) => {
         return ele.value
       })
       setLocalStorage(this.locationName, JSON.stringify(draggableValueList))
@@ -352,7 +356,7 @@ export default {
     // 设置为默认拖拽数组
     selectDefaultDraggableList() {
       this.draggableList.splice(0)
-      this.selectOptions.map(ele => {
+      this.selectOptions.map((ele) => {
         if (this.select.data.checkList.includes(ele.value)) {
           this.draggableList.push(ele)
         }
@@ -363,7 +367,7 @@ export default {
     // 在拖拽数组中删除
     delToDraggableList(item) {
       // 删除左侧选框区
-      this.select.data.checkList = this.select.data.checkList.filter(ele => {
+      this.select.data.checkList = this.select.data.checkList.filter((ele) => {
         return ele !== item.value
       })
       this.handleChangeSelected(this.select.data.checkList)
@@ -401,51 +405,51 @@ export default {
   }
 }
 </script>
-<style scoped lang='scss'>
+<style scoped lang="scss">
 $border-color: #eee;
 $padding: 5px;
-.btn-box{
+.btn-box {
   margin-right: 10px;
   overflow-x: auto;
 }
-.choice-btn{
-  color: #409EFF
+.choice-btn {
+  color: #409eff;
 }
-.popover-box{
+.popover-box {
   border-left: 1px solid $border-color;
   border-right: 1px solid $border-color;
   border-bottom: 1px solid $border-color;
 }
-.title-box{
+.title-box {
   background: #eee;
   padding: $padding;
-  h3{
+  h3 {
     margin: 5px 0;
   }
 }
-.control-box{
+.control-box {
   font-size: 12px;
   padding: $padding;
 }
-.con-box{
+.con-box {
   height: 500px;
   padding: $padding;
   border: 1px solid #fff;
 }
-.popover-left-box{
+.popover-left-box {
   width: 720px;
 }
-.checkbox-one{
+.checkbox-one {
   width: 25%;
   margin-right: 0;
 }
-.draggable-box{
+.draggable-box {
   width: 200px;
   overflow-x: hidden;
   overflow-y: scroll;
   padding: 0 5px;
 }
-.draggable-one{
+.draggable-one {
   width: 100%;
   margin: 5px 0;
 }

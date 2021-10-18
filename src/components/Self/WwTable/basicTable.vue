@@ -40,7 +40,7 @@ export default {
 }
 </script>
 <style lang="scss">
-  .table-top {
-    margin-top: 10px;
-  }
+.table-top {
+  margin-top: 10px;
+}
 </style>

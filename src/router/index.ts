@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, createWebHashHistory, Router } from 'vue-router'
 import Layout from '@/layout'
 import { RouterTy } from '@/types/router'
-import test from './modules/test'
+// import test from './modules/test'
 import publisher from './modules/publisher'
 
 export const constantRoutes: RouterTy = [
@@ -30,7 +30,7 @@ export const constantRoutes: RouterTy = [
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true
-  },
+  }
 ]
 /**
  * asyncRoutes

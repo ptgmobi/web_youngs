@@ -68,19 +68,19 @@ const actions = {
     commit('SET_ID', id)
     commit('SET_NAME', name)
     // return new Promise((resolve, reject) => {
-      // getInfoReq(user.id)
-      //   .then((response: ObjTy) => {
-      //     const { data } = response
-      //     if (!data) {
-      //       return reject('Verification failed, please Login again.')
-      //     }
-      //     commit('SET_NAME', 'username')
-      //     resolve(data)
-      //   })
-      //   .catch((error: any) => {
-      //     console.log(error)
-      //     reject(error)
-      //   })
+    // getInfoReq(user.id)
+    //   .then((response: ObjTy) => {
+    //     const { data } = response
+    //     if (!data) {
+    //       return reject('Verification failed, please Login again.')
+    //     }
+    //     commit('SET_NAME', 'username')
+    //     resolve(data)
+    //   })
+    //   .catch((error: any) => {
+    //     console.log(error)
+    //     reject(error)
+    //   })
     // })
     const userInfo = await getInfoReq(user.id)
     return {

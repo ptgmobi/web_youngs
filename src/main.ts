@@ -15,9 +15,9 @@ app.use(ElementPlus, { size: 'mini', locale: zhCn })
 // element-plus/icons
 // 统一导入el-icon图标
 import * as ElIconModules from '@element-plus/icons'
-import { transElIconName } from './utils/icon'
+// import { transElIconName } from './utils/icon'
 // 统一注册el-icon图标
-for(let iconName in ElIconModules){
+for (const iconName in ElIconModules) {
   // app.component(transElIconName(iconName), ElIconModules[iconName])
   app.component(iconName, ElIconModules[iconName])
 }

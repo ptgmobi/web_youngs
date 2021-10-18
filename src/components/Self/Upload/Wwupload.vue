@@ -19,7 +19,10 @@
       list-type=""
     >
       <i class="el-icon-upload" />
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      <div class="el-upload__text">
+        将文件拖到此处，或
+        <em>点击上传</em>
+      </div>
       <div slot="tip" class="el-upload__tip">
         <slot name="content" />
       </div>
@@ -145,5 +148,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
