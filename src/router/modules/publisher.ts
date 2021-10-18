@@ -17,7 +17,7 @@ export default [
         path: 'report',
         name: 'Report',
         component: () => import('@/views/self-publisher/report'),
-        meta: { title: 'Report', icon: 'edit' }
+        meta: { title: 'Report', icon: 'table' }
       }
     ]
   }
