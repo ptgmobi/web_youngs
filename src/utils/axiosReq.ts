@@ -3,6 +3,7 @@ import axios from 'axios'
 import { ElLoading, ElMessage, ElMessageBox } from 'element-plus'
 import { getToken, setToken } from '@/utils/auth'
 import { AxiosConfigTy, AxiosReqTy } from '@/types/common'
+import qs from 'qs'
 let requestData: any
 let loadingE: any
 
@@ -15,7 +16,12 @@ service.interceptors.request.use(
   (request: AxiosReqTy) => {
     // console.log('request', request)
     // token配置
-    request.headers['AUTHORIZE_TOKEN'] = getToken()
+    const token = getToken()
+    if (token) {
+      // request.headers['AUTHORIZE_TOKEN'] = token
+      request.headers['token'] = token
+      request.headers['Authorization'] = `Bearer ${token}`
+    }
     /* 下载文件*/
     if (request.isDownLoadFile) {
       request.responseType = 'blob'
@@ -40,6 +46,9 @@ service.interceptors.request.use(
       request.params = request.data
       request.data = {}
     }
+    if (request.method === 'post') {
+      request.data = qs.stringify(request.data)
+    }
     return request
   },
   (err: any) => {
@@ -57,24 +66,51 @@ service.interceptors.response.use(
     if (requestData.isDownLoadFile) {
       return res.data
     }
-    const { flag, msg, isNeedUpdateToken, updateToken } = res.data
-    //更新token保持登录状态
-    if (isNeedUpdateToken) {
-      setToken(updateToken)
-    }
-    if (flag) {
-      return res.data
-    } else {
-      if (requestData.isAlertErrorMsg) {
-        ElMessage({
-          message: msg,
-          type: 'error',
-          duration: 2 * 1000
+    // const { flag, msg, isNeedUpdateToken, updateToken } = res.data
+    // //更新token保持登录状态
+    // if (isNeedUpdateToken) {
+    //   setToken(updateToken)
+    // }
+    // if (flag) {
+    //   return res.data
+    // } else {
+    //   if (requestData.isAlertErrorMsg) {
+    //     ElMessage({
+    //       message: msg,
+    //       type: 'error',
+    //       duration: 2 * 1000
+    //     })
+    //     return Promise.reject(msg)
+    //   } else {
+    //     return res.data
+    //   }
+    // }
+    const { code, data } = res.data
+    console.log(code, data)
+    if (code !== 200) {
+      ElMessage({
+        message: res.message || 'Error',
+        type: 'error',
+        duration: 5 * 1000
+      })
+      if (res.code === 400) {
+        // to re-login
+        ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
+          confirmButtonText: '重新登录',
+          cancelButtonText: '取消',
+          type: 'warning'
         })
-        return Promise.reject(msg)
-      } else {
-        return res.data
+          .then(() => {
+            store.dispatch('user/resetToken').then(() => {
+              location.reload()
+            })
+          })
+          .catch((err: any) => {
+            console.log(err)
+          })
       }
+    } else {
+      return res.data
     }
   },
   (err: any) => {

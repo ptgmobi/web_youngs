@@ -15,10 +15,10 @@ service.interceptors.request.use(
   (request) => {
     // console.log('request', request)
     // token配置
-    const token = getToken()
+    const token = token
     if (token) {
-      request.headers['token'] = getToken()
-      request.headers['Authorization'] = `Bearer ${getToken()}`
+      request.headers['token'] = token
+      request.headers['Authorization'] = `Bearer ${token}`
     }
     /* 下载文件*/
     if (request.isDownLoadFile) {
