@@ -1,1 +1,0 @@
-import{r,h as a,g as e,f as n,o as s}from"./vendor.ab9e672f.js";import{_ as o}from"./index.4b12296b.js";var t=o({},[["render",function(o,t){const d=r("trend-charts"),f=r("el-icon");return s(),a("div",null,[e(f,null,{default:n((()=>[e(d)])),_:1})])}]]);export{t as default};
