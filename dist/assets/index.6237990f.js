@@ -1,1 +1,0 @@
-import{d as a,J as r,L as e,e as s}from"./vendor.1b66d76d.js";var t=a({setup(){const a=r(),t=e();return s((()=>{const{params:r,query:e}=a,{path:s}=r;t.replace({path:"/"+s,query:e})})),()=>""}});export{t as default};
