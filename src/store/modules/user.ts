@@ -43,19 +43,26 @@ const actions = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   login({ commit }: ObjTy, data: ObjTy) {
     return new Promise((resolve, reject) => {
-      loginReq(data)
-        .then((res: ObjTy) => {
-          if (res.code === 200) {
-            const token = res.data?.token
-            commit('SET_TOKEN', token)
-            resolve(null)
-          } else {
-            reject(res)
-          }
-        })
-        .catch((error: any) => {
-          reject(error)
-        })
+      // loginReq(data)
+      //   .then((res: ObjTy) => {
+      //     if (res.code === 200) {
+      //       const token = res.data?.token
+      //       commit('SET_TOKEN', token)
+      //       resolve(null)
+      //     } else {
+      //       reject(res)
+      //     }
+      //   })
+      //   .catch((error: any) => {
+      //     reject(error)
+      //   })
+      const res = {"success":true,"code":200,"message":"登录成功","data":{"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImZvbyI6ImJhciJ9.eyJpc3MiOiJodHRwOlwvXC9kYXRhZXllLmFkc2dyZWF0LmNuIiwiaWF0IjoxNjM0NzIyOTU5LCJhdWQiOiJodHRwOlwvXC9sb2NhbGhvc3Q6NTAwMyIsImp0aSI6IkJZQUk4NG5uQ0siLCJuYmYiOjE2MzQ3MjI5NjAsImV4cCI6MTYzNDk4MjE1OSwidXNlciI6eyJpZCI6MTE0OSwiZW1haWwiOiJ0ZXN0QHFxLmNvbSIsIm5hbWUiOiJhYmNkZWRmIn19.QFH_QpchPlizjzGrbSIJg78t5JD0bTY62AoH2VhWgmE"}}
+      if (res.code === 200) {
+        const token = res.data?.token
+        commit('SET_TOKEN', token)
+        resolve(null)
+      }
+
     })
   },
   // get user info
@@ -82,7 +89,7 @@ const actions = {
     //     reject(error)
     //   })
     // })
-    const userInfo = await getInfoReq(user.id)
+    // const userInfo = await getInfoReq(user.id)
     return {
       roles: [1]
     }

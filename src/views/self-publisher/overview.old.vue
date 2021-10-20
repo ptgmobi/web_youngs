@@ -2,20 +2,26 @@
   <div>
     <div class="search-box">
       <div class="mb-10">
-        <el-checkbox-group v-model="search.checkList">
-          <el-checkbox v-for="item in clumon.choice" :key="item.value" :label="item.value">{{item.label}}</el-checkbox>
-        </el-checkbox-group>{{search.checkList}}
+        <el-date-picker
+          v-model="search.date"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        ></el-date-picker>
       </div>
-      <div class="flex jc-between ai-start">
+      <div class="mb-10">
+        <el-checkbox-group v-model="search.checkList">
+          <el-checkbox label="Date"></el-checkbox>
+          <el-checkbox label="Hour"></el-checkbox>
+          <el-checkbox label="Country"></el-checkbox>
+          <el-checkbox label="Platform"></el-checkbox>
+          <el-checkbox label="Pkg"></el-checkbox>
+          <el-checkbox label="Offer"></el-checkbox>
+        </el-checkbox-group>
+      </div>
+      <div class="flex jc-between">
         <div class="flex jc-start mb-10">
-          <el-date-picker
-            class="mr-10"
-            v-model="search.date"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-          ></el-date-picker>
           <el-select v-model="search.filter.Country" filterable placeholder="Country" class="mr-10">
             <el-option
               v-for="item in options.Country"
@@ -53,23 +59,24 @@
       </div>
     </div>
     <!-- all -->
-    <!-- <el-table :data="tableData.all" border style="width: 100%" class="mb-10">
+    <el-table :data="tableData.all" border style="width: 100%" class="mb-10">
       <el-table-column prop="impression" label="Impression" />
       <el-table-column prop="click" label="Click" />
       <el-table-column prop="revenue" label="Revenue($)" />
       <el-table-column prop="conversion" label="Conversion" />
-    </el-table> -->
+    </el-table>
     <div class="mb-10">
-      <ww-export-excel
+      <el-button icon="el-icon-download" type="primary">Export</el-button>
+      <WwExportExcel
         :button-name="exportExcel.buttonName"
-        :list="tableData.arr"
+        :list="tableData.one"
         :t-header="exportExcel.tHeader"
         :filter-val="exportExcel.filterVal"
         :filename="exportExcel.fileName"
-      ></ww-export-excel>
+      ></WwExportExcel>
     </div>
-    <!-- arr -->
-    <el-table :data="tableData.arr" border style="width: 100%">
+    <!-- one -->
+    <el-table :data="tableData.one" border style="width: 100%">
       <el-table-column prop="date" label="Date" width="180" />
       <el-table-column prop="hour" label="Hour" width="100" />
       <el-table-column prop="country" label="Country" width="100" />
@@ -83,142 +90,127 @@
       <el-table-column prop="revenue" label="Revenue" width="100" />
     </el-table>
     <div class="w100 flex">
-        <pagination
+        <Pagination
           v-show="pagination.total"
           :total="pagination.total"
           :page-sizes="pagination.pageSizes"
-          v-model:page="pagination.listQuery.page"
-          v-model:limit="pagination.listQuery.limit"
+          :page.sync="pagination.listQuery.page"
+          :limit.sync="pagination.listQuery.limit"
           @pagination="init"
         />
       </div>
   </div>
 </template>
-<script>
+<script setup lang="ts">
+import { getCurrentInstance, reactive, defineComponent } from 'vue'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import WwExportExcel from '@/components/Self/Excel/Export/index.vue'
 import { getOverviewList } from '@/api/overview'
-export default {
+// 导出组件
+defineComponent({
   components: {
     Pagination,
     WwExportExcel
-  },
-  data() {
-    const end = new Date()
-    const start = new Date()
-    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-    return {
-      clumon: {
-        base:[
-          {
-            label: 'Impression',
-            value: 'impression'
-          },
-          {
-            label: 'Click',
-            value: 'click'
-          },
-          {
-            label: 'CVR',
-            value: 'cvr'
-          },
-          {
-            label: 'Conversion',
-            value: 'conversion'
-          },
-          {
-            label: 'Revenue($)',
-            value: 'revenue'
-          }
-        ],
-        choice: [
-          {
-            label: 'Date',
-            value: 'date'
-          },
-          {
-            label: 'Hour',
-            value: 'hour'
-          },
-          {
-            label: 'Country',
-            value: 'country'
-          },
-          {
-            label: 'Platform',
-            value: 'platform'
-          },
-          {
-            label: 'PKG',
-            value: 'pkg'
-          },
-          {
-            label: 'Offer',
-            value: 'offer'
-          }
-        ]
-      },
-      search: {
-        date: [start, end],
-        checkList: [],
-        filter: {
-          Country: '',
-          Platform: '',
-          Pkg: '',
-          Offer: ''
-        }
-      },
-      options: {
-        Country: [
-          {
-            value: 'value',
-            label: 'label'
-          }
-        ]
-      },
-      tableData: {
-        all: [],
-        arr: []
-      },
-      exportExcel: {
-        buttonName: '导出',
-        tHeader: ['日期'],
-        filterVal: ['date'],
-        fileName: 'text'
-      },
-      pagination: {
-        pageSizes: ['10', '20', '40', '100'],
-        total: 1,
-        listQuery: {
-          page: 1,
-          limit: 20,
-          importance: undefined,
-          title: undefined,
-          type: undefined,
-          sort: '+id'
-        }
-      }
-    }
-  },
-  created() {
-    this.init()
-  },
-  methods: {
-    async init() {
-      const ajaxData = {
-        page: this.pagination.listQuery.page,
-        page_size: this.pagination.listQuery.limit
-      }
-      const res = await getOverviewList(ajaxData)
-      const { data } = res
-      this.tableData.arr = data.data
-      this.pagination.total = parseInt(data.count)
-      // this.pagination.listQuery.page = parseInt(data.page)
-      // this.pagination.listQuery.limit = parseInt(data.page_size)
-    },
-    searchFun() {}
   }
+})
+let { proxy }: any = getCurrentInstance()
+const end = new Date()
+const start = new Date()
+start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+// options
+let options = {
+  Country: [
+    {
+      value: '选项1',
+      label: '黄金糕'
+    },
+    {
+      value: '选项2',
+      label: '双皮奶'
+    },
+    {
+      value: '选项3',
+      label: '蚵仔煎'
+    },
+    {
+      value: '选项4',
+      label: '龙须面'
+    },
+    {
+      value: '选项5',
+      label: '北京烤鸭'
+    }
+  ]
 }
+let search = reactive({
+  date: [start, end],
+  checkList: ['Country'],
+  filter: {
+    Country: '',
+    Platform: '',
+    Pkg: '',
+    Offer: ''
+  }
+})
+// search
+let searchFun = () => {
+  console.log(123)
+}
+// table
+let tableData = reactive({
+  all: [
+    {
+      impression: 0,
+      click: 1200,
+      revenue: '1.259%',
+      conversion: 15
+    }
+  ],
+  one: [
+    {
+      date: '20211018',
+      hour: '23',
+      country: 'IN',
+      platform: 'Android',
+      pkg: 'in.mohalla.sha',
+      offer: '6011101',
+      impression: 0,
+      click: 1200,
+      cvr: '1.259%',
+      conversion: 15,
+      revenue: 0.15
+    }
+  ]
+})
+// 导出
+let exportExcel = {
+  buttonName: '导出',
+  tHeader: ['日期'],
+  filterVal: ['date'],
+  fileName: 'text'
+}
+// 分页
+let pagination = reactive({
+  pageSizes: ['10', '20', '40', '100'],
+  total: 1,
+  listQuery: {
+    page: 1,
+    limit: 20,
+    importance: undefined,
+    title: undefined,
+    type: undefined,
+    sort: '+id'
+  }
+})
+
+const init = async () => {
+  const res = await getOverviewList()
+  const { data } = res
+  tableData.one = data.data
+  pagination.total = data.count
+  pagination.listQuery.page = data.page
+}
+init()
 </script>
 <style lang="scss" scoped>
 .dashboard {

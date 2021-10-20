@@ -38,7 +38,8 @@ export default ({ command }: any) => {
           // target: 'http://54.223.116.56:8081',
           // target: 'http://dataeye.adsgreat.cn:8081',
           // 测试地址
-          target: 'http://dataeye.adsgreat.cn/prod-api',
+          // target: 'http://dataeye.adsgreat.cn/prod-api',
+          target: 'http://172.31.21.0:80',
           ws: false,
           changeOrigin: true,
           rewrite: path => path.replace(/^\/dev-api/, '')
