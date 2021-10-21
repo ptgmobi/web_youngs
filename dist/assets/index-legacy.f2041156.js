@@ -1,0 +1,1 @@
+System.register(["./vendor-legacy.eed8915e.js"],(function(e){"use strict";var t,r,n,u;return{setters:[function(e){t=e.d,r=e.J,n=e.L,u=e.e}],execute:function(){e("default",t({setup:function(){var e=r(),t=n();return u((function(){var r=e.params,n=e.query,u=r.path;t.replace({path:"/"+u,query:n})})),function(){return""}}}))}}}));
