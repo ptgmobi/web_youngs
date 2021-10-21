@@ -3,7 +3,7 @@ export default [
   {
     path: '/',
     component: Layout,
-    redirect: '/overview',
+    redirect: '/report',
     name: 'Publisher',
     meta: { title: 'Publisher', icon: 'table' },
     children: [

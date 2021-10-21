@@ -9,7 +9,7 @@
           <span class="svg-container">
             <svg-icon icon-class="user" />
           </span>
-          <el-input v-model="formInline.email" placeholder="用户名(admin)" />
+          <el-input v-model="formInline.email" placeholder="用户名" />
           <!--占位-->
           <div class="show-pwd" />
         </div>
@@ -27,7 +27,7 @@
             :type="passwordType"
             name="password"
             @keyup.enter="handleLogin"
-            placeholder="password(123456)"
+            placeholder="password"
           />
           <span class="show-pwd" @click="showPwd">
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
