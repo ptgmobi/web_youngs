@@ -59,8 +59,8 @@ import { ObjTy } from '@/types/common'
 let { proxy }: any = getCurrentInstance()
 //form
 let formInline = reactive({
-  email: 'ttao@qq.com',
-  password: '111111'
+  email: '',
+  password: ''
 })
 let state: ObjTy = reactive({
   otherQuery: {},
