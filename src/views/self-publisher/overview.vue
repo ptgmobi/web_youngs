@@ -58,7 +58,15 @@
     </div>
     <!-- arr -->
     <el-table :data="tableData.arr" border style="width: 100%">
-      <el-table-column sortable v-for="item in handleClumon" :key="item.value" :prop="item.value" :label="item.label" >
+      <el-table-column
+        align="center"
+        sortable
+        v-for="item in handleClumon"
+        :key="item.value"
+        :prop="item.value"
+        :label="item.label"
+        :width="item.width"
+      >
         <template #default="scope">
           <!-- <i class="el-icon-time"></i> -->
           <span style="margin-left: 10px">{{ scope.row[item.value] }}</span>
@@ -138,7 +146,8 @@ export default {
           {
             label: 'Date',
             value: 'date',
-            require: true
+            require: true,
+            width: '100'
           },
           {
             label: 'Hour',
@@ -168,7 +177,7 @@ export default {
         ]
       },
       search: {
-        date: getSectionTime(0, 'day'),
+        date: getSectionTime(6, 'day'),
         checkList: ['date'],
         filter: {
           country: '',
@@ -245,7 +254,10 @@ export default {
   methods: {
     async init() {
       const checkList = this.search.checkList
-      const dimension = checkList.join(',')
+      const sortArr = this.getSortCheckList(checkList).map(ele => {
+        return ele.value
+      })
+      const dimension = sortArr.join(',')
       let ajaxData = {
         page: this.pagination.listQuery.page,
         page_size: this.pagination.listQuery.limit,
@@ -263,13 +275,17 @@ export default {
       // this.pagination.listQuery.page = parseInt(data.page)
       // this.pagination.listQuery.limit = parseInt(data.page_size)
     },
-    changeCheckList(arr) {
+    getSortCheckList(arr) {
       const chioceArr = []
       this.clumon.choice.map(ele => {
         if (arr.includes(ele.value)) {
           chioceArr.push(ele)
         }
       })
+      return chioceArr
+    },
+    changeCheckList(arr) {
+      const chioceArr = this.getSortCheckList(arr)
       this.busHandleClumon = [...chioceArr, ...this.clumon.base]
     },
     searchFun() {
