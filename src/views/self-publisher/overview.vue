@@ -51,8 +51,8 @@
       <ww-export-excel
         :button-name="exportExcel.buttonName"
         :list="tableData.arr"
-        :t-header="exportExcel.tHeader"
-        :filter-val="exportExcel.filterVal"
+        :t-header="exportTHeader"
+        :filter-val="exportFilterVal"
         :filename="exportExcel.fileName"
       ></ww-export-excel>
     </div>
