@@ -1,0 +1,1 @@
+System.register(["./vendor-legacy.eed8915e.js","./index-legacy.c15af2d5.js"],(function(e){"use strict";var n,t,r;return{setters:[function(e){n=e.h,t=e.o},function(e){r=e._}],execute:function(){e("default",r({},[["render",function(e,r){return t(),n("div")}]]))}}}));
