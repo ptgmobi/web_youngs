@@ -2,52 +2,40 @@
   <div>
     <div class="search-box">
       <div class="mb-10">
-        <el-checkbox-group v-model="search.checkList">
-          <el-checkbox v-for="item in clumon.choice" :key="item.value" :label="item.value">{{item.label}}</el-checkbox>
-        </el-checkbox-group>{{search.checkList}}
+        <el-checkbox-group v-model="search.checkList" @change="changeCheckList">
+          <el-checkbox
+            v-for="item in clumon.choice"
+            :key="item.value"
+            :label="item.value"
+            :disabled="item.require"
+          >{{item.label}}</el-checkbox>
+        </el-checkbox-group>
       </div>
       <div class="flex jc-between ai-start">
-        <div class="flex jc-start mb-10">
+        <div class="flex jc-start ai-start flex-wrap">
           <el-date-picker
-            class="mr-10"
+            class="mr-10 mb-10"
             v-model="search.date"
             type="daterange"
+            unlink-panels
+            format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
+            :shortcuts="shortcuts"
           ></el-date-picker>
-          <el-select v-model="search.filter.Country" filterable placeholder="Country" class="mr-10">
+          <el-input v-model="search.filter.country" placeholder="Country" class="mr-10 mb-10 search-con" />
+          <el-select v-model="search.filter.platform" filterable placeholder="Platform" class="mr-10 search-con">
             <el-option
-              v-for="item in options.Country"
+              v-for="item in options.platform"
               :key="item.value"
               :label="item.label"
               :value="item.value"
             ></el-option>
           </el-select>
-          <el-select v-model="search.filter.Country" filterable placeholder="Platform" class="mr-10">
-            <el-option
-              v-for="item in options.Country"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-          <el-select v-model="search.filter.Country" filterable placeholder="Pkg" class="mr-10">
-            <el-option
-              v-for="item in options.Country"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-          <el-select v-model="search.filter.Country" filterable placeholder="Offer" class="mr-10">
-            <el-option
-              v-for="item in options.Country"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
+          <el-input v-model="search.filter.pkg" placeholder="Pkg" class="mr-10 mb-10 search-con" />
+          <el-input v-model="search.filter.offer" placeholder="Offer" class="mr-10 mb-10 search-con" />
         </div>
         <el-button type="primary" @click="searchFun">Run</el-button>
       </div>
@@ -70,7 +58,7 @@
     </div>
     <!-- arr -->
     <el-table :data="tableData.arr" border style="width: 100%">
-      <el-table-column v-for="item in handleClumon" :key="item.value" :prop="item.value" :label="item.label" >
+      <el-table-column sortable v-for="item in handleClumon" :key="item.value" :prop="item.value" :label="item.label" >
         <template #default="scope">
           <!-- <i class="el-icon-time"></i> -->
           <span style="margin-left: 10px">{{ scope.row[item.value] }}</span>
@@ -93,16 +81,36 @@
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import WwExportExcel from '@/components/Self/Excel/Export/index.vue'
 import { getOverviewList } from '@/api/overview'
+import {
+  getSectionTime,
+  getSectionAnyTime,
+  choiceDefaultProduct
+} from '@/utils/format'
 export default {
   components: {
     Pagination,
     WwExportExcel
   },
   data() {
-    const end = new Date()
-    const start = new Date()
-    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
     return {
+      shortcuts: [
+        {
+          text: '今天',
+          value: getSectionTime(0, 'day'),
+        },
+        {
+          text: '昨天',
+          value: () => {
+            return getSectionAnyTime(1, 1, 'day')
+          },
+        },
+        {
+          text: '最近7天',
+          value: () => {
+            return getSectionTime(6, 'day')
+          },
+        }
+      ],
       clumon: {
         base:[
           {
@@ -129,45 +137,55 @@ export default {
         choice: [
           {
             label: 'Date',
-            value: 'date'
+            value: 'date',
+            require: true
           },
           {
             label: 'Hour',
-            value: 'hour'
+            value: 'hour',
+            require: false
           },
           {
             label: 'Country',
-            value: 'country'
+            value: 'country',
+            require: false
           },
           {
             label: 'Platform',
-            value: 'platform'
+            value: 'platform',
+            require: false
           },
           {
             label: 'PKG',
-            value: 'pkg'
+            value: 'pkg',
+            require: false
           },
           {
             label: 'Offer',
-            value: 'offer'
+            value: 'offer',
+            require: false
           }
         ]
       },
       search: {
-        date: [start, end],
-        checkList: [],
+        date: getSectionTime(0, 'day'),
+        checkList: ['date'],
         filter: {
-          Country: '',
-          Platform: '',
-          Pkg: '',
-          Offer: ''
+          country: '',
+          platform: '',
+          pkg: '',
+          offer: ''
         }
       },
       options: {
-        Country: [
+        platform: [
           {
-            value: 'value',
-            label: 'label'
+            value: '1',
+            label: 'Android'
+          },
+          {
+            value: '2',
+            label: 'iOS'
           }
         ]
       },
@@ -179,7 +197,7 @@ export default {
         buttonName: '导出',
         tHeader: ['日期'],
         filterVal: ['date'],
-        fileName: 'text'
+        fileName: 'test'
       },
       pagination: {
         pageSizes: ['10', '20', '40', '100'],
@@ -192,29 +210,51 @@ export default {
           type: undefined,
           sort: '+id'
         }
-      }
+      },
+      handleClumon: [],
+      busHandleClumon: []
     }
   },
   created() {
     this.init()
+    this.changeCheckList(this.search.checkList)
+    this.handleClumon = this.busHandleClumon
   },
   computed: {
-    handleClumon() {
-      const arr = this.search.checkList
-      const chioceArr = []
-      this.clumon.choice.map(ele => {
-        if (arr.includes(ele.value)) {
-          chioceArr.push(ele)
-        }
+    // handleClumon() {
+    //   const arr = this.search.checkList
+    //   const chioceArr = ['date']
+    //   this.clumon.choice.map(ele => {
+    //     if (arr.includes(ele.value)) {
+    //       chioceArr.push(ele)
+    //     }
+    //   })
+    //   return [...chioceArr, ...this.clumon.base]
+    // },
+    exportTHeader() {
+      return this.handleClumon.map(ele => {
+        return ele.label
       })
-      return [...chioceArr, ...this.clumon.base]
+    },
+    exportFilterVal() {
+      return this.handleClumon.map(ele => {
+        return ele.value
+      })
     }
   },
   methods: {
     async init() {
-      const ajaxData = {
+      const checkList = this.search.checkList
+      const dimension = checkList.join(',')
+      let ajaxData = {
         page: this.pagination.listQuery.page,
-        page_size: this.pagination.listQuery.limit
+        page_size: this.pagination.listQuery.limit,
+        st: this.search.date[0],
+        et: this.search.date[1],
+        ...this.search.filter
+      }
+      if (dimension) {
+        ajaxData.dimension = dimension
       }
       const res = await getOverviewList(ajaxData)
       const { data } = res
@@ -223,7 +263,19 @@ export default {
       // this.pagination.listQuery.page = parseInt(data.page)
       // this.pagination.listQuery.limit = parseInt(data.page_size)
     },
-    searchFun() {}
+    changeCheckList(arr) {
+      const chioceArr = []
+      this.clumon.choice.map(ele => {
+        if (arr.includes(ele.value)) {
+          chioceArr.push(ele)
+        }
+      })
+      this.busHandleClumon = [...chioceArr, ...this.clumon.base]
+    },
+    searchFun() {
+      this.handleClumon = this.busHandleClumon
+      this.init()
+    }
   }
 }
 </script>
