@@ -3,7 +3,7 @@ import { ObjTy } from '@/types/common'
 
 export function loginReq(data: ObjTy) {
   return request({
-    url: '/sites/login',
+    url: '/site/login',
     data,
     method: 'post',
     bfLoading: false,

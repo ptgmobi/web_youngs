@@ -70,17 +70,12 @@
     </div>
     <!-- arr -->
     <el-table :data="tableData.arr" border style="width: 100%">
-      <el-table-column prop="date" label="Date" width="180" />
-      <el-table-column prop="hour" label="Hour" width="100" />
-      <el-table-column prop="country" label="Country" width="100" />
-      <el-table-column prop="platform" label="Platform" width="100" />
-      <el-table-column prop="pkg" label="Pkg" width="100" />
-      <el-table-column prop="offer" label="Offer" width="100" />
-      <el-table-column prop="impression" label="Impression" width="100" />
-      <el-table-column prop="click" label="Click" width="100" />
-      <el-table-column prop="cvr" label="Cvr" width="100" />
-      <el-table-column prop="conversion" label="Conversion" width="100" />
-      <el-table-column prop="revenue" label="Revenue" width="100" />
+      <el-table-column v-for="item in handleClumon" :key="item.value" :prop="item.value" :label="item.label" >
+        <template #default="scope">
+          <!-- <i class="el-icon-time"></i> -->
+          <span style="margin-left: 10px">{{ scope.row[item.value] }}</span>
+        </template>
+      </el-table-column>
     </el-table>
     <div class="w100 flex">
         <pagination
@@ -202,6 +197,18 @@ export default {
   },
   created() {
     this.init()
+  },
+  computed: {
+    handleClumon() {
+      const arr = this.search.checkList
+      const chioceArr = []
+      this.clumon.choice.map(ele => {
+        if (arr.includes(ele.value)) {
+          chioceArr.push(ele)
+        }
+      })
+      return [...chioceArr, ...this.clumon.base]
+    }
   },
   methods: {
     async init() {
