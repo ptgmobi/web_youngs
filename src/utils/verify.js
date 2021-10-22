@@ -1,6 +1,4 @@
 const verifyJSON = {
-  Pass: {
-
-  },
+  Pass: {},
   Pass2: {}
 }

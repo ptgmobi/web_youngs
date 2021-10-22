@@ -62,7 +62,6 @@ const actions = {
       //   commit('SET_TOKEN', token)
       //   resolve(null)
       // }
-
     })
   },
   // get user info

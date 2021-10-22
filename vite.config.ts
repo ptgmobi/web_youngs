@@ -31,15 +31,9 @@ export default ({ command }: any) => {
       // }
       proxy: {
         '/dev-api': {
-          // 本地地址
-          // target: 'http://172.31.21.167:8080',
-          // 线上地址
-          // target: 'http://dataeye.adsgreat.cn',
-          // target: 'http://54.223.116.56:8081',
-          // target: 'http://dataeye.adsgreat.cn:8081',
-          // 测试地址
           // target: 'http://dataeye.adsgreat.cn/prod-api',
           target: 'http://172.31.21.0',
+          // target: 'http://partner.thebosi.com:8080',
           ws: false,
           changeOrigin: true,
           rewrite: path => path.replace(/^\/dev-api/, '')

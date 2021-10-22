@@ -11,7 +11,7 @@ export function handleChartArr(name, basedata, date, type = '') {
     if (Object.hasOwnProperty.call(data, key) && key !== date) {
       const element = data[key]
       dateArr.map((d, i) => {
-        const obj = element.find(ele => {
+        const obj = element.find((ele) => {
           return ele[date] === d
         })
         if (!obj) {
@@ -46,7 +46,7 @@ export function WwStackedLineChartFn(data, formatTooltipFn, options) {
     const legendData = []
     // 获取纵坐标数组
     const yAxisData = []
-    data.data.map(ele => {
+    data.data.map((ele) => {
       legendData.push(ele.name)
       const obj = {
         name: ele.name,
@@ -70,7 +70,7 @@ export function WwStackedLineChartFn(data, formatTooltipFn, options) {
           type: 'cross',
           label: {
             show: true,
-            formatter: function(params) {
+            formatter: function (params) {
               // return `${params.value}---aaa`
               return formatTooltipFn(params)
             },
