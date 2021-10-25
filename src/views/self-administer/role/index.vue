@@ -44,7 +44,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { mapGetters } from 'vuex'
 import { getPermissions } from '@/api/power'
 import { getRoles, getRole, setCreateRole, setEditRole } from '@/api/role'

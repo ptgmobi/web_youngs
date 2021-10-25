@@ -159,7 +159,7 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { mapGetters } from 'vuex'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -200,7 +200,7 @@ export default {
   components: { Pagination, WwChangePass },
   directives: { waves },
   filters: {
-    handlePositions(arr) {
+    handlePositions(arr: any) {
       // ! this = undefined
       // return this.busData.options.project.filter(ele => {
       //   return arr.includes(ele)

@@ -27,3 +27,5 @@ export function logoutReq() {
     method: 'post'
   })
 }
+
+export function changeMyPassword() {}

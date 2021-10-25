@@ -54,7 +54,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { mapGetters } from 'vuex'
 import { getRoles } from '@/api/role'
 import { getStations, getStation, setCreateStation, setEditStation } from '@/api/station'

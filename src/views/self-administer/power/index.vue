@@ -69,7 +69,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { judgePermissionElementFn } from '@/utils/permissionElement'
 import { getPermissions, getPermission, setCreatePermission, setEditPermission } from '@/api/power'
 import RoleTree from './tree'

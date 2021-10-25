@@ -17,10 +17,10 @@
     </el-form-item>
   </el-form>
 </template>
-<script>
+<script lang="ts">
 export default {
   data() {
-    const validatePass = (rule, value, callback) => {
+    const validatePass = (rule: any, value: string | any[], callback: (arg0: Error | undefined) => void) => {
       if (value === '') {
         callback(new Error('请输入新密码'))
       } else {
@@ -33,7 +33,7 @@ export default {
         callback()
       }
     }
-    const validatePass2 = (rule, value, callback) => {
+    const validatePass2 = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
       if (value === '') {
         callback(new Error('请再次输入新密码'))
       } else if (value !== this.dialogData.data.pass) {
@@ -45,30 +45,32 @@ export default {
     return {
       // 配置项
       passwordType: 'password',
-      data: {
-        email: '',
-        username: '',
-        rule: '',
-        project: '',
-        product: '',
-        pass: '',
-        checkPass: ''
-      },
-      rules: {
-        email: [
-          { required: true, message: '必填', trigger: ['change', 'blur'] }
-        ],
-        oldPass: [
-          { required: true, message: '必填', trigger: 'blur' }
-        ],
-        pass: [
-          { required: true, message: '必填', trigger: 'blur' },
-          { validator: validatePass, trigger: 'blur' }
-        ],
-        checkPass: [
-          { required: true, message: '必填', trigger: 'blur' },
-          { validator: validatePass2, trigger: 'blur' }
-        ]
+      dialogData: {
+        data: {
+          email: '',
+          username: '',
+          rule: '',
+          project: '',
+          product: '',
+          pass: '',
+          checkPass: ''
+        },
+        rules: {
+          email: [
+            { required: true, message: '必填', trigger: ['change', 'blur'] }
+          ],
+          oldPass: [
+            { required: true, message: '必填', trigger: 'blur' }
+          ],
+          pass: [
+            { required: true, message: '必填', trigger: 'blur' },
+            { validator: validatePass, trigger: 'blur' }
+          ],
+          checkPass: [
+            { required: true, message: '必填', trigger: 'blur' },
+            { validator: validatePass2, trigger: 'blur' }
+          ]
+        }
       }
     }
   },

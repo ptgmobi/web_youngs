@@ -3,6 +3,7 @@ import Layout from '@/layout'
 import { RouterTy } from '@/types/router'
 // import test from './modules/test'
 import publisher from './modules/publisher'
+import administer from './modules/administer'
 
 export const constantRoutes: RouterTy = [
   {
@@ -37,7 +38,8 @@ export const constantRoutes: RouterTy = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes: RouterTy = [
-  ...publisher,
+  publisher,
+  administer,
   // 404 page must be placed at the end !!!
   // using pathMatch install of "*" in vue-router 4.0
   { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }

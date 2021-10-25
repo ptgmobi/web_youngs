@@ -161,7 +161,7 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { mapGetters } from 'vuex'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination

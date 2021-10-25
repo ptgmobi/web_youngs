@@ -7,7 +7,7 @@
     />
   </div>
 </template>
-<script>
+<script lang="ts">
 import Password from '@/components/Self/ChangePass/WwChangePass'
 import { changeMyPassword } from '@/api/user'
 import { messageFun } from '@/utils/message'
@@ -16,7 +16,7 @@ export default {
     Password
   },
   methods: {
-    async submitFn(data) {
+    async submitFn(data: any) {
       const ajaxData = {
         old_password: data.oldPass,
         password: data.pass,
@@ -24,9 +24,7 @@ export default {
       }
       const res = await changeMyPassword(ajaxData)
       messageFun(res)
-      if (res.code === 200) {
-        this.logout()
-      }
+      this.logout()
     },
     async logout() {
       await this.$store.dispatch('user/logout')

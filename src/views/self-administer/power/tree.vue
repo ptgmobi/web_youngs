@@ -23,7 +23,7 @@
     </el-form-item>
   </el-form>
 </template>
-<script>
+<script lang="ts">
 import { handleIdTree } from '@/utils/format'
 import path from 'path'
 export default {

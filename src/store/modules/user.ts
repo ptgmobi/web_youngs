@@ -90,7 +90,7 @@ const actions = {
     // })
     // const userInfo = await getInfoReq(user.id)
     return {
-      roles: [1]
+      roles: ['admin']
     }
   },
   // user logout
