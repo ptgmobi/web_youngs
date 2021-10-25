@@ -7,7 +7,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 import 'nprogress/nprogress.css'
 import getPageTitle from '@/utils/getPageTitle'
 import { RouterRowTy } from '@/types/router'
-import { handleRouteTree } from '@/utils/format'
+// import { handleRouteTree } from '@/utils/format'
 import _ from 'lodash'
 
 const whiteList = ['/login'] // no redirect whitelist

@@ -82,7 +82,6 @@ const actions = {
           return reject('Verification failed, please Login again.')
         }
         commit('SET_NAME', 'username')
-        data.role_id = '1'
         resolve(data)
       })
       .catch((error: any) => {
