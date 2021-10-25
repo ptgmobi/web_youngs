@@ -54,3 +54,7 @@ import '@/styles/common.scss'
 import errorLog from '@/hooks/errorLogHook'
 errorLog(app)
 app.use(router).mount('#app')
+
+// ! lodash这样用并不奏效
+// import _ from 'lodash'
+// app.config.globalProperties._ = _

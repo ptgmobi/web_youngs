@@ -1,10 +1,10 @@
-import { Notification } from 'element-ui'
+import { ElNotification } from 'element-plus'
 /**
  *
  * @param {data} res
  */
 export function messageFun(res) {
-  Notification({
+  ElNotification({
     title: res.code === 200 ? 'success' : 'error',
     dangerouslyUseHTMLString: true,
     message: res.info,

@@ -1,31 +1,64 @@
 import request from '@/utils/axiosReq'
 import { ObjTy } from '@/types/common'
-
-export function loginReq(data: ObjTy) {
+// 获取列表
+export function getUsers(data: ObjTy) {
   return request({
-    url: '/site/login',
-    data,
-    method: 'post',
-    bfLoading: false,
-    isParams: false,
-    isAlertErrorMsg: false
+    // baseURL: '/mock-api',
+    url: '/users',
+    method: 'get',
+    data
   })
 }
-
-export function getInfoReq(params: ObjTy, data?: ObjTy) {
+// 获取单独
+export function getUser(params: ObjTy) {
   return request({
-    url: `/sites/page-config/${params}`,
-    data,
-    bfLoading: false,
+    // baseURL: '/mock-api',
+    url: `/users/${params}`,
     method: 'get'
   })
 }
-
-export function logoutReq() {
+// 新建
+export function setCreateUser(data: ObjTy) {
   return request({
-    url: '/ty-user/user/loginOut',
-    method: 'post'
+    // baseURL: '/mock-api',
+    url: '/users',
+    method: 'post',
+    data
   })
 }
-
-export function changeMyPassword() {}
+// 修改
+export function setEditUser(params: ObjTy, data: ObjTy) {
+  return request({
+    // baseURL: '/mock-api',
+    url: `/users/${params}`,
+    method: 'put',
+    data
+  })
+}
+// 修改状态
+export function changeStatusUser(params: ObjTy, data: ObjTy) {
+  return request({
+    // baseURL: '/mock-api',
+    url: `/users/status/${params}`,
+    method: 'patch',
+    data
+  })
+}
+// 管理员修改密码
+export function changeUserPassword(params: ObjTy, data: ObjTy) {
+  return request({
+    // baseURL: '/mock-api',
+    url: `/users/pwd/${params}`,
+    method: 'patch',
+    data
+  })
+}
+// 用户修改自己的密码
+export function changeMyPassword(data: ObjTy) {
+  return request({
+    // baseURL: '/mock-api',
+    url: '/users/edit-pwd',
+    method: 'patch',
+    data
+  })
+}

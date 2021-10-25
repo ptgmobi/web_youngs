@@ -172,6 +172,7 @@ import WwChangePass from '@/components/Self/ChangePass/WwChangePass'
 import { messageFun } from '@/utils/message'
 import { judgePermissionElementFn } from '@/utils/permissionElement'
 import { validEmail } from '@/utils/validate'
+import _ from 'lodash'
 const defaultData = {
   // 邮箱
   email: '',
@@ -257,7 +258,7 @@ export default {
           productArr: []
         },
         oldData: {},
-        data: this._.cloneDeep(defaultData),
+        data: _.cloneDeep(defaultData),
         rules: {
           email: [
             { required: true, message: '必填', trigger: ['change', 'blur'] },
@@ -333,6 +334,7 @@ export default {
   created() {
     this.getConfig()
     this.init()
+    console.log(this._)
   },
   methods: {
     judgePermissionElementFn,
@@ -429,8 +431,8 @@ export default {
       this.busData.data.id = scope.row.id
       // 查询one
       const { data: choiceData } = await getUser(this.busData.data.id)
-      this.busData.oldData = this._.cloneDeep(choiceData)
-      this.busData.data = Object.assign({}, this.busData.data, this._.cloneDeep(choiceData))
+      this.busData.oldData = _.cloneDeep(choiceData)
+      this.busData.data = Object.assign({}, this.busData.data, _.cloneDeep(choiceData))
       this.choiceProject()
     },
     // 提交模态框
@@ -447,7 +449,7 @@ export default {
     },
     async handleSubmitFn() {
       if (this.dialogType === 'new') {
-        const ajaxData = this._.cloneDeep(this.busData.data)
+        const ajaxData = _.cloneDeep(this.busData.data)
         const res = await setCreateUser(ajaxData, 'post').catch(err => {
           console.log(err)
           // this.$message.error('错了哦，这是一条错误消息')
@@ -467,7 +469,7 @@ export default {
         }
       }
       if (this.dialogType === 'edit') {
-        const ajaxData = this._.cloneDeep(this.busData.data)
+        const ajaxData = _.cloneDeep(this.busData.data)
         const res = await setEditUser(this.busData.data.id, ajaxData, 'patch')
         if (res) {
           messageFun(res)
@@ -494,7 +496,7 @@ export default {
     },
     // 清除模态框缓存
     clearBusData() {
-      this.busData.data = this._.cloneDeep(defaultData)
+      this.busData.data = _.cloneDeep(defaultData)
       this.busData.oldData = {}
       this.$nextTick(() => {
         this.$refs['ruleForm'].clearValidate()

@@ -1,4 +1,4 @@
-import { loginReq, logoutReq, getInfoReq } from '@/api/user'
+import { loginReq, logoutReq, getInfoReq } from '@/api/login'
 import { setToken, getToken, removeToken } from '@/utils/auth'
 // import { resetRouter } from '@/router'
 import { ObjTy } from '@/types/common'
