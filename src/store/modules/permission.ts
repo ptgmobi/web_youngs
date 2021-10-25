@@ -93,7 +93,7 @@ const actions = {
         if (codeArr) {
           codeArr = JSON.parse(codeArr)
         } else {
-          localStorage.setItem('codeArr', JSON.stringify([1]))
+          localStorage.setItem('codeArr', JSON.stringify(roles))
           codeArr = localStorage.getItem('codeArr')
         }
         accessedRoutes = await filterRouterByCodeArr(codeArr, asyncRoutes)

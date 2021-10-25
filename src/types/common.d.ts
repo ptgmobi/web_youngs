@@ -6,7 +6,7 @@
 * */
 /*通用对象*/
 interface ObjTy {
-  [propName: any]: any
+  [propName: string]: any
 }
 /*axiosReq请求配置*/
 import { AxiosRequestConfig } from 'axios'

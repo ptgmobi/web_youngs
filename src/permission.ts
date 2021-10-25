@@ -7,6 +7,8 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 import 'nprogress/nprogress.css'
 import getPageTitle from '@/utils/getPageTitle'
 import { RouterRowTy } from '@/types/router'
+import { handleRouteTree } from '@/utils/format'
+import _ from 'lodash'
 
 const whiteList = ['/login'] // no redirect whitelist
 router.beforeEach(async (to: any, from, next: any) => {
@@ -35,7 +37,10 @@ router.beforeEach(async (to: any, from, next: any) => {
           if (settings.isNeedLogin) {
             // get user info
             // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
-            const { roles } = await store.dispatch('user/getInfo')
+            const userInfo = await store.dispatch('user/getInfo')
+            // const handleRouter = handleRouteTree(_.cloneDeep(asyncRoutes), userInfo)
+            const { menu } = userInfo
+            const roles = [...menu]
             accessRoutes = await store.dispatch('permission/generateRoutes', roles)
             console.log(accessRoutes)
           } else {

@@ -74,25 +74,25 @@ const actions = {
     commit('SET_EMAIL', email)
     commit('SET_ID', id)
     commit('SET_NAME', name)
-    // return new Promise((resolve, reject) => {
-    // getInfoReq(user.id)
-    //   .then((response: ObjTy) => {
-    //     const { data } = response
-    //     if (!data) {
-    //       return reject('Verification failed, please Login again.')
-    //     }
-    //     commit('SET_NAME', 'username')
-    //     resolve(data)
-    //   })
-    //   .catch((error: any) => {
-    //     console.log(error)
-    //     reject(error)
-    //   })
-    // })
-    // const userInfo = await getInfoReq(user.id)
-    return {
-      roles: ['admin']
-    }
+    return new Promise((resolve, reject) => {
+    getInfoReq(user.id)
+      .then((response: ObjTy) => {
+        const { data } = response
+        if (!data) {
+          return reject('Verification failed, please Login again.')
+        }
+        commit('SET_NAME', 'username')
+        data.role_id = '1'
+        resolve(data)
+      })
+      .catch((error: any) => {
+        console.log(error)
+        reject(error)
+      })
+    })
+    // return {
+    //   roles: ['admin']
+    // }
   },
   // user logout
   logout({ commit, state }: ObjTy) {
