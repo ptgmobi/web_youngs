@@ -13,7 +13,8 @@ const getDefaultState = () => {
     username: '',
     avatar: '',
     email: '',
-    id: ''
+    id: '',
+    element: []
   }
 }
 

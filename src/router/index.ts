@@ -46,7 +46,7 @@ export const asyncRoutes: RouterTy = [
 ]
 
 const router: Router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(''),
   scrollBehavior: () => ({ top: 0 }),
   routes: constantRoutes
 })

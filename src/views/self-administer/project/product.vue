@@ -1,8 +1,7 @@
 <template>
   <div class="app-container">
-    产品信息
     <!-- dialog -->
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'编辑产品':'创建产品'" width="80%">
+    <el-dialog v-model="dialogVisible" :title="dialogType==='edit'?'编辑产品':'创建产品'" width="80%">
       <el-form ref="ruleForm" :model="busData.data" :rules="busData.rules" label-width="150px" label-position="left">
         <el-form-item label="产品名称" prop="name">
           <el-input v-model="busData.data.name" placeholder="请输入产品名称" :disabled="dialogType==='edit'" />
@@ -67,52 +66,52 @@
     <el-table :data="list" style="width: 100%;margin-top:30px;" border @filter-change="filterChange" @sort-change="sortChange">
       <el-table-column align="center" label="ID" prop="id" sortable="custom" />
       <el-table-column align="center" label="项目组" :filters="filters.projectFilter">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ showCurrentProject(scope.row.project_id) }} </span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="产品名称">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="APP_ID">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.app_id }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="数数项目ID">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.ss_project_id }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="热云APPKEY">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.ry_appkey }}
         </template>
       </el-table-column>
       <!-- <el-table-column align="center" label="最新版本">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column> -->
       <el-table-column align="center" label="创建时间">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.create_time }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="更新时间">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.update_time }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="产品状态">
-        <template slot-scope="scope">
-          <el-popconfirm
+        <template #default="scope">
+          <!-- <el-popconfirm
             :title="statusMessage"
             @onConfirm="confirmStatus(scope.row)"
             @onCancel="cancelStatus(scope.row)"
-          >
+          > -->
             <el-switch
               slot="reference"
               v-model="scope.row.status"
@@ -120,7 +119,7 @@
               inactive-value="2"
               @change="switchStatus($event,scope.row)"
             />
-          </el-popconfirm>
+          <!-- </el-popconfirm> -->
           <!-- <el-popover
             v-model="productPopVisible"
             placement="top"
@@ -142,10 +141,12 @@
         </template>
       </el-table-column>
       <el-table-column v-if="judgePermissionElementFn('A-AP-PRODUCT-EDIT-V')" align="center" label="操作">
-        <div slot-scope="scope" class="flex">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">编辑</el-button>
-          <el-button v-if="judgePermissionElementFn('A-AP-PRODUCT-DEL-V')" type="danger" size="small" @click="handleDelete(scope)">删除</el-button>
-        </div>
+        <template #default="scope">
+          <div class="flex">
+            <el-button type="primary" size="small" @click="handleEdit(scope)">编辑</el-button>
+            <el-button v-if="judgePermissionElementFn('A-AP-PRODUCT-DEL-V')" type="danger" size="small" @click="handleDelete(scope)">删除</el-button>
+          </div>
+        </template>
       </el-table-column>
     </el-table>
     <!-- pagination -->
@@ -154,21 +155,21 @@
         v-show="pagination.total"
         :total="pagination.total"
         :page-sizes="pagination.pageSizes"
-        :page.sync="pagination.listQuery.page"
-        :limit.sync="pagination.listQuery.limit"
+        v-model:page="pagination.listQuery.page"
+        v-model:limit="pagination.listQuery.limit"
         @pagination="init"
       />
     </div>
   </div>
 </template>
 <script lang="ts">
-import { mapGetters } from 'vuex'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { getProducts, setCreateProduct, setEditProduct, changeStatusProduct } from '@/api/product'
 import { getProjects } from '@/api/project'
-import { judgePermissionElementFn } from '@/utils/permissionElement'
 import { messageFun } from '@/utils/message'
+import self from '@/mixins/self'
+import _ from 'lodash'
 const defaultData = {
   id: '',
   name: '',
@@ -179,6 +180,7 @@ const defaultData = {
   status: '1'
 }
 export default {
+  mixins: [ self ],
   components: { Pagination },
   directives: { waves },
   data() {
@@ -259,24 +261,11 @@ export default {
       }
     }
   },
-  computed: {
-    ...mapGetters(['element']),
-    showCurrentProject() {
-      return (projectId) => {
-        const arr = this.busData.options.project?.filter((item) => {
-          return item.id === projectId
-        })
-        console.log(arr)
-        return arr[0].name
-      }
-    }
-  },
   created() {
     this.getConfig()
     this.init()
   },
   methods: {
-    judgePermissionElementFn,
     init() {
       this.getList()
     },
@@ -336,7 +325,7 @@ export default {
     },
     // 清除模态框缓存
     clearBusData() {
-      this.busData.data = this._.cloneDeep(defaultData)
+      this.busData.data = _.cloneDeep(defaultData)
     },
     // 修改状态
     async changeStatus(e, item) {
@@ -382,6 +371,13 @@ export default {
       this.clearBusData()
       this.dialogVisible = false
       this.$refs['ruleForm'].resetFields()
+    },
+    showCurrentProject(projectId) {
+      const arr = this.busData.options.project?.filter((item) => {
+        return item.id === projectId
+      })
+      console.log(arr)
+      return arr[0]?.name
     },
     cancelFn() {
       this.dialogVisible = false

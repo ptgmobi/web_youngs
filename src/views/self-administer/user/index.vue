@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <!-- dialog -->
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit User':'New User'" width="80%">
+    <el-dialog v-model="dialogVisible" :title="dialogType==='edit'?'Edit User':'New User'" width="80%">
       <el-form ref="ruleForm" :model="busData.data" :rules="busData.rules" label-width="150px" label-position="left">
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="busData.data.email" placeholder="邮箱" :disabled="dialogType==='edit'" />
@@ -71,7 +71,7 @@
     </el-dialog>
     <!-- dialog -->
     <!-- dialog -->
-    <el-dialog :visible.sync="dialogVisiblePass" title="修改密码" width="80%">
+    <el-dialog v-model="dialogVisiblePass" title="修改密码" width="80%">
       <ww-change-pass
         v-if="dialogVisiblePass"
         :is_change="false"
@@ -93,42 +93,42 @@
     </div>
     <el-table :data="list" style="width: 100%;margin-top:30px;" border>
       <el-table-column align="center" label="邮箱">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.email }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="用户名">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.username }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="所属项目组">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ getUserProject(scope.row.project_id) }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="用户权限">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ getUserPosition(scope.row.position_id) }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="可查看产品">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.product_id }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="创建日期">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.create_date }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="最后访问日期">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.update_date }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="用户状态">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-switch
             v-if="judgePermissionElementFn('A-AU-USER-STATUS-V')"
             v-model="scope.row.status"
@@ -139,11 +139,13 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="250">
-        <div slot-scope="scope" class="flex">
-          <el-button v-if="judgePermissionElementFn('A-AU-USER-EDIT-V')" type="primary" size="small" @click="handleEdit(scope)">修改</el-button>
-          <el-button v-if="judgePermissionElementFn('A-AU-USER-PASS-V')" type="primary" size="small" @click="handleEditPass(scope)">修改密码</el-button>
-          <el-button v-if="judgePermissionElementFn('A-AU-USER-DEL-V')" type="danger" size="small" @click="handleDelete(scope)">删除</el-button>
-        </div>
+        <template #default="scope">
+          <div class="flex">
+            <el-button v-if="judgePermissionElementFn('A-AU-USER-EDIT-V')" type="primary" size="small" @click="handleEdit(scope)">修改</el-button>
+            <el-button v-if="judgePermissionElementFn('A-AU-USER-PASS-V')" type="primary" size="small" @click="handleEditPass(scope)">修改密码</el-button>
+            <el-button v-if="judgePermissionElementFn('A-AU-USER-DEL-V')" type="danger" size="small" @click="handleDelete(scope)">删除</el-button>
+          </div>
+        </template>
       </el-table-column>
     </el-table>
     <!-- pagination -->
@@ -170,9 +172,10 @@ import { getProjects, getProject } from '@/api/project'
 import { getProducts } from '@/api/product'
 import WwChangePass from '@/components/Self/ChangePass/WwChangePass'
 import { messageFun } from '@/utils/message'
-import { judgePermissionElementFn } from '@/utils/permissionElement'
 import { validEmail } from '@/utils/validate'
 import _ from 'lodash'
+import self from '@/mixins/self'
+import { useStore } from 'vuex'
 const defaultData = {
   // 邮箱
   email: '',
@@ -198,6 +201,7 @@ const defaultData = {
   product_ischange: false
 }
 export default {
+  mixins: [ self ],
   components: { Pagination, WwChangePass },
   directives: { waves },
   filters: {
@@ -334,10 +338,10 @@ export default {
   created() {
     this.getConfig()
     this.init()
-    console.log(this._)
+    const store = useStore()
+    console.log(store.getters.element)
   },
   methods: {
-    judgePermissionElementFn,
     // 显示所属项目组
     handleProjectFn(arr) {
       const newarr = this.busData.options.project.filter(ele => {

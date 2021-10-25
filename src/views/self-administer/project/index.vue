@@ -16,7 +16,8 @@ import Project from './project'
 import Product from './product'
 export default {
   components: {
-    Project, Product
+    Project,
+    Product
   },
   data() {
     return {

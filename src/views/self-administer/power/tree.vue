@@ -26,6 +26,7 @@
 <script lang="ts">
 import { handleIdTree } from '@/utils/format'
 import path from 'path'
+import _ from 'lodash'
 export default {
   props: {
     title: {
@@ -111,7 +112,7 @@ export default {
     }
   },
   created() {
-    this.list = this._.cloneDeep(this.data)
+    this.list = _.cloneDeep(this.data)
   },
   methods: {
     async init() {

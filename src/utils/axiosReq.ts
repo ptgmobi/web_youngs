@@ -58,7 +58,6 @@ service.interceptors.request.use(
 // 响应拦截
 service.interceptors.response.use(
   (res: any) => {
-    console.log('res', res)
     if (requestData.afHLoading && loadingE) {
       loadingE.close()
     }
@@ -86,7 +85,6 @@ service.interceptors.response.use(
     //   }
     // }
     const { code, data } = res.data
-    console.log(code, data)
     if (code !== 200) {
       ElMessage({
         message: res.message || 'Error',

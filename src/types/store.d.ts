@@ -5,6 +5,7 @@ interface StateTy {
   app: AppTy
   permission: PermissionTy
   user: UserTy
+  element: UserTy
 }
 
 interface UserTy {
@@ -14,6 +15,7 @@ interface UserTy {
   email: string
   id: string
   token: string
+  element: Array<string>
 }
 
 interface AppTy {

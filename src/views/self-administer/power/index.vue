@@ -3,24 +3,24 @@
     <el-button v-if="judgePermissionElementFn('A-AP-ADD-V')" type="primary" @click="handleCreate">新建</el-button>
     <el-table :data="list" style="width: 100%;margin-top:30px;" border>
       <el-table-column align="center" label="ID">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="Type">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.type }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="Operations">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-button v-if="judgePermissionElementFn('A-AP-EDIT-V')" type="primary" size="small" @click="handleEdit(scope)">修改</el-button>
           <el-button v-if="judgePermissionElementFn('A-AP-DEL-V')" type="danger" size="small" @click="handleDelete(scope)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Role':'New Role'" width="90%">
+    <el-dialog v-model="dialogVisible" :title="dialogType==='edit'?'Edit Role':'New Role'" width="90%">
       <el-form label-width="150px" label-position="left">
         <el-form-item label="Name">
           <el-input v-model="busData.item.type" placeholder="Role Name" :disabled="dialogType==='edit'" />
@@ -70,10 +70,11 @@
 </template>
 
 <script lang="ts">
-import { judgePermissionElementFn } from '@/utils/permissionElement'
 import { getPermissions, getPermission, setCreatePermission, setEditPermission } from '@/api/power'
 import RoleTree from './tree'
 import { messageFun } from '@/utils/message'
+import self from '@/mixins/self'
+import _ from 'lodash'
 const defaultData = {
   element: [],
   menu: [],
@@ -81,6 +82,7 @@ const defaultData = {
   permission: []
 }
 export default {
+  mixins: [ self ],
   components: { RoleTree },
   data() {
     return {
@@ -105,7 +107,6 @@ export default {
     this.getList()
   },
   methods: {
-    judgePermissionElementFn,
     async getList() {
       const { data } = await getPermissions()
       this.data = data
@@ -113,7 +114,7 @@ export default {
     },
     // 清除模态框缓存
     clearBusData() {
-      this.busData.choiceData = this._.cloneDeep(defaultData)
+      this.busData.choiceData = _.cloneDeep(defaultData)
     },
     // 新增
     handleCreate() {

@@ -2,7 +2,7 @@
   <div class="app-container">
     项目组
     <!-- dialog -->
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'修改项目组':'创建项目组'" width="80%">
+    <el-dialog v-model="dialogVisible" :title="dialogType==='edit'?'修改项目组':'创建项目组'" width="80%">
       <el-form ref="ruleForm" :model="busData.data" :rules="busData.rules" label-width="150px" label-position="left">
         <el-form-item label="项目名称" prop="name">
           <el-input v-model="busData.data.name" placeholder="" :disabled="dialogType==='edit'" />
@@ -37,32 +37,32 @@
     </div>
     <el-table :data="list" style="width: 100%;margin-top:30px;" border>
       <el-table-column align="center" label="项目组ID">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="项目名称">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="产品数">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.product_count }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="创建时间">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.create_time }}
         </template>
       </el-table-column>
       <!-- <el-table-column align="center" label="更新时间">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column> -->
       <!-- <el-table-column align="center" label="操作">
-        <div slot-scope="scope" class="flex">
+        <div #default="scope" class="flex">
           <el-button v-if="judgePermissionElementFn('A-AP-PROJECT-EDIT-V')" type="primary" size="small" @click="handleEdit(scope)">编辑</el-button>
           <el-button v-if="judgePermissionElementFn('A-AP-PROJECT-DEL-V')" type="danger" size="small" @click="handleDelete(scope)">删除</el-button>
         </div>
@@ -87,14 +87,15 @@ import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { getProjects, getProject, setCreateProject, setEditProject } from '@/api/project'
 import { getProducts } from '@/api/product'
-import { judgePermissionElementFn } from '@/utils/permissionElement'
 import { messageFun } from '@/utils/message'
+import self from '@/mixins/self'
 const defaultData = {
   id: '',
   name: '',
   product: []
 }
 export default {
+  mixins: [ self ],
   components: { Pagination },
   directives: { waves },
   data() {
@@ -151,7 +152,6 @@ export default {
     this.init()
   },
   methods: {
-    judgePermissionElementFn,
     init() {
       this.getList()
     },
