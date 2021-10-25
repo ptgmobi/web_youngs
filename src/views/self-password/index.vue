@@ -1,0 +1,37 @@
+<template>
+  <div class="app-container">
+    <password
+      :is-change="true"
+      :is-dialog="false"
+      @wwpass-confirm="submitFn"
+    />
+  </div>
+</template>
+<script>
+import Password from '@/components/Self/ChangePass/WwChangePass'
+import { changeMyPassword } from '@/api/user'
+import { messageFun } from '@/utils/message'
+export default {
+  components: {
+    Password
+  },
+  methods: {
+    async submitFn(data) {
+      const ajaxData = {
+        old_password: data.oldPass,
+        password: data.pass,
+        password_re: data.checkPass
+      }
+      const res = await changeMyPassword(ajaxData)
+      messageFun(res)
+      if (res.code === 200) {
+        this.logout()
+      }
+    },
+    async logout() {
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    }
+  }
+}
+</script>
