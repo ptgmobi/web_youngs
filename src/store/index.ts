@@ -20,6 +20,7 @@ console.log('modules', modules)
 //   return modules
 // }, {})
 // console.log(modules);
+
 export default createStore({
   modules,
   getters

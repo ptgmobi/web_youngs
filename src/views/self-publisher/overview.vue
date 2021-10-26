@@ -4,8 +4,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import WwChartData from '@/components/Self/WwChart/WwChartData'
+import store from '@/store'
+console.log(store.state.user.email)
 export default {
   components: { WwChartData },
   data() {
@@ -55,6 +57,9 @@ export default {
         ]
       }
     }
+  },
+  created() {
+    console.log(this.$store.state.user.email)
   }
 }
 </script>

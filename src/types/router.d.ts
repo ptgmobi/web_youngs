@@ -21,6 +21,6 @@ interface RouteItemTy {
   children?: RouterTy
   redirect?: string
 }
-
+// ! 联合类型
 type RouterRowTy = RouteRecordRaw & RouteItemTy
 type RouterTy = Array<RouterRowTy>

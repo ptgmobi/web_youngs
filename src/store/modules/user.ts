@@ -7,6 +7,15 @@ import jwtDecode from 'jwt-decode'
 
 //token: getToken(),
 
+type defaultState = {
+  token: string,
+  username: string,
+  avatar: string,
+  email: string,
+  id: string,
+  element: Array<string>
+}
+
 const getDefaultState = () => {
   return {
     token: getToken(),
@@ -18,7 +27,7 @@ const getDefaultState = () => {
   }
 }
 
-const state = getDefaultState()
+const UserState = getDefaultState() as defaultState
 
 const mutations = {
   SET_NAME: (state: UserTy, username: string) => {
@@ -119,7 +128,7 @@ const actions = {
 
 export default {
   namespaced: true,
-  state,
+  state: UserState,
   mutations,
   actions
 }
