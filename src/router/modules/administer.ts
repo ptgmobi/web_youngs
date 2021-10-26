@@ -1,7 +1,6 @@
 import Layout from '@/layout'
 /** When your routing table is too long, you can split it into small modules**/
 export default {
-  id: '3',
   path: '/administer',
   redirect: 'noRedirect',
   component: () => import('@/layout'),
@@ -14,7 +13,6 @@ export default {
   },
   children: [
     {
-      id: '9',
       path: 'administer-user',
       component: () => import('@/views/self-administer/user/index'),
       name: 'administer-user',
@@ -36,7 +34,6 @@ export default {
       }
     },
     {
-      id: '11',
       path: 'administer-role',
       component: () => import('@/views/self-administer/role/index'),
       name: 'administer-role',
@@ -47,7 +44,6 @@ export default {
       }
     },
     {
-      id: '12',
       path: 'administer-station',
       component: () => import('@/views/self-administer/station/index'),
       name: 'administer-station',
@@ -58,7 +54,6 @@ export default {
       }
     },
     {
-      id: '13',
       path: 'administer-project',
       component: () => import('@/views/self-administer/project/index'),
       name: 'administer-project',
