@@ -22,11 +22,11 @@
         </el-select>
       </el-form-item>
       <!-- copy_offer -->
-      <el-form-item label="Copy Offer:" prop="copy_offer">
+      <!-- <el-form-item label="Copy Offer:" prop="copy_offer">
         <el-input class='form-one copy-btn search-input' placeholder="" v-model.trim="data.ruleForm.copy_offer">
           <el-button type="primary" slot="append" icon="el-icon-search" @click='copyFun'></el-button>
         </el-input>
-      </el-form-item>
+      </el-form-item> -->
       <!-- attribute_provider -->
       <el-form-item label="Attribute Provider:" prop="attribute_provider">
         <el-select filterable class='form-one' v-model="data.ruleForm.attribute_provider" clearable placeholder="">
@@ -132,10 +132,20 @@
         </el-select>
       </el-form-item>
       <!-- device -->
-      <el-form-item label="Select Device:" prop="device">
-        <div class='flex flex-start form-one'>
-          <span class='cp icon mr-10' @click='editDeviceFun(data.ruleForm.device)'><i class="el-icon-edit-outline"></i></span>
-          <span v-text='data.search.deviceData.count'></span>
+      <el-form-item label="Device Cutoff:" prop="device">
+        <div class="flex">
+          <span v-text="data.ruleForm.device_cutoff[0]"></span>
+          <span>-</span>
+          <span v-text="data.ruleForm.device_cutoff[1]"></span>
+        </div>
+        <!-- <div>
+          <el-input-number v-model="data.ruleForm.device_cutoff[0]" :step="5" :min="0" :max="100" />
+        </div>
+        <div>
+          <el-input-number v-model="data.ruleForm.device_cutoff[1]" :step="5" :min="0" :max="100" />
+        </div> -->
+        <div class='flex flex-start form-one p10 pt-0 pb-0'>
+          <el-slider class="w100" v-model="data.ruleForm.device_cutoff" range :step="5" :show-stops="true" show-input :min="0" :max="100"> </el-slider>
         </div>
       </el-form-item>
       <!-- diy_siteid -->
@@ -202,7 +212,7 @@
   <!-- footer -->
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, reactive } from 'vue'
+import { getCurrentInstance, reactive, watch } from 'vue'
 let { proxy }: any = getCurrentInstance()
 import {useRouter } from 'vue-router'
 const router = useRouter()
@@ -297,7 +307,6 @@ let data = reactive({
   type: '1',
   params: '',
   loading: true,
-  ssp_security_param: '<?= Yii::$app->request->csrfToken ?>',
   options: {
     channel: [],
     attribute_provider: [
@@ -341,6 +350,9 @@ let data = reactive({
     start_hour: -1,
     end_hour: -1,
     device: [],
+    device_cutoff: [0, 100],
+    device_cutoff_start: '',
+    device_cutoff_end: '',
     diy_siteid: [],
     site_id: '',
     hour: '',
@@ -424,4 +436,8 @@ const copyFun = () => {}
 const editDeviceFun = () => {}
 const editDiySiteFun = () => {}
 const saveFun = () => {}
+
+watch(data.ruleForm.device_cutoff, (newVal, oldVal) => {
+	console.log(newVal, oldVal)
+})
 </script>

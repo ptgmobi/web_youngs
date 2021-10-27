@@ -121,17 +121,6 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="Site Click Limitation"
-        width="150"
-      >
-        <template #default="scope">
-          <div class='flex jc-around'>
-            <el-input v-model="scope.row.site_clk_limit" placeholder=""></el-input>
-            <span class='cp icon ml-10'><i class="el-icon-edit" @click='changeSiteClkLimit(scope.row)'></i></span>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column
         label="Device Cutoff"
         width="150"
       >
@@ -233,7 +222,6 @@ const createFun = () => {
 const searchForm = () => {}
 const handleSubmitSearch = () => {}
 const changeClk = () => {}
-const changeSiteClkLimit = () => {}
 const changeDevice = () => {}
 const editFun = (row) => {
   const id = row.id
