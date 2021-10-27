@@ -4,6 +4,7 @@ import { RouterTy } from '@/types/router'
 // import test from './modules/test'
 import publisher from './modules/publisher'
 import administer from './modules/administer'
+import adnetwork from './modules/adnetwork'
 
 export const constantRoutes: RouterTy = [
   {
@@ -39,6 +40,7 @@ export const constantRoutes: RouterTy = [
  */
 export const asyncRoutes: RouterTy = [
   publisher,
+  adnetwork,
   administer,
   // 404 page must be placed at the end !!!
   // using pathMatch install of "*" in vue-router 4.0
