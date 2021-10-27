@@ -55,7 +55,7 @@
       </el-form-item>
       <!-- conversion_flow_type -->
       <el-form-item label="Conversion Flow:" prop="conversion_flow">
-        <div class='form-one flex flex-start'>
+        <div class='form-one flex jc-start'>
           <el-radio v-model="data.ruleForm.conversion_flow" label="1">CPI</el-radio>
           <el-radio v-model="data.ruleForm.conversion_flow" label="2">CPA</el-radio>
         </div>
@@ -150,7 +150,7 @@
       </el-form-item>
       <!-- diy_siteid -->
       <el-form-item label="Diy SiteID:" prop="site">
-        <div class='flex flex-start form-one'>
+        <div class='flex jc-start form-one'>
           <span class='cp icon mr-10' @click='editDiySiteFun(data.ruleForm)'><i class="el-icon-picture-outline-round"></i></span>
         </div>
       </el-form-item>
@@ -173,7 +173,7 @@
       </el-form-item>
       <!-- clk_id -->
       <el-form-item label="Click ID:" prop="clk_id">
-        <div class='flex flex-start form-one flex-start radio-box'>
+        <div class='flex jc-start form-one flex-start radio-box'>
           <el-radio v-model="data.ruleForm.clk_id" label="1">Real</el-radio>
           <el-radio v-model="data.ruleForm.clk_id" label="2">Virtual</el-radio>
         </div>
@@ -210,9 +210,17 @@
     <el-button type="primary" @click='saveFun'>Save</el-button>
   </div>
   <!-- footer -->
+  <el-dialog
+    title="diy_siteid"
+    v-model="data.dialogVisibleSite"
+    >
+    <site></site>
+  </el-dialog>
 </template>
 <script lang="ts" setup>
 import { getCurrentInstance, reactive, watch } from 'vue'
+import _ from 'lodash'
+import site from './site'
 let { proxy }: any = getCurrentInstance()
 import {useRouter } from 'vue-router'
 const router = useRouter()
@@ -276,19 +284,6 @@ let validatorEndHour = (rule, value, callback) => {
     } else {
       callback()
     }
-  }
-}
-let validateSiteExcel = (rule, value, callback) => {
-  if (value !== '') {
-    const flag = data.analysisExcelFn(value)
-    console.log(flag)
-    if (flag) {
-      callback()
-    } else {
-      callback(new Error('格式错误！'))
-    }
-  } else {
-    callback(new Error(message.required))
   }
 }
 let data = reactive({
@@ -411,7 +406,7 @@ let data = reactive({
     ],
     end_hour: [
       { required: false, validator: validatorEndHour, trigger: ['blur', 'change'] }
-    ]
+    ],
     // site_clk_id: [
     //   { required: true, message: message.required, trigger: ['blur', 'change'] }
     // ],
@@ -419,22 +414,16 @@ let data = reactive({
     //   { required: true, message: message.required, trigger: ['blur', 'change'] }
     // ],
   },
-  // site
-  siteData: [],
-  siteRules: {
-    site: [
-      { required: true, validator: validateSiteExcel, trigger: 'blur' }
-    ]
-  },
-  siteRuleForm: {
-    site: ''
-  }
+  siteData: {}
 })
 
 // methods
 const copyFun = () => {}
 const editDeviceFun = () => {}
-const editDiySiteFun = () => {}
+const editDiySiteFun = () => {
+  data.dialogVisibleSite = true
+  data.siteData = _.cloneDeep(data.ruleForm['diy_siteid'])
+}
 const saveFun = () => {}
 
 watch(data.ruleForm.device_cutoff, (newVal, oldVal) => {
