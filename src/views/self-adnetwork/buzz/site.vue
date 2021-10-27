@@ -24,6 +24,9 @@
 </template>
 <script lang="ts" setup>
 import { getCurrentInstance, reactive, watch } from 'vue'
+const message = {
+  required: '此项必填'
+}
 let validateSiteExcel = (rule, value, callback) => {
   if (value !== '') {
     const flag = analysisExcelFn(value)
