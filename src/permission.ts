@@ -42,7 +42,6 @@ router.beforeEach(async (to: any, from, next: any) => {
             const { menu } = userInfo
             const roles = [...menu]
             accessRoutes = await store.dispatch('permission/generateRoutes', roles)
-            console.log(accessRoutes)
           } else {
             accessRoutes = asyncRoutes
             store.commit('permission/M_routes', accessRoutes)

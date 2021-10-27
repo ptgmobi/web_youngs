@@ -5,7 +5,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { reactive } from 'vue'
 import WwChartData from '@/components/Self/WwChart/WwChartData'
 import DD from './test'

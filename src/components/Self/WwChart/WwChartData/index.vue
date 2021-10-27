@@ -1,7 +1,7 @@
 <template>
   <div :class="className" :style="{ height: height, width: width }" />
 </template>
-<script>
+<script lang="ts">
 import * as echarts from 'echarts'
 import resize from '@/components/Charts/mixins/resize'
 export default {

@@ -9,9 +9,7 @@ import { defineProps, defineEmits, nextTick } from 'vue'
 import { useStore } from 'vuex'
 import $store from '@/store'
 await nextTick()
-console.log($store.state.user.email)
 const store = useStore()
-console.log(store.state.user.email)
 const props = defineProps({
   count: Number
 })

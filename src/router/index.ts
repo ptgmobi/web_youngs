@@ -44,7 +44,7 @@ export const asyncRoutes: RouterTy = [
   // using pathMatch install of "*" in vue-router 4.0
   { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }
 ]
-console.log(process.env)
+// console.log(process.env)
 const router: Router = createRouter({
   history: createWebHistory(''),
   scrollBehavior: () => ({ top: 0 }),
