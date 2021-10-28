@@ -147,7 +147,7 @@
       <!-- diy_siteid -->
       <el-form-item label="Diy SiteID:" prop="site">
         <div class='flex jc-start form-one'>
-          <span class='cp icon mr-10' @click='editDiySiteFun'><i class="el-icon-picture-outline-round"></i></span>
+          <el-button class='cp icon ml-10' type="primary" icon="el-icon-setting" circle @click='editDiySiteFun'></el-button>
         </div>
       </el-form-item>
       <!-- site_id -->

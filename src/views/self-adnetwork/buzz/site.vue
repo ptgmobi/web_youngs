@@ -1,7 +1,7 @@
 <template>
   <el-form enctype="multipart/form-data" ref='siteRuleForm' :rules='data.siteRules' :model='data.siteRuleForm' label-position="right">
     <el-form-item label="diy_siteid:" prop="site">
-      <el-input class='form-one' type='textarea' v-model="data.siteRuleForm.site" :rows="4" placeholder=''></el-input>
+      <el-input class='w100' type='textarea' v-model="data.siteRuleForm.site" :rows="4" placeholder=''></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="addSiteFn('siteRuleForm')">添加</el-button>
