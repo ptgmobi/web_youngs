@@ -42,7 +42,7 @@
       </el-form-item>
       <!-- tracking_link -->
       <!-- 此处需要去除空格和制表符 -->
-      <el-form-item label="Traking Link:" prop="tracking_link">
+      <el-form-item class="mb-30" label="Traking Link:" prop="tracking_link">
         <el-input class='form-one' type="textarea" v-model.trim="data.ruleForm.tracking_link" 
         :autosize="{ minRows: 8, maxRows: 80}"
         placeholder=''></el-input>
@@ -89,7 +89,7 @@
         </el-select>
       </el-form-item>
       <!-- max_clk_num -->
-      <el-form-item label="max Click Number:" prop="max_clk_num">
+      <el-form-item label="Click Limitation(w):" prop="max_clk_num">
         <el-input class='form-one' type='text' v-model.trim="data.ruleForm.max_clk_num" placeholder=''></el-input>
       </el-form-item>
       <!-- Site Click Limitation -->
@@ -119,7 +119,7 @@
         </el-select>
       </el-form-item>
       <!-- site_install_limitation-->
-      <el-form-item label="Site Install Limitation:" prop="site_install_limitation">
+      <!-- <el-form-item label="Site Install Limitation:" prop="site_install_limitation">
         <el-select filterable class='form-one' v-model="data.ruleForm.site_install_limitation" clearable placeholder="">
           <el-option
             v-for="item in 6"
@@ -128,22 +128,20 @@
             :value="item - 1">
           </el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <!-- Device Cutoff -->
-      <el-form-item label="Device Cutoff:" prop="device">
+      <el-form-item label="Device Cutoff:" prop="cutoff_start">
         <div class="flex">
-          <span v-text="data.ruleForm.device_cutoff[0]"></span>
+          <el-form-item>
+            %<span v-text="data.ruleForm.cutoff_start"></span>
+          </el-form-item>
           <span>-</span>
-          <span v-text="data.ruleForm.device_cutoff[1]"></span>
+          <el-form-item>
+            %<span v-text="data.ruleForm.cutoff_end"></span>
+          </el-form-item>
         </div>
-        <!-- <div>
-          <el-input-number v-model="data.ruleForm.device_cutoff[0]" :step="5" :min="0" :max="100" />
-        </div>
-        <div>
-          <el-input-number v-model="data.ruleForm.device_cutoff[1]" :step="5" :min="0" :max="100" />
-        </div> -->
         <div class='flex flex-start form-one p10 pt-0 pb-0'>
-          <el-slider class="w100" v-model="data.ruleForm.device_cutoff" range :step="5" :show-stops="true" show-input :min="0" :max="100"> </el-slider>
+          <el-slider class="w100" v-model="cutoff" range :step="5" :show-stops="true" show-input :min="0" :max="100"> </el-slider>
         </div>
       </el-form-item>
       <!-- diy_siteid -->
@@ -219,7 +217,8 @@
   </el-dialog>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, reactive, watch, onMounted } from 'vue'
+import { getCurrentInstance, reactive, watch, onMounted, ref } from 'vue'
+import { ApiGetOfferList, ApiGetOfferData, ApiGetConfig, ApiGetCutOffCount } from '@api/buzz'
 import _ from 'lodash'
 import site from './site'
 let { proxy }: any = getCurrentInstance()
@@ -228,17 +227,40 @@ const router = useRouter()
 const message = {
   required: '此项必填'
 }
-let validatorSpace = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
+let validatorPkgName = (rule: any, value: any, callback: () => void) => {
+  if (data.ruleForm.attribute_provider === 'AppsFlyer') {
+    if (data.ruleForm.tracking_link.includes(data.ruleForm.pkg_name)) {
+      callback()
+    } else {
+      callback(new Error('Attribute Provider:为Appsflyer时Package Name的值必须包含在Traking Link中'))
+    }
+  } else {
+    callback()
+  }
+}
+let validatorTrackingLink = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
   let reg = new RegExp('\\s+', 'g')
+  let reg1 = /^http/
   if (reg.test(value)) {
     callback(new Error('链接中有空格'))
   } else {
-    callback()
+    if (reg1.test(value)) {
+      if (data.ruleForm.attribute_provider === 'AppsFlyer') {
+        if (value.includes(data.ruleForm.pkg_name)) {
+          callback()
+        } else {
+          callback(new Error('Attribute Provider:为Appsflyer时Package Name的值必须包含在Traking Link中'))
+        }
+      } else {
+        callback()
+      }
+    } else {
+      callback(new Error('请以http开头'))
+    }
   }
   callback()
 }
 let validatorDevice = (rule: any, value: any, callback: () => void) => {
-  console.log(value)
   callback()
 }
 let validatorSite = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
@@ -286,6 +308,7 @@ let validatorEndHour = (rule: any, value: string, callback: (arg0: Error | undef
     }
   }
 }
+let cutoff = ref([0, 100])
 let data = reactive({
   cache: {},
   dialogVisible: false,
@@ -318,7 +341,7 @@ let data = reactive({
     ],
     country: [],
     site_id: [
-      0.2, 0.4, 0.6, 1, 2, 4, 8, 24, 72, 168
+      '0.2', '0.4', '0.6', '1', '2', '4', '8', '24', '72', '168'
     ],
     category: [],
     devices: []
@@ -345,9 +368,8 @@ let data = reactive({
     start_hour: -1,
     end_hour: -1,
     device: [],
-    device_cutoff: [0, 100],
-    device_cutoff_start: '',
-    device_cutoff_end: '',
+    cutoff_start: '',
+    cutoff_end: '',
     diy_siteid: [{
       diy_siteid: '1',
       weight: '2'
@@ -371,10 +393,11 @@ let data = reactive({
     ],
     tracking_link: [
       { required: true, message: message.required, trigger: ['blur', 'change'] },
-      { validator: validatorSpace }
+      { validator: validatorTrackingLink }
     ],
     pkg_name: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] }
+      { required: true, message: message.required, trigger: ['blur', 'change'] },
+      { validator: validatorPkgName }
     ],
     conversion_flow: [
       { required: true, message: message.required, trigger: ['blur', 'change'] }
@@ -409,6 +432,12 @@ let data = reactive({
     ],
     end_hour: [
       { required: false, validator: validatorEndHour, trigger: ['blur', 'change'] }
+    ],
+    cutoff_start: [
+      { required: true, trigger: ['blur', 'change'] }
+    ],
+    cutoff_end: [
+      { required: true, trigger: ['blur', 'change'] }
     ],
     // site_clk_id: [
     //   { required: true, message: message.required, trigger: ['blur', 'change'] }
@@ -454,15 +483,36 @@ const saveSite = (arr: Array<siteType>) => {
   data.ruleForm.diy_siteid = arr
   data.dialogVisibleSite = false
 }
-
-watch(data.ruleForm.device_cutoff, (newVal, oldVal) => {
-	console.log(newVal, oldVal)
+const setCutoff = (newVal: Array<number>) => {
+  data.ruleForm.cutoff_start = newVal[0].toString()
+  data.ruleForm.cutoff_end = newVal[1].toString()
+}
+watch(cutoff, (newVal, oldVal) => {
+	// console.log(newVal, oldVal)
+  setCutoff(newVal)
+  
 })
-
+const getConfig = async () => {
+  // const config = await ApiGetConfig()
+  getOfferList()
+  getCutOffCount()
+}
+const getCutOffCount = () => {
+  // const res = await ApiGetCutOffCount()
+}
+const getOfferList = async () => {
+  // const res = await ApiGetOfferList()
+}
+const getOfferData = async () => {
+  // const res = await ApiGetOfferData()
+  const res = [{"id":"2441","channel":"phm","offer_id":"bz602444","attribute_provider":"AppsFlyer","title":"1xBet","tracking_link":"https://impression.appsflyer.com/id844035425?af_prt=alfaleadsagency&pid=realads_int&af_siteid={new_siteid}&c=d_855979m_33327c_IN__[]general[]_d51039_l48323_banner_{pid}_{sub2}&af_viewthrough_lookback=1d&clickid={click_id}&idfa={idfa}&af_channel=CM","pkg_name":"844035425","payout":"0.40","platform":"2","country":"IN","max_clk_num":"2000000","device":[{"source":"wm","label":"bx"},{"source":"wm","label":"by"},{"source":"wm","label":"bz"},{"source":"wm","label":"cx"},{"source":"wm","label":"cy"},{"source":"wm","label":"cz"},{"source":"wm","label":"dw"},{"source":"wm","label":"dx"},{"source":"wm","label":"dy"},{"source":"wm","label":"dz"}],"site_id":"1","hour":"0","clk_id":"1","site_clk_limit":"40000","site_clk_id":"0","category_id":"0","site_install_limitation":"0","conversion_flow":"1","event_name":"","status":"1","diy_siteid":[],"note":"","start_hour":"-1","end_hour":"-1","create_date":"2021-05-14 05:18:25","update_date":"2021-09-30 11:24:26"}]
+  data.ruleForm = {
+    ...res[0]
+  }
+}
 onMounted(() => {
-  const res = [{"id":"2441","channel":"phm","offer_id":"bz602444","attribute_provider":"AppsFlyer","title":"1xBet","tracking_link":"https://impression.appsflyer.com/id844035425?af_prt=alfaleadsagency&pid=realads_int&af_siteid={new_siteid}&c=d_855979m_33327c_IN__[]general[]_d51039_l48323_banner_{pid}_{sub2}&af_viewthrough_lookback=1d&clickid={click_id}&idfa={idfa}&af_channel=CM","pkg_name":"844035425","payout":"0.40","platform":"2","country":"IN","max_clk_num":"2000000","device":[{"source":"wm","label":"bx"},{"source":"wm","label":"by"},{"source":"wm","label":"bz"},{"source":"wm","label":"cx"},{"source":"wm","label":"cy"},{"source":"wm","label":"cz"},{"source":"wm","label":"dw"},{"source":"wm","label":"dx"},{"source":"wm","label":"dy"},{"source":"wm","label":"dz"}],"site_id":"1","hour":"0","clk_id":"1","site_clk_limit":"40000","site_clk_id":"0","category_id":"0","site_install_limitation":"0","conversion_flow":"1","event_name":"","status":"1","diy_siteid":[],"note":"","start_hour":"-1","end_hour":"-1","create_date":"2021-05-14 05:18:25","update_date":"2021-09-30 11:24:26",
-  device_cutoff: []
-  }]
+  getConfig()
+  setCutoff(cutoff.value)
   const name = router.currentRoute.value.name
   if (name === 'create') {
     data.ruleForm.operation_type = 'create'
@@ -470,7 +520,7 @@ onMounted(() => {
   // 如果是修改，获取当前id的值
   if (name === 'edit') {
     data.ruleForm.operation_type = 'edit'
-    data.ruleForm = res[0]
+    getOfferData()
   }
 })
 </script>
