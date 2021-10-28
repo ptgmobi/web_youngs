@@ -131,14 +131,11 @@
       </el-form-item> -->
       <!-- Device Cutoff -->
       <el-form-item label="Device Cutoff:" prop="cutoff_start">
-        <div class="flex">
-          <el-form-item>
-            %<span v-text="data.ruleForm.cutoff_start"></span>
-          </el-form-item>
+        <div class="flex ai-center">
+          %<span v-text="data.ruleForm.cutoff_start"></span>
           <span>-</span>
-          <el-form-item>
-            %<span v-text="data.ruleForm.cutoff_end"></span>
-          </el-form-item>
+          %<span v-text="data.ruleForm.cutoff_end"></span>
+          <span v-text="handleCutOffCount"></span>
         </div>
         <div class='flex flex-start form-one p10 pt-0 pb-0'>
           <el-slider class="w100" v-model="cutoff" range :step="5" :show-stops="true" show-input :min="0" :max="100"> </el-slider>
@@ -217,7 +214,7 @@
   </el-dialog>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, reactive, watch, onMounted, ref } from 'vue'
+import { getCurrentInstance, reactive, watch, onMounted, ref, computed } from 'vue'
 import { ApiGetOfferList, ApiGetOfferData, ApiGetConfig, ApiGetCutOffCount } from '@api/buzz'
 import _ from 'lodash'
 import site from './site'
@@ -495,10 +492,22 @@ watch(cutoff, (newVal, oldVal) => {
 const getConfig = async () => {
   // const config = await ApiGetConfig()
   getOfferList()
-  getCutOffCount()
 }
-const getCutOffCount = () => {
-  // const res = await ApiGetCutOffCount()
+const handleCutOffCount = computed(() => {
+  const pkgName = data.ruleForm.pkg_name
+  const country = data.ruleForm.country
+  const platform = data.ruleForm.platform
+  const ajaxData = {
+    pkg_name: pkgName,
+    country,
+    platform
+  }
+  return JSON.stringify(ajaxData)
+  // return getCutOffCount(ajaxData)
+})
+const getCutOffCount = async (ajaxData) => {
+  return ajaxData
+  // const res = await ApiGetCutOffCount(ajaxData)
 }
 const getOfferList = async () => {
   // const res = await ApiGetOfferList()
