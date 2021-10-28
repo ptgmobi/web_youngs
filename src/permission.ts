@@ -37,10 +37,12 @@ router.beforeEach(async (to: any, from, next: any) => {
           if (settings.isNeedLogin) {
             // get user info
             // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
-            const userInfo = await store.dispatch('user/getInfo')
-            // const handleRouter = handleRouteTree(_.cloneDeep(asyncRoutes), userInfo)
-            const { menu } = userInfo
-            const roles = [...menu]
+            // ! code start
+            // const userInfo = await store.dispatch('user/getInfo')
+            // const { menu } = userInfo
+            // const roles = [...menu]
+            // ! code end
+            const roles = ['admin']
             accessRoutes = await store.dispatch('permission/generateRoutes', roles)
           } else {
             accessRoutes = asyncRoutes
