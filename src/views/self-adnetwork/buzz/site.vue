@@ -47,6 +47,7 @@ const analysisExcelFn = (str) => {
   let reg1 = new RegExp(/\s+/)
   let reg2 = new RegExp(/[\S]+/)
   let arr = str.split(reg)
+  console.log(arr)
   let flag = true
   let newArr = []
   arr.forEach((ele, index) => {
@@ -81,7 +82,9 @@ let data = reactive({
     site: ''
   }
 })
-const addSiteFn = () => {}
+const addSiteFn = () => {
+  data.siteData = [...analysisExcelFn(data.siteRuleForm.site)]
+}
 const deleteSite = () => {}
 const deleteAllSite = () => {}
 const saveSite = () => {}

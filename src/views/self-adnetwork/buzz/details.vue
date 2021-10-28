@@ -1,8 +1,6 @@
 <template>
-  {{router.currentRoute.value.params}}
-  {{router.currentRoute.value.query}}
   <!-- form -->
-  <el-form enctype="multipart/form-data" ref='data.ruleForm' :rules='data.rules' :model='data.ruleForm' label-width="240px" label-position="right">
+  <el-form enctype="multipart/form-data" ref='ruleForm' :rules='data.rules' :model='data.ruleForm' label-width="240px" label-position="right">
     <div class='content-con flex column'>
       <!-- offer_id -->
       <el-form-item label="Offer ID:" prop="offer_id" v-if='data.type === "2"'>
@@ -131,7 +129,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <!-- device -->
+      <!-- Device Cutoff -->
       <el-form-item label="Device Cutoff:" prop="device">
         <div class="flex">
           <span v-text="data.ruleForm.device_cutoff[0]"></span>
@@ -218,7 +216,7 @@
   </el-dialog>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, reactive, watch } from 'vue'
+import { getCurrentInstance, reactive, watch, onMounted } from 'vue'
 import _ from 'lodash'
 import site from './site'
 let { proxy }: any = getCurrentInstance()
@@ -228,7 +226,7 @@ console.log(router.currentRoute.value)
 const message = {
   required: '此项必填'
 }
-let validatorSpace = (rule, value, callback) => {
+let validatorSpace = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
   let reg = new RegExp('\\s+', 'g')
   if (reg.test(value)) {
     callback(new Error('链接中有空格'))
@@ -237,11 +235,11 @@ let validatorSpace = (rule, value, callback) => {
   }
   callback()
 }
-let validatorDevice = (rule, value, callback) => {
+let validatorDevice = (rule: any, value: any, callback: () => void) => {
   console.log(value)
   callback()
 }
-let validatorSite = (rule, value, callback) => {
+let validatorSite = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
   if (value) {
     if (value === '1') {
       callback()
@@ -257,7 +255,7 @@ let validatorSite = (rule, value, callback) => {
   }
   
 }
-let validatorConversionFlow = (rule, value, callback) => {
+let validatorConversionFlow = (rule: any, value: any, callback: (arg0: Error | undefined) => void) => {
   if (data.ruleForm.conversion_flow === '1') {
     callback()
   } else {
@@ -268,7 +266,7 @@ let validatorConversionFlow = (rule, value, callback) => {
     }
   }
 }
-let validatorStartHour = (rule, value, callback) => {
+let validatorStartHour = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
   if (value !== '') {
     if (data.ruleForm.end_hour === '') {
       callback(new Error(message.required))
@@ -277,7 +275,7 @@ let validatorStartHour = (rule, value, callback) => {
     }
   }
 }
-let validatorEndHour = (rule, value, callback) => {
+let validatorEndHour = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
   if (value !== '') {
     if (data.ruleForm.start_hour === '') {
       callback(new Error(message.required))
@@ -419,14 +417,34 @@ let data = reactive({
 
 // methods
 const copyFun = () => {}
-const editDeviceFun = () => {}
 const editDiySiteFun = () => {
   data.dialogVisibleSite = true
   data.siteData = _.cloneDeep(data.ruleForm['diy_siteid'])
 }
-const saveFun = () => {}
+const saveFun = () => {
+  submitForm('ruleForm')
+}
+
+const submitForm = (formName: string) => {
+  proxy.$refs[formName].validate((valid: boolean) => {
+    if (valid) {
+      submitFormFun()
+    } else {
+      console.log('error submit!!')
+      return false
+    }
+  })
+}
+
+const submitFormFun = () => {
+  console.log('submit')
+}
 
 watch(data.ruleForm.device_cutoff, (newVal, oldVal) => {
 	console.log(newVal, oldVal)
+})
+
+onMounted(() => {
+  console.log(router.currentRoute.value)
 })
 </script>
