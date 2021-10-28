@@ -23,11 +23,18 @@
   </span>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, reactive, watch } from 'vue'
+import { getCurrentInstance, reactive, watch, defineProps, onMounted, defineEmits } from 'vue'
+const props = defineProps({
+  msg: {
+    require: true,
+    default: '',
+    type: Array
+  }
+})
 const message = {
   required: '此项必填'
 }
-let validateSiteExcel = (rule, value, callback) => {
+let validateSiteExcel = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
   if (value !== '') {
     const flag = analysisExcelFn(value)
     console.log(flag)
@@ -41,16 +48,15 @@ let validateSiteExcel = (rule, value, callback) => {
   }
 }
 // 验证excel
-const analysisExcelFn = (str) => {
+const analysisExcelFn = (str: string) => {
   // 此处解析复制的excel数据
   let reg = new RegExp(/\n+/)
   let reg1 = new RegExp(/\s+/)
   let reg2 = new RegExp(/[\S]+/)
   let arr = str.split(reg)
-  console.log(arr)
   let flag = true
-  let newArr = []
-  arr.forEach((ele, index) => {
+  let newArr: { diy_siteid: any; weight: any }[] = []
+  arr.forEach((ele: string, index: any) => {
     if (ele && reg2.test(ele)) {
       let arr = ele.trim().split(/\s+/)
       if (arr.length === 2) {
@@ -72,7 +78,7 @@ const analysisExcelFn = (str) => {
   return flag
 }
 let data = reactive({
-  siteData: [],
+  siteData: props.msg,
   siteRules: {
     site: [
       { required: true, validator: validateSiteExcel, trigger: 'blur' }
@@ -85,7 +91,17 @@ let data = reactive({
 const addSiteFn = () => {
   data.siteData = [...analysisExcelFn(data.siteRuleForm.site)]
 }
-const deleteSite = () => {}
-const deleteAllSite = () => {}
-const saveSite = () => {}
+const deleteSite = (row: any, index: number) => {
+  data.siteData.splice(index, 1)
+}
+const deleteAllSite = () => {
+  data.siteData = []
+}
+const emit = defineEmits(['kk', 'up'])
+const saveSite = () => {
+  emit('kk', data.siteData)
+}
+onMounted(() => {
+  console.log(props.msg)
+})
 </script>

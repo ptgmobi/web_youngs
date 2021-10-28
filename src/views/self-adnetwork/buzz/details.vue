@@ -149,7 +149,7 @@
       <!-- diy_siteid -->
       <el-form-item label="Diy SiteID:" prop="site">
         <div class='flex jc-start form-one'>
-          <span class='cp icon mr-10' @click='editDiySiteFun(data.ruleForm)'><i class="el-icon-picture-outline-round"></i></span>
+          <span class='cp icon mr-10' @click='editDiySiteFun'><i class="el-icon-picture-outline-round"></i></span>
         </div>
       </el-form-item>
       <!-- site_id -->
@@ -212,7 +212,10 @@
     title="diy_siteid"
     v-model="data.dialogVisibleSite"
     >
-    <site></site>
+    <site
+      :msg="data.ruleForm.diy_siteid"
+      @kk="saveSite"
+    ></site>
   </el-dialog>
 </template>
 <script lang="ts" setup>
@@ -222,7 +225,6 @@ import site from './site'
 let { proxy }: any = getCurrentInstance()
 import {useRouter } from 'vue-router'
 const router = useRouter()
-console.log(router.currentRoute.value)
 const message = {
   required: '此项必填'
 }
@@ -346,7 +348,10 @@ let data = reactive({
     device_cutoff: [0, 100],
     device_cutoff_start: '',
     device_cutoff_end: '',
-    diy_siteid: [],
+    diy_siteid: [{
+      diy_siteid: '1',
+      weight: '2'
+    }],
     site_id: '',
     hour: '',
     clk_id: '',
@@ -440,11 +445,32 @@ const submitFormFun = () => {
   console.log('submit')
 }
 
+interface siteType {
+  diy_siteid: string
+  weight: string
+}
+
+const saveSite = (arr: Array<siteType>) => {
+  data.ruleForm.diy_siteid = arr
+  data.dialogVisibleSite = false
+}
+
 watch(data.ruleForm.device_cutoff, (newVal, oldVal) => {
 	console.log(newVal, oldVal)
 })
 
 onMounted(() => {
-  console.log(router.currentRoute.value)
+  const res = [{"id":"2441","channel":"phm","offer_id":"bz602444","attribute_provider":"AppsFlyer","title":"1xBet","tracking_link":"https://impression.appsflyer.com/id844035425?af_prt=alfaleadsagency&pid=realads_int&af_siteid={new_siteid}&c=d_855979m_33327c_IN__[]general[]_d51039_l48323_banner_{pid}_{sub2}&af_viewthrough_lookback=1d&clickid={click_id}&idfa={idfa}&af_channel=CM","pkg_name":"844035425","payout":"0.40","platform":"2","country":"IN","max_clk_num":"2000000","device":[{"source":"wm","label":"bx"},{"source":"wm","label":"by"},{"source":"wm","label":"bz"},{"source":"wm","label":"cx"},{"source":"wm","label":"cy"},{"source":"wm","label":"cz"},{"source":"wm","label":"dw"},{"source":"wm","label":"dx"},{"source":"wm","label":"dy"},{"source":"wm","label":"dz"}],"site_id":"1","hour":"0","clk_id":"1","site_clk_limit":"40000","site_clk_id":"0","category_id":"0","site_install_limitation":"0","conversion_flow":"1","event_name":"","status":"1","diy_siteid":[],"note":"","start_hour":"-1","end_hour":"-1","create_date":"2021-05-14 05:18:25","update_date":"2021-09-30 11:24:26",
+  device_cutoff: []
+  }]
+  const name = router.currentRoute.value.name
+  if (name === 'create') {
+    data.ruleForm.operation_type = 'create'
+  }
+  // 如果是修改，获取当前id的值
+  if (name === 'edit') {
+    data.ruleForm.operation_type = 'edit'
+    data.ruleForm = res[0]
+  }
 })
 </script>
