@@ -35,7 +35,7 @@ export function ApichangeCutoff(data: ObjTy) {
   })
 }
 
-export function changeStatus(data: ObjTy) {
+export function ApiChangeStatus(data: ObjTy) {
   return request({
     url: '/af-report/view',
     data,

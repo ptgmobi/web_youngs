@@ -63,6 +63,7 @@
     </div>
     <!-- table -->
     <el-table
+    center
     v-loading="data.loading"
     :data="data.list"
     style="width: 100%"
@@ -116,28 +117,55 @@
         <template #default="scope">
           <div class='flex jc-around'>
             <el-input v-model="scope.row.max_clk_num" placeholder=""></el-input>
-            <span class='cp icon ml-10'><i class="el-icon-edit" @click='changeClk(scope.row)'></i></span>
+            <el-button class='cp icon ml-10' type="primary" icon="el-icon-edit" circle @click='changeClk(scope.row)'></el-button>
           </div>
         </template>
       </el-table-column>
       <el-table-column
         label="Device Cutoff"
-        width="200"
+        width="250"
       >
         <template #default="scope">
           <div class='flex jc-around'>
-            <el-input class="device-cutoff" v-model="scope.row.cutoff_start" type="number" :step="5" :min="0" :max="100" />
-            <span>-</span>
-            <el-input class="device-cutoff" v-model="scope.row.cutoff_end" type="number" :step="5" :min="0" :max="100" />
-            <span class='cp icon ml-10'><i class="el-icon-edit"  @click='changeCutoff(scope.row)'></i></span>
+            <div>
+              <div>
+                <el-select class="cutoff" v-model="scope.row.cutoff_start" filterable placeholder="start">
+                  <el-option
+                    v-for="item in data.options.cutoff_start"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  >
+                  </el-option>
+                </el-select>
+                <span>-</span>
+                <el-select class="cutoff" v-model="scope.row.cutoff_end" filterable placeholder="end">
+                  <el-option
+                    v-for="item in data.options.cutoff_end"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  >
+                  </el-option>
+                </el-select>
+              </div>
+              <div class="flex mt-10">
+                <span>
+                  123
+                </span>
+              </div>
+            </div>
+            <el-button class='cp icon ml-10' type="primary" icon="el-icon-edit" circle @click='changeCutoff(scope.row)'></el-button>
           </div>
+          
         </template>
       </el-table-column>
       <el-table-column
+        width="100"
         label="Operation">
         <template #default="scope">
           <div class='flex jc-around'>
-            <span class='cp icon' @click='editFun(scope.row)'><i class="el-icon-edit-outline"></i></span>
+            <el-button class='cp icon mr-10' type="primary" icon="el-icon-edit" circle @click='editFun(scope.row)'></el-button>
             <el-switch
               v-model="scope.row.status"
               active-value="1"
@@ -178,6 +206,18 @@ const searchData = shallowRef({
   country: '',
   pid: ''
 })
+const OptionsCutoffStart = () => {
+  const arr = [...new Array(20)].map((ele, index) => {
+    return index * 5
+  })
+  return arr
+}
+const OptionsCutoffEnd = () => {
+  const arr = [...new Array(20)].map((ele, index) => {
+    return index * 5 + 5
+  })
+  return arr
+}
 let data = reactive({
   dialogVisible: false,
   cache: {
@@ -188,6 +228,8 @@ let data = reactive({
   useData: searchData.value,
   loading: true,
   options: {
+    cutoff_start: OptionsCutoffStart(),
+    cutoff_end: OptionsCutoffEnd(),
     attribute_provider: [
       {value: 'AppsFlyer', label: 'AppsFlyer'},
       {value: 'Branch', label: 'Branch'},
@@ -228,10 +270,10 @@ const changeCutoff = (row: any) => {
   const cutoff_start = row.cutoff_start
   const cutoff_end = row.cutoff_end
   console.log(cutoff_start, cutoff_end)
-  if (cutoff_start && cutoff_end && cutoff_start < cutoff_end) {
+  if (cutoff_start < cutoff_end) {
     // const res = await ApichangeCutoff()
   } else {
-    const msg = '请输入正确的值'
+    const msg = 'start必须小于end'
     ElMessage({
       message: msg,
       type: 'error',
@@ -275,7 +317,7 @@ onMounted(() => {
 })
 </script>
 <style lang="scss" scoped>
-.device-cutoff{
-  width: 80px;
+.cutoff{
+  width: 70px;
 }
 </style>
