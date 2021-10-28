@@ -491,7 +491,7 @@ watch(cutoff, (newVal, oldVal) => {
 	// console.log(newVal, oldVal)
   setCutoff(newVal)
   
-})
+}, { immediate: true })
 const getConfig = async () => {
   // const config = await ApiGetConfig()
   getOfferList()
@@ -505,14 +505,17 @@ const getOfferList = async () => {
 }
 const getOfferData = async () => {
   // const res = await ApiGetOfferData()
-  const res = [{"id":"2441","channel":"phm","offer_id":"bz602444","attribute_provider":"AppsFlyer","title":"1xBet","tracking_link":"https://impression.appsflyer.com/id844035425?af_prt=alfaleadsagency&pid=realads_int&af_siteid={new_siteid}&c=d_855979m_33327c_IN__[]general[]_d51039_l48323_banner_{pid}_{sub2}&af_viewthrough_lookback=1d&clickid={click_id}&idfa={idfa}&af_channel=CM","pkg_name":"844035425","payout":"0.40","platform":"2","country":"IN","max_clk_num":"2000000","device":[{"source":"wm","label":"bx"},{"source":"wm","label":"by"},{"source":"wm","label":"bz"},{"source":"wm","label":"cx"},{"source":"wm","label":"cy"},{"source":"wm","label":"cz"},{"source":"wm","label":"dw"},{"source":"wm","label":"dx"},{"source":"wm","label":"dy"},{"source":"wm","label":"dz"}],"site_id":"1","hour":"0","clk_id":"1","site_clk_limit":"40000","site_clk_id":"0","category_id":"0","site_install_limitation":"0","conversion_flow":"1","event_name":"","status":"1","diy_siteid":[],"note":"","start_hour":"-1","end_hour":"-1","create_date":"2021-05-14 05:18:25","update_date":"2021-09-30 11:24:26"}]
+  const res = [{"id":"2441","channel":"phm","offer_id":"bz602444","attribute_provider":"AppsFlyer","title":"1xBet","tracking_link":"https://impression.appsflyer.com/id844035425?af_prt=alfaleadsagency&pid=realads_int&af_siteid={new_siteid}&c=d_855979m_33327c_IN__[]general[]_d51039_l48323_banner_{pid}_{sub2}&af_viewthrough_lookback=1d&clickid={click_id}&idfa={idfa}&af_channel=CM","pkg_name":"844035425","payout":"0.40","platform":"2","country":"IN","max_clk_num":"2000000","device":[{"source":"wm","label":"bx"},{"source":"wm","label":"by"},{"source":"wm","label":"bz"},{"source":"wm","label":"cx"},{"source":"wm","label":"cy"},{"source":"wm","label":"cz"},{"source":"wm","label":"dw"},{"source":"wm","label":"dx"},{"source":"wm","label":"dy"},{"source":"wm","label":"dz"}],"site_id":"1","hour":"0","clk_id":"1","site_clk_limit":"40000","site_clk_id":"0","category_id":"0","site_install_limitation":"0","conversion_flow":"1","event_name":"","status":"1","diy_siteid":[],"note":"","start_hour":"-1","end_hour":"-1","create_date":"2021-05-14 05:18:25","update_date":"2021-09-30 11:24:26",
+  cutoff_start: '5',
+  cutoff_end: '10'
+  }]
+  console.log(res[0])
   data.ruleForm = {
     ...res[0]
   }
 }
 onMounted(() => {
   getConfig()
-  setCutoff(cutoff.value)
   const name = router.currentRoute.value.name
   if (name === 'create') {
     data.ruleForm.operation_type = 'create'

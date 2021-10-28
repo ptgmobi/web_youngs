@@ -1,7 +1,7 @@
 import Layout from '@/layout'
 export default {
   path: '/adnetwork',
-  redirect: 'noRedirect',
+  redirect: '/adnetwork/buzz',
   component: Layout,
   name: 'adnetwork',
   meta: { title: 'adnetwork', icon: 'el-icon-cpu' },
