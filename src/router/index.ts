@@ -48,7 +48,7 @@ export const asyncRoutes: RouterTy = [
 ]
 // console.log(process.env)
 const router: Router = createRouter({
-  history: createWebHistory(''),
+  history: createWebHashHistory(),
   scrollBehavior: () => ({ top: 0 }),
   routes: constantRoutes
 })
