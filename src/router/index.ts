@@ -39,9 +39,9 @@ export const constantRoutes: RouterTy = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes: RouterTy = [
-  publisher,
-  adnetwork,
-  administer,
+  ...publisher,
+  ...adnetwork,
+  ...administer,
   // 404 page must be placed at the end !!!
   // using pathMatch install of "*" in vue-router 4.0
   { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }
