@@ -101,7 +101,5 @@ const emit = defineEmits(['kk', 'up'])
 const saveSite = () => {
   emit('kk', data.siteData)
 }
-onMounted(() => {
-  console.log(props.msg)
-})
+onMounted(() => {})
 </script>

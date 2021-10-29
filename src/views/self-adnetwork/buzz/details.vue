@@ -136,7 +136,7 @@
           <span>-</span>
           %<span v-text="data.ruleForm.cutoff_end"></span>
           （<span>设备数:</span>
-            <span v-text="deviceNum"></span>）
+            <span v-text="handleDeviceNum"></span>）
         </div>
         <div class='flex flex-start form-one p10 pt-0 pb-0'>
           <el-slider class="w100" v-model="cutoff" range :step="5" :show-stops="true" show-input :min="0" :max="100"> </el-slider>
@@ -308,10 +308,11 @@ let validatorEndHour = (rule: any, value: string, callback: (arg0: Error | undef
     }
   }
 }
+// 设备数
 let deviceNum = ref(0)
+// cutoff滑块
 let cutoff = ref([0, 100])
-let data = reactive({
-  cache: {},
+let data: any = reactive({
   dialogVisible: false,
   dialogVisibleSite: false,
   search: {
@@ -451,7 +452,6 @@ let data = reactive({
 // methods
 const editDiySiteFun = () => {
   data.dialogVisibleSite = true
-  console.log(data.ruleForm['diy_siteid'])
   const siteData = data.ruleForm['diy_siteid'] ? data.ruleForm['diy_siteid'] : []
   data.siteData = siteData
 }
@@ -508,26 +508,21 @@ const handleDeviceCount = async () => {
   const pkgName = data.ruleForm.pkg_name
   const country = data.ruleForm.country
   const platform = data.ruleForm.platform
-  const cutoff_start = data.ruleForm.cutoff_start
-  const cutoff_end = data.ruleForm.cutoff_end
   const ajaxData = {
     pkg_name: pkgName,
     country,
     platform
   }
   const num = await getDeviceCount(ajaxData)
-  const count = (Number(data.ruleForm.cutoff_end) - Number(data.ruleForm.cutoff_start)) * Number(num)
-  deviceNum.value = count.toFixed(0)
+
+  deviceNum.value = num
 }
-const handleDiySiteid = computed(() => {
-  if (data.ruleForm.site_id) {
-    // const arr = JSON.parse(data.ruleForm.site_id)
-    // console.log(arr)
-    // return arr
-    return []
-  } else {
-    return []
-  }
+const handleDeviceNum = computed(() => {
+  const num = deviceNum.value
+  const cutoff_start = data.ruleForm.cutoff_start
+  const cutoff_end = data.ruleForm.cutoff_end
+  const count = (Number(cutoff_end) - Number(cutoff_start)) * Number(num)
+  return count.toFixed(0)
 })
 const getDeviceCount = async (ajaxData: any) => {
   const res = await ApiGetDeviceCount(ajaxData)
@@ -546,7 +541,7 @@ watchEffect(() => {
 const handleCopyOffer = (result: any, options : any) => {
   // console.log(Object.getOwnPropertyDescriptors(result))
   // 处理复制到的offer
-  let resData = {}
+  let resData: any = {}
   if (options.type === '2') {
     resData.id = result['id']
     resData.offer_id = result['offer_id']
