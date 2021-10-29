@@ -5,7 +5,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineProps, defineEmits, nextTick } from 'vue'
+import { defineEmits, nextTick } from 'vue'
 import { useStore } from 'vuex'
 import $store from '@/store'
 await nextTick()
