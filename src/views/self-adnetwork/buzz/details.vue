@@ -227,15 +227,15 @@ const router = useRouter()
 const message = {
   required: '此项必填'
 }
-let validatorPkgName = (rule: any, value: any, callback: () => void) => {
+let validatorPkgName = (rule: any, value: any, callback: (arg0: Error | undefined) => void) => {
   if (data.ruleForm.attribute_provider === 'AppsFlyer') {
     if (data.ruleForm.tracking_link.includes(data.ruleForm.pkg_name)) {
-      callback()
+      callback(undefined)
     } else {
       callback(new Error('Attribute Provider:为Appsflyer时Package Name的值必须包含在Traking Link中'))
     }
   } else {
-    callback()
+    callback(undefined)
   }
 }
 let validatorTrackingLink = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
@@ -247,29 +247,29 @@ let validatorTrackingLink = (rule: any, value: string, callback: (arg0: Error | 
     if (reg1.test(value)) {
       if (data.ruleForm.attribute_provider === 'AppsFlyer') {
         if (value.includes(data.ruleForm.pkg_name)) {
-          callback()
+          callback(undefined)
         } else {
           callback(new Error('Attribute Provider:为Appsflyer时Package Name的值必须包含在Traking Link中'))
         }
       } else {
-        callback()
+        callback(undefined)
       }
     } else {
       callback(new Error('请以http开头'))
     }
   }
-  callback()
+  callback(undefined)
 }
-let validatorDevice = (rule: any, value: any, callback: () => void) => {
-  callback()
+let validatorDevice = (rule: any, value: any, callback: (arg0: Error | undefined) => void) => {
+  callback(undefined)
 }
 let validatorSite = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
   if (value) {
     if (value === '1') {
-      callback()
+      callback(undefined)
     } else {
       if (data.ruleForm.hour) {
-        callback()
+        callback(undefined)
       } else {
         callback(new Error('请选择具体数值'))
       }
@@ -281,10 +281,10 @@ let validatorSite = (rule: any, value: string, callback: (arg0: Error | undefine
 }
 let validatorConversionFlow = (rule: any, value: any, callback: (arg0: Error | undefined) => void) => {
   if (data.ruleForm.conversion_flow === '1') {
-    callback()
+    callback(undefined)
   } else {
     if (value) {
-      callback()
+      callback(undefined)
     } else {
       callback(new Error(message.required))
     }
@@ -295,7 +295,7 @@ let validatorStartHour = (rule: any, value: string, callback: (arg0: Error | und
     if (data.ruleForm.end_hour === '') {
       callback(new Error(message.required))
     } else {
-      callback()
+      callback(undefined)
     }
   }
 }
@@ -304,7 +304,7 @@ let validatorEndHour = (rule: any, value: string, callback: (arg0: Error | undef
     if (data.ruleForm.start_hour === '') {
       callback(new Error(message.required))
     } else {
-      callback()
+      callback(undefined)
     }
   }
 }
@@ -367,17 +367,17 @@ let data = reactive({
     max_clk_num: '',
     site_clk_limit: '0',
     site_install_limitation: '0',
-    start_hour: -1,
-    end_hour: -1,
+    start_hour: '-1',
+    end_hour: '-1',
     device: [],
     cutoff_start: '',
     cutoff_end: '',
-    diy_siteid: '',
+    diy_siteid: [],
     site_id: '',
     hour: '',
     clk_id: '',
     site_clk_id: '',
-    category_id: '',
+    // category_id: '',
     note: ''
   },
   rules: {
@@ -451,7 +451,8 @@ let data = reactive({
 // methods
 const editDiySiteFun = () => {
   data.dialogVisibleSite = true
-  const siteData = data.ruleForm['diy_siteid'] ? JSON.parse(data.ruleForm['diy_siteid']) : []
+  console.log(data.ruleForm['diy_siteid'])
+  const siteData = data.ruleForm['diy_siteid'] ? data.ruleForm['diy_siteid'] : []
   data.siteData = siteData
 }
 const saveFun = () => {
@@ -483,7 +484,6 @@ interface siteType {
 }
 
 const saveSite = (arr: Array<siteType>) => {
-  // data.ruleForm.diy_siteid = JSON.stringify(arr)
   data.ruleForm.diy_siteid = arr
   data.dialogVisibleSite = false
 }
@@ -500,7 +500,6 @@ const getConfig = async () => {
   const res = await ApiGetConfig()
   const { data: configData } = res
   data.options.channel = Object.values(configData.channel)
-  data.options.category = Object.entries(configData.category)
   data.options.country = Object.values(configData.country)
   return '获取配置成功'
 }
@@ -518,7 +517,7 @@ const handleDeviceCount = async () => {
   }
   const num = await getDeviceCount(ajaxData)
   const count = (Number(data.ruleForm.cutoff_end) - Number(data.ruleForm.cutoff_start)) * Number(num)
-  deviceNum.value = count
+  deviceNum.value = count.toFixed(0)
 }
 const handleDiySiteid = computed(() => {
   if (data.ruleForm.site_id) {
@@ -530,7 +529,7 @@ const handleDiySiteid = computed(() => {
     return []
   }
 })
-const getDeviceCount = async (ajaxData) => {
+const getDeviceCount = async (ajaxData: any) => {
   const res = await ApiGetDeviceCount(ajaxData)
   const { data: result } = res
   if (result.length !== 0) {
@@ -545,22 +544,19 @@ watchEffect(() => {
 })
 
 const handleCopyOffer = (result: any, options : any) => {
-  console.log(result)
   // console.log(Object.getOwnPropertyDescriptors(result))
   // 处理复制到的offer
   let resData = {}
   if (options.type === '2') {
-    resData['id'] = result['id']
-    resData['offer_id'] = result['offer_id']
+    resData.id = result['id']
+    resData.offer_id = result['offer_id']
   }
   resData = {
     ...result,
     ...options
   }
-  let diy_siteid = (result['diy_siteid'] === null || result['diy_siteid'] === '') ? [] : JSON.parse(result['diy_siteid'])
-  console.log(diy_siteid)
+  let diy_siteid = (result['diy_siteid'] === null || result['diy_siteid'] === '') ? [] : result['diy_siteid']
   data.siteData = diy_siteid
-  console.log(resData)
   return resData
 }
 
@@ -575,7 +571,6 @@ const getOfferData = async () => {
     type: data.ruleForm.type,
     isCopy: false
   })
-  console.log(data.ruleForm)
   cutoff.value = [Number(data.ruleForm.cutoff_start) * 100, Number(data.ruleForm.cutoff_end) * 100]
 }
 onMounted(() => {

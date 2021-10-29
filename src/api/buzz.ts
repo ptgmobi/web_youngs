@@ -69,10 +69,9 @@ export function ApiGetOfferData(data: ObjTy) {
   })
 }
 
-export function ApiGetConfig(data: ObjTy) {
+export function ApiGetConfig() {
   return request({
     url: '/buzz/edit-config',
-    data,
     method: 'get',
     bfLoading: false,
     isParams: true,

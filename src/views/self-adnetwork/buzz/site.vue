@@ -4,7 +4,7 @@
       <el-input class='w100' type='textarea' v-model="data.siteRuleForm.site" :rows="4" placeholder=''></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="addSiteFn('siteRuleForm')">添加</el-button>
+      <el-button type="primary" @click="addSiteFn">添加</el-button>
     </el-form-item>
   </el-form>
   <el-table :data="data.siteData">
@@ -23,7 +23,7 @@
   </span>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, reactive, watch, defineProps, onMounted, defineEmits } from 'vue'
+import { getCurrentInstance, reactive, watch, onMounted, defineEmits } from 'vue'
 const props = defineProps({
   msg: {
     require: true,
@@ -39,7 +39,7 @@ let validateSiteExcel = (rule: any, value: string, callback: (arg0: Error | unde
     const flag = analysisExcelFn(value)
     console.log(flag)
     if (flag) {
-      callback()
+      callback(undefined)
     } else {
       callback(new Error('格式错误！'))
     }
@@ -75,7 +75,7 @@ const analysisExcelFn = (str: string) => {
   if (flag) {
     return newArr
   }
-  return flag
+  return []
 }
 let data = reactive({
   siteData: props.msg,
