@@ -48,7 +48,6 @@ service.interceptors.request.use(
     }
     if (request.method === 'post') {
       request.data = qs.stringify(request.data)
-      console.log(request.data)
     }
     return request
   },

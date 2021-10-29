@@ -135,8 +135,8 @@
           %<span v-text="data.ruleForm.cutoff_start"></span>
           <span>-</span>
           %<span v-text="data.ruleForm.cutoff_end"></span>
-          <span>设备数:</span>
-          <span v-text="deviceNum"></span>
+          （<span>设备数:</span>
+            <span v-text="deviceNum"></span>）
         </div>
         <div class='flex flex-start form-one p10 pt-0 pb-0'>
           <el-slider class="w100" v-model="cutoff" range :step="5" :show-stops="true" show-input :min="0" :max="100"> </el-slider>
@@ -209,7 +209,7 @@
     v-model="data.dialogVisibleSite"
     >
     <site
-      :msg="data.ruleForm.diy_siteid"
+      :msg="data.siteData"
       @kk="saveSite"
     ></site>
   </el-dialog>
@@ -222,6 +222,7 @@ import site from './site'
 import { messageFun } from '@/utils/message'
 let { proxy }: any = getCurrentInstance()
 import {useRouter } from 'vue-router'
+import { DataAnalysis } from '@element-plus/icons'
 const router = useRouter()
 const message = {
   required: '此项必填'
@@ -371,10 +372,7 @@ let data = reactive({
     device: [],
     cutoff_start: '',
     cutoff_end: '',
-    diy_siteid: [{
-      diy_siteid: '1',
-      weight: '2'
-    }],
+    diy_siteid: '',
     site_id: '',
     hour: '',
     clk_id: '',
@@ -447,14 +445,14 @@ let data = reactive({
     //   { required: true, message: message.required, trigger: ['blur', 'change'] }
     // ],
   },
-  siteData: {}
+  siteData: []
 })
 
 // methods
-const copyFun = () => {}
 const editDiySiteFun = () => {
   data.dialogVisibleSite = true
-  data.siteData = _.cloneDeep(data.ruleForm['diy_siteid'])
+  const siteData = data.ruleForm['diy_siteid'] ? JSON.parse(data.ruleForm['diy_siteid']) : []
+  data.siteData = siteData
 }
 const saveFun = () => {
   submitForm('ruleForm')
@@ -485,6 +483,7 @@ interface siteType {
 }
 
 const saveSite = (arr: Array<siteType>) => {
+  // data.ruleForm.diy_siteid = JSON.stringify(arr)
   data.ruleForm.diy_siteid = arr
   data.dialogVisibleSite = false
 }
@@ -521,7 +520,16 @@ const handleDeviceCount = async () => {
   const count = (Number(data.ruleForm.cutoff_end) - Number(data.ruleForm.cutoff_start)) * Number(num)
   deviceNum.value = count
 }
-
+const handleDiySiteid = computed(() => {
+  if (data.ruleForm.site_id) {
+    // const arr = JSON.parse(data.ruleForm.site_id)
+    // console.log(arr)
+    // return arr
+    return []
+  } else {
+    return []
+  }
+})
 const getDeviceCount = async (ajaxData) => {
   const res = await ApiGetDeviceCount(ajaxData)
   const { data: result } = res
@@ -551,8 +559,7 @@ const handleCopyOffer = (result: any, options : any) => {
   }
   let diy_siteid = (result['diy_siteid'] === null || result['diy_siteid'] === '') ? [] : JSON.parse(result['diy_siteid'])
   console.log(diy_siteid)
-    resData.siteData = diy_siteid
-  data.search.deviceData.select = JSON.parse(JSON.stringify(data.ruleForm['device']))
+  data.siteData = diy_siteid
   console.log(resData)
   return resData
 }

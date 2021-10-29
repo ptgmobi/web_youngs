@@ -275,7 +275,6 @@ const changeCutoff = async (row: any) => {
   const cutoff_start = row.cutoff_start
   const cutoff_end = row.cutoff_end
   const id = row.id
-  console.log(cutoff_start, cutoff_end)
   if (cutoff_start < cutoff_end) {
     const ajaxData = {
       start: cutoff_start,
@@ -283,6 +282,7 @@ const changeCutoff = async (row: any) => {
       id
     }
     const res = await ApichangeCutoff(ajaxData)
+    messageFun(res)
   } else {
     const msg = 'start必须小于end'
     ElMessage({
@@ -302,7 +302,6 @@ const changeStatus = async (row: any) => {
     status: row.status
   }
   const res = await ApiChangeStatus(ajaxData)
-  console.log(res)
   messageFun(res)
 }
 const editFun = (row: any) => {
