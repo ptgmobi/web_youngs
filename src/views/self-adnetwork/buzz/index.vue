@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class='controlBox w100 mb-10'>
-      <div class="m10">
+      <div class="mb-10">
         <!-- <el-button type="primary" @click='createFun'>Offer Create</el-button> -->
         <router-link to="/adnetwork/buzz-create">
           <el-button type="primary">Offer Create</el-button>
