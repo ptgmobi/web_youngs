@@ -135,7 +135,8 @@
           %<span v-text="data.ruleForm.cutoff_start"></span>
           <span>-</span>
           %<span v-text="data.ruleForm.cutoff_end"></span>
-          <span v-text="handleCutOffCount"></span>
+          <span>设备数:</span>
+          <span v-text="deviceNum"></span>
         </div>
         <div class='flex flex-start form-one p10 pt-0 pb-0'>
           <el-slider class="w100" v-model="cutoff" range :step="5" :show-stops="true" show-input :min="0" :max="100"> </el-slider>
@@ -214,10 +215,11 @@
   </el-dialog>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, reactive, watch, onMounted, ref, computed } from 'vue'
-import { ApiGetOfferList, ApiGetOfferData, ApiGetConfig, ApiGetCutOffCount } from '@api/buzz'
+import { getCurrentInstance, reactive, watch, watchEffect, onMounted, ref, computed } from 'vue'
+import { ApiOperationOffer, ApiGetOfferData, ApiGetConfig, ApiGetDeviceCount } from '@/api/buzz'
 import _ from 'lodash'
 import site from './site'
+import { messageFun } from '@/utils/message'
 let { proxy }: any = getCurrentInstance()
 import {useRouter } from 'vue-router'
 const router = useRouter()
@@ -305,6 +307,7 @@ let validatorEndHour = (rule: any, value: string, callback: (arg0: Error | undef
     }
   }
 }
+let deviceNum = ref(0)
 let cutoff = ref([0, 100])
 let data = reactive({
   cache: {},
@@ -344,6 +347,7 @@ let data = reactive({
     devices: []
   },
   ruleForm: {
+    type: '',
     id: '',
     operation_type: '',
     offer_id: '',
@@ -467,8 +471,12 @@ const submitForm = (formName: string) => {
   })
 }
 
-const submitFormFun = () => {
+const submitFormFun = async () => {
   console.log('submit')
+  const res = await ApiOperationOffer(data.ruleForm)
+  if (messageFun(res)) {
+    proxy.$router.push({ path: '/adnetwork/buzz'})
+  }
 }
 
 interface siteType {
@@ -481,8 +489,8 @@ const saveSite = (arr: Array<siteType>) => {
   data.dialogVisibleSite = false
 }
 const setCutoff = (newVal: Array<number>) => {
-  data.ruleForm.cutoff_start = newVal[0].toString()
-  data.ruleForm.cutoff_end = newVal[1].toString()
+  data.ruleForm.cutoff_start = (newVal[0] / 100).toString()
+  data.ruleForm.cutoff_end = (newVal[1] / 100).toString()
 }
 watch(cutoff, (newVal, oldVal) => {
 	// console.log(newVal, oldVal)
@@ -490,48 +498,90 @@ watch(cutoff, (newVal, oldVal) => {
   
 }, { immediate: true })
 const getConfig = async () => {
-  // const config = await ApiGetConfig()
-  getOfferList()
+  const res = await ApiGetConfig()
+  const { data: configData } = res
+  data.options.channel = Object.values(configData.channel)
+  data.options.category = Object.entries(configData.category)
+  data.options.country = Object.values(configData.country)
+  return '获取配置成功'
 }
-const handleCutOffCount = computed(() => {
+const handleDeviceCount = async () => {
+  console.log('get device num')
   const pkgName = data.ruleForm.pkg_name
   const country = data.ruleForm.country
   const platform = data.ruleForm.platform
+  const cutoff_start = data.ruleForm.cutoff_start
+  const cutoff_end = data.ruleForm.cutoff_end
   const ajaxData = {
     pkg_name: pkgName,
     country,
     platform
   }
-  return JSON.stringify(ajaxData)
-  // return getCutOffCount(ajaxData)
-})
-const getCutOffCount = async (ajaxData) => {
-  return ajaxData
-  // const res = await ApiGetCutOffCount(ajaxData)
+  const num = await getDeviceCount(ajaxData)
+  const count = (Number(data.ruleForm.cutoff_end) - Number(data.ruleForm.cutoff_start)) * Number(num)
+  deviceNum.value = count
 }
-const getOfferList = async () => {
-  // const res = await ApiGetOfferList()
-}
-const getOfferData = async () => {
-  // const res = await ApiGetOfferData()
-  const res = [{"id":"2441","channel":"phm","offer_id":"bz602444","attribute_provider":"AppsFlyer","title":"1xBet","tracking_link":"https://impression.appsflyer.com/id844035425?af_prt=alfaleadsagency&pid=realads_int&af_siteid={new_siteid}&c=d_855979m_33327c_IN__[]general[]_d51039_l48323_banner_{pid}_{sub2}&af_viewthrough_lookback=1d&clickid={click_id}&idfa={idfa}&af_channel=CM","pkg_name":"844035425","payout":"0.40","platform":"2","country":"IN","max_clk_num":"2000000","device":[{"source":"wm","label":"bx"},{"source":"wm","label":"by"},{"source":"wm","label":"bz"},{"source":"wm","label":"cx"},{"source":"wm","label":"cy"},{"source":"wm","label":"cz"},{"source":"wm","label":"dw"},{"source":"wm","label":"dx"},{"source":"wm","label":"dy"},{"source":"wm","label":"dz"}],"site_id":"1","hour":"0","clk_id":"1","site_clk_limit":"40000","site_clk_id":"0","category_id":"0","site_install_limitation":"0","conversion_flow":"1","event_name":"","status":"1","diy_siteid":[],"note":"","start_hour":"-1","end_hour":"-1","create_date":"2021-05-14 05:18:25","update_date":"2021-09-30 11:24:26",
-  cutoff_start: '5',
-  cutoff_end: '10'
-  }]
-  console.log(res[0])
-  data.ruleForm = {
-    ...res[0]
+
+const getDeviceCount = async (ajaxData) => {
+  const res = await ApiGetDeviceCount(ajaxData)
+  const { data: result } = res
+  if (result.length !== 0) {
+    return result[0].device_num
+  } else {
+    return 0
   }
+}
+
+watchEffect(() => {
+  handleDeviceCount()
+})
+
+const handleCopyOffer = (result: any, options : any) => {
+  console.log(result)
+  // console.log(Object.getOwnPropertyDescriptors(result))
+  // 处理复制到的offer
+  let resData = {}
+  if (options.type === '2') {
+    resData['id'] = result['id']
+    resData['offer_id'] = result['offer_id']
+  }
+  resData = {
+    ...result,
+    ...options
+  }
+  let diy_siteid = (result['diy_siteid'] === null || result['diy_siteid'] === '') ? [] : JSON.parse(result['diy_siteid'])
+  console.log(diy_siteid)
+    resData.siteData = diy_siteid
+  data.search.deviceData.select = JSON.parse(JSON.stringify(data.ruleForm['device']))
+  console.log(resData)
+  return resData
+}
+
+const getOfferData = async () => {
+  const id = router.currentRoute.value.params.id
+  const ajaxData = {
+    id
+  }
+  const res = await ApiGetOfferData(ajaxData)
+  const { data: result } = res
+  data.ruleForm = handleCopyOffer(result[0], {
+    type: data.ruleForm.type,
+    isCopy: false
+  })
+  console.log(data.ruleForm)
+  cutoff.value = [Number(data.ruleForm.cutoff_start) * 100, Number(data.ruleForm.cutoff_end) * 100]
 }
 onMounted(() => {
   getConfig()
   const name = router.currentRoute.value.name
   if (name === 'create') {
-    data.ruleForm.operation_type = 'create'
+    data.ruleForm.operation_type = '1'
+    data.ruleForm.type = '1'
   }
   // 如果是修改，获取当前id的值
   if (name === 'edit') {
-    data.ruleForm.operation_type = 'edit'
+    data.ruleForm.operation_type = '2'
+    data.ruleForm.type = '2'
     getOfferData()
   }
 })

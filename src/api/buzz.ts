@@ -4,7 +4,7 @@ import { ObjTy } from '@/types/common'
 // ! buzz list
 export function ApiGetBuzzList(data: ObjTy) {
   return request({
-    url: '/af-report/view',
+    url: '/buzz/buzz-index',
     data,
     method: 'get',
     bfLoading: false,
@@ -15,52 +15,52 @@ export function ApiGetBuzzList(data: ObjTy) {
 
 export function ApichangeClk(data: ObjTy) {
   return request({
-    url: '/af-report/view',
+    url: '/buzz/edit-offer-max-clk',
     data,
-    method: 'get',
+    method: 'post',
     bfLoading: false,
-    isParams: true,
+    isParams: false,
     isAlertErrorMsg: false
   })
 }
 
 export function ApichangeCutoff(data: ObjTy) {
   return request({
-    url: '/af-report/view',
+    url: '/buzz/edit-cutoff',
     data,
-    method: 'get',
+    method: 'post',
     bfLoading: false,
-    isParams: true,
+    isParams: false,
     isAlertErrorMsg: false
   })
 }
 
 export function ApiChangeStatus(data: ObjTy) {
   return request({
-    url: '/af-report/view',
+    url: '/buzz/edit-offer-status',
     data,
-    method: 'get',
+    method: 'post',
     bfLoading: false,
-    isParams: true,
+    isParams: false,
     isAlertErrorMsg: false
   })
 }
 
 // ! buzz details
-export function ApiGetOfferList(data: ObjTy) {
+export function ApiOperationOffer(data: ObjTy) {
   return request({
-    url: '/af-report/view',
+    url: '/buzz/buzz-edit',
     data,
-    method: 'get',
+    method: 'post',
     bfLoading: false,
-    isParams: true,
+    isParams: false,
     isAlertErrorMsg: false
   })
 }
 
 export function ApiGetOfferData(data: ObjTy) {
   return request({
-    url: '/af-report/view',
+    url: '/buzz/buzz-edit',
     data,
     method: 'get',
     bfLoading: false,
@@ -71,7 +71,7 @@ export function ApiGetOfferData(data: ObjTy) {
 
 export function ApiGetConfig(data: ObjTy) {
   return request({
-    url: '/af-report/view',
+    url: '/buzz/edit-config',
     data,
     method: 'get',
     bfLoading: false,
@@ -80,9 +80,9 @@ export function ApiGetConfig(data: ObjTy) {
   })
 }
 
-export function ApiGetCutOffCount(data: ObjTy) {
+export function ApiGetDeviceCount(data: ObjTy) {
   return request({
-    url: '/af-report/view',
+    url: '/buzz/get-device-num',
     data,
     method: 'get',
     bfLoading: false,
