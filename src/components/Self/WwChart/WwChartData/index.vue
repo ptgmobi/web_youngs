@@ -1,68 +1,51 @@
 <template>
   <div :class="className" :style="{ height: height, width: width }" />
 </template>
-<script lang="ts">
+<script lang="ts" setup>
+import { getCurrentInstance, shallowRef, reactive, watch, onMounted, onActivated, onDeactivated } from 'vue'
+let { proxy }: any = getCurrentInstance()
+let chart: echarts.ECharts | null = null
 import * as echarts from 'echarts'
-import resize from '@/components/Charts/mixins/resize'
-export default {
-  mixins: [resize],
-  props: {
-    className: {
-      type: String,
-      default: 'chart'
-    },
-    width: {
-      type: String,
-      default: '100%'
-    },
-    height: {
-      type: String,
-      default: '350px'
-    },
-    autoResize: {
-      type: Boolean,
-      default: true
-    },
-    chartData: {
-      type: Object,
-      required: true
-    }
+// import resize from '@/components/Charts/mixins/resize'
+import resizeFn from '@/utils/resize'
+const props = defineProps({
+  className: {
+    type: String,
+    default: 'chart'
   },
-  data() {
-    return {
-      chart: null
-    }
+  width: {
+    type: String,
+    default: '100%'
   },
-  watch: {
-    chartData: {
-      deep: true,
-      handler(val) {
-        this.setOptions(val)
-      }
-    }
+  height: {
+    type: String,
+    default: '350px'
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.initChart()
-    })
+  autoResize: {
+    type: Boolean,
+    default: true
   },
-  beforeUnmount() {
-    if (!this.chart) {
-      return
-    }
-    this.chart.dispose()
-    this.chart = null
-  },
-  methods: {
-    initChart() {
-      this.chart = echarts.init(this.$el)
-      this.setOptions(this.chartData)
-    },
-    setOptions(data) {
-      if (data && this.chart && data.series) {
-        this.chart.setOption(data, true)
-      }
-    }
+  chartData: {
+    type: Object,
+    required: true
+  }
+})
+watch(props.chartData, (newVal, oldVal) => {
+  setOptions(newVal)
+})
+const setOptions = (options: any) => {
+  if (options && chart && options.series) {
+    chart.setOption(options, true)
   }
 }
+const initChart = () => {
+  chart = echarts.init(proxy.$el)
+  setOptions(props.chartData)
+}
+
+onMounted(() => {
+  initChart()
+  const { initListener } = resizeFn(chart)
+  initListener()
+})
 </script>
