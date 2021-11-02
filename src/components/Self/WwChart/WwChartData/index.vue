@@ -2,12 +2,20 @@
   <div :class="className" :style="{ height: height, width: width }" />
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, shallowRef, reactive, watch, onMounted, onActivated, onDeactivated } from 'vue'
+import { getCurrentInstance, shallowRef, reactive, watch, onMounted, onActivated, onDeactivated, PropType } from 'vue'
 let { proxy }: any = getCurrentInstance()
-let chart: echarts.ECharts | null = null
+let chart: echarts.ECharts | undefined = undefined
 import * as echarts from 'echarts'
 // import resize from '@/components/Charts/mixins/resize'
 import resizeFn from '@/utils/resize'
+interface chartDataType {
+  grid: any
+  legend: any
+  series: any
+  tooltip: any
+  xAxis: any
+  yAxis: any
+}
 const props = defineProps({
   className: {
     type: String,
@@ -26,7 +34,7 @@ const props = defineProps({
     default: true
   },
   chartData: {
-    type: Object,
+    type: Object as PropType<chartDataType>,
     required: true
   }
 })
