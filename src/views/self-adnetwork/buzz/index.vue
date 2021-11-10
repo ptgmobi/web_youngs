@@ -132,9 +132,9 @@
                 <el-select class="cutoff" v-model="scope.row.cutoff_start" filterable placeholder="start">
                   <el-option
                     v-for="item in data.options.cutoff_start"
-                    :key="item"
-                    :label="item"
-                    :value="item"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
                   >
                   </el-option>
                 </el-select>
@@ -142,9 +142,9 @@
                 <el-select class="cutoff" v-model="scope.row.cutoff_end" filterable placeholder="end">
                   <el-option
                     v-for="item in data.options.cutoff_end"
-                    :key="item"
-                    :label="item"
-                    :value="item"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
                   >
                   </el-option>
                 </el-select>
@@ -194,6 +194,7 @@ import { ApiGetBuzzList, ApichangeClk, ApichangeCutoff, ApiChangeStatus } from '
 import { ElMessage } from 'element-plus'
 import { messageFun } from '@/utils/message'
 import _ from 'lodash'
+import { number } from 'echarts'
 let { proxy }: any = getCurrentInstance()
 const searchData = shallowRef({
   attribute_provider: [],
@@ -207,13 +208,21 @@ const searchData = shallowRef({
 })
 const OptionsCutoffStart = () => {
   const arr = [...new Array(20)].map((ele, index) => {
-    return (index * 5 / 100).toFixed(2)
+    const val = (index * 5) / 100
+    return {
+      value: val.toFixed(2),
+      label: `${(Number(val) * 100).toFixed(0)}%`
+    }
   })
   return arr
 }
 const OptionsCutoffEnd = () => {
   const arr = [...new Array(20)].map((ele, index) => {
-    return ((index * 5 + 5) / 100).toFixed(2)
+    const val = (index * 5 + 5) / 100
+    return {
+      value: val.toFixed(2),
+      label: `${(Number(val) * 100).toFixed(0)}%`
+    } 
   })
   return arr
 }
@@ -243,11 +252,11 @@ let data = reactive({
   },
   list: [],
   pagination: {
-    pageSizes: ['10', '20', '40', '100'],
+    pageSizes: ['50', '100', '500', '1000'],
     total: 1,
     listQuery: {
       page: 1,
-      limit: 20,
+      limit: 50,
       importance: undefined,
       title: undefined,
       type: undefined,

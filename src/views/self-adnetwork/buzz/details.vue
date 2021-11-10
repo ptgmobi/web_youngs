@@ -132,11 +132,13 @@
       <!-- Device Cutoff -->
       <el-form-item label="Device Cutoff:" prop="cutoff_start">
         <div class="flex ai-center">
-          %<span v-text="data.ruleForm.cutoff_start"></span>
+          <span v-text="(data.ruleForm.cutoff_start * 100)"></span>%
           <span>-</span>
-          %<span v-text="data.ruleForm.cutoff_end"></span>
-          （<span>设备数:</span>
-            <span v-text="handleDeviceNum"></span>）
+          <span v-text="(data.ruleForm.cutoff_end * 100)"></span>%
+          （<span>总设备数:</span>
+            <span v-text="handleDeviceNum.all"></span>）
+          （<span>选中设备数:</span>
+            <span v-text="handleDeviceNum.judge"></span>）
         </div>
         <div class='flex flex-start form-one p10 pt-0 pb-0'>
           <el-slider class="w100" v-model="cutoff" range :step="5" :show-stops="true" show-input :min="0" :max="100"> </el-slider>
@@ -503,7 +505,7 @@ const getConfig = async () => {
   data.options.country = Object.values(configData.country)
   return '获取配置成功'
 }
-const handleDeviceCount = async () => {
+const handleDeviceCount = async (): Promise<void> => {
   console.log('get device num')
   const pkgName = data.ruleForm.pkg_name
   const country = data.ruleForm.country
@@ -513,16 +515,21 @@ const handleDeviceCount = async () => {
     country,
     platform
   }
-  const num = await getDeviceCount(ajaxData)
-
-  deviceNum.value = num
+  if (pkgName && country && platform) {
+    console.log('获取设备数')
+    const num = await getDeviceCount(ajaxData)
+    deviceNum.value = num
+  }
 }
 const handleDeviceNum = computed(() => {
   const num = deviceNum.value
   const cutoff_start = data.ruleForm.cutoff_start
   const cutoff_end = data.ruleForm.cutoff_end
-  const count = (Number(cutoff_end) - Number(cutoff_start)) * Number(num)
-  return count.toFixed(0)
+  const res = {
+    judge: ((Number(cutoff_end) - Number(cutoff_start)) * Number(num)).toFixed(0),
+    all: Number(num).toFixed(0)
+  }
+  return res
 })
 const getDeviceCount = async (ajaxData: any) => {
   const res = await ApiGetDeviceCount(ajaxData)
@@ -566,6 +573,7 @@ const getOfferData = async () => {
     type: data.ruleForm.type,
     isCopy: false
   })
+  // ! 给滑动条赋值
   cutoff.value = [Number(data.ruleForm.cutoff_start) * 100, Number(data.ruleForm.cutoff_end) * 100]
 }
 onMounted(() => {
