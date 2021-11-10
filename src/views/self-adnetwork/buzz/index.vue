@@ -116,7 +116,7 @@
       >
         <template #default="scope">
           <div class='flex jc-around'>
-            <el-input v-model="scope.row.max_clk_num" placeholder=""></el-input>
+            <el-input v-model="scope.row.max_clk_num" placeholder="" type="number"></el-input>
             <el-button class='cp icon ml-10' type="primary" icon="el-icon-edit" circle @click='changeClk(scope.row)'></el-button>
           </div>
         </template>
