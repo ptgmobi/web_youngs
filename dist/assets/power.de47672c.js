@@ -1,1 +1,0 @@
-import{k as s}from"./index.d19719a5.js";function t(){return s({url:"/permissions",method:"get"})}function r(t){return s({url:`/permissions/${t}`,method:"get"})}function n(t){return s({url:"/permissions",method:"post",data:t})}function e(t,r){return s({url:`/permissions/${t}`,method:"patch",data:r})}export{r as a,e as b,t as g,n as s};
