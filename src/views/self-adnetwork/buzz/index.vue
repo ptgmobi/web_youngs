@@ -163,7 +163,10 @@
         label="Operation">
         <template #default="scope">
           <div class='flex jc-around'>
-            <el-button class='cp icon mr-10' type="primary" icon="el-icon-edit" circle @click='editFun(scope.row)'></el-button>
+            <router-link :to="getEditUrl(scope.row)">
+              <el-button class='cp icon mr-10' type="primary" icon="el-icon-edit" circle></el-button>
+            </router-link>
+            <!-- <el-button class='cp icon mr-10' type="primary" icon="el-icon-edit" circle @click='editFun(scope.row)'></el-button> -->
             <el-switch
               v-model="scope.row.status"
               active-value="1"
@@ -318,6 +321,10 @@ const editFun = (row: any) => {
   proxy.$router.push({ path: `/adnetwork/buzz-edit/${id}`, query: {
     type: 'edit'
   }})
+}
+const getEditUrl = (row: any) => {
+  const id = row.id
+  return `/adnetwork/buzz-edit/${id}`
 }
 const init = async () => {
   data.loading = true
