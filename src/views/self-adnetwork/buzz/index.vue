@@ -58,7 +58,7 @@
         </div>
       </el-form>
       <!-- <el-input placeholder="请输入内容" v-model="data.searchForm.data" class='search-input'>
-        <el-button slot="append" icon="el-icon-search" @click='searchFun'></el-button>
+        <el-button slot="append" icon="Search" @click='searchFun'></el-button>
       </el-input> -->
     </div>
     <!-- table -->
@@ -117,7 +117,7 @@
         <template #default="scope">
           <div class='flex jc-around'>
             <el-input v-model="scope.row.max_clk_num" placeholder="" type="number"></el-input>
-            <el-button class='cp icon ml-10' type="primary" icon="el-icon-edit" circle @click='changeClk(scope.row)'></el-button>
+            <el-button class='cp ml-10' type="primary" icon="Edit" circle @click='changeClk(scope.row)'></el-button>
           </div>
         </template>
       </el-table-column>
@@ -153,7 +153,7 @@
                 <span>{{ handleCutoff(scope.row) }}</span>
               </div>
             </div>
-            <el-button class='cp icon ml-10' type="primary" icon="el-icon-edit" circle @click='changeCutoff(scope.row)'></el-button>
+            <el-button class='cp ml-10' type="primary"  icon="Edit" circle @click='changeCutoff(scope.row)'></el-button>
           </div>
           
         </template>
@@ -164,9 +164,9 @@
         <template #default="scope">
           <div class='flex jc-around'>
             <router-link :to="getEditUrl(scope.row)">
-              <el-button class='cp icon mr-10' type="primary" icon="el-icon-edit" circle></el-button>
+              <el-button class='cp mr-10' type="primary" icon="Edit" circle></el-button>
             </router-link>
-            <!-- <el-button class='cp icon mr-10' type="primary" icon="el-icon-edit" circle @click='editFun(scope.row)'></el-button> -->
+            <!-- <el-button class='cp mr-10' type="primary" icon="Edit" circle @click='editFun(scope.row)'></el-button> -->
             <el-switch
               v-model="scope.row.status"
               active-value="1"

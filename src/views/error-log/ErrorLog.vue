@@ -3,7 +3,7 @@
 
   <div class="mr-3 rowSS">
     <el-button type="primary" @click="errorLogProd">错误日志测试</el-button>
-    <el-button type="primary" icon="el-icon-delete" @click="multiDelBtnClick">删除</el-button>
+    <el-button type="primary" icon="Delete" @click="multiDelBtnClick">删除</el-button>
     <!--条件搜索-->
     <el-form ref="refsearchFormMixin" :inline="true" class="demo-searchFormMixin ml-2">
       <el-form-item label-width="0px" label="" prop="errorLog" label-position="left">

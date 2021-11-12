@@ -2,7 +2,7 @@
   <div class="upload-container">
     <el-button
       :style="{ background: color, borderColor: color }"
-      icon="el-icon-upload"
+      icon="Upload"
       size="mini"
       type="primary"
       @click="dialogVisible = true"

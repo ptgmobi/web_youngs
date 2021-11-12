@@ -23,7 +23,7 @@
         </div>
         <div>
           <el-popover placement="right" trigger="click">
-            <el-button slot="reference" type="primary" icon="el-icon-setting" circle />
+            <el-button slot="reference" type="primary" icon="Setting" circle />
             <!-- 内容 -->
             <!-- 搜索 -->
             <div class="serach-box mb-10">

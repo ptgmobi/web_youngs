@@ -22,7 +22,7 @@
       <!-- copy_offer -->
       <!-- <el-form-item label="Copy Offer:" prop="copy_offer">
         <el-input class='form-one copy-btn search-input' placeholder="" v-model.trim="data.ruleForm.copy_offer">
-          <el-button type="primary" slot="append" icon="el-icon-search" @click='copyFun'></el-button>
+          <el-button type="primary" slot="append" icon="Search" @click='copyFun'></el-button>
         </el-input>
       </el-form-item> -->
       <!-- attribute_provider -->
@@ -147,7 +147,7 @@
       <!-- diy_siteid -->
       <el-form-item label="Diy SiteID:" prop="site">
         <div class='flex jc-start form-one'>
-          <el-button class='cp icon ml-10' type="primary" icon="el-icon-setting" circle @click='editDiySiteFun'></el-button>
+          <el-button class='cp ml-10' type="primary" icon="Setting" circle @click='editDiySiteFun'></el-button>
         </div>
       </el-form-item>
       <!-- site_id -->
