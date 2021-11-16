@@ -4,32 +4,32 @@ import { ObjTy } from '@/types/common'
 export function getStations() {
   return request({
     // baseURL: '/mock-api',
-    url: '/positions',
+    url: '/position',
     method: 'get'
   })
 }
 // 获取单独
-export function getStation(params) {
+export function getStation(params: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: `/positions/${params}`,
+    url: `/position/view/${params}`,
     method: 'get'
   })
 }
 // 新建
-export function setCreateStation(data) {
+export function setCreateStation(data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: '/positions',
+    url: '/position',
     method: 'post',
     data
   })
 }
 // 修改
-export function setEditStation(params, data) {
+export function setEditStation(params: ObjTy, data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: `/positions/${params}`,
+    url: `/position/${params}`,
     method: 'patch',
     data
   })

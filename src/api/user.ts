@@ -4,24 +4,26 @@ import { ObjTy } from '@/types/common'
 export function getUsers(data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: '/users',
+    url: '/user',
     method: 'get',
-    data
+    data,
+    isParams: true
   })
 }
 // 获取单独
 export function getUser(params: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: `/users/${params}`,
-    method: 'get'
+    url: `/user/view/${params}`,
+    method: 'get',
+    isParams: true
   })
 }
 // 新建
 export function setCreateUser(data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: '/users',
+    url: '/user',
     method: 'post',
     data
   })
@@ -30,8 +32,8 @@ export function setCreateUser(data: ObjTy) {
 export function setEditUser(params: ObjTy, data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: `/users/${params}`,
-    method: 'put',
+    url: `/user/${params}`,
+    method: 'patch',
     data
   })
 }
@@ -39,7 +41,7 @@ export function setEditUser(params: ObjTy, data: ObjTy) {
 export function changeStatusUser(params: ObjTy, data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: `/users/status/${params}`,
+    url: `/user/status/${params}`,
     method: 'patch',
     data
   })

@@ -4,32 +4,35 @@ import { ObjTy } from '@/types/common'
 export function getRoles() {
   return request({
     // baseURL: '/mock-api',
-    url: '/roles',
-    method: 'get'
+    url: '/role',
+    method: 'get',
+    isParams: true
   })
 }
 // 获取单独
-export function getRole(params) {
+export function getRole(params: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: `/roles/${params}`,
-    method: 'get'
+    url: `/role/view/${params}`,
+    method: 'get',
+    bfLoading: false,
+    isParams: true
   })
 }
 // 新建
-export function setCreateRole(data) {
+export function setCreateRole(data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: '/roles',
+    url: '/role',
     method: 'post',
     data
   })
 }
 // 修改
-export function setEditRole(params, data) {
+export function setEditRole(params: ObjTy, data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: `/roles/${params}`,
+    url: `/role/${params}`,
     method: 'patch',
     data
   })

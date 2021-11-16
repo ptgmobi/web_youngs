@@ -4,32 +4,34 @@ import { ObjTy } from '@/types/common'
 export function getPermissions() {
   return request({
     // baseURL: '/mock-api',
-    url: '/permissions',
-    method: 'get'
+    url: '/permission',
+    method: 'get',
+    isParams: true
   })
 }
 // 获取单独
-export function getPermission(params) {
+export function getPermission(params: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: `/permissions/${params}`,
-    method: 'get'
+    url: `/permission/view/${params}`,
+    method: 'get',
+    isParams: true
   })
 }
 // 新建
-export function setCreatePermission(data) {
+export function setCreatePermission(data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: '/permissions',
+    url: '/permission',
     method: 'post',
     data
   })
 }
 // 修改
-export function setEditPermission(params, data) {
+export function setEditPermission(params: ObjTy, data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: `/permissions/${params}`,
+    url: `/permission/update`,
     method: 'patch',
     data
   })

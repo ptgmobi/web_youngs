@@ -3,7 +3,7 @@ import axios from 'axios'
 import { ElLoading, ElMessage, ElMessageBox } from 'element-plus'
 import { getToken, setToken } from '@/utils/auth'
 import { AxiosConfigTy, AxiosReqTy } from '@/types/common'
-import qs from 'qs'
+// import qs from 'qs'
 let requestData: any
 let loadingE: any
 
@@ -46,9 +46,9 @@ service.interceptors.request.use(
       request.params = request.data
       request.data = {}
     }
-    if (request.method === 'post') {
-      request.data = qs.stringify(request.data)
-    }
+    // if (request.method === 'post') {
+    //   request.data = qs.stringify(request.data)
+    // }
     return request
   },
   (err: any) => {
@@ -91,7 +91,7 @@ service.interceptors.response.use(
         type: 'error',
         duration: 5 * 1000
       })
-      if (code === 400) {
+      if (code === 403) {
         // to re-login
         ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
           confirmButtonText: '重新登录',

@@ -33,7 +33,7 @@ export default ({ command }: any) => {
         '/dev-api': {
           // target: 'http://dataeye.adsgreat.cn/prod-api',
           // 本地测试
-          target: 'http://172.31.21.0',
+          target: 'http://172.31.20.63:8888',
           // 线上地址
           // target: 'http://partner.thebosi.com:8080',
           ws: false,

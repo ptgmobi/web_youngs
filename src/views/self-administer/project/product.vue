@@ -7,7 +7,7 @@
           <el-input v-model="busData.data.name" placeholder="请输入产品名称" :disabled="dialogType==='edit'" />
         </el-form-item>
         <el-form-item label="项目组" prop="project">
-          <el-select v-model="busData.data.project" class="w100" placeholder="请选择所属项目组" :disabled="dialogType==='edit'">
+          <el-select v-model="busData.data.project" class="w100" placeholder="请选择所属项目组">
             <el-option
               v-for="item in busData.options.project"
               :key="item.id"
@@ -16,7 +16,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="APP_ID" prop="appid">
+        <!-- <el-form-item label="APP_ID" prop="appid">
           <el-input v-model="busData.data.appid" placeholder="请输入app_id" />
         </el-form-item>
         <el-form-item label="数数项目ID" prop="projectId">
@@ -25,7 +25,7 @@
         <el-form-item label="热云APPKEY" prop="appkey">
           <el-input v-model="busData.data.appkey" placeholder="请输入热云APPKEY" :disabled="dialogType==='edit'" />
         </el-form-item>
-        <!-- <el-form-item label="状态" prop="status">
+        <el-form-item label="状态" prop="status">
           <el-select v-model="busData.data.status" class="w100">
             <el-option
               v-for="item in busData.options.status"
@@ -34,8 +34,8 @@
               :value="item.id"
             />
           </el-select>
-        </el-form-item> -->
-        <!-- <el-form-item label="产品配置" prop="conf">
+        </el-form-item>
+        <el-form-item label="产品配置" prop="conf">
           <el-transfer
             filterable
             :filter-method="busData.setting.filterMethod"
@@ -67,7 +67,7 @@
       <el-table-column align="center" label="ID" prop="id" sortable="custom" />
       <el-table-column align="center" label="项目组" :filters="filters.projectFilter">
         <template #default="scope">
-          <span>{{ showCurrentProject(scope.row.project_id) }} </span>
+          {{ showCurrentProject (scope.row.project_id) }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="产品名称">
@@ -75,26 +75,6 @@
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="APP_ID">
-        <template #default="scope">
-          {{ scope.row.app_id }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="数数项目ID">
-        <template #default="scope">
-          {{ scope.row.ss_project_id }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="热云APPKEY">
-        <template #default="scope">
-          {{ scope.row.ry_appkey }}
-        </template>
-      </el-table-column>
-      <!-- <el-table-column align="center" label="最新版本">
-        <template #default="scope">
-          {{ scope.row.id }}
-        </template>
-      </el-table-column> -->
       <el-table-column align="center" label="创建时间">
         <template #default="scope">
           {{ scope.row.create_time }}
@@ -115,9 +95,9 @@
             <el-switch
               slot="reference"
               v-model="scope.row.status"
-              active-value="1"
-              inactive-value="2"
-              @change="switchStatus($event,scope.row)"
+              :active-value="1"
+              :inactive-value="2"
+              @change="changeStatus($event, scope.row)"
             />
           <!-- </el-popconfirm> -->
           <!-- <el-popover
@@ -135,19 +115,19 @@
               v-model="scope.row.status"
               active-value="1"
               inactive-value="2"
-              @change="switchStatus($event,scope.row)"
+              @change="switchStatus($event, scope.row)"
             />
           </el-popover> -->
         </template>
       </el-table-column>
-      <el-table-column v-if="judgePermissionElementFn('A-AP-PRODUCT-EDIT-V')" align="center" label="操作">
+      <!-- <el-table-column v-if="judgePermissionElementFn('A-AP-PRODUCT-EDIT-V')" align="center" label="操作">
         <template #default="scope">
           <div class="flex">
             <el-button type="primary" size="small" @click="handleEdit(scope)">编辑</el-button>
             <el-button v-if="judgePermissionElementFn('A-AP-PRODUCT-DEL-V')" type="danger" size="small" @click="handleDelete(scope)">删除</el-button>
           </div>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <!-- pagination -->
     <div class="w100 flex">
@@ -222,17 +202,17 @@ export default {
           project: [
             { required: true, message: '必填', trigger: ['change', 'blur'] }
           ],
+          status: [
+            { required: true, message: '必填', trigger: ['change', 'blur'] }
+          ],
           appid: [
-            { required: false, message: '', trigger: ['change', 'blur'] }
+            { required: false, message: '必填', trigger: ['change', 'blur'] }
           ],
           projectId: [
             { required: false, message: '必填', trigger: ['change', 'blur'] }
           ],
           appkey: [
             { required: false, message: '非必填', trigger: ['change', 'blur'] }
-          ],
-          status: [
-            { required: true, message: '必填', trigger: ['change', 'blur'] }
           ]
         }
       },
@@ -286,9 +266,10 @@ export default {
         project_id: this.filters.currentProjectFilter,
         order: this.tableOrder
       }
+      const dd = await getProducts(ajaxData)
       const { data } = await getProducts(ajaxData)
-      this.list = data.list
-      this.pagination.total = data.count
+      console.log(dd)
+      this.list = data
     },
     // 搜索
     handleSearch() {
@@ -333,7 +314,8 @@ export default {
         id: item.id,
         status: item.status
       }
-      await changeStatusProduct(item.id, ajaxData)
+      const res = await changeStatusProduct(item.id, ajaxData)
+      messageFun(res)
     },
     // 点击提交
     async submitFn() {
@@ -344,7 +326,7 @@ export default {
           app_id: this.busData.data.appid,
           ss_project_id: this.busData.data.projectId,
           ry_appkey: this.busData.data.appkey,
-          status: this.busData.data.status
+          status: Number(this.busData.data.status)
         }
         const res = await setCreateProduct(ajaxData, 'post')
         if (res) {
@@ -360,7 +342,7 @@ export default {
           app_id: this.busData.data.appid,
           ss_project_id: this.busData.data.projectId,
           ry_appkey: this.busData.data.appkey,
-          status: this.busData.data.status
+          status: Number(this.busData.data.status)
         }
         const res = await setEditProduct(this.busData.data.id, ajaxData, 'patch')
         if (res) {
@@ -376,7 +358,6 @@ export default {
       const arr = this.busData.options.project?.filter((item) => {
         return item.id === projectId
       })
-      console.log(arr)
       return arr[0]?.name
     },
     cancelFn() {
@@ -388,8 +369,8 @@ export default {
       this.filters.currentProjectFilter = value.length === this.filters.projectFilter.length ? '' : value
       this.getList()
     },
-    switchStatus(callback, item) {
-      if (callback === '1') {
+    switchStatus(e, item) {
+      if (e === 1) {
         this.statusMessage = '产品状态开启后，产品数据开始在平台上展示'
       } else {
         this.statusMessage = '产品状态关闭后,产品数据将不在报表中显示'

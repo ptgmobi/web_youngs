@@ -4,32 +4,34 @@ import { ObjTy } from '@/types/common'
 export function getProjects() {
   return request({
     // baseURL: '/mock-api',
-    url: '/projects',
-    method: 'get'
+    url: '/project',
+    method: 'get',
+    isParams: true
   })
 }
 // 获取单独
-export function getProject(params) {
+export function getProject(params: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: `/projects/${params}`,
-    method: 'get'
+    url: `/project/view/${params}`,
+    method: 'get',
+    isParams: true
   })
 }
 // 新建
-export function setCreateProject(data) {
+export function setCreateProject(data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: '/projects',
+    url: '/project',
     method: 'post',
     data
   })
 }
 // 修改
-export function setEditProject(params, data) {
+export function setEditProject(params: ObjTy, data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: `/projects/${params}`,
+    url: `/project/${params}`,
     method: 'patch',
     data
   })

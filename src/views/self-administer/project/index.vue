@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     handleClick(tab, event) {
-      this.activeName = tab.name
+      this.activeName = tab.props.name
     }
   }
 }

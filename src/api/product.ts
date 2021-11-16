@@ -1,45 +1,47 @@
 import request from '@/utils/axiosReq'
 import { ObjTy } from '@/types/common'
 // 获取列表
-export function getProducts(params) {
-  const { name, page, limit, project_id, order } = params
+export function getProducts(data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: `/products?name=${name}&page=${page}&limit=${limit}&project_id=${project_id}&order=${order}`,
-    method: 'get'
+    url: '/product',
+    method: 'get',
+    data,
+    isParams: true
   })
 }
 // 获取单独
-export function getProduct(params) {
+export function getProduct(params: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: `/products/${params}`,
-    method: 'get'
+    url: `/product/view/${params}`,
+    method: 'get',
+    isParams: true
   })
 }
 // 新建
-export function setCreateProduct(data) {
+export function setCreateProduct(data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: '/products',
+    url: '/product',
     method: 'post',
     data
   })
 }
 // 修改
-export function setEditProduct(params, data) {
+export function setEditProduct(params: ObjTy, data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: `/products/${params}`,
+    url: `/product/${params}`,
     method: 'put',
     data
   })
 }
 // 修改状态
-export function changeStatusProduct(params, data) {
+export function changeStatusProduct(params: ObjTy, data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: `/products/${params}`,
+    url: `/product/${params}`,
     method: 'patch',
     data
   })

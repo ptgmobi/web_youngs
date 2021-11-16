@@ -132,8 +132,8 @@
           <el-switch
             v-if="judgePermissionElementFn('A-AU-USER-STATUS-V')"
             v-model="scope.row.status"
-            active-value="1"
-            inactive-value="2"
+            :active-value="1"
+            :inactive-value="2"
             @change="changeStatus($event, scope.row)"
           />
         </template>
@@ -198,7 +198,8 @@ const defaultData = {
   project_ischange: false,
   // 产品
   product_id: [],
-  product_ischange: false
+  product_ischange: false,
+  status: 1
 }
 export default {
   mixins: [ self ],
@@ -367,7 +368,7 @@ export default {
         order: 'desc'
       }
       const { data } = await getProducts(ajaxData)
-      this.busData.options.productArr = data.list
+      this.busData.options.productArr = data
       // 岗位
       const { data: position } = await getStations()
       this.busData.options.position = position
@@ -381,27 +382,39 @@ export default {
     },
     // 根据项目id获取对应的项目
     getUserProject(arr) {
-      return this.busData.options.project.filter(ele => {
-        return arr.includes(ele.id)
-      }).map(ele => {
-        return ele.name
-      }).join(',')
+      if (arr) {
+        return this.busData.options.project.filter(ele => {
+          return arr.includes(Number(ele.id))
+        }).map(ele => {
+          return ele.name
+        }).join(',')
+      } else {
+        return arr
+      }
     },
     // 根据项目id获取对应的产品
     getUserProduct(arr) {
-      return this.busData.options.productArr.filter(ele => {
-        return arr.includes(ele.id)
-      }).map(ele => {
-        return ele.name
-      }).join(',')
+      if (arr) {
+        return this.busData.options.productArr.filter(ele => {
+          return arr.includes(Number(ele.id))
+        }).map(ele => {
+          return ele.name
+        }).join(',')
+      } else {
+        return arr
+      }
     },
     // 根据项目id获取对应的岗位
     getUserPosition(arr) {
-      return this.busData.options.position.filter(ele => {
-        return arr.includes(ele.id)
-      }).map(ele => {
-        return ele.name
-      }).join(',')
+      if (arr) {
+        return this.busData.options.position.filter(ele => {
+          return arr.includes(ele.id)
+        }).map(ele => {
+          return ele.name
+        }).join(',')
+      } else {
+        return arr
+      }
     },
     // 获取列表
     async getList() {
@@ -436,7 +449,13 @@ export default {
       // 查询one
       const { data: choiceData } = await getUser(this.busData.data.id)
       this.busData.oldData = _.cloneDeep(choiceData)
-      this.busData.data = Object.assign({}, this.busData.data, _.cloneDeep(choiceData))
+      const newData = _.cloneDeep(choiceData)
+      // this.busData.data = Object.assign({}, this.busData.data, newData, )
+      this.busData.data = {
+        ...this.busData.data,
+        ...newData,
+        ...newData.user
+      }
       this.choiceProject()
     },
     // 提交模态框
@@ -512,7 +531,8 @@ export default {
         id: item.id,
         status: item.status
       }
-      await changeStatusUser(item.id, ajaxData)
+      const res = await changeStatusUser(item.id, ajaxData)
+      messageFun(res)
     },
     // 修改密码
     handleEditPass(scope) {
@@ -541,8 +561,8 @@ export default {
       if (arr.length !== 0) {
         await Promise.all(arr.map(async(ele) => {
           const { data } = await getProject(ele)
-          if (data.product.length !== 0) {
-            data.product.forEach(o => {
+          if (data.product_id.length !== 0) {
+            data.product_id.forEach(o => {
               product.push(o)
             })
           }
