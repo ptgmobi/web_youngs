@@ -80,7 +80,7 @@ const setting: SettingTy = {
   /**
    * @type {string} 'roles' | 'code'
    */
-  permissionMode: 'roles'
+  permissionMode: 'code'
 }
 
 export default setting

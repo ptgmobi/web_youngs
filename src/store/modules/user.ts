@@ -57,6 +57,7 @@ const actions = {
         .then((res: ObjTy) => {
           if (res.code === 200) {
             const token = res.data?.token
+            console.log(token)
             commit('SET_TOKEN', token)
             resolve(null)
           } else {
@@ -78,13 +79,15 @@ const actions = {
   async getInfo({ commit, state }: ObjTy) {
     const token = getToken()
     const decodeToken: any = jwtDecode(token)
-    const user = decodeToken.user
-    const { email, id, name } = user
+    console.log(decodeToken)
+    const { User: {
+      Email: email, Id: id, Username: name
+    }} = decodeToken
     commit('SET_EMAIL', email)
     commit('SET_ID', id)
     commit('SET_NAME', name)
     return new Promise((resolve, reject) => {
-    getInfoReq(user.id)
+    getInfoReq(id)
       .then((response: ObjTy) => {
         const { data } = response
         if (!data) {
@@ -104,6 +107,7 @@ const actions = {
   },
   // user logout
   logout({ commit, state }: ObjTy) {
+    console.log('logout')
     // return new Promise((resolve, reject) => {
     //   logoutReq()
     //     .then(() => {
@@ -119,6 +123,7 @@ const actions = {
   },
   // remove token
   resetToken() {
+    console.log('resetToken')
     return new Promise((resolve) => {
       removeToken() // must remove  token  first
       resolve(null)

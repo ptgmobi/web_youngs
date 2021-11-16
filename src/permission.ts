@@ -38,11 +38,11 @@ router.beforeEach(async (to: any, from, next: any) => {
             // get user info
             // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
             // ! code start
-            // const userInfo = await store.dispatch('user/getInfo')
-            // const { menu } = userInfo
-            // const roles = [...menu]
+            const userInfo = await store.dispatch('user/getInfo')
+            const { menu } = userInfo
+            const roles = [...menu]
             // ! code end
-            const roles = ['admin']
+            // const roles = ['admin']
             accessRoutes = await store.dispatch('permission/generateRoutes', roles)
           } else {
             accessRoutes = asyncRoutes
@@ -59,6 +59,7 @@ router.beforeEach(async (to: any, from, next: any) => {
           // set the replace: true, so the navigation will not leave a history record
           next({ ...to, replace: true })
         } catch (err) {
+          console.log(err)
           await store.dispatch('user/resetToken')
           next(`/login?redirect=${to.path}`)
           if (settings.isNeedNprogress) NProgress.done()

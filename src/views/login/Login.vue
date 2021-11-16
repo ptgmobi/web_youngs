@@ -111,6 +111,7 @@ let loginReq = () => {
     .dispatch('user/login', formInline)
     .then(() => {
       ElMessage({ message: '登录成功', type: 'success' })
+      console.log(state.redirect)
       proxy.$router.push({ path: state.redirect || '/', query: state.otherQuery })
     })
     .catch((res) => {
