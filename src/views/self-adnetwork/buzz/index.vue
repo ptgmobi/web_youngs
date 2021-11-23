@@ -99,7 +99,7 @@
         prop="platform"
         label="Platform">
         <template #default="scope">
-          {{ scope.row.platform === '1' ? 'Android' : 'iOS' }}
+          {{ Number(scope.row.platform) === 1 ? 'Android' : 'iOS' }}
         </template>
       </el-table-column>
       <el-table-column
@@ -169,8 +169,8 @@
             <!-- <el-button class='cp mr-10' type="primary" icon="Edit" circle @click='editFun(scope.row)'></el-button> -->
             <el-switch
               v-model="scope.row.status"
-              active-value="1"
-              inactive-value="2"
+              :active-value="1"
+              :inactive-value="2"
               @change="changeStatus(scope.row)"
             />
           </div>
@@ -306,7 +306,8 @@ const changeCutoff = async (row: any) => {
 }
 const handleCutoff = (row: any) => {
   const num = row.cutoff_end - row.cutoff_start
-  return num * row.device_num
+  const count = (num * row.device_num)
+  return count ? count.toFixed(0) : ''
 }
 const changeStatus = async (row: any) => {
   let ajaxData = {
@@ -328,19 +329,43 @@ const getEditUrl = (row: any) => {
 }
 const init = async () => {
   data.loading = true
-  const ajaxData = {
+  let ajaxData: any = {
     page: data.pagination.listQuery.page,
     page_size: data.pagination.listQuery.limit,
-    attribute_provider: data.useData.attribute_provider,
-    platform: data.useData.platform,
-    pkg_name: data.useData.package_name,
-    channel: data.useData.channel,
-    offer_id: data.useData.id,
-    title: data.useData.offer_title,
-    country: data.useData.country,
-    tracking_link: data.useData.pid
-
+    // attribute_provider: data.useData.attribute_provider,
+    // platform: data.useData.platform,
+    // pkg_name: data.useData.package_name,
+    // channel: data.useData.channel,
+    // offer_id: data.useData.id,
+    // title: data.useData.offer_title,
+    // country: data.useData.country,
+    // tracking_link: data.useData.pid
   }
+  if (data.useData.attribute_provider) {
+    ajaxData.attribute_provider = data.useData.attribute_provider
+  }
+  if (data.useData.platform) {
+    ajaxData.platform = data.useData.platform
+  }
+  if (data.useData.package_name) {
+    ajaxData.pkg_name = data.useData.package_name
+  }
+  if (data.useData.channel) {
+    ajaxData.channel = data.useData.channel
+  }
+  if (data.useData.id) {
+    ajaxData.offer_id = data.useData.id
+  }
+  if (data.useData.offer_title) {
+    ajaxData.title = data.useData.offer_title
+  }
+  if (data.useData.country) {
+    ajaxData.country = data.useData.country
+  }
+  if (data.useData.pid) {
+    ajaxData.tracking_link = data.useData.pid
+  }
+
   const res = await ApiGetBuzzList(ajaxData)
   const { data: result } = res
   data.list = result?.data

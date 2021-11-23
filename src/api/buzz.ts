@@ -4,7 +4,7 @@ import { ObjTy } from '@/types/common'
 // ! buzz list
 export function ApiGetBuzzList(data: ObjTy) {
   return request({
-    url: '/buzz/buzz-index',
+    url: '/buzz',
     data,
     method: 'get',
     bfLoading: false,
