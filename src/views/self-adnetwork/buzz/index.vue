@@ -198,6 +198,7 @@ import { ElMessage } from 'element-plus'
 import { messageFun } from '@/utils/message'
 import _ from 'lodash'
 import { number } from 'echarts'
+import { handleAjaxDataObjectFn } from '@/utils/new-format'
 let { proxy }: any = getCurrentInstance()
 const searchData = shallowRef({
   attribute_provider: [],
@@ -213,17 +214,18 @@ const OptionsCutoffStart = () => {
   const arr = [...new Array(20)].map((ele, index) => {
     const val = (index * 5) / 100
     return {
-      value: val.toFixed(2),
+      value: val,
       label: `${(Number(val) * 100).toFixed(0)}%`
     }
   })
   return arr
 }
+console.log(OptionsCutoffStart())
 const OptionsCutoffEnd = () => {
   const arr = [...new Array(20)].map((ele, index) => {
     const val = (index * 5 + 5) / 100
     return {
-      value: val.toFixed(2),
+      value: val,
       label: `${(Number(val) * 100).toFixed(0)}%`
     } 
   })
@@ -277,6 +279,7 @@ const changeClk = async (row: any) => {
     id: row.id,
     max_clk_num: row.max_clk_num
   }
+  ajaxData = handleAjaxDataObjectFn(ajaxData)
   let res = await ApichangeClk(ajaxData)
   console.log(res)
   messageFun(res)
@@ -288,11 +291,12 @@ const changeCutoff = async (row: any) => {
   const cutoff_end = row.cutoff_end
   const id = row.id
   if (cutoff_start < cutoff_end) {
-    const ajaxData = {
-      start: cutoff_start,
-      end: cutoff_end,
+    let ajaxData = {
+      cutoff_start,
+      cutoff_end,
       id
     }
+    ajaxData = handleAjaxDataObjectFn(ajaxData)
     const res = await ApichangeCutoff(ajaxData)
     messageFun(res)
   } else {
@@ -314,6 +318,7 @@ const changeStatus = async (row: any) => {
     id: row.id,
     status: row.status
   }
+  ajaxData = handleAjaxDataObjectFn(ajaxData)
   const res = await ApiChangeStatus(ajaxData)
   messageFun(res)
 }

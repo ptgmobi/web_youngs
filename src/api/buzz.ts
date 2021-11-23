@@ -17,7 +17,7 @@ export function ApichangeClk(data: ObjTy) {
   return request({
     url: '/buzz/edit-offer-max-clk',
     data,
-    method: 'post',
+    method: 'patch',
     bfLoading: false,
     isParams: false,
     isAlertErrorMsg: false
@@ -26,9 +26,9 @@ export function ApichangeClk(data: ObjTy) {
 
 export function ApichangeCutoff(data: ObjTy) {
   return request({
-    url: '/buzz/edit-cutoff',
+    url: '/buzz/cutoff',
     data,
-    method: 'post',
+    method: 'patch',
     bfLoading: false,
     isParams: false,
     isAlertErrorMsg: false
@@ -37,9 +37,9 @@ export function ApichangeCutoff(data: ObjTy) {
 
 export function ApiChangeStatus(data: ObjTy) {
   return request({
-    url: '/buzz/edit-offer-status',
+    url: '/buzz/status',
     data,
-    method: 'post',
+    method: 'patch',
     bfLoading: false,
     isParams: false,
     isAlertErrorMsg: false
@@ -47,9 +47,9 @@ export function ApiChangeStatus(data: ObjTy) {
 }
 
 // ! buzz details
-export function ApiOperationOffer(data: ObjTy) {
+export function ApiOperationOfferCreate(data: ObjTy) {
   return request({
-    url: '/buzz/buzz-edit',
+    url: '/buzz',
     data,
     method: 'post',
     bfLoading: false,
@@ -58,10 +58,20 @@ export function ApiOperationOffer(data: ObjTy) {
   })
 }
 
-export function ApiGetOfferData(data: ObjTy) {
+export function ApiOperationOfferEdit(data: ObjTy) {
   return request({
-    url: '/buzz/buzz-edit',
+    url: '/buzz',
     data,
+    method: 'put',
+    bfLoading: false,
+    isParams: false,
+    isAlertErrorMsg: false
+  })
+}
+
+export function ApiGetOfferData(params: string) {
+  return request({
+    url: `/buzz/view/${params}`,
     method: 'get',
     bfLoading: false,
     isParams: true,

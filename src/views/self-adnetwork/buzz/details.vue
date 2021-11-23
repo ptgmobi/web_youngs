@@ -54,8 +54,8 @@
       <!-- conversion_flow_type -->
       <el-form-item label="Conversion Flow:" prop="conversion_flow">
         <div class='form-one flex jc-start'>
-          <el-radio v-model="data.ruleForm.conversion_flow" label="1">CPI</el-radio>
-          <el-radio v-model="data.ruleForm.conversion_flow" label="2">CPA</el-radio>
+          <el-radio v-model="data.ruleForm.conversion_flow" :label="1">CPI</el-radio>
+          <el-radio v-model="data.ruleForm.conversion_flow" :label="2">CPA</el-radio>
         </div>
       </el-form-item>
       <!-- conversion_flow -->
@@ -64,7 +64,7 @@
       </el-form-item>
       <!-- payout -->
       <el-form-item label="Payout($):" prop="payout">
-        <el-input class='form-one' type='text' v-model.trim="data.ruleForm.payout" placeholder=''></el-input>
+        <el-input class='form-one' type='number' v-model.trim="data.ruleForm.payout" placeholder=''></el-input>
       </el-form-item>
       <!-- platform -->
       <el-form-item label="Select Platform:" prop="platform">
@@ -90,11 +90,11 @@
       </el-form-item>
       <!-- max_clk_num -->
       <el-form-item label="Click Limitation(w):" prop="max_clk_num">
-        <el-input class='form-one' type='text' v-model.trim="data.ruleForm.max_clk_num" placeholder=''></el-input>
+        <el-input class='form-one' type='number' v-model.trim="data.ruleForm.max_clk_num" placeholder=''></el-input>
       </el-form-item>
       <!-- Site Click Limitation -->
       <el-form-item label="Site Click Limitation:" prop="site_clk_limit">
-        <el-input class='form-one' type='text' v-model.trim="data.ruleForm.site_clk_limit" placeholder=''></el-input>
+        <el-input class='form-one' type='number' v-model.trim="data.ruleForm.site_clk_limit" placeholder=''></el-input>
       </el-form-item>
       <!-- start_hour -->
       <el-form-item label="Start Hour:" prop="start_hour">
@@ -153,10 +153,10 @@
       <!-- site_id -->
       <el-form-item label="Site ID:" prop="site_id">
         <div class='flex form-one flex-start radio-box'>
-          <el-radio v-model="data.ruleForm.site_id" label="1">Slot_ID</el-radio>
-          <el-radio v-model="data.ruleForm.site_id" label="2">Update(Hours)</el-radio>
+          <el-radio v-model="data.ruleForm.site_id" :label="1">Slot_ID</el-radio>
+          <el-radio v-model="data.ruleForm.site_id" :label="2">Update(Hours)</el-radio>
           <el-select filterable class='form-one ml-10' v-model="data.ruleForm.hour" clearable placeholder=""
-          :disabled = "data.ruleForm.site_id !== '2'"
+          :disabled = "data.ruleForm.site_id !== 2"
           >
             <el-option
               v-for="item in data.options.site_id"
@@ -170,15 +170,15 @@
       <!-- clk_id -->
       <el-form-item label="Click ID:" prop="clk_id">
         <div class='flex jc-start form-one flex-start radio-box'>
-          <el-radio v-model="data.ruleForm.clk_id" label="1">Real</el-radio>
-          <el-radio v-model="data.ruleForm.clk_id" label="2">Virtual</el-radio>
+          <el-radio v-model="data.ruleForm.clk_id" :label="1">Real</el-radio>
+          <el-radio v-model="data.ruleForm.clk_id" :label="2">Virtual</el-radio>
         </div>
       </el-form-item>
       <!-- site_clk_id -->
       <!-- <el-form-item label="Site Click ID:" prop="site_clk_id">
         <div class='flex flex-start form-one flex-start radio-box'>
-          <el-radio v-model="data.ruleForm.site_clk_id" label="1">ON</el-radio>
-          <el-radio v-model="data.ruleForm.site_clk_id" label="2">OFF</el-radio>
+          <el-radio v-model="data.ruleForm.site_clk_id" :label="1">ON</el-radio>
+          <el-radio v-model="data.ruleForm.site_clk_id" :label="2">OFF</el-radio>
         </div>
       </el-form-item> -->
       <!-- category -->
@@ -218,9 +218,10 @@
 </template>
 <script lang="ts" setup>
 import { getCurrentInstance, reactive, watch, watchEffect, onMounted, ref, computed } from 'vue'
-import { ApiOperationOffer, ApiGetOfferData, ApiGetConfig, ApiGetDeviceCount } from '@/api/buzz'
+import { ApiOperationOfferCreate, ApiOperationOfferEdit, ApiGetOfferData, ApiGetConfig, ApiGetDeviceCount } from '@/api/buzz'
 import _ from 'lodash'
 import site from './site'
+import { handleAjaxDataObjectFn } from '@/utils/new-format'
 import { messageFun } from '@/utils/message'
 let { proxy }: any = getCurrentInstance()
 import {useRouter } from 'vue-router'
@@ -310,6 +311,7 @@ let validatorEndHour = (rule: any, value: string, callback: (arg0: Error | undef
     }
   }
 }
+let name: any = ref('')
 // 设备数
 let deviceNum = ref(0)
 // cutoff滑块
@@ -340,8 +342,8 @@ let data: any = reactive({
     ],
     time: [-1, ...[...new Array(24)].map((ele, index) => index)],
     platform: [
-      {value: '1', label: 'Android'},
-      {value: '2', label: 'iOS'},
+      {value: 1, label: 'Android'},
+      {value: 2, label: 'iOS'},
     ],
     country: [],
     site_id: [
@@ -353,8 +355,8 @@ let data: any = reactive({
   ruleForm: {
     type: '',
     id: '',
+    offer_id: undefined,
     operation_type: '',
-    offer_id: '',
     channel: '',
     copy_offer: '',
     attribute_provider: 'AppsFlyer',
@@ -364,20 +366,20 @@ let data: any = reactive({
     pkg_name: '',
     conversion_flow: '',
     event_name: '',
-    payout: '',
+    payout: undefined,
     platform: '',
     country: '',
-    max_clk_num: '',
-    site_clk_limit: '0',
-    site_install_limitation: '0',
+    max_clk_num: undefined,
+    site_clk_limit: undefined,
+    site_install_limitation: undefined,
     start_hour: '-1',
     end_hour: '-1',
     device: [],
-    cutoff_start: '',
-    cutoff_end: '',
-    diy_siteid: [],
+    cutoff_start: undefined,
+    cutoff_end: undefined,
+    diy_siteid: '',
     site_id: '',
-    hour: '',
+    hour: undefined,
     clk_id: '',
     site_clk_id: '',
     // category_id: '',
@@ -454,7 +456,7 @@ let data: any = reactive({
 // methods
 const editDiySiteFun = () => {
   data.dialogVisibleSite = true
-  const siteData = data.ruleForm['diy_siteid'] ? data.ruleForm['diy_siteid'] : []
+  const siteData = data.ruleForm['diy_siteid'] ? JSON.parse(data.ruleForm['diy_siteid']) : []
   data.siteData = siteData
 }
 const saveFun = () => {
@@ -474,7 +476,37 @@ const submitForm = (formName: string) => {
 
 const submitFormFun = async () => {
   console.log('submit')
-  const res = await ApiOperationOffer(data.ruleForm)
+  let res: any
+  console.log(data.ruleForm)
+  let ajaxData: any = {
+    ...data.ruleForm
+  }
+  ajaxData['clk_id'] = parseFloat(ajaxData['clk_id'])
+  ajaxData['conversion_flow'] = parseFloat(ajaxData['conversion_flow'])
+  ajaxData['cutoff_end'] = parseFloat(ajaxData['cutoff_end'])
+  ajaxData['cutoff_start'] = parseFloat(ajaxData['cutoff_start'])
+  ajaxData['end_hour'] = parseFloat(ajaxData['end_hour'])
+  ajaxData['start_hour'] = parseFloat(ajaxData['start_hour'])
+  ajaxData['hour'] = parseFloat(ajaxData['hour'])
+  ajaxData['max_clk_num'] = parseFloat(ajaxData['max_clk_num'])
+  ajaxData['payout'] = parseFloat(ajaxData['payout'])
+  ajaxData['platform'] = parseFloat(ajaxData['platform'])
+  ajaxData['site_clk_id'] = parseFloat(ajaxData['site_clk_id'])
+  ajaxData['site_clk_limit'] = parseFloat(ajaxData['site_clk_limit'])
+  ajaxData['site_id'] = parseFloat(ajaxData['site_id'])
+  ajaxData['site_install_limitation'] = parseFloat(ajaxData['site_install_limitation'])
+  ajaxData['diy_siteid'] = JSON.stringify(ajaxData['diy_siteid'])
+  ajaxData['device'] = JSON.stringify(ajaxData['device'])
+  console.log(ajaxData)
+  // return ajaxData
+  if (name === 'create') {
+    delete ajaxData['id']
+    delete ajaxData['offer_id']
+    res = await ApiOperationOfferCreate(ajaxData)
+  }
+  if (name === 'edit') {
+    res = await ApiOperationOfferEdit(ajaxData)
+  }
   if (messageFun(res)) {
     proxy.$router.push({ path: '/adnetwork/buzz'})
   }
@@ -490,20 +522,22 @@ const saveSite = (arr: Array<siteType>) => {
   data.dialogVisibleSite = false
 }
 const setCutoff = (newVal: Array<number>) => {
-  data.ruleForm.cutoff_start = (newVal[0] / 100).toString()
-  data.ruleForm.cutoff_end = (newVal[1] / 100).toString()
+  data.ruleForm.cutoff_start = (newVal[0] / 100)
+  data.ruleForm.cutoff_end = (newVal[1] / 100)
 }
 watch(cutoff, (newVal, oldVal) => {
 	// console.log(newVal, oldVal)
   setCutoff(newVal)
-  
 }, { immediate: true })
 const getConfig = async () => {
   const res = await ApiGetConfig()
-  const { data: configData } = res
-  data.options.channel = Object.values(configData.channel)
-  data.options.country = Object.values(configData.country)
-  return '获取配置成功'
+  if (res) {
+    const { data: configData } = res
+    data.options.channel = Object.values(configData.channel)
+    data.options.country = Object.values(configData.country)
+    return '获取配置成功'
+  }
+  return '获取配置失败'
 }
 const handleDeviceCount = async (): Promise<void> => {
   console.log('get device num')
@@ -564,12 +598,9 @@ const handleCopyOffer = (result: any, options : any) => {
 
 const getOfferData = async () => {
   const id = router.currentRoute.value.params.id
-  const ajaxData = {
-    id
-  }
-  const res = await ApiGetOfferData(ajaxData)
+  const res = await ApiGetOfferData(id.toString())
   const { data: result } = res
-  data.ruleForm = handleCopyOffer(result[0], {
+  data.ruleForm = handleCopyOffer(result, {
     type: data.ruleForm.type,
     isCopy: false
   })
@@ -578,7 +609,7 @@ const getOfferData = async () => {
 }
 onMounted(() => {
   getConfig()
-  const name = router.currentRoute.value.name
+  name = router.currentRoute.value.name
   if (name === 'create') {
     data.ruleForm.operation_type = '1'
     data.ruleForm.type = '1'

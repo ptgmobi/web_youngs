@@ -5,26 +5,42 @@ export default [
     redirect: '/adnetwork/buzz',
     component: Layout,
     name: 'adnetwork',
-    meta: { title: 'adnetwork', icon: 'el-icon-cpu' },
+    meta: {
+      title: 'adnetwork',
+      icon: 'el-icon-cpu',
+      roles: [],
+    },
     children: [
       {
         path: 'buzz',
         name: 'buzz',
         component: () => import('@/views/self-adnetwork/buzz'),
-        meta: { title: 'buzz', icon: 'dashboard' }
+        meta: {
+          title: 'buzz',
+          icon: 'dashboard',
+          roles: [],
+        }
       },
       {
         path: 'buzz-create',
         name: 'create',
         component: () => import('@/views/self-adnetwork/buzz/details'),
-        meta: { title: 'create', icon: 'dashboard' },
+        meta: {
+          title: 'create',
+          icon: 'dashboard',
+          roles: [],
+        },
         hidden: true
       },
       {
         path: 'buzz-edit/:id',
         name: 'edit',
         component: () => import('@/views/self-adnetwork/buzz/details'),
-        meta: { title: 'edit', icon: 'dashboard' },
+        meta: {
+          title: 'edit',
+          icon: 'dashboard',
+          roles: [],
+        },
         hidden: true
       }
     ]
