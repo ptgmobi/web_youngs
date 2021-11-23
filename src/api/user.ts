@@ -50,16 +50,16 @@ export function changeStatusUser(params: ObjTy, data: ObjTy) {
 export function changeUserPassword(params: ObjTy, data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: `/users/pwd/${params}`,
+    url: `/user/admin/pwd/${params}`,
     method: 'patch',
     data
   })
 }
 // 用户修改自己的密码
-export function changeMyPassword(data: ObjTy) {
+export function changeMyPassword(params: ObjTy, data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
-    url: '/users/edit-pwd',
+    url: `/user/pwd/${params}`,
     method: 'patch',
     data
   })

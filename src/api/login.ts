@@ -15,7 +15,7 @@ export function loginReq(data: ObjTy) {
 
 export function getInfoReq(params: ObjTy, data?: ObjTy) {
   return request({
-    url: `/sites/page-config/${params}`,
+    url: `/site/page-config/${params}`,
     data,
     bfLoading: false,
     method: 'get'

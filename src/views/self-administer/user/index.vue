@@ -544,6 +544,7 @@ export default {
     },
     async confirmPass(data) {
       const ajaxData = {
+        id: this.busData.data.id,
         password: data.pass,
         password_re: data.checkPass
       }

@@ -22,7 +22,8 @@ export default {
         password: data.pass,
         password_re: data.checkPass
       }
-      const res = await changeMyPassword(ajaxData)
+      const id = this.$store.getters.id
+      const res = await changeMyPassword(id, ajaxData)
       messageFun(res)
       this.logout()
     },

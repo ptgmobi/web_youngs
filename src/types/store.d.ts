@@ -6,6 +6,7 @@ interface StateTy {
   permission: PermissionTy
   user: UserTy
   element: UserTy
+  id: UserTy
 }
 
 interface UserTy {
