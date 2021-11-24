@@ -1,20 +1,20 @@
 import Layout from '@/layout'
 export default [
   {
-    path: '/adnetwork',
-    redirect: '/adnetwork/buzz',
+    path: '/buzz',
+    redirect: '/buzz/buzz-index',
     component: Layout,
-    name: 'adnetwork',
+    name: 'buzz',
     meta: {
-      title: 'adnetwork',
+      title: 'buzz',
       icon: 'el-icon-cpu',
       roles: [],
     },
     children: [
       {
-        path: 'buzz',
-        name: 'buzz',
-        component: () => import('@/views/self-adnetwork/buzz'),
+        path: 'buzz-index',
+        name: 'buzz-index',
+        component: () => import('@/views/self-buzz/buzz'),
         meta: {
           title: 'buzz',
           icon: 'dashboard',
@@ -24,7 +24,7 @@ export default [
       {
         path: 'buzz-create',
         name: 'create',
-        component: () => import('@/views/self-adnetwork/buzz/details'),
+        component: () => import('@/views/self-buzz/buzz/details'),
         meta: {
           title: 'create',
           icon: 'dashboard',
@@ -35,7 +35,7 @@ export default [
       {
         path: 'buzz-edit/:id',
         name: 'edit',
-        component: () => import('@/views/self-adnetwork/buzz/details'),
+        component: () => import('@/views/self-buzz/buzz/details'),
         meta: {
           title: 'edit',
           icon: 'dashboard',

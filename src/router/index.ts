@@ -4,7 +4,8 @@ import { RouterTy } from '@/types/router'
 // import test from './modules/test'
 import publisher from './modules/publisher'
 import administer from './modules/administer'
-import adnetwork from './modules/adnetwork'
+import buzz from './modules/buzz'
+import fenix from './modules/fenix'
 import password from './modules/password'
 
 export const constantRoutes: RouterTy = [
@@ -33,7 +34,21 @@ export const constantRoutes: RouterTy = [
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true
-  }
+  },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/buzz',
+    children: [
+      {
+        path: 'index',
+        name: 'index',
+        component: () => import('@/views/self-index/index'),
+        //using el svg icon, the elSvgIcon first when at the same time using elSvgIcon and icon
+        meta: { title: 'index', elSvgIcon: 'Fold' }
+      }
+    ]
+  },
 ]
 /**
  * asyncRoutes
@@ -41,7 +56,8 @@ export const constantRoutes: RouterTy = [
  */
 export const asyncRoutes: RouterTy = [
   ...publisher,
-  ...adnetwork,
+  ...buzz,
+  ...fenix,
   ...administer,
   ...password,
   // 404 page must be placed at the end !!!

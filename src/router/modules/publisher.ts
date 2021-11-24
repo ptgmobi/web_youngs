@@ -1,7 +1,7 @@
 import Layout from '@/layout'
 export default [
   {
-    path: '/',
+    path: '/publisher',
     component: Layout,
     redirect: '/report',
     name: 'Publisher',

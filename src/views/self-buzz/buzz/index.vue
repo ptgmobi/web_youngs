@@ -3,7 +3,7 @@
     <div class='controlBox w100 mb-10'>
       <div class="mb-10">
         <!-- <el-button type="primary" @click='createFun'>Offer Create</el-button> -->
-        <router-link to="/adnetwork/buzz-create">
+        <router-link to="/buzz/buzz-create">
           <el-button type="primary">Offer Create</el-button>
         </router-link>
       </div>
@@ -220,7 +220,6 @@ const OptionsCutoffStart = () => {
   })
   return arr
 }
-console.log(OptionsCutoffStart())
 const OptionsCutoffEnd = () => {
   const arr = [...new Array(20)].map((ele, index) => {
     const val = (index * 5 + 5) / 100
@@ -324,13 +323,13 @@ const changeStatus = async (row: any) => {
 }
 const editFun = (row: any) => {
   const id = row.id
-  proxy.$router.push({ path: `/adnetwork/buzz-edit/${id}`, query: {
+  proxy.$router.push({ path: `/buzz/buzz-edit/${id}`, query: {
     type: 'edit'
   }})
 }
 const getEditUrl = (row: any) => {
   const id = row.id
-  return `/adnetwork/buzz-edit/${id}`
+  return `/buzz/buzz-edit/${id}`
 }
 const init = async () => {
   data.loading = true
