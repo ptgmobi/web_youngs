@@ -1,11 +1,14 @@
 <template>
-  <div class="control-box">
-    <el-button type="primary" @click="dialogTableVisible = true">新建</el-button>
-    <Search
-      v-model="dialogTableVisible"
-      @emitParent="emitParent"
-    />
+  <div class="control-box flex jc-between">
+    <el-button type="primary" @click="dialogTableVisible = true">Add New</el-button>
+    <router-link to="/fenix/offer-create">
+      <el-button type="primary">Create</el-button>
+    </router-link>
   </div>
+  <Search
+    v-model="dialogTableVisible"
+    @emitParent="emitParent"
+  />
   <div class="body-box mt-10">
     <el-table :data="tableData" style="width: 100%" border>
       <el-table-column prop="id" label="ID" align="center" />

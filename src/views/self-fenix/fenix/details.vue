@@ -1,4 +1,5 @@
 <template>
+  <h3>Manage Slot</h3>
   <div>
     <el-table :data="tableData" style="width: 100%" border>
       <el-table-column prop="id" label="App Name" align="center" />

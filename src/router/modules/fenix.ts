@@ -12,7 +12,7 @@ export default [
     },
     children: [
       {
-        path: 'fenix-index',
+        path: 'fenix',
         name: 'fenix-index',
         component: () => import('@/views/self-fenix/fenix'),
         meta: {
@@ -23,7 +23,7 @@ export default [
       },
       {
         path: 'fenix-create',
-        name: 'create',
+        name: 'fenix-create',
         component: () => import('@/views/self-fenix/fenix/details'),
         meta: {
           title: 'create',
@@ -34,8 +34,40 @@ export default [
       },
       {
         path: 'fenix-edit/:id',
-        name: 'edit',
+        name: 'fenix-edit',
         component: () => import('@/views/self-fenix/fenix/details'),
+        meta: {
+          title: 'edit',
+          icon: 'dashboard',
+          roles: [],
+        },
+        hidden: true
+      },
+      {
+        path: 'offer',
+        name: 'fenix-offer',
+        component: () => import('@/views/self-fenix/offer'),
+        meta: {
+          title: 'Fenix Offer',
+          icon: 'dashboard',
+          roles: [],
+        }
+      },
+      {
+        path: 'offer-create',
+        name: 'fenix-offer-create',
+        component: () => import('@/views/self-fenix/offer/details'),
+        meta: {
+          title: 'edit',
+          icon: 'dashboard',
+          roles: [],
+        },
+        hidden: true
+      },
+      {
+        path: 'offer-edit/:id',
+        name: 'fenix-offer-edit',
+        component: () => import('@/views/self-fenix/offer/details'),
         meta: {
           title: 'edit',
           icon: 'dashboard',

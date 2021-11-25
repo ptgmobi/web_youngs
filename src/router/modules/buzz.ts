@@ -23,7 +23,7 @@ export default [
       },
       {
         path: 'buzz-create',
-        name: 'create',
+        name: 'buzz-create',
         component: () => import('@/views/self-buzz/buzz/details'),
         meta: {
           title: 'create',
@@ -34,7 +34,7 @@ export default [
       },
       {
         path: 'buzz-edit/:id',
-        name: 'edit',
+        name: 'buzz-edit',
         component: () => import('@/views/self-buzz/buzz/details'),
         meta: {
           title: 'edit',
