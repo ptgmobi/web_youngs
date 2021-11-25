@@ -57,7 +57,6 @@ const actions = {
         .then((res: ObjTy) => {
           if (res.code === 200) {
             const token = res.data?.token
-            console.log(token)
             commit('SET_TOKEN', token)
             resolve(null)
           } else {

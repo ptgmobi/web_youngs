@@ -16,7 +16,7 @@ export default [
         name: 'fenix-index',
         component: () => import('@/views/self-fenix/fenix'),
         meta: {
-          title: 'fenix',
+          title: 'Fenix Publisher',
           icon: 'dashboard',
           roles: [],
         }
