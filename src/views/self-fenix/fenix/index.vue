@@ -1,9 +1,6 @@
 <template>
   <div class="control-box flex jc-between">
     <el-button type="primary" @click="dialogTableVisible = true">Add New</el-button>
-    <router-link to="/fenix/offer-create">
-      <el-button type="primary">Create</el-button>
-    </router-link>
   </div>
   <Search
     v-model="dialogTableVisible"
