@@ -2,13 +2,27 @@
   <!-- form -->
   <el-form enctype="multipart/form-data" ref='ruleForm' :rules='data.rules' :model='data.ruleForm' label-width="240px" label-position="right">
     <div class='content-con flex column'>
-      <!-- offer_id -->
-      <el-form-item label="Offer ID:" prop="offer_id" v-if='data.type === "2"'>
-        <div class='flex flex-start form-one radio-box'>
-          <span v-text='data.ruleForm.offer_id'></span>
+      <!-- Offer -->
+      <el-form-item label="Offer:" prop="offer">
+        <div class='flex jc-start ai-center form-one'>
+          <span v-text='data.ruleForm.offer'></span>
         </div>
       </el-form-item>
-      <!-- channel -->
+      <!-- Adv Offer -->
+      <el-form-item label="Adv Offer:" prop="adv_offer">
+        <div class='flex jc-start ai-center form-one'>
+          <el-input
+            v-model="data.ruleForm.adv_offer"
+            placeholder="Please input"
+            class="input-with-select"
+          >
+            <template #append>
+              <el-button type="primary" icon="Search"></el-button>
+            </template>
+          </el-input>
+        </div>
+      </el-form-item>
+      <!-- Channel -->
       <el-form-item label="Channel:" prop="channel">
         <el-select filterable class='form-one' v-model="data.ruleForm.channel" clearable placeholder="">
           <el-option
@@ -19,13 +33,50 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <!-- copy_offer -->
-      <!-- <el-form-item label="Copy Offer:" prop="copy_offer">
-        <el-input class='form-one copy-btn search-input' placeholder="" v-model.trim="data.ruleForm.copy_offer">
-          <el-button type="primary" slot="append" icon="Search" @click='copyFun'></el-button>
-        </el-input>
-      </el-form-item> -->
-      <!-- attribute_provider -->
+      <!-- Channel Type -->
+      <el-form-item label="Channel Type:" prop="channel_type">
+        <el-radio-group class='form-one' v-model="data.ruleForm.channel_type">
+          <el-radio :label="1">BUZZ</el-radio>
+          <el-radio :label="2">SDK</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <!-- Adv Status -->
+      <el-form-item label="Adv Status:" prop="adv_status">
+        <div class='flex jc-start ai-center form-one'>
+          <span v-text='data.ruleForm.adv_status'></span>
+        </div>
+      </el-form-item>
+      <!-- Status -->
+      <el-form-item label="Status:" prop="status">
+        <div class='flex jc-start ai-center form-one'>
+          <el-switch
+            v-model="data.ruleForm.status"
+            :active-value="1"
+            :inactive-value="2"
+          />
+        </div>
+      </el-form-item>
+      <!-- Offer Title -->
+      <el-form-item label="Offer Title:" prop="title">
+        <div class='flex jc-start ai-center form-one'>
+          <el-input
+            v-model="data.ruleForm.title"
+            placeholder="Please input"
+            class="input-with-select"
+          />
+        </div>
+      </el-form-item>
+      <!-- Package Name -->
+      <el-form-item label="Package Name:" prop="pkg">
+        <div class='flex jc-start ai-center form-one'>
+          <el-input
+            v-model="data.ruleForm.pkg"
+            placeholder="Please input"
+            class="input-with-select"
+          />
+        </div>
+      </el-form-item>
+      <!-- Attribute Provider -->
       <el-form-item label="Attribute Provider:" prop="attribute_provider">
         <el-select filterable class='form-one' v-model="data.ruleForm.attribute_provider" clearable placeholder="">
           <el-option
@@ -36,49 +87,29 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <!-- title -->
-      <el-form-item label="Offer Title:" prop="title">
-        <el-input class='form-one' type='text' v-model.trim="data.ruleForm.title" placeholder=''></el-input>
-      </el-form-item>
-      <!-- tracking_link -->
-      <!-- 此处需要去除空格和制表符 -->
-      <el-form-item class="mb-30" label="Traking Link:" prop="tracking_link">
-        <el-input class='form-one' type="textarea" v-model.trim="data.ruleForm.tracking_link" 
-        :autosize="{ minRows: 8, maxRows: 80}"
-        placeholder=''></el-input>
-      </el-form-item>
-      <!-- pkg_name -->
-      <el-form-item label="Package Name:" prop="pkg_name">
-        <el-input class='form-one' type='text' v-model.trim="data.ruleForm.pkg_name" placeholder=''></el-input>
-      </el-form-item>
-      <!-- conversion_flow_type -->
-      <el-form-item label="Conversion Flow:" prop="conversion_flow">
-        <div class='form-one flex jc-start'>
-          <el-radio v-model="data.ruleForm.conversion_flow" :label="1">CPI</el-radio>
-          <el-radio v-model="data.ruleForm.conversion_flow" :label="2">CPA</el-radio>
+      <!-- Pid -->
+      <el-form-item label="Pid:" prop="pid">
+        <div class='flex jc-start ai-center form-one'>
+          <el-input
+            v-model="data.ruleForm.pid"
+            placeholder="Please input"
+            class="input-with-select"
+          />
         </div>
       </el-form-item>
-      <!-- conversion_flow -->
-      <el-form-item label="Event Name:" prop="event_name" v-if="data.ruleForm.conversion_flow === '2'">
-        <el-input class='form-one' type='text' v-model.trim="data.ruleForm.event_name" placeholder=''></el-input>
-      </el-form-item>
-      <!-- payout -->
-      <el-form-item label="Payout($):" prop="payout">
-        <el-input class='form-one' type='number' v-model.trim="data.ruleForm.payout" placeholder=''></el-input>
-      </el-form-item>
-      <!-- platform -->
-      <el-form-item label="Select Platform:" prop="platform">
+      <!-- Platform -->
+      <el-form-item label="Platform:" prop="platform">
         <el-select filterable class='form-one' v-model="data.ruleForm.platform" clearable placeholder="">
           <el-option
             v-for="item in data.options.platform"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            :key="item"
+            :label="item"
+            :value="item">
           </el-option>
         </el-select>
       </el-form-item>
-      <!-- country -->
-      <el-form-item label="Targeting Countries:" prop="country">
+      <!-- Country -->
+      <el-form-item label="Country:" prop="country">
         <el-select filterable class='form-one' v-model="data.ruleForm.country" clearable placeholder="">
           <el-option
             v-for="item in data.options.country"
@@ -88,116 +119,174 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <!-- max_clk_num -->
-      <el-form-item label="Click Limitation(w):" prop="max_clk_num">
-        <el-input class='form-one' type='number' v-model.trim="data.ruleForm.max_clk_num" placeholder=''></el-input>
+      <!-- Revenue -->
+      <el-form-item label="Revenue:" prop="revenue">
+        <div class='flex jc-start ai-center form-one'>
+          <el-input
+            v-model="data.ruleForm.revenue"
+            placeholder="Please input"
+            class="input-with-select"
+          />
+        </div>
       </el-form-item>
-      <!-- Site Click Limitation -->
-      <el-form-item label="Site Click Limitation:" prop="site_clk_limit">
-        <el-input class='form-one' type='number' v-model.trim="data.ruleForm.site_clk_limit" placeholder=''></el-input>
+      <!-- Manage Traffic -->
+      <el-form-item label="Manage Traffic:" prop="traffic">
+        <div class='form-one'>
+          <div class="flex jc-end">
+            <el-button type="primary" @click="addTrafficFn">Add</el-button>
+          </div>
+          <el-table class="mt-10" :data="data.manage_traffic" style="width: 100%" border>
+            <el-table-column label="Pub Name" align="center">
+              <template #default="scope">
+                <el-select filterable v-model="scope.row.pub_name" clearable placeholder="">
+                  <el-option
+                    v-for="item in data.options.pub_name"
+                    :key="item"
+                    :label="item"
+                    :value="item">
+                  </el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column label="Payout" align="center">
+              <template #default="scope">
+                <el-input
+                  v-model="scope.row.payout"
+                  type="number"
+                  placeholder="Please input"
+                  class="input-with-select"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column label="Cap Daily" align="center">
+              <template #default="scope">
+                <el-input
+                  v-model="scope.row.cap_daily"
+                  type="number"
+                  placeholder="Please input"
+                  class="input-with-select"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="Operation"
+              align="center"
+              width="150px"
+            >
+              <template #default="scope">
+                <el-button type="danger" icon="Delete" circle></el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </el-form-item>
-      <!-- start_hour -->
-      <el-form-item label="Start Hour:" prop="start_hour">
-        <el-select filterable class='form-one' v-model="data.ruleForm.start_hour" placeholder="">
+      <!-- Adv Tracking Link -->
+      <el-form-item label="Adv Tracking Link:" prop="adv_tracking_link">
+        <div class='flex jc-start ai-center form-one'>
+          <el-input
+            :rows="2"
+            type="textarea"
+            v-model="data.ruleForm.adv_tracking_link"
+            placeholder="Please input"
+            class="input-with-select"
+          />
+        </div>
+      </el-form-item>
+      <!-- Target CVR -->
+      <el-form-item label="Target CVR:" prop="target_cvr">
+        <div class='flex jc-start ai-center form-one'>
+          <el-input
+            v-model="data.ruleForm.target_cvr"
+            placeholder="Please input"
+            class="input-with-select"
+          />
+        </div>
+      </el-form-item>
+      <!-- Site Type -->
+      <el-form-item label="Site Type:" prop="site_type">
+        <el-select filterable class='form-one' v-model="data.ruleForm.site_type" clearable placeholder="">
           <el-option
-            v-for="item in data.options.time"
+            v-for="item in data.options.site_type"
             :key="item"
             :label="item"
             :value="item">
           </el-option>
         </el-select>
       </el-form-item>
-      <!-- end_hour -->
-      <el-form-item label="End Hour:" prop="end_hour">
-        <el-select filterable class='form-one' v-model="data.ruleForm.end_hour" placeholder="">
-          <el-option
-            v-for="item in data.options.time"
-            :key="item"
-            :label="item"
-            :value="item">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <!-- site_install_limitation-->
-      <!-- <el-form-item label="Site Install Limitation:" prop="site_install_limitation">
-        <el-select filterable class='form-one' v-model="data.ruleForm.site_install_limitation" clearable placeholder="">
-          <el-option
-            v-for="item in 6"
-            :key="item"
-            :label="item - 1"
-            :value="item - 1">
-          </el-option>
-        </el-select>
-      </el-form-item> -->
-      <!-- Device Cutoff -->
-      <el-form-item label="Device Cutoff:" prop="cutoff_start">
-        <div class="flex ai-center">
-          <span v-text="(data.ruleForm.cutoff_start * 100)"></span>%
-          <span>-</span>
-          <span v-text="(data.ruleForm.cutoff_end * 100)"></span>%
-          （<span>总设备数:</span>
-            <span v-text="handleDeviceNum.all"></span>）
-          （<span>选中设备数:</span>
-            <span v-text="handleDeviceNum.judge"></span>）
-        </div>
-        <div class='flex flex-start form-one p10 pt-0 pb-0'>
-          <el-slider class="w100" v-model="cutoff" range :step="5" :show-stops="true" show-input :min="0" :max="100"> </el-slider>
+      <!-- Site Value -->
+      <el-form-item label="Site Type:"
+        prop="site_value"
+        :rules="data.ruleForm.site_type === 6 ? data.rules.s2s_tracking_link : data.rules.no_required"
+      >
+        <div class='flex jc-start ai-center form-one'>
+          <el-input
+            v-model="data.ruleForm.site_value"
+            placeholder="Please input"
+            class="input-with-select"
+          />
         </div>
       </el-form-item>
-      <!-- diy_siteid -->
-      <el-form-item label="Diy SiteID:" prop="site">
-        <div class='flex jc-start form-one'>
-          <el-button class='cp ml-10' type="primary" icon="Setting" circle @click='editDiySiteFun'></el-button>
+      <!-- S2S Async -->
+      <el-form-item label="S2S Async:" prop="is_s2s">
+        <div class='flex jc-start ai-center form-one'>
+          <el-switch
+            v-model="data.ruleForm.is_s2s"
+            :active-value="1"
+            :inactive-value="2"
+          />
         </div>
       </el-form-item>
-      <!-- site_id -->
-      <el-form-item label="Site ID:" prop="site_id">
-        <div class='flex form-one flex-start radio-box'>
-          <el-radio v-model="data.ruleForm.site_id" :label="1">Slot_ID</el-radio>
-          <el-radio v-model="data.ruleForm.site_id" :label="2">Update(Hours)</el-radio>
-          <el-select filterable class='form-one ml-10' v-model="data.ruleForm.hour" clearable placeholder=""
-          :disabled = "data.ruleForm.site_id !== 2"
-          >
-            <el-option
-              v-for="item in data.options.site_id"
-              :key="item"
-              :label="item"
-              :value="item">
-            </el-option>
-          </el-select>
+      <!-- S2S Tracking Link -->
+      <el-form-item label="S2S Tracking Link:"
+        prop="s2s_tracking_link"
+        :rules="data.ruleForm.is_s2s === 1 ? data.rules.s2s_tracking_link : data.rules.no_required"
+      >
+        <div class='flex jc-start ai-center form-one'>
+          <el-input
+            :rows="2"
+            type="textarea"
+            v-model="data.ruleForm.s2s_tracking_link"
+            placeholder="Please input"
+            class="input-with-select"
+          />
         </div>
       </el-form-item>
-      <!-- clk_id -->
-      <el-form-item label="Click ID:" prop="clk_id">
-        <div class='flex jc-start form-one flex-start radio-box'>
-          <el-radio v-model="data.ruleForm.clk_id" :label="1">Real</el-radio>
-          <el-radio v-model="data.ruleForm.clk_id" :label="2">Virtual</el-radio>
+      <!-- Preview URL -->
+      <el-form-item label="Preview URL:"
+        prop="app_url"
+        :rules="data.ruleForm.is_s2s === 1 ? data.rules.app_url : data.rules.no_required"
+      >
+        <div class='flex jc-start ai-center form-one'>
+          <el-input
+            :rows="2"
+            type="textarea"
+            v-model="data.ruleForm.app_url"
+            placeholder="Please input"
+            class="input-with-select"
+          />
         </div>
       </el-form-item>
-      <!-- site_clk_id -->
-      <!-- <el-form-item label="Site Click ID:" prop="site_clk_id">
-        <div class='flex flex-start form-one flex-start radio-box'>
-          <el-radio v-model="data.ruleForm.site_clk_id" :label="1">ON</el-radio>
-          <el-radio v-model="data.ruleForm.site_clk_id" :label="2">OFF</el-radio>
+      <!-- Description -->
+      <el-form-item label="Description:" prop="description">
+        <div class='flex jc-start ai-center form-one'>
+          <el-input
+            :rows="2"
+            type="textarea"
+            v-model="data.ruleForm.description"
+            placeholder="Please input"
+            class="input-with-select"
+          />
         </div>
-      </el-form-item> -->
-      <!-- category -->
-      <!-- <el-form-item label="Category:" prop="category_id">
-        <el-select filterable class='form-one' v-model="data.ruleForm.category_id" clearable placeholder="">
-          <el-option
-            v-for="(value, key) in handleOptionsCategory"
-            :key="key"
-            :label="value"
-            :value="key">
-          </el-option>
-        </el-select>
-      </el-form-item> -->
-      <!-- note -->
-      <el-form-item label="Note:" prop="note">
-        <el-input class='form-one' type="textarea" v-model.trim="data.ruleForm.note" 
-        :autosize="{ minRows: 8, maxRows: 80}"
-        placeholder=''></el-input>
       </el-form-item>
+      <!-- Pub Tracking Link -->
+      <el-form-item label="Pub Tracking Link:" prop="pub_tracking_link">
+        <div class='flex jc-start ai-center form-one'>
+          <div v-for="item in handle_pub_tracking_link">
+            <span>{{item}}</span>
+          </div>
+        </div>
+      </el-form-item>
+      <!-- end -->
     </div>
   </el-form>
   <!-- form -->
@@ -207,199 +296,110 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, reactive, watch, watchEffect, onMounted, ref, computed } from 'vue'
-import { ApiOperationOfferCreate, ApiOperationOfferEdit, ApiGetOfferData, ApiGetConfig, ApiGetDeviceCount } from '@/api/buzz'
+import { getCurrentInstance, reactive, toRef, watch, watchEffect, onMounted, ref, computed } from 'vue'
 import _ from 'lodash'
-import { handleAjaxDataObjectFn } from '@/utils/new-format'
-import { messageFun } from '@/utils/message'
-let { proxy }: any = getCurrentInstance()
-import {useRouter } from 'vue-router'
-import { DataAnalysis } from '@element-plus/icons'
-const router = useRouter()
 const message = {
   required: '此项必填'
 }
-let validatorPkgName = (rule: any, value: any, callback: (arg0: Error | undefined) => void) => {
-  if (data.ruleForm.attribute_provider === 'AppsFlyer') {
-    if (data.ruleForm.tracking_link.includes(data.ruleForm.pkg_name)) {
-      callback(undefined)
-    } else {
-      callback(new Error('Attribute Provider:为Appsflyer时Package Name的值必须包含在Traking Link中'))
-    }
-  } else {
-    callback(undefined)
-  }
+interface dataType {
+  offer: number
+  adv_offer: string
+  create_type: number
+  channel: string
+  channel_type: number
+  adv_status: number
+  status: number
+  title: string
+  pkg: string
+  attribute_provider: string
+  pid: string
+  platform: number
+  country: string
+  revenue: number
+  traffic: string
+  pub: string
+  payout: number
+  cap_daily: number
+  adtype: number
+  update_date: string
+  adv_tracking_link: string
+  target_cvr: string
+  cvr_status: number
+  is_s2s: number
+  s2s_tracking_link: string,
+  app_url: string,
+  site_type: number,
+  site_value: string,
+  api_status: number,
+  description: string,
+  pub_tracking_link: Array<string>,
 }
-let validatorTrackingLink = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
-  let reg = new RegExp('\\s+', 'g')
-  let reg1 = /^http/
-  if (reg.test(value)) {
-    callback(new Error('链接中有空格'))
-  } else {
-    if (reg1.test(value)) {
-      if (data.ruleForm.attribute_provider === 'AppsFlyer') {
-        if (value.includes(data.ruleForm.pkg_name)) {
-          callback(undefined)
-        } else {
-          callback(new Error('Attribute Provider:为Appsflyer时Package Name的值必须包含在Traking Link中'))
-        }
-      } else {
-        callback(undefined)
-      }
-    } else {
-      callback(new Error('请以http开头'))
-    }
-  }
-  callback(undefined)
+const defaultRuleForm: dataType = {
+  offer: 0,
+  adv_offer: '',
+  create_type: 1,
+  channel: '',
+  channel_type: 1,
+  adv_status: 1,
+  status: 1,
+  title: '',
+  pkg: '',
+  attribute_provider: '',
+  pid: '',
+  platform: 1,
+  country: '',
+  revenue: 0,
+  traffic: '',
+  pub: '',
+  payout: 0,
+  cap_daily: 1,
+  adtype: 38,
+  update_date: '',
+  adv_tracking_link: '',
+  target_cvr: '',
+  cvr_status: 2,
+  is_s2s: 2,
+  s2s_tracking_link: '',
+  app_url: '',
+  site_type: 0,
+  site_value: '',
+  api_status: 2,
+  description: '',
+  pub_tracking_link: [],
 }
-let validatorDevice = (rule: any, value: any, callback: (arg0: Error | undefined) => void) => {
-  callback(undefined)
+interface trafficObjType {
+
 }
-let validatorSite = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
-  if (value) {
-    if (value === '1') {
-      callback(undefined)
-    } else {
-      if (data.ruleForm.hour) {
-        callback(undefined)
-      } else {
-        callback(new Error('请选择具体数值'))
-      }
-    }
-  } else {
-    callback(new Error(message.required))
-  }
-  
+const trafficObj: trafficObjType = {
+  id: 88
 }
-let validatorConversionFlow = (rule: any, value: any, callback: (arg0: Error | undefined) => void) => {
-  if (data.ruleForm.conversion_flow === '1') {
-    callback(undefined)
-  } else {
-    if (value) {
-      callback(undefined)
-    } else {
-      callback(new Error(message.required))
-    }
-  }
-}
-let validatorStartHour = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
-  if (value !== '') {
-    if (data.ruleForm.end_hour === '') {
-      callback(new Error(message.required))
-    } else {
-      callback(undefined)
-    }
-  }
-}
-let validatorEndHour = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
-  if (value !== '') {
-    if (data.ruleForm.start_hour === '') {
-      callback(new Error(message.required))
-    } else {
-      callback(undefined)
-    }
-  }
-}
-let name: any = ref('')
-// 设备数
-let deviceNum = ref(0)
-// cutoff滑块
-let cutoff = ref([0, 100])
-let data: any = reactive({
-  dialogVisible: false,
-  dialogVisibleSite: false,
-  search: {
-    id: '',
-    baseDeviceSelect: {},
-    deviceData: {
-      all: [],
-      select: [],
-      count: 0,
-    }
-  },
-  type: '1',
-  params: '',
-  loading: true,
+const trafficArr: Array<trafficObjType> = []
+const data = reactive({
   options: {
     channel: [],
-    attribute_provider: [
-      'AppsFlyer',
-      'Branch',
-      'Adjust',
-      'Singular',
-      'AppMetrica'
-    ],
-    time: [-1, ...[...new Array(24)].map((ele, index) => index)],
-    platform: [
-      {value: 1, label: 'Android'},
-      {value: 2, label: 'iOS'},
-    ],
+    platform: [],
     country: [],
-    site_id: [
-      '0.2', '0.4', '0.6', '1', '2', '4', '8', '24', '72', '168'
-    ],
-    category: [],
-    devices: []
-  },
-  ruleForm: {
-    type: '',
-    id: '',
-    offer_id: undefined,
-    operation_type: '',
-    channel: '',
-    copy_offer: '',
-    attribute_provider: 'AppsFlyer',
-    title: '',
-    // 过滤空格，制表符
-    tracking_link: '',
-    pkg_name: '',
-    conversion_flow: '',
-    event_name: '',
-    payout: undefined,
-    platform: '',
-    country: '',
-    max_clk_num: undefined,
-    site_clk_limit: undefined,
-    site_install_limitation: undefined,
-    start_hour: '-1',
-    end_hour: '-1',
-    device: [],
-    cutoff_start: undefined,
-    cutoff_end: undefined,
-    diy_siteid: '',
-    site_id: '',
-    hour: undefined,
-    clk_id: '',
-    site_clk_id: '',
-    // category_id: '',
-    note: ''
+    pub_name: [],
+    site_type: [],
+    attribute_provider: []
   },
   rules: {
+    no_required: [
+      { required: false}
+    ],
     channel: [
       { required: true, message: message.required, trigger: ['blur', 'change'] }
     ],
-    attribute_provider: [
+    channel_type: [
+      { required: true, message: message.required, trigger: ['blur', 'change'] }
+    ],
+    status: [
       { required: true, message: message.required, trigger: ['blur', 'change'] }
     ],
     title: [
       { required: true, message: message.required, trigger: ['blur', 'change'] }
     ],
-    tracking_link: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] },
-      { validator: validatorTrackingLink }
-    ],
-    pkg_name: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] },
-      { validator: validatorPkgName }
-    ],
-    conversion_flow: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] }
-    ],
-    event_name: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] },
-      { validator: validatorConversionFlow }
-    ],
-    payout: [
+    pkg: [
       { required: true, message: message.required, trigger: ['blur', 'change'] }
     ],
     platform: [
@@ -408,206 +408,36 @@ let data: any = reactive({
     country: [
       { required: true, message: message.required, trigger: ['blur', 'change'] }
     ],
-    max_clk_num: [
+    revenue: [
       { required: true, message: message.required, trigger: ['blur', 'change'] }
     ],
-    device: [
-      { required: true, validator: validatorDevice, trigger: ['blur', 'change'] }
-    ],
-    site_id: [
-      { required: true, validator: validatorSite, trigger: ['blur', 'change'] }
-    ],
-    clk_id: [
+    adv_tracking_link: [
       { required: true, message: message.required, trigger: ['blur', 'change'] }
     ],
-    start_hour: [
-      { required: false, validator: validatorStartHour, trigger: ['blur', 'change'] }
+    site_type: [
+      { required: true, message: message.required, trigger: ['blur', 'change'] }
     ],
-    end_hour: [
-      { required: false, validator: validatorEndHour, trigger: ['blur', 'change'] }
+    site_value: [
+      { required: true, message: message.required, trigger: ['blur', 'change'] }
     ],
-    cutoff_start: [
-      { required: true, trigger: ['blur', 'change'] }
+    is_s2s: [
+      { required: true, message: message.required, trigger: ['blur', 'change'] }
     ],
-    cutoff_end: [
-      { required: true, trigger: ['blur', 'change'] }
+    s2s_tracking_link: [
+      { required: true, message: message.required, trigger: ['blur', 'change'] }
     ],
-    // site_clk_id: [
-    //   { required: true, message: message.required, trigger: ['blur', 'change'] }
-    // ],
-    // category_id: [
-    //   { required: true, message: message.required, trigger: ['blur', 'change'] }
-    // ],
+    app_url: [
+      { required: true, message: message.required, trigger: ['blur', 'change'] }
+    ],
   },
-  siteData: []
+  ruleForm: defaultRuleForm,
+  manage_traffic: trafficArr
 })
-
-// methods
-const editDiySiteFun = () => {
-  data.dialogVisibleSite = true
-  const siteData = data.ruleForm['diy_siteid'] ? JSON.parse(data.ruleForm['diy_siteid']) : []
-  data.siteData = siteData
-}
-const saveFun = () => {
-  submitForm('ruleForm')
-}
-
-const submitForm = (formName: string) => {
-  proxy.$refs[formName].validate((valid: boolean) => {
-    if (valid) {
-      submitFormFun()
-    } else {
-      console.log('error submit!!')
-      return false
-    }
-  })
-}
-
-const submitFormFun = async () => {
-  console.log('submit')
-  let res: any
-  console.log(data.ruleForm)
-  let ajaxData: any = {
-    ...data.ruleForm
-  }
-  ajaxData['clk_id'] = parseFloat(ajaxData['clk_id'])
-  ajaxData['conversion_flow'] = parseFloat(ajaxData['conversion_flow'])
-  ajaxData['cutoff_end'] = parseFloat(ajaxData['cutoff_end'])
-  ajaxData['cutoff_start'] = parseFloat(ajaxData['cutoff_start'])
-  ajaxData['end_hour'] = parseFloat(ajaxData['end_hour'])
-  ajaxData['start_hour'] = parseFloat(ajaxData['start_hour'])
-  ajaxData['hour'] = parseFloat(ajaxData['hour'])
-  ajaxData['max_clk_num'] = parseFloat(ajaxData['max_clk_num'])
-  ajaxData['payout'] = parseFloat(ajaxData['payout'])
-  ajaxData['platform'] = parseFloat(ajaxData['platform'])
-  ajaxData['site_clk_id'] = parseFloat(ajaxData['site_clk_id'])
-  ajaxData['site_clk_limit'] = parseFloat(ajaxData['site_clk_limit'])
-  ajaxData['site_id'] = parseFloat(ajaxData['site_id'])
-  ajaxData['site_install_limitation'] = parseFloat(ajaxData['site_install_limitation'])
-  ajaxData['diy_siteid'] = JSON.stringify(ajaxData['diy_siteid'])
-  ajaxData['device'] = JSON.stringify(ajaxData['device'])
-  console.log(ajaxData)
-  // return ajaxData
-  if (name === 'create') {
-    delete ajaxData['id']
-    delete ajaxData['offer_id']
-    res = await ApiOperationOfferCreate(ajaxData)
-  }
-  if (name === 'edit') {
-    res = await ApiOperationOfferEdit(ajaxData)
-  }
-  if (messageFun(res)) {
-    proxy.$router.push({ path: '/adnetwork/buzz'})
-  }
-}
-
-interface siteType {
-  diy_siteid: string
-  weight: string
-}
-
-const saveSite = (arr: Array<siteType>) => {
-  data.ruleForm.diy_siteid = arr
-  data.dialogVisibleSite = false
-}
-const setCutoff = (newVal: Array<number>) => {
-  data.ruleForm.cutoff_start = (newVal[0] / 100)
-  data.ruleForm.cutoff_end = (newVal[1] / 100)
-}
-watch(cutoff, (newVal, oldVal) => {
-	// console.log(newVal, oldVal)
-  setCutoff(newVal)
-}, { immediate: true })
-const getConfig = async () => {
-  const res = await ApiGetConfig()
-  if (res) {
-    const { data: configData } = res
-    data.options.channel = Object.values(configData.channel)
-    data.options.country = Object.values(configData.country)
-    return '获取配置成功'
-  }
-  return '获取配置失败'
-}
-const handleDeviceCount = async (): Promise<void> => {
-  console.log('get device num')
-  const pkgName = data.ruleForm.pkg_name
-  const country = data.ruleForm.country
-  const platform = data.ruleForm.platform
-  const ajaxData = {
-    pkg_name: pkgName,
-    country,
-    platform
-  }
-  if (pkgName && country && platform) {
-    console.log('获取设备数')
-    const num = await getDeviceCount(ajaxData)
-    deviceNum.value = num
-  }
-}
-const handleDeviceNum = computed(() => {
-  const num = deviceNum.value
-  const cutoff_start = data.ruleForm.cutoff_start
-  const cutoff_end = data.ruleForm.cutoff_end
-  const res = {
-    judge: ((Number(cutoff_end) - Number(cutoff_start)) * Number(num)).toFixed(0),
-    all: Number(num).toFixed(0)
-  }
-  return res
+const handle_pub_tracking_link = computed(() => {
+  return data.ruleForm.pub_tracking_link
 })
-const getDeviceCount = async (ajaxData: any) => {
-  const res = await ApiGetDeviceCount(ajaxData)
-  const { data: result } = res
-  if (result.length !== 0) {
-    return result[0].device_num
-  } else {
-    return 0
-  }
+const addTrafficFn = () => {
+  data.manage_traffic.push(trafficObj)
 }
-
-watchEffect(() => {
-  handleDeviceCount()
-})
-
-const handleCopyOffer = (result: any, options : any) => {
-  // console.log(Object.getOwnPropertyDescriptors(result))
-  // 处理复制到的offer
-  let resData: any = {}
-  if (options.type === '2') {
-    resData.id = result['id']
-    resData.offer_id = result['offer_id']
-  }
-  resData = {
-    ...result,
-    ...options
-  }
-  let diy_siteid = (result['diy_siteid'] === null || result['diy_siteid'] === '') ? [] : result['diy_siteid']
-  data.siteData = diy_siteid
-  return resData
-}
-
-const getOfferData = async () => {
-  const id = router.currentRoute.value.params.id
-  const res = await ApiGetOfferData(id.toString())
-  const { data: result } = res
-  data.ruleForm = handleCopyOffer(result, {
-    type: data.ruleForm.type,
-    isCopy: false
-  })
-  // ! 给滑动条赋值
-  cutoff.value = [Number(data.ruleForm.cutoff_start) * 100, Number(data.ruleForm.cutoff_end) * 100]
-}
-onMounted(() => {
-  getConfig()
-  name = router.currentRoute.value.name
-  if (name === 'create') {
-    data.ruleForm.operation_type = '1'
-    data.ruleForm.type = '1'
-  }
-  // 如果是修改，获取当前id的值
-  if (name === 'edit') {
-    data.ruleForm.operation_type = '2'
-    data.ruleForm.type = '2'
-    getOfferData()
-  }
-})
+const saveFun = () => {}
 </script>

@@ -4,7 +4,7 @@
     <div class='content-con flex column'>
       <!-- offer_id -->
       <el-form-item label="Offer ID:" prop="offer_id" v-if='data.type === "2"'>
-        <div class='flex flex-start form-one radio-box'>
+        <div class='flex jc-start form-one radio-box'>
           <span v-text='data.ruleForm.offer_id'></span>
         </div>
       </el-form-item>
@@ -140,7 +140,7 @@
           （<span>选中设备数:</span>
             <span v-text="handleDeviceNum.judge"></span>）
         </div>
-        <div class='flex flex-start form-one p10 pt-0 pb-0'>
+        <div class='flex jc-start form-one p10 pt-0 pb-0'>
           <el-slider class="w100" v-model="cutoff" range :step="5" :show-stops="true" show-input :min="0" :max="100"> </el-slider>
         </div>
       </el-form-item>
@@ -152,7 +152,7 @@
       </el-form-item>
       <!-- site_id -->
       <el-form-item label="Site ID:" prop="site_id">
-        <div class='flex form-one flex-start radio-box'>
+        <div class='flex form-one jc-start radio-box'>
           <el-radio v-model="data.ruleForm.site_id" :label="1">Slot_ID</el-radio>
           <el-radio v-model="data.ruleForm.site_id" :label="2">Update(Hours)</el-radio>
           <el-select filterable class='form-one ml-10' v-model="data.ruleForm.hour" clearable placeholder=""
@@ -169,14 +169,14 @@
       </el-form-item>
       <!-- clk_id -->
       <el-form-item label="Click ID:" prop="clk_id">
-        <div class='flex jc-start form-one flex-start radio-box'>
+        <div class='flex jc-start form-one jc-start radio-box'>
           <el-radio v-model="data.ruleForm.clk_id" :label="1">Real</el-radio>
           <el-radio v-model="data.ruleForm.clk_id" :label="2">Virtual</el-radio>
         </div>
       </el-form-item>
       <!-- site_clk_id -->
       <!-- <el-form-item label="Site Click ID:" prop="site_clk_id">
-        <div class='flex flex-start form-one flex-start radio-box'>
+        <div class='flex jc-start form-one jc-start radio-box'>
           <el-radio v-model="data.ruleForm.site_clk_id" :label="1">ON</el-radio>
           <el-radio v-model="data.ruleForm.site_clk_id" :label="2">OFF</el-radio>
         </div>
