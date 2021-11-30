@@ -153,6 +153,7 @@
                 <el-input
                   v-model="scope.row.payout"
                   type="number"
+                  min="0"
                   placeholder="Please input"
                   class="input-with-select"
                 />
@@ -163,6 +164,7 @@
                 <el-input
                   v-model="scope.row.cap_daily"
                   type="number"
+                  min="0"
                   placeholder="Please input"
                   class="input-with-select"
                 />
@@ -171,7 +173,7 @@
             <el-table-column
               label="Operation"
               align="center"
-              width="150px"
+              width="60px"
             >
               <template #default="scope">
                 <el-button type="danger" icon="Delete" circle></el-button>
@@ -298,6 +300,7 @@
 <script lang="ts" setup>
 import { getCurrentInstance, reactive, toRef, watch, watchEffect, onMounted, ref, computed } from 'vue'
 import _ from 'lodash'
+const { proxy }: any = getCurrentInstance()
 const message = {
   required: '此项必填'
 }
@@ -439,5 +442,14 @@ const handle_pub_tracking_link = computed(() => {
 const addTrafficFn = () => {
   data.manage_traffic.push(trafficObj)
 }
-const saveFun = () => {}
+const saveFun = () => {
+  proxy.$refs['ruleForm'].validate((valid: any) => {
+    if (valid) {
+      console.log('submit!')
+    } else {
+      console.log('error submit!!')
+      return false
+    }
+  })
+}
 </script>

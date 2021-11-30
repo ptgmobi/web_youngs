@@ -1,4 +1,3 @@
-// 172.31.21.0/af-report/view
 import request from '@/utils/axiosReq'
 import { ObjTy } from '@/types/common'
 // fenix fenix list
@@ -74,3 +73,6 @@ export function ApiFenixFenixChangeStatus(uid: string, data: ObjTy) {
     isAlertErrorMsg: false
   })
 }
+
+
+// ! finix offer
