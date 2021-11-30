@@ -1,13 +1,15 @@
 <template>
   <h3>Manage Slot</h3>
-  <div>
-    <el-table :data="tableData" style="width: 100%" border>
-      <el-table-column prop="id" label="App Name" align="center" />
-      <el-table-column prop="email" label="Slot ID" align="center" />
-      <el-table-column prop="user_name" label="Slot Name" align="center" />
-      <el-table-column prop="pub_ame" label="Pub Name" align="center">
+  <div class="mt-10">
+    <el-table :data="state.tableData" style="width: 100%" border>
+      <el-table-column prop="app_id" label="App ID" align="center" />
+      <el-table-column prop="app_name" label="App Name" align="center" />
+      <el-table-column prop="uid" label="UID" align="center" />
+      <el-table-column prop="slot_id" label="Slot ID" align="center" />
+      <el-table-column prop="slot_name" label="Slot Name" align="center" />
+      <el-table-column prop="pub_name" label="Pub Name" align="center">
         <template #default="scope">
-          <el-input v-model="scope.row.pub_ame" placeholder="Please input" />
+          <el-input v-model="scope.row.pub_name" placeholder="Please input" />
         </template>
       </el-table-column>
       <el-table-column prop="postback_url" label="Postback URL" align="center">
@@ -27,14 +29,15 @@
       >
         <template #default="scope">
           <div class="flex">
-            <el-button class="cp mr-10" type="primary" icon="Edit" circle></el-button>
+            <el-button class="cp" type="primary" @click="saveFn(scope)">Save</el-button>
             <el-switch
               v-model="scope.row.status"
               :active-value="1"
               :inactive-value="2"
-              class="mr-10"
+              class="ml-10 mr-10"
+              @change="changeStatusFn(scope)"
             />
-            <el-button type="danger" icon="Delete" circle></el-button>
+            <el-button type="danger" icon="Delete" circle @click="deleteFn(scope)"></el-button>
           </div>
         </template>
       </el-table-column>
@@ -48,11 +51,14 @@
 </template>
 <script lang="ts" setup>
 import { ref, reactive, toRef, onMounted } from 'vue'
-  import * as clipboard from 'clipboard-polyfill/text'
-  import { ElMessage } from 'element-plus'
+import * as clipboard from 'clipboard-polyfill/text'
+import { ElMessage } from 'element-plus'
+import { ApiFenixFenixDetails, ApiFenixFenixEdit, ApiFenixFenixDelete, ApiFenixFenixChangeStatus } from '@/api/fenix'
 import {useRouter } from 'vue-router'
+import { messageFun } from '@/utils/message'
 const router = useRouter()
 let name: any = ref('')
+let id: any = ref('')
 interface tableDataType {
   id: number
   email: string
@@ -66,15 +72,10 @@ interface tableDataType {
   api_url: string
   status: number
 }
-const tableDataDfault: Array<tableDataType> = [
-  {
-    id: 22
-  }
-]
+const tableDataDfault: Array<tableDataType> = []
 const state = reactive({
   tableData: tableDataDfault
 })
-const { value: tableData } = toRef(state, 'tableData')
 const copyFn = ({ row }: any) => {
   console.log(row)
   const { api_url: text } = row
@@ -93,8 +94,32 @@ const copyFn = ({ row }: any) => {
     }
   )
 }
+const changeStatusFn = async ({ row }: any) => {
+  const ajaxData = {
+    ...row
+  }
+  const res = await ApiFenixFenixChangeStatus(row.slot_id, ajaxData)
+  messageFun(res)
+}
+const saveFn = async ({ row }: any) => {
+  const ajaxData = {
+    ...row
+  }
+  const res = await ApiFenixFenixEdit(ajaxData)
+  messageFun(res)
+}
+const deleteFn = async ({ row }: any) => {
+  const res = await ApiFenixFenixDelete(row.id)
+  messageFun(res)
+  init()
+}
+const init = async () => {
+  const { data: dataList } = await ApiFenixFenixDetails(id.value)
+  state.tableData = dataList
+}
 onMounted(() => {
+  id.value = router.currentRoute.value.params.id
   name.value = router.currentRoute.value.name
-  console.log(name.value)
+  init()
 })
 </script>

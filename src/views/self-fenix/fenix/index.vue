@@ -7,10 +7,10 @@
     @emitParent="emitParent"
   />
   <div class="body-box mt-10">
-    <el-table :data="tableData" style="width: 100%" border>
-      <el-table-column prop="id" label="ID" align="center" />
+    <el-table :data="state.tableData" style="width: 100%" border>
+      <el-table-column prop="uid" label="UID" align="center" />
       <el-table-column prop="email" label="Email" align="center" />
-      <el-table-column prop="user_name" label="User Name" align="center" />
+      <el-table-column prop="username" label="User Name" align="center" />
       <el-table-column
         label="Operation"
         align="center"
@@ -19,21 +19,22 @@
           <router-link :to="getEditUrl(scope)">
             <el-button class='cp mr-10' type="primary" icon="Edit" circle></el-button>
           </router-link>
-          <el-switch
+          <!-- <el-switch
             v-model="scope.row.status"
             :active-value="1"
             :inactive-value="2"
             class="mr-10"
           />
-          <el-button type="danger" icon="Delete" circle></el-button>
+          <el-button type="danger" icon="Delete" circle></el-button> -->
         </template>
       </el-table-column>
     </el-table>
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, toRefs, toRef } from 'vue'
+import { ref, reactive, toRefs, toRef, onMounted } from 'vue'
 import Search from './search.vue'
+import { ApiFenixFenixList } from '@/api/fenix'
 interface tableDataType {
   id: number
   email: string
@@ -48,21 +49,24 @@ interface tableDataType {
   status: number
 }
 let dialogTableVisible = ref(false)
-const tableDataDfault: Array<tableDataType> = [
-  {
-    id: 1
-  }
-]
+const tableDataDfault: Array<tableDataType> = []
 const state = reactive({
   tableData: tableDataDfault
 })
-const { value: tableData } = toRef(state, 'tableData')
 const emitParent = (row: tableDataType) => {
-  tableData.push(row)
+  // state.tableData.push(row)
   dialogTableVisible.value = false
+  init()
 }
 const getEditUrl = ({ row }: any) => {
-  const id = row.id
+  const id = row.uid
   return `/fenix/fenix-edit/${id}`
 }
+const init = async () => {
+  const { data: listData } = await ApiFenixFenixList()
+  state.tableData = listData
+}
+onMounted(() => {
+  init()
+})
 </script>

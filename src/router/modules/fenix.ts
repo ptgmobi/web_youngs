@@ -2,7 +2,7 @@ import Layout from '@/layout'
 export default [
   {
     path: '/fenix',
-    redirect: '/fenix/fenix-index',
+    redirect: '/fenix/fenix',
     component: Layout,
     name: 'fenix',
     meta: {
