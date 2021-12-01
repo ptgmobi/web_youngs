@@ -9,7 +9,7 @@
           <span class="svg-container">
             <svg-icon icon-class="user" />
           </span>
-          <el-input v-model="formInline.username" placeholder="用户名(admin)" />
+          <el-input v-model="formInline.username" placeholder="用户名" />
           <!--占位-->
           <div class="show-pwd" />
         </div>
@@ -27,7 +27,7 @@
             :type="passwordType"
             name="password"
             @keyup.enter="handleLogin"
-            placeholder="password(123456)"
+            placeholder="password"
           />
           <span class="show-pwd" @click="showPwd">
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
@@ -59,8 +59,8 @@ import { ObjTy } from '@/types/common'
 let { proxy }: any = getCurrentInstance()
 //form
 let formInline = reactive({
-  username: 'admin',
-  password: '123456'
+  username: '',
+  password: ''
 })
 let state: ObjTy = reactive({
   otherQuery: {},
@@ -106,9 +106,13 @@ let handleLogin = () => {
   })
 }
 let loginReq = () => {
+  const ajaxData = {
+    email: formInline.username,
+    password: formInline.password
+  }
   loading.value = true
   store
-    .dispatch('user/login', formInline)
+    .dispatch('user/login', ajaxData)
     .then(() => {
       ElMessage({ message: '登录成功', type: 'success' })
       proxy.$router.push({ path: state.redirect || '/', query: state.otherQuery })
