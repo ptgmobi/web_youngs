@@ -4,12 +4,12 @@
       <div class="title-container">
         <h3 class="title text-center">{{ settings.title }}</h3>
       </div>
-      <el-form-item prop="email" :rules="formRulesMixin.isNotNull">
+      <el-form-item prop="username" :rules="formRulesMixin.isNotNull">
         <div class="rowSC">
           <span class="svg-container">
             <svg-icon icon-class="user" />
           </span>
-          <el-input v-model="formInline.email" placeholder="用户名" />
+          <el-input v-model="formInline.username" placeholder="用户名(admin)" />
           <!--占位-->
           <div class="show-pwd" />
         </div>
@@ -27,7 +27,7 @@
             :type="passwordType"
             name="password"
             @keyup.enter="handleLogin"
-            placeholder="password"
+            placeholder="password(123456)"
           />
           <span class="show-pwd" @click="showPwd">
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
@@ -59,8 +59,8 @@ import { ObjTy } from '@/types/common'
 let { proxy }: any = getCurrentInstance()
 //form
 let formInline = reactive({
-  email: '',
-  password: ''
+  username: 'admin',
+  password: '123456'
 })
 let state: ObjTy = reactive({
   otherQuery: {},
@@ -111,7 +111,6 @@ let loginReq = () => {
     .dispatch('user/login', formInline)
     .then(() => {
       ElMessage({ message: '登录成功', type: 'success' })
-      console.log(state.redirect)
       proxy.$router.push({ path: state.redirect || '/', query: state.otherQuery })
     })
     .catch((res) => {
