@@ -300,6 +300,8 @@
 <script lang="ts" setup>
 import { getCurrentInstance, reactive, toRef, toRefs, watch, watchEffect, onMounted, ref, computed } from 'vue'
 import _ from 'lodash'
+import {useRouter } from 'vue-router'
+const router = useRouter()
 const { proxy }: any = getCurrentInstance()
 const message = {
   required: '此项必填'
@@ -436,6 +438,8 @@ const state = reactive({
   ruleForm: defaultRuleForm,
   manage_traffic: trafficArr
 })
+let name: any = ref('')
+let id: any = ref('')
 const handle_pub_tracking_link = computed(() => {
   return state.ruleForm.pub_tracking_link
 })
@@ -452,4 +456,8 @@ const saveFun = () => {
     }
   })
 }
+onMounted(() => {
+  id.value = router.currentRoute.value.params.id
+  name.value = router.currentRoute.value.name
+})
 </script>

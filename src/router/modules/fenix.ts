@@ -2,7 +2,7 @@ import Layout from '@/layout'
 export default [
   {
     path: '/fenix',
-    redirect: '/fenix/fenix',
+    redirect: '/fenix/fenix/list',
     component: Layout,
     name: 'fenix',
     meta: {
@@ -15,66 +15,94 @@ export default [
         path: 'fenix',
         name: 'fenix-index',
         component: () => import('@/views/self-fenix/fenix'),
+        redirect: '/fenix/fenix/list',
         meta: {
           title: 'Fenix Publisher',
           icon: 'dashboard',
           roles: [],
-        }
-      },
-      {
-        path: 'fenix-create',
-        name: 'fenix-create',
-        component: () => import('@/views/self-fenix/fenix/details'),
-        meta: {
-          title: 'create',
-          icon: 'dashboard',
-          roles: [],
         },
-        hidden: true
-      },
-      {
-        path: 'fenix-edit/:id',
-        name: 'fenix-edit',
-        component: () => import('@/views/self-fenix/fenix/details'),
-        meta: {
-          title: 'edit',
-          icon: 'dashboard',
-          roles: [],
-        },
-        hidden: true
+        children: [
+          {
+            path: 'list',
+            name: 'fenix-fenix-list',
+            component: () => import('@/views/self-fenix/fenix/list'),
+            meta: {
+              title: 'Fenix Publisher List',
+              icon: 'dashboard',
+              roles: [],
+            },
+            hidden: true
+          },
+          {
+            path: 'create',
+            name: 'fenix-fenix-create',
+            component: () => import('@/views/self-fenix/fenix/details'),
+            meta: {
+              title: 'Fenix Publisher Create',
+              icon: 'dashboard',
+              roles: [],
+            },
+            hidden: true
+          },
+          {
+            path: 'edit/:id',
+            name: 'fenix-fenix-edit',
+            component: () => import('@/views/self-fenix/fenix/details'),
+            meta: {
+              title: 'Fenix Publisher Edit',
+              icon: 'dashboard',
+              roles: [],
+            },
+            hidden: true
+          },
+        ]
       },
       {
         path: 'offer',
         name: 'fenix-offer',
-        component: () => import('@/views/self-fenix/offer'),
+        component: () => import('@/views/self-fenix/offer/index'),
+        redirect: '/fenix/offer/list',
         meta: {
           title: 'Fenix Offer',
           icon: 'dashboard',
           roles: [],
-        }
-      },
-      {
-        path: 'offer-create',
-        name: 'fenix-offer-create',
-        component: () => import('@/views/self-fenix/offer/details'),
-        meta: {
-          title: 'edit',
-          icon: 'dashboard',
-          roles: [],
         },
-        hidden: true
+        children: [
+          {
+            path: 'list',
+            name: 'fenix-offer-list',
+            component: () => import('@/views/self-fenix/offer/list'),
+            meta: {
+              title: 'Fenix Offer List',
+              icon: 'dashboard',
+              roles: [],
+            },
+            hidden: true
+          },
+          {
+            path: 'create',
+            name: 'fenix-offer-create',
+            component: () => import('@/views/self-fenix/offer/details'),
+            meta: {
+              title: 'Fenix Offer Create',
+              icon: 'dashboard',
+              roles: [],
+            },
+            hidden: true
+          },
+          {
+            path: 'edit/:id',
+            name: 'fenix-offer-edit',
+            component: () => import('@/views/self-fenix/offer/details'),
+            meta: {
+              title: 'Fenix Offer Edit',
+              icon: 'dashboard',
+              roles: [],
+            },
+            hidden: true
+          }
+        ]
       },
-      {
-        path: 'offer-edit/:id',
-        name: 'fenix-offer-edit',
-        component: () => import('@/views/self-fenix/offer/details'),
-        meta: {
-          title: 'edit',
-          icon: 'dashboard',
-          roles: [],
-        },
-        hidden: true
-      }
     ]
   }
 ]

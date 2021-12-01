@@ -5,7 +5,7 @@
         <span v-if="item.redirect === 'noRedirect' || index === levelList.length - 1" class="no-redirect">
           {{ item.meta?.title }}
         </span>
-        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
+        <a href="#" v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>
@@ -15,7 +15,7 @@
 import { onMounted, onBeforeMount, getCurrentInstance, watch, ref } from 'vue'
 import { compile } from 'path-to-regexp'
 import { RouteItemTy } from '@/types/router'
-let levelList = ref(null)
+let levelList: any = ref(null)
 let { proxy }: any = getCurrentInstance()
 const getBreadcrumb = () => {
   // only show routes with meta.title
@@ -35,7 +35,7 @@ const isDashboard = (route: RouteItemTy) => {
   if (!name) {
     return false
   }
-  return name.trim().toLocaleLowerCase() === 'Dashboard'.toLocaleLowerCase()
+  return name.trim().toLocaleLowerCase() === '/'.toLocaleLowerCase()
 }
 const pathCompile = (path: string) => {
   const { params } = proxy.$route

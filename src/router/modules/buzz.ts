@@ -2,42 +2,55 @@ import Layout from '@/layout'
 export default [
   {
     path: '/buzz',
-    redirect: '/buzz/buzz-index',
+    redirect: '/buzz/list',
     component: Layout,
     name: 'buzz',
     meta: {
-      title: 'buzz',
+      title: 'Buzz',
       icon: 'el-icon-cpu',
       roles: [],
     },
     children: [
+      // {
+      //   path: 'buzz',
+      //   redirect: '/buzz/buzz/list',
+      //   name: 'buzz-index',
+      //   component: () => import('@/views/self-buzz/buzz/index'),
+      //   meta: {
+      //     title: 'Buzz',
+      //     icon: 'dashboard',
+      //     roles: [],
+      //   }
+      // },
       {
-        path: 'buzz-index',
-        name: 'buzz-index',
-        component: () => import('@/views/self-buzz/buzz'),
+        path: 'list',
+        name: 'buzz-list',
+        component: () => import('@/views/self-buzz/buzz/list'),
+        default: true,
         meta: {
-          title: 'buzz',
-          icon: 'dashboard',
-          roles: [],
-        }
-      },
-      {
-        path: 'buzz-create',
-        name: 'buzz-create',
-        component: () => import('@/views/self-buzz/buzz/details'),
-        meta: {
-          title: 'create',
+          title: 'Buzz List',
           icon: 'dashboard',
           roles: [],
         },
         hidden: true
       },
       {
-        path: 'buzz-edit/:id',
+        path: 'create',
+        name: 'buzz-create',
+        component: () => import('@/views/self-buzz/buzz/details'),
+        meta: {
+          title: 'Buzz Create',
+          icon: 'dashboard',
+          roles: [],
+        },
+        hidden: true
+      },
+      {
+        path: 'edit/:id',
         name: 'buzz-edit',
         component: () => import('@/views/self-buzz/buzz/details'),
         meta: {
-          title: 'edit',
+          title: 'Buzz Edit',
           icon: 'dashboard',
           roles: [],
         },
