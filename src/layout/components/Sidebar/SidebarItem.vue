@@ -3,14 +3,14 @@
     <template v-if="showSidebarItem(item.children, item)">
       <Link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{ 'submenu-title-noDropdown': !isNest }">
-          <item :icon="onlyOneChild.meta?.icon || item.meta?.icon" />
+          <item :meta="onlyOneChild.meta || item.meta" />
           <template #title>{{ onlyOneChild.meta?.title }}</template>
         </el-menu-item>
       </Link>
     </template>
     <el-sub-menu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
-      <template #title>
-        <item v-if="item.meta" :icon="item.meta && item.meta.icon" />
+      <template #title v-if="item.meta">
+        <item :meta="item.meta" />
         <span>{{ item.meta.title }}</span>
       </template>
       <SidebarItem
@@ -98,10 +98,4 @@ let resolvePath = (routePath: string) => {
   .is-active>.el-submenu__title {
     color: $subMenuActiveText !important;
   }*/
-.sidebar-icon {
-  width: 15px !important;
-  height: 15px !important;
-  margin-right: 12px !important;
-  font-size: 15px !important;
-}
 </style>

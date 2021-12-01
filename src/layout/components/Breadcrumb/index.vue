@@ -15,7 +15,7 @@
 import { onMounted, onBeforeMount, getCurrentInstance, watch, ref } from 'vue'
 import { compile } from 'path-to-regexp'
 import { RouteItemTy } from '@/types/router'
-let levelList: any = ref(null)
+let levelList = ref(null)
 let { proxy }: any = getCurrentInstance()
 const getBreadcrumb = () => {
   // only show routes with meta.title
@@ -60,7 +60,7 @@ watch(
   { immediate: true }
 )
 onMounted(() => {
-  // console.log(proxy.$route)
+  console.log(proxy.$route)
 })
 onBeforeMount(() => {
   getBreadcrumb()
