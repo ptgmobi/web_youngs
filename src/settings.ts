@@ -61,7 +61,7 @@ const setting: SettingTy = {
    * @type {boolean} true | false
    * @description Whether show TagsView
    */
-  showTagsView: true,
+  showTagsView: false,
   /**
    * @description TagsView show number
    */

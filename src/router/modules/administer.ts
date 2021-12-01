@@ -7,7 +7,7 @@ export default [
     name: 'administer',
     meta: {
       title: '后台管理',
-      icon: 'el-icon-s-tools',
+      elSvgIcon: 'Tools',
       roles: [],
       code: 3
     },

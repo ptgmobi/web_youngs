@@ -7,7 +7,7 @@ export default [
     name: 'fenix',
     meta: {
       title: 'Fenix',
-      icon: 'el-icon-cpu',
+      elSvgIcon: 'MagicStick',
       roles: [],
     },
     children: [

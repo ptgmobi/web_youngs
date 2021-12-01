@@ -45,7 +45,7 @@ export const constantRoutes: RouterTy = [
         name: 'index',
         component: () => import('@/views/self-index/index'),
         //using el svg icon, the elSvgIcon first when at the same time using elSvgIcon and icon
-        meta: { title: 'index', elSvgIcon: 'Fold' }
+        meta: { title: 'index', elSvgIcon: 'HomeFilled' }
       }
     ]
   },

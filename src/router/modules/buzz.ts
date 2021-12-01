@@ -7,7 +7,7 @@ export default [
     name: 'buzz',
     meta: {
       title: 'Buzz',
-      icon: 'el-icon-cpu',
+      elSvgIcon: 'MagicStick',
       roles: [],
     },
     children: [

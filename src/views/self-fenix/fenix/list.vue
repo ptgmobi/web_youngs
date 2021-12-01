@@ -1,34 +1,36 @@
 <template>
-  <div class="control-box flex jc-between">
-    <el-button type="primary" @click="dialogTableVisible = true">Add New</el-button>
-  </div>
-  <Search
-    v-model="dialogTableVisible"
-    @emitParent="emitParent"
-  />
-  <div class="body-box mt-10">
-    <el-table :data="tableData" style="width: 100%" border>
-      <el-table-column prop="uid" label="UID" align="center" />
-      <el-table-column prop="email" label="Email" align="center" />
-      <el-table-column prop="username" label="User Name" align="center" />
-      <el-table-column
-        label="Operation"
-        align="center"
-      >
-        <template #default="scope">
-          <router-link :to="getEditUrl(scope)">
-            <el-button class='cp mr-10' type="primary" icon="Edit" circle></el-button>
-          </router-link>
-          <!-- <el-switch
-            v-model="scope.row.status"
-            :active-value="1"
-            :inactive-value="2"
-            class="mr-10"
-          />
-          <el-button type="danger" icon="Delete" circle></el-button> -->
-        </template>
-      </el-table-column>
-    </el-table>
+  <div>
+    <div class="control-box flex jc-between">
+      <el-button type="primary" @click="dialogTableVisible = true">Add New</el-button>
+    </div>
+    <Search
+      v-model="dialogTableVisible"
+      @emitParent="emitParent"
+    />
+    <div class="body-box mt-10">
+      <el-table :data="tableData" style="width: 100%" border>
+        <el-table-column prop="uid" label="UID" align="center" />
+        <el-table-column prop="email" label="Email" align="center" />
+        <el-table-column prop="username" label="User Name" align="center" />
+        <el-table-column
+          label="Operation"
+          align="center"
+        >
+          <template #default="scope">
+            <router-link :to="getEditUrl(scope)">
+              <el-button class='cp mr-10' type="primary" icon="Edit" circle></el-button>
+            </router-link>
+            <!-- <el-switch
+              v-model="scope.row.status"
+              :active-value="1"
+              :inactive-value="2"
+              class="mr-10"
+            />
+            <el-button type="danger" icon="Delete" circle></el-button> -->
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
