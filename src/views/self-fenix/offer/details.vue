@@ -1,18 +1,18 @@
 <template>
   <!-- form -->
-  <el-form enctype="multipart/form-data" ref='ruleForm' :rules='data.rules' :model='data.ruleForm' label-width="240px" label-position="right">
+  <el-form enctype="multipart/form-data" ref='ruleForm' :rules='state.rules' :model='state.ruleForm' label-width="240px" label-position="right">
     <div class='content-con flex column'>
       <!-- Offer -->
       <el-form-item label="Offer:" prop="offer">
         <div class='flex jc-start ai-center form-one'>
-          <span v-text='data.ruleForm.offer'></span>
+          <span v-text='state.ruleForm.offer'></span>
         </div>
       </el-form-item>
       <!-- Adv Offer -->
       <el-form-item label="Adv Offer:" prop="adv_offer">
         <div class='flex jc-start ai-center form-one'>
           <el-input
-            v-model="data.ruleForm.adv_offer"
+            v-model="state.ruleForm.adv_offer"
             placeholder="Please input"
             class="input-with-select"
           >
@@ -24,9 +24,9 @@
       </el-form-item>
       <!-- Channel -->
       <el-form-item label="Channel:" prop="channel">
-        <el-select filterable class='form-one' v-model="data.ruleForm.channel" clearable placeholder="">
+        <el-select filterable class='form-one' v-model="state.ruleForm.channel" clearable placeholder="">
           <el-option
-            v-for="item in data.options.channel"
+            v-for="item in state.options.channel"
             :key="item"
             :label="item"
             :value="item">
@@ -35,7 +35,7 @@
       </el-form-item>
       <!-- Channel Type -->
       <el-form-item label="Channel Type:" prop="channel_type">
-        <el-radio-group class='form-one' v-model="data.ruleForm.channel_type">
+        <el-radio-group class='form-one' v-model="state.ruleForm.channel_type">
           <el-radio :label="1">BUZZ</el-radio>
           <el-radio :label="2">SDK</el-radio>
         </el-radio-group>
@@ -43,14 +43,14 @@
       <!-- Adv Status -->
       <el-form-item label="Adv Status:" prop="adv_status">
         <div class='flex jc-start ai-center form-one'>
-          <span v-text='data.ruleForm.adv_status'></span>
+          <span v-text='state.ruleForm.adv_status'></span>
         </div>
       </el-form-item>
       <!-- Status -->
       <el-form-item label="Status:" prop="status">
         <div class='flex jc-start ai-center form-one'>
           <el-switch
-            v-model="data.ruleForm.status"
+            v-model="state.ruleForm.status"
             :active-value="1"
             :inactive-value="2"
           />
@@ -60,7 +60,7 @@
       <el-form-item label="Offer Title:" prop="title">
         <div class='flex jc-start ai-center form-one'>
           <el-input
-            v-model="data.ruleForm.title"
+            v-model="state.ruleForm.title"
             placeholder="Please input"
             class="input-with-select"
           />
@@ -70,7 +70,7 @@
       <el-form-item label="Package Name:" prop="pkg">
         <div class='flex jc-start ai-center form-one'>
           <el-input
-            v-model="data.ruleForm.pkg"
+            v-model="state.ruleForm.pkg"
             placeholder="Please input"
             class="input-with-select"
           />
@@ -78,9 +78,9 @@
       </el-form-item>
       <!-- Attribute Provider -->
       <el-form-item label="Attribute Provider:" prop="attribute_provider">
-        <el-select filterable class='form-one' v-model="data.ruleForm.attribute_provider" clearable placeholder="">
+        <el-select filterable class='form-one' v-model="state.ruleForm.attribute_provider" clearable placeholder="">
           <el-option
-            v-for="item in data.options.attribute_provider"
+            v-for="item in state.options.attribute_provider"
             :key="item"
             :label="item"
             :value="item">
@@ -91,7 +91,7 @@
       <el-form-item label="Pid:" prop="pid">
         <div class='flex jc-start ai-center form-one'>
           <el-input
-            v-model="data.ruleForm.pid"
+            v-model="state.ruleForm.pid"
             placeholder="Please input"
             class="input-with-select"
           />
@@ -99,9 +99,9 @@
       </el-form-item>
       <!-- Platform -->
       <el-form-item label="Platform:" prop="platform">
-        <el-select filterable class='form-one' v-model="data.ruleForm.platform" clearable placeholder="">
+        <el-select filterable class='form-one' v-model="state.ruleForm.platform" clearable placeholder="">
           <el-option
-            v-for="item in data.options.platform"
+            v-for="item in state.options.platform"
             :key="item"
             :label="item"
             :value="item">
@@ -110,9 +110,9 @@
       </el-form-item>
       <!-- Country -->
       <el-form-item label="Country:" prop="country">
-        <el-select filterable class='form-one' v-model="data.ruleForm.country" clearable placeholder="">
+        <el-select filterable class='form-one' v-model="state.ruleForm.country" clearable placeholder="">
           <el-option
-            v-for="item in data.options.country"
+            v-for="item in state.options.country"
             :key="item"
             :label="item"
             :value="item">
@@ -123,7 +123,7 @@
       <el-form-item label="Revenue:" prop="revenue">
         <div class='flex jc-start ai-center form-one'>
           <el-input
-            v-model="data.ruleForm.revenue"
+            v-model="state.ruleForm.revenue"
             placeholder="Please input"
             class="input-with-select"
           />
@@ -135,12 +135,12 @@
           <div class="flex jc-end">
             <el-button type="primary" @click="addTrafficFn">Add</el-button>
           </div>
-          <el-table class="mt-10" :data="data.manage_traffic" style="width: 100%" border>
+          <el-table class="mt-10" :data="state.manage_traffic" style="width: 100%" border>
             <el-table-column label="Pub Name" align="center">
               <template #default="scope">
                 <el-select filterable v-model="scope.row.pub_name" clearable placeholder="">
                   <el-option
-                    v-for="item in data.options.pub_name"
+                    v-for="item in state.options.pub_name"
                     :key="item"
                     :label="item"
                     :value="item">
@@ -188,7 +188,7 @@
           <el-input
             :rows="2"
             type="textarea"
-            v-model="data.ruleForm.adv_tracking_link"
+            v-model="state.ruleForm.adv_tracking_link"
             placeholder="Please input"
             class="input-with-select"
           />
@@ -198,7 +198,7 @@
       <el-form-item label="Target CVR:" prop="target_cvr">
         <div class='flex jc-start ai-center form-one'>
           <el-input
-            v-model="data.ruleForm.target_cvr"
+            v-model="state.ruleForm.target_cvr"
             placeholder="Please input"
             class="input-with-select"
           />
@@ -206,9 +206,9 @@
       </el-form-item>
       <!-- Site Type -->
       <el-form-item label="Site Type:" prop="site_type">
-        <el-select filterable class='form-one' v-model="data.ruleForm.site_type" clearable placeholder="">
+        <el-select filterable class='form-one' v-model="state.ruleForm.site_type" clearable placeholder="">
           <el-option
-            v-for="item in data.options.site_type"
+            v-for="item in state.options.site_type"
             :key="item"
             :label="item"
             :value="item">
@@ -218,11 +218,11 @@
       <!-- Site Value -->
       <el-form-item label="Site Type:"
         prop="site_value"
-        :rules="data.ruleForm.site_type === 6 ? data.rules.s2s_tracking_link : data.rules.no_required"
+        :rules="state.ruleForm.site_type === 6 ? state.rules.s2s_tracking_link : state.rules.no_required"
       >
         <div class='flex jc-start ai-center form-one'>
           <el-input
-            v-model="data.ruleForm.site_value"
+            v-model="state.ruleForm.site_value"
             placeholder="Please input"
             class="input-with-select"
           />
@@ -232,7 +232,7 @@
       <el-form-item label="S2S Async:" prop="is_s2s">
         <div class='flex jc-start ai-center form-one'>
           <el-switch
-            v-model="data.ruleForm.is_s2s"
+            v-model="state.ruleForm.is_s2s"
             :active-value="1"
             :inactive-value="2"
           />
@@ -241,13 +241,13 @@
       <!-- S2S Tracking Link -->
       <el-form-item label="S2S Tracking Link:"
         prop="s2s_tracking_link"
-        :rules="data.ruleForm.is_s2s === 1 ? data.rules.s2s_tracking_link : data.rules.no_required"
+        :rules="state.ruleForm.is_s2s === 1 ? state.rules.s2s_tracking_link : state.rules.no_required"
       >
         <div class='flex jc-start ai-center form-one'>
           <el-input
             :rows="2"
             type="textarea"
-            v-model="data.ruleForm.s2s_tracking_link"
+            v-model="state.ruleForm.s2s_tracking_link"
             placeholder="Please input"
             class="input-with-select"
           />
@@ -256,13 +256,13 @@
       <!-- Preview URL -->
       <el-form-item label="Preview URL:"
         prop="app_url"
-        :rules="data.ruleForm.is_s2s === 1 ? data.rules.app_url : data.rules.no_required"
+        :rules="state.ruleForm.is_s2s === 1 ? state.rules.app_url : state.rules.no_required"
       >
         <div class='flex jc-start ai-center form-one'>
           <el-input
             :rows="2"
             type="textarea"
-            v-model="data.ruleForm.app_url"
+            v-model="state.ruleForm.app_url"
             placeholder="Please input"
             class="input-with-select"
           />
@@ -274,7 +274,7 @@
           <el-input
             :rows="2"
             type="textarea"
-            v-model="data.ruleForm.description"
+            v-model="state.ruleForm.description"
             placeholder="Please input"
             class="input-with-select"
           />
@@ -298,7 +298,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, reactive, toRef, watch, watchEffect, onMounted, ref, computed } from 'vue'
+import { getCurrentInstance, reactive, toRef, toRefs, watch, watchEffect, onMounted, ref, computed } from 'vue'
 import _ from 'lodash'
 const { proxy }: any = getCurrentInstance()
 const message = {
@@ -377,7 +377,7 @@ const trafficObj: trafficObjType = {
   id: 88
 }
 const trafficArr: Array<trafficObjType> = []
-const data = reactive({
+const state = reactive({
   options: {
     channel: [],
     platform: [],
@@ -437,10 +437,10 @@ const data = reactive({
   manage_traffic: trafficArr
 })
 const handle_pub_tracking_link = computed(() => {
-  return data.ruleForm.pub_tracking_link
+  return state.ruleForm.pub_tracking_link
 })
 const addTrafficFn = () => {
-  data.manage_traffic.push(trafficObj)
+  state.manage_traffic.push(trafficObj)
 }
 const saveFun = () => {
   proxy.$refs['ruleForm'].validate((valid: any) => {

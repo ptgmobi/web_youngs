@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-model="dialogTableVisible" :title="T" width="80%">
     <el-input v-model="search" placeholder="Please input" />
-    <el-table :data="state.gridData" border class="mt-10">
+    <el-table :data="gridData" border class="mt-10">
       <el-table-column
         property="uid"
         label="ID"
@@ -37,9 +37,10 @@ const props = defineProps({
 const title = ref('新建')
 const search = ref('')
 const gridDataDefault:Array<any>  = []
-let state = reactive({
+const state = reactive({
   gridData: gridDataDefault
 })
+const { gridData } = toRefs(state)
 let T = title.value
 watch(search, (nelVal, oldVal) => {
   // 调用搜索函数

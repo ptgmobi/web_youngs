@@ -1,7 +1,7 @@
 <template>
   <h3>Manage Slot</h3>
   <div class="mt-10">
-    <el-table :data="state.tableData" style="width: 100%" border>
+    <el-table :data="tableData" style="width: 100%" border>
       <el-table-column prop="app_id" label="App ID" align="center" />
       <el-table-column prop="app_name" label="App Name" align="center" />
       <el-table-column prop="uid" label="UID" align="center" />
@@ -50,7 +50,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, toRef, onMounted } from 'vue'
+import { ref, reactive, toRef, toRefs, onMounted } from 'vue'
 import * as clipboard from 'clipboard-polyfill/text'
 import { ElMessage } from 'element-plus'
 import { ApiFenixFenixDetails, ApiFenixFenixEdit, ApiFenixFenixDelete, ApiFenixFenixChangeStatus } from '@/api/fenix'
@@ -76,6 +76,7 @@ const tableDataDfault: Array<tableDataType> = []
 const state = reactive({
   tableData: tableDataDfault
 })
+const { tableData } = toRefs(state)
 const copyFn = ({ row }: any) => {
   console.log(row)
   const { api_url: text } = row
