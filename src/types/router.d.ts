@@ -16,11 +16,14 @@ interface RouteItemTy {
     activeMenu?: string
     breadcrumb?: boolean
     roles?: Array<string>
+    elSvgIcon?: string
     code?: number
+    cachePage?: boolean
+    leaveRmCachePage?: boolean
   }
   children?: RouterTy
   redirect?: string
 }
-// ! 联合类型
+
 type RouterRowTy = RouteRecordRaw & RouteItemTy
 type RouterTy = Array<RouterRowTy>

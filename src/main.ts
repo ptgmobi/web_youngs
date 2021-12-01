@@ -21,13 +21,13 @@ for (const iconName in ElIconModules) {
   // app.component(transElIconName(iconName), ElIconModules[iconName])
   app.component(iconName, ElIconModules[iconName])
 }
-
 //global mixin
 import elementMixin from '@/mixins/elementMixin'
 app.mixin(elementMixin)
 import commonMixin from '@/mixins/commonMixin'
 app.mixin(commonMixin)
-
+import routerMixin from '@/mixins/routerMixin'
+app.mixin(routerMixin)
 //import axios req
 import axiosReq from '@/utils/axiosReq'
 app.config.globalProperties.$axiosReq = axiosReq
@@ -49,12 +49,11 @@ import './permission'
 
 // 全局样式
 import '@/styles/common.scss'
+// ! lodash这样用并不奏效
+// import _ from 'lodash'
+// app.config.globalProperties._ = _
 
 //error log  collection
 import errorLog from '@/hooks/errorLogHook'
 errorLog(app)
 app.use(router).mount('#app')
-
-// ! lodash这样用并不奏效
-// import _ from 'lodash'
-// app.config.globalProperties._ = _
