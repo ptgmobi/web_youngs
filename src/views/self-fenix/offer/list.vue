@@ -1,10 +1,66 @@
 <template>
   <div>
-    <div class="control-box">
-      <router-link to="/fenix/offer/create">
-        <el-button type="primary">Create</el-button>
-      </router-link>
+    <div class='control-box w100 mb-10'>
+      <div class="mb-10">
+        <router-link to="/fenix/offer/create">
+          <el-button type="primary">Create</el-button>
+        </router-link>
+      </div>
+      <el-form :inline="true" v-model="searchData" class="flex jc-between w100 ai-end">
+        <div class="flex jc-start flex-wrap w100">
+          <el-form-item label="">
+            <el-select v-model="searchData.attribute_provider" clearable class="search-con" placeholder="Attribute Provider" style="min-width: 140px;">
+              <el-option
+                v-for="item in state.options.attribute_provider"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="">
+            <el-select v-model="searchData.platform" clearable class="search-con" placeholder="Platform" style="min-width: 95px;">
+              <el-option
+                v-for="item in state.options.platform"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="">
+            <el-input placeholder="Package Name" v-model="searchData.package_name" class="search-con" style="min-width: 120px;" />
+          </el-form-item>
+          <el-form-item label="">
+            <el-input placeholder="Channel" v-model="searchData.channel" class="search-con" style="min-width: 80px;" />
+          </el-form-item>
+          <el-form-item label="">
+            <el-input placeholder="ID" v-model="searchData.id" class="search-con" />
+          </el-form-item>
+          <el-form-item label="">
+            <el-input placeholder="Offer Title" v-model="searchData.offer_title" class="search-con" style="min-width: 90px;" />
+          </el-form-item>
+          <el-form-item label="">
+            <el-input placeholder="Country" v-model="searchData.country" class="search-con" style="min-width: 80px;" />
+          </el-form-item>
+          <el-form-item label="">
+            <el-input placeholder="Pid" v-model="searchData.pid" class="search-con" />
+          </el-form-item>
+        </div>
+        <div class="flex">
+          <el-form-item class="mr-0" style="margin-right: 0px;">
+            <div class="flex">
+              <el-button type="primary" @click="searchFn">查询</el-button>
+              <!-- <el-button type="primary" @click="handleExportSearch">导出</el-button> -->
+            </div>
+          </el-form-item>
+        </div>
+      </el-form>
+      <!-- <el-input placeholder="请输入内容" v-model="searchData.data" class='search-input'>
+        <el-button slot="append" icon="Search" @click='searchFun'></el-button>
+      </el-input> -->
     </div>
+    <!-- table -->
     <div class="body-box mt-10">
       <el-table :data="tableData" style="width: 100%" border>
         <el-table-column prop="id" label="ID" align="center" />
@@ -104,15 +160,27 @@ interface tableDataType {
   status: number
 }
 let dialogTableVisible = ref(false)
-const tableDataDfault: Array<tableDataType> = [
-  {
-    id: 1
-  }
-]
+const tableDataDefault: Array<tableDataType> = []
+interface sarchDataType {
+  
+}
+const sarchDataDefault: sarchDataType = {
+  attribute_provider: [],
+  platform: [],
+  package_name: '',
+  channel: '',
+  id: '',
+  offer_title: '',
+  country: '',
+  pid: ''
+}
 const state = reactive({
-  tableData: tableDataDfault
+  searchData: sarchDataDefault,
+  tableData: tableDataDefault,
+  options: {}
 })
 const { value: tableData } = toRef(state, 'tableData')
+const { searchData } = toRefs(state)
 const emitParent = (row: tableDataType) => {
   tableData.push(row)
   dialogTableVisible.value = false
@@ -123,5 +191,8 @@ const getEditUrl = ({ row }: any) => {
 }
 const changeStatusFn = ({ row }: any) => {
   console.log(row)
+}
+const searchFn = () => {
+
 }
 </script>

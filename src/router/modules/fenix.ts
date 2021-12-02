@@ -18,7 +18,6 @@ export default [
         redirect: '/fenix/fenix/list',
         meta: {
           title: 'Fenix Publisher',
-          icon: 'dashboard',
           roles: [],
         },
         children: [
@@ -28,7 +27,6 @@ export default [
             component: () => import('@/views/self-fenix/fenix/list'),
             meta: {
               title: 'Fenix Publisher List',
-              icon: 'dashboard',
               roles: [],
             },
             hidden: true
@@ -39,7 +37,6 @@ export default [
             component: () => import('@/views/self-fenix/fenix/details'),
             meta: {
               title: 'Fenix Publisher Create',
-              icon: 'dashboard',
               roles: [],
             },
             hidden: true
@@ -50,7 +47,6 @@ export default [
             component: () => import('@/views/self-fenix/fenix/details'),
             meta: {
               title: 'Fenix Publisher Edit',
-              icon: 'dashboard',
               roles: [],
             },
             hidden: true
@@ -64,7 +60,6 @@ export default [
         redirect: '/fenix/offer/list',
         meta: {
           title: 'Fenix Offer',
-          icon: 'dashboard',
           roles: [],
         },
         children: [
@@ -74,7 +69,6 @@ export default [
             component: () => import('@/views/self-fenix/offer/list'),
             meta: {
               title: 'Fenix Offer List',
-              icon: 'dashboard',
               roles: [],
             },
             hidden: true
@@ -85,7 +79,6 @@ export default [
             component: () => import('@/views/self-fenix/offer/details'),
             meta: {
               title: 'Fenix Offer Create',
-              icon: 'dashboard',
               roles: [],
             },
             hidden: true

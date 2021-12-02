@@ -18,7 +18,7 @@
               class="input-with-select"
             >
               <template #append>
-                <el-button type="primary" icon="Search"></el-button>
+                <el-button type="primary" icon="Search" @click="searchAdvOffer"></el-button>
               </template>
             </el-input>
           </div>
@@ -133,54 +133,10 @@
         <!-- Manage Traffic -->
         <el-form-item label="Manage Traffic:" prop="traffic">
           <div class='form-one'>
-            <div class="flex jc-end">
-              <el-button type="primary" @click="addTrafficFn">Add</el-button>
-            </div>
-            <el-table class="mt-10" :data="state.manage_traffic" style="width: 100%" border>
-              <el-table-column label="Pub Name" align="center">
-                <template #default="scope">
-                  <el-select filterable v-model="scope.row.pub_name" clearable placeholder="">
-                    <el-option
-                      v-for="item in state.options.pub_name"
-                      :key="item"
-                      :label="item"
-                      :value="item">
-                    </el-option>
-                  </el-select>
-                </template>
-              </el-table-column>
-              <el-table-column label="Payout" align="center">
-                <template #default="scope">
-                  <el-input
-                    v-model="scope.row.payout"
-                    type="number"
-                    min="0"
-                    placeholder="Please input"
-                    class="input-with-select"
-                  />
-                </template>
-              </el-table-column>
-              <el-table-column label="Cap Daily" align="center">
-                <template #default="scope">
-                  <el-input
-                    v-model="scope.row.cap_daily"
-                    type="number"
-                    min="0"
-                    placeholder="Please input"
-                    class="input-with-select"
-                  />
-                </template>
-              </el-table-column>
-              <el-table-column
-                label="Operation"
-                align="center"
-                width="60px"
-              >
-                <template #default="scope">
-                  <el-button type="danger" icon="Delete" circle></el-button>
-                </template>
-              </el-table-column>
-            </el-table>
+            <traffic
+              :list="state.ruleForm.traffic"
+              @kk="saveTraffic"
+            ></traffic>
           </div>
         </el-form-item>
         <!-- Adv Tracking Link -->
@@ -210,16 +166,16 @@
           <el-select filterable class='form-one' v-model="state.ruleForm.site_type" clearable placeholder="">
             <el-option
               v-for="item in state.options.site_type"
-              :key="item"
-              :label="item"
-              :value="item">
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
         <!-- Site Value -->
-        <el-form-item label="Site Type:"
+        <el-form-item label="Site Value:"
           prop="site_value"
-          :rules="state.ruleForm.site_type === 6 ? state.rules.s2s_tracking_link : state.rules.no_required"
+          :rules="judgeSiteType ? state.rules.site_value : state.rules.no_required"
         >
           <div class='flex jc-start ai-center form-one'>
             <el-input
@@ -303,11 +259,45 @@
 import { getCurrentInstance, reactive, toRef, toRefs, watch, watchEffect, onMounted, ref, computed } from 'vue'
 import _ from 'lodash'
 import {useRouter } from 'vue-router'
+import { ApiGetAdvOfferForDump, ApiGetAdvOfferForBuzzList } from '@/api/fenix'
+import traffic from './traffic'
 const router = useRouter()
 const { proxy }: any = getCurrentInstance()
 const message = {
   required: '此项必填'
 }
+interface trafficType {
+  pub: string
+  slotid: string
+  payout: string
+  cap_daily: string
+  pub_status: string
+}
+const judgeTraffic = (data: Array<any>) => {
+  let flag = true
+  data.map(ele => {
+    for (const key in ele) {
+      if (Object.prototype.hasOwnProperty.call(ele, key)) {
+        const element = ele[key]
+        if (element === '' || element === undefined) {
+          flag = false
+          break
+        }
+      }
+    }
+  })
+  return flag
+}
+let validatorTraffic = (rule: any, value: Array<trafficType>, callback: (arg0: Error | undefined) => void) => {
+  if (value.length !== 0) {
+    if (!judgeTraffic(value)) {
+      callback(new Error('不允许有空值'))
+    } else {
+      callback(undefined)
+    }
+  }
+}
+
 interface dataType {
   offer: number
   adv_offer: string
@@ -323,7 +313,7 @@ interface dataType {
   platform: number
   country: string
   revenue: number
-  traffic: string
+  traffic: Array<trafficType>
   pub: string
   payout: number
   cap_daily: number
@@ -335,7 +325,7 @@ interface dataType {
   is_s2s: number
   s2s_tracking_link: string,
   app_url: string,
-  site_type: number,
+  site_type: string,
   site_value: string,
   api_status: number,
   description: string,
@@ -356,7 +346,7 @@ const defaultRuleForm: dataType = {
   platform: 1,
   country: '',
   revenue: 0,
-  traffic: '',
+  traffic: [],
   pub: '',
   payout: 0,
   cap_daily: 1,
@@ -368,26 +358,36 @@ const defaultRuleForm: dataType = {
   is_s2s: 2,
   s2s_tracking_link: '',
   app_url: '',
-  site_type: 0,
+  site_type: 'rule_value',
   site_value: '',
   api_status: 2,
   description: '',
   pub_tracking_link: [],
 }
-interface trafficObjType {
-
-}
-const trafficObj: trafficObjType = {
-  id: 88
-}
-const trafficArr: Array<trafficObjType> = []
 const state = reactive({
   options: {
     channel: [],
     platform: [],
     country: [],
     pub_name: [],
-    site_type: [],
+    site_type: [
+      {
+        value: 'rule_sdkcvrlist',
+        label: '匹配SDK CVR'
+      },
+      {
+        value: 'rule_pubredirect',
+        label: '透传渠道ID'
+      },
+      {
+        value: 'rule_slotid',
+        label: '渠道slotid'
+      },
+      {
+        value: 'rule_value',
+        label: '固定值'
+      }
+    ],
     attribute_provider: []
   },
   rules: {
@@ -418,6 +418,9 @@ const state = reactive({
     revenue: [
       { required: true, message: message.required, trigger: ['blur', 'change'] }
     ],
+    traffic: [
+      { required: false, validator: validatorTraffic, trigger: ['blur', 'change'] }
+    ],
     adv_tracking_link: [
       { required: true, message: message.required, trigger: ['blur', 'change'] }
     ],
@@ -438,16 +441,13 @@ const state = reactive({
     ],
   },
   ruleForm: defaultRuleForm,
-  manage_traffic: trafficArr
 })
 let name: any = ref('')
 let id: any = ref('')
+let trafficList: any = ref([])
 const handle_pub_tracking_link = computed(() => {
   return state.ruleForm.pub_tracking_link
 })
-const addTrafficFn = () => {
-  state.manage_traffic.push(trafficObj)
-}
 const saveFun = () => {
   proxy.$refs['ruleForm'].validate((valid: any) => {
     if (valid) {
@@ -462,4 +462,29 @@ onMounted(() => {
   id.value = router.currentRoute.value.params.id
   name.value = router.currentRoute.value.name
 })
+const judgeSiteType = computed(() => {
+  if (state.ruleForm.site_type === 'rule_value') {
+    return true
+  }
+  return false
+})
+watch(() => state.ruleForm.traffic, (newVal, oldVal) => {
+  // trafficList.value = newVal
+}, {
+  immediate: true,
+  deep: true
+})
+const saveTraffic = (data: any) => {
+  state.ruleForm.traffic = _.cloneDeep(data)
+}
+const searchAdvOffer = async () => {
+  console.log('get adv offer')
+  // 判断是否包含下划线
+  const str = state.ruleForm.adv_offer
+  if (str.includes('_')) {
+    const res = await ApiGetAdvOfferForDump()
+  } else {
+    const res = await ApiGetAdvOfferForBuzzList()
+  }
+}
 </script>

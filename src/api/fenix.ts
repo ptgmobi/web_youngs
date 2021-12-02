@@ -76,3 +76,11 @@ export function ApiFenixFenixChangeStatus(uid: string, data: ObjTy) {
 
 
 // ! finix offer
+
+export function ApiGetAdvOfferForDump() {
+
+}
+
+export function ApiGetAdvOfferForBuzzList() {
+
+}
