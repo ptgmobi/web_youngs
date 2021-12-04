@@ -76,11 +76,22 @@ export function ApiFenixFenixChangeStatus(uid: string, data: ObjTy) {
 
 
 // ! finix offer
+// 新建offer时获取一个新的offer id
+export function ApiGetOfferCreateId() {
+  return request({
+    url: '/offer/id',
+    method: 'get'
+  })
+}
+// 判断当前的advoffer是否已存在
+export function ApiJudgeOffer() {
 
+}
+// dump接口获取当前offer信息
 export function ApiGetAdvOfferForDump() {
 
 }
-
+// buzz获取当前offer信息
 export function ApiGetAdvOfferForBuzzList() {
 
 }

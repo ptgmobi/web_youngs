@@ -165,8 +165,8 @@ interface sarchDataType {
   
 }
 const sarchDataDefault: sarchDataType = {
-  attribute_provider: [],
-  platform: [],
+  attribute_provider: '',
+  platform: '',
   package_name: '',
   channel: '',
   id: '',

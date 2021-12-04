@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <!-- form -->
     <el-form enctype="multipart/form-data" ref='ruleForm' :rules='state.rules' :model='state.ruleForm' label-width="240px" label-position="right">
       <div class='content-con flex column'>
@@ -44,8 +44,20 @@
         <!-- Adv Status -->
         <el-form-item label="Adv Status:" prop="adv_status">
           <div class='flex jc-start ai-center form-one'>
-            <span v-text='state.ruleForm.adv_status'></span>
+            <span v-if='state.ruleForm.adv_status === 1'>开</span>
+            <span v-if='state.ruleForm.adv_status === 2'>关</span>
           </div>
+        </el-form-item>
+        <!-- conversion_flow -->
+        <el-form-item label="Conversion Flow:" prop="conversion_flow">
+          <el-select filterable class='form-one' v-model="state.ruleForm.conversion_flow" clearable placeholder="">
+            <el-option
+              v-for="item in state.options.conversion_flow"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <!-- Status -->
         <el-form-item label="Status:" prop="status">
@@ -82,9 +94,9 @@
           <el-select filterable class='form-one' v-model="state.ruleForm.attribute_provider" clearable placeholder="">
             <el-option
               v-for="item in state.options.attribute_provider"
-              :key="item"
-              :label="item"
-              :value="item">
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
@@ -103,15 +115,15 @@
           <el-select filterable class='form-one' v-model="state.ruleForm.platform" clearable placeholder="">
             <el-option
               v-for="item in state.options.platform"
-              :key="item"
-              :label="item"
-              :value="item">
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
         <!-- Country -->
         <el-form-item label="Country:" prop="country">
-          <el-select filterable class='form-one' v-model="state.ruleForm.country" clearable placeholder="">
+          <el-select filterable class='form-one' v-model="state.ruleForm.country" multiple clearable placeholder="">
             <el-option
               v-for="item in state.options.country"
               :key="item"
@@ -237,14 +249,6 @@
             />
           </div>
         </el-form-item>
-        <!-- Pub Tracking Link -->
-        <el-form-item label="Pub Tracking Link:" prop="pub_tracking_link">
-          <div class='flex jc-start ai-center form-one'>
-            <div v-for="item in handle_pub_tracking_link">
-              <span>{{item}}</span>
-            </div>
-          </div>
-        </el-form-item>
         <!-- end -->
       </div>
     </el-form>
@@ -259,7 +263,7 @@
 import { getCurrentInstance, reactive, toRef, toRefs, watch, watchEffect, onMounted, ref, computed } from 'vue'
 import _ from 'lodash'
 import {useRouter } from 'vue-router'
-import { ApiGetAdvOfferForDump, ApiGetAdvOfferForBuzzList } from '@/api/fenix'
+import { ApiGetOfferCreateId, ApiJudgeOffer, ApiGetAdvOfferForDump, ApiGetAdvOfferForBuzzList } from '@/api/fenix'
 import traffic from './traffic'
 const router = useRouter()
 const { proxy }: any = getCurrentInstance()
@@ -297,26 +301,36 @@ let validatorTraffic = (rule: any, value: Array<trafficType>, callback: (arg0: E
     }
   }
 }
+let validatorCountry = (rule: any, value: Array<string>, callback: (arg0: Error | undefined) => void) => {
+  if (value.length !== 0) {
+    if (value.length > 1) {
+      callback(new Error('只能填选一个国家'))
+    } else {
+      callback(undefined)
+    }
+  } else {
+    callback(new Error(message.required))
+  }
+}
 
 interface dataType {
-  offer: number
+  id: number | undefined
+  offer: number | undefined
   adv_offer: string
   create_type: number
   channel: string
   channel_type: number
   adv_status: number
+  conversion_flow: string
   status: number
   title: string
   pkg: string
   attribute_provider: string
   pid: string
   platform: number
-  country: string
-  revenue: number
+  country: Array<string>
+  revenue: number | undefined
   traffic: Array<trafficType>
-  pub: string
-  payout: number
-  cap_daily: number
   adtype: number
   update_date: string
   adv_tracking_link: string
@@ -327,29 +341,26 @@ interface dataType {
   app_url: string,
   site_type: string,
   site_value: string,
-  api_status: number,
   description: string,
-  pub_tracking_link: Array<string>,
 }
 const defaultRuleForm: dataType = {
-  offer: 0,
+  id: undefined,
+  offer: undefined,
   adv_offer: '',
   create_type: 1,
   channel: '',
   channel_type: 1,
   adv_status: 1,
+  conversion_flow: '',
   status: 1,
   title: '',
   pkg: '',
   attribute_provider: '',
   pid: '',
   platform: 1,
-  country: '',
-  revenue: 0,
+  country: [],
+  revenue: undefined,
   traffic: [],
-  pub: '',
-  payout: 0,
-  cap_daily: 1,
   adtype: 38,
   update_date: '',
   adv_tracking_link: '',
@@ -360,16 +371,32 @@ const defaultRuleForm: dataType = {
   app_url: '',
   site_type: 'rule_value',
   site_value: '',
-  api_status: 2,
   description: '',
-  pub_tracking_link: [],
 }
+let loading = ref(false)
 const state = reactive({
   options: {
     channel: [],
-    platform: [],
-    country: [],
-    pub_name: [],
+    country: ['a', 'b', 'c'],
+    conversion_flow: [
+      {
+        value: 'cpi',
+        label: 'CPI'
+      }, {
+        value: 'cpa',
+        label: 'CPA'
+      }
+    ],
+    platform: [
+      {
+        value: 1,
+        label: 'Android'
+      },
+      {
+        value: 2,
+        label: 'iOS'
+      }
+    ],
     site_type: [
       {
         value: 'rule_sdkcvrlist',
@@ -388,7 +415,28 @@ const state = reactive({
         label: '固定值'
       }
     ],
-    attribute_provider: []
+    attribute_provider: [
+      {
+        value: 'appsflyer',
+        label: 'AppsFlyer'
+      },
+      {
+        value: 'branch',
+        label: 'Branch'
+      },
+      {
+        value: 'adjust',
+        label: 'Adjust'
+      },
+      {
+        value: 'singular',
+        label: 'Singular'
+      },
+      {
+        value: 'appmetrica',
+        label: 'AppMetrica'
+      }
+    ]
   },
   rules: {
     no_required: [
@@ -413,7 +461,8 @@ const state = reactive({
       { required: true, message: message.required, trigger: ['blur', 'change'] }
     ],
     country: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] }
+      { required: true, message: message.required, trigger: ['blur', 'change'] },
+      { validator: validatorCountry, trigger: ['blur', 'change'] }
     ],
     revenue: [
       { required: true, message: message.required, trigger: ['blur', 'change'] }
@@ -444,10 +493,6 @@ const state = reactive({
 })
 let name: any = ref('')
 let id: any = ref('')
-let trafficList: any = ref([])
-const handle_pub_tracking_link = computed(() => {
-  return state.ruleForm.pub_tracking_link
-})
 const saveFun = () => {
   proxy.$refs['ruleForm'].validate((valid: any) => {
     if (valid) {
@@ -458,9 +503,24 @@ const saveFun = () => {
     }
   })
 }
+const getOfferIdFn = async () => {
+  const res = await ApiGetOfferCreateId()
+  if (res.code === 200) {
+    const { offer_id } = res
+    state.ruleForm.offer = offer_id
+  } else {
+    getOfferIdFn()
+  }
+}
 onMounted(() => {
-  id.value = router.currentRoute.value.params.id
   name.value = router.currentRoute.value.name
+  if (name.value === 'fenix-offer-create') {
+    // 进去若是新建会生成offer_id
+    getOfferIdFn()
+  }
+  if (name.value === 'fenix-offer-edit') {
+    id.value = router.currentRoute.value.params.id
+  }
 })
 const judgeSiteType = computed(() => {
   if (state.ruleForm.site_type === 'rule_value') {
@@ -476,15 +536,21 @@ watch(() => state.ruleForm.traffic, (newVal, oldVal) => {
 })
 const saveTraffic = (data: any) => {
   state.ruleForm.traffic = _.cloneDeep(data)
+  return true
 }
 const searchAdvOffer = async () => {
   console.log('get adv offer')
+  // 首先判断是否已存在当前搜索的offer
+  await ApiJudgeOffer()
   // 判断是否包含下划线
   const str = state.ruleForm.adv_offer
-  if (str.includes('_')) {
+  if (str && str.includes('_')) {
+    console.log('get offer for dump')
     const res = await ApiGetAdvOfferForDump()
   } else {
+    console.log('get offer for buzz')
     const res = await ApiGetAdvOfferForBuzzList()
   }
+  state.ruleForm.country = ['a', 'c']
 }
 </script>

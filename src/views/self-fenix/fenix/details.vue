@@ -53,11 +53,10 @@
 </template>
 <script lang="ts" setup>
 import { ref, reactive, toRef, toRefs, onMounted } from 'vue'
-import * as clipboard from 'clipboard-polyfill/text'
-import { ElMessage } from 'element-plus'
 import { ApiFenixFenixDetails, ApiFenixFenixEdit, ApiFenixFenixDelete, ApiFenixFenixChangeStatus } from '@/api/fenix'
 import {useRouter } from 'vue-router'
 import { messageFun } from '@/utils/message'
+import { clipboardFn } from '@/utils/clipboard'
 const router = useRouter()
 let name: any = ref('')
 let id: any = ref('')
@@ -79,23 +78,10 @@ const state = reactive({
   tableData: tableDataDfault
 })
 const { tableData } = toRefs(state)
+// copy
 const copyFn = ({ row }: any) => {
-  console.log(row)
   const { api_url: text } = row
-  clipboard.writeText(text).then(() => {
-      // success
-      ElMessage({
-        message: 'Copy Success !',
-        type: 'success',
-      })
-    }, () => {
-      // error
-      ElMessage({
-        message: 'Copy Error !',
-        type: 'error',
-      })
-    }
-  )
+  clipboardFn(text)
 }
 const changeStatusFn = async ({ row }: any) => {
   const ajaxData = {

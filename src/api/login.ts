@@ -4,7 +4,6 @@ import { ObjTy } from '@/types/common'
 export function loginReq(data: ObjTy) {
   return request({
     url: '/site/login',
-    // url: '/sites/login',
     data,
     method: 'post',
     bfLoading: false,
