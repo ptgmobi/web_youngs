@@ -6,14 +6,14 @@
         <!-- Offer -->
         <el-form-item label="Offer:" prop="offer">
           <div class='flex jc-start ai-center form-one'>
-            <span v-text='state.ruleForm.offer'></span>
+            <span v-text='state.ruleForm.offer_id'></span>
           </div>
         </el-form-item>
         <!-- Adv Offer -->
         <el-form-item label="Adv Offer:" prop="adv_offer">
           <div class='flex jc-start ai-center form-one'>
             <el-input
-              v-model="state.ruleForm.adv_offer"
+              v-model="state.search.adv_offer"
               placeholder="Please input"
               class="input-with-select"
             >
@@ -28,9 +28,9 @@
           <el-select filterable class='form-one' v-model="state.ruleForm.channel" clearable placeholder="">
             <el-option
               v-for="item in state.options.channel"
-              :key="item"
-              :label="item"
-              :value="item">
+              :key="item.id"
+              :label="item.short_name"
+              :value="item.short_name">
             </el-option>
           </el-select>
         </el-form-item>
@@ -112,7 +112,7 @@
         </el-form-item>
         <!-- Platform -->
         <el-form-item label="Platform:" prop="platform">
-          <el-select filterable class='form-one' v-model="state.ruleForm.platform" clearable placeholder="">
+          <el-select filterable class='form-one' v-model="state.ruleForm.platform" placeholder="">
             <el-option
               v-for="item in state.options.platform"
               :key="item.value"
@@ -126,9 +126,9 @@
           <el-select filterable class='form-one' v-model="state.ruleForm.country" multiple clearable placeholder="">
             <el-option
               v-for="item in state.options.country"
-              :key="item"
-              :label="item"
-              :value="item">
+              :key="item.id"
+              :label="item.zh_cn"
+              :value="item.short_name">
             </el-option>
           </el-select>
         </el-form-item>
@@ -145,17 +145,19 @@
         <!-- Manage Traffic -->
         <el-form-item label="Manage Traffic:" prop="traffic">
           <div class='form-one'>
-            <traffic
+            <Traffic
+              ref="traffic"
               :list="state.ruleForm.traffic"
+              :offer="state.ruleForm.offer_id"
               @kk="saveTraffic"
-            ></traffic>
+            ></Traffic>
           </div>
         </el-form-item>
         <!-- Adv Tracking Link -->
         <el-form-item label="Adv Tracking Link:" prop="adv_tracking_link">
           <div class='flex jc-start ai-center form-one'>
             <el-input
-              :rows="2"
+              :rows="3"
               type="textarea"
               v-model="state.ruleForm.adv_tracking_link"
               placeholder="Please input"
@@ -168,8 +170,19 @@
           <div class='flex jc-start ai-center form-one'>
             <el-input
               v-model="state.ruleForm.target_cvr"
+              type="number"
               placeholder="Please input"
               class="input-with-select"
+            />
+          </div>
+        </el-form-item>
+        <!-- CVR Status -->
+        <el-form-item label="CVR Status:" prop="cvr_status">
+          <div class='flex jc-start ai-center form-one'>
+            <el-switch
+              v-model="state.ruleForm.cvr_status"
+              :active-value="1"
+              :inactive-value="2"
             />
           </div>
         </el-form-item>
@@ -255,7 +268,7 @@
     <!-- form -->
     <!-- footer -->
     <div class='w100 flex'>
-      <el-button type="primary" @click='saveFun'>Save</el-button>
+      <el-button type="primary" @click.prevent='saveFun'>Save</el-button>
     </div>
   </div>
 </template>
@@ -263,10 +276,12 @@
 import { getCurrentInstance, reactive, toRef, toRefs, watch, watchEffect, onMounted, ref, computed } from 'vue'
 import _ from 'lodash'
 import {useRouter } from 'vue-router'
-import { ApiGetOfferCreateId, ApiJudgeOffer, ApiGetAdvOfferForDump, ApiGetAdvOfferForBuzzList } from '@/api/fenix'
-import traffic from './traffic'
+import { ApiGetOfferCreateId, ApiJudgeOffer, ApiGetAdvOfferForDump, ApiGetAdvOfferForBuzzList, ApiGetChannelList, ApiGetCountryList, ApiCreateOffer, ApiEditOffer, ApietOfferForOne } from '@/api/fenix'
+import Traffic from './traffic'
+import { ElMessage } from 'element-plus'
+
+let { proxy }: any = getCurrentInstance()
 const router = useRouter()
-const { proxy }: any = getCurrentInstance()
 const message = {
   required: '此项必填'
 }
@@ -299,6 +314,8 @@ let validatorTraffic = (rule: any, value: Array<trafficType>, callback: (arg0: E
     } else {
       callback(undefined)
     }
+  } else {
+    callback(undefined)
   }
 }
 let validatorCountry = (rule: any, value: Array<string>, callback: (arg0: Error | undefined) => void) => {
@@ -315,13 +332,13 @@ let validatorCountry = (rule: any, value: Array<string>, callback: (arg0: Error 
 
 interface dataType {
   id: number | undefined
-  offer: number | undefined
+  offer_id: string
   adv_offer: string
   create_type: number
   channel: string
   channel_type: number
   adv_status: number
-  conversion_flow: string
+  conversion_flow: number | string
   status: number
   title: string
   pkg: string
@@ -334,7 +351,7 @@ interface dataType {
   adtype: number
   update_date: string
   adv_tracking_link: string
-  target_cvr: string
+  target_cvr: number | undefined
   cvr_status: number
   is_s2s: number
   s2s_tracking_link: string,
@@ -345,7 +362,7 @@ interface dataType {
 }
 const defaultRuleForm: dataType = {
   id: undefined,
-  offer: undefined,
+  offer_id: '',
   adv_offer: '',
   create_type: 1,
   channel: '',
@@ -364,7 +381,7 @@ const defaultRuleForm: dataType = {
   adtype: 38,
   update_date: '',
   adv_tracking_link: '',
-  target_cvr: '',
+  target_cvr: undefined,
   cvr_status: 2,
   is_s2s: 2,
   s2s_tracking_link: '',
@@ -376,15 +393,27 @@ const defaultRuleForm: dataType = {
 let loading = ref(false)
 const state = reactive({
   options: {
-    channel: [],
-    country: ['a', 'b', 'c'],
+    channel: [{
+      id: '',
+      short_name: ''
+    }],
+    country: [{
+      id: '',
+      short_name: '',
+      zh_cn: ''
+    }],
     conversion_flow: [
       {
-        value: 'cpi',
+        value: 1,
         label: 'CPI'
-      }, {
-        value: 'cpa',
+      },
+      {
+        value: 2,
         label: 'CPA'
+      },
+      {
+        value: 9,
+        label: 'SDK'
       }
     ],
     platform: [
@@ -417,23 +446,23 @@ const state = reactive({
     ],
     attribute_provider: [
       {
-        value: 'appsflyer',
+        value: 'AppsFlyer',
         label: 'AppsFlyer'
       },
       {
-        value: 'branch',
+        value: 'Branch',
         label: 'Branch'
       },
       {
-        value: 'adjust',
+        value: 'Adjust',
         label: 'Adjust'
       },
       {
-        value: 'singular',
+        value: 'Singular',
         label: 'Singular'
       },
       {
-        value: 'appmetrica',
+        value: 'AppMetrica',
         label: 'AppMetrica'
       }
     ]
@@ -490,13 +519,62 @@ const state = reactive({
     ],
   },
   ruleForm: defaultRuleForm,
+  search: {
+    // adv_offer: 'bz600009'
+    adv_offer: ''
+  }
 })
 let name: any = ref('')
 let id: any = ref('')
+let type: any = ref('')
+const submitFn = async () => {
+  loading.value = true
+  const baseAjax = _.cloneDeep(state.ruleForm)
+  let ajaxData: any = {
+    ...baseAjax
+  }
+  // ajaxData.conversion_flow = getConversionFlowValueToLabel(baseAjax.conversion_flow)
+  ajaxData.conversion_flow = baseAjax.conversion_flow
+  ajaxData.country = baseAjax.country[0]
+  ajaxData.target_cvr = parseFloat(ajaxData.target_cvr)
+  if (baseAjax.traffic.length !== 0) {
+    ajaxData.traffic = JSON.stringify(baseAjax.traffic)
+  } else {
+    delete ajaxData.traffic
+  }
+  console.log(ajaxData)
+  // 创建
+  if (type.value === 'create') {
+    await ApiCreateOffer(ajaxData)
+  }
+  // 修改
+  if (type.value === 'edit') {
+    await ApiEditOffer(ajaxData)
+  }
+  loading.value = false
+}
+const getConversionFlowValueToLabel = (n: any) => {
+  if (n) {
+    const obj = state.options.conversion_flow.find(ele => {
+      return ele.value === n
+    })
+    return obj?.label
+  }
+}
+const getConversionFlowLabelToValue = (s: any) => {
+  if (s) {
+    const obj = state.options.conversion_flow.find(ele => {
+      return ele.label === s
+    })
+    return obj?.value
+  }
+}
 const saveFun = () => {
-  proxy.$refs['ruleForm'].validate((valid: any) => {
+  proxy.$refs['ruleForm'].validate((valid: boolean) => {
+    console.log(valid)
     if (valid) {
       console.log('submit!')
+      submitFn()
     } else {
       console.log('error submit!!')
       return false
@@ -507,21 +585,50 @@ const getOfferIdFn = async () => {
   const res = await ApiGetOfferCreateId()
   if (res.code === 200) {
     const { offer_id } = res
-    state.ruleForm.offer = offer_id
+    state.ruleForm.offer_id = offer_id.toString()
   } else {
     getOfferIdFn()
   }
 }
-onMounted(() => {
+const getConfig = async () => {
+  const res = await Promise.all([getChannelList(), getCountryList()])
+  return res
+}
+const getChannelList = async () => {
+  const { data: channelList } = await ApiGetChannelList()
+  state.options.channel = channelList
+  return channelList
+}
+const getCountryList = async () => {
+  const { data: countryList } = await ApiGetCountryList()
+  state.options.country = countryList
+  return countryList
+}
+onMounted(async () => {
   name.value = router.currentRoute.value.name
+  id.value = router.currentRoute.value.params.id
   if (name.value === 'fenix-offer-create') {
     // 进去若是新建会生成offer_id
     getOfferIdFn()
+    type.value = 'create'
   }
   if (name.value === 'fenix-offer-edit') {
     id.value = router.currentRoute.value.params.id
+    type.value = 'edit'
+    getOfferForOne()
   }
+  await getConfig()
 })
+const getOfferForOne = async () => {
+  const { data: offerData } = await ApietOfferForOne(id.value)
+  state.ruleForm = {
+    ...offerData
+  }
+  state.ruleForm.country = [offerData.country]
+  state.search.adv_offer = offerData.adv_offer
+  state.ruleForm.traffic = offerData.traffic ? JSON.parse(offerData.traffic) : []
+  console.log(state.ruleForm.traffic)
+}
 const judgeSiteType = computed(() => {
   if (state.ruleForm.site_type === 'rule_value') {
     return true
@@ -534,23 +641,94 @@ watch(() => state.ruleForm.traffic, (newVal, oldVal) => {
   immediate: true,
   deep: true
 })
+watch(() => state.ruleForm.adv_offer,  (newVal, oldVal) => {
+  // 导入是2，自建是1
+  if (newVal) {
+    state.ruleForm.create_type = 2
+  } else {
+    state.ruleForm.create_type = 1
+  }
+}, {
+  immediate: true,
+  deep: true
+})
 const saveTraffic = (data: any) => {
+  console.log(data)
   state.ruleForm.traffic = _.cloneDeep(data)
+  proxy.$refs['ruleForm'].validateField('traffic')
   return true
 }
 const searchAdvOffer = async () => {
   console.log('get adv offer')
-  // 首先判断是否已存在当前搜索的offer
-  await ApiJudgeOffer()
-  // 判断是否包含下划线
+  state.ruleForm.adv_offer = state.search.adv_offer
   const str = state.ruleForm.adv_offer
+  // 首先判断是否已存在当前搜索的offer
+  const { data: offerCode } = await ApiJudgeOffer({
+    adv_offer: str,
+    channel: '',
+    country: ''
+  })
+  if (offerCode !== 0 ) {
+    ElMessage.error('当前offer已存在')
+    return false
+  }
+  // 判断是否包含下划线
+  const ajaxData = {
+    adv_offer: str,
+    platform: state.ruleForm.platform
+  }
   if (str && str.includes('_')) {
     console.log('get offer for dump')
-    const res = await ApiGetAdvOfferForDump()
+    state.ruleForm.channel_type = 2
+    state.ruleForm.adtype = 39
+    const res = await ApiGetAdvOfferForDump(ajaxData)
+    const { data: offerData } = res
+    if (res.status === 200) {
+      state.ruleForm.adv_status = 1
+      setDumpOffer(offerData)
+    } else {
+      console.log('没有dump offer')
+      state.ruleForm.adv_status = 2
+    }
   } else {
     console.log('get offer for buzz')
-    const res = await ApiGetAdvOfferForBuzzList()
+    state.ruleForm.channel_type = 1
+    state.ruleForm.adtype = 38
+    const { data: offerData } = await ApiGetAdvOfferForBuzzList(ajaxData)
+    console.log(offerData)
+    state.ruleForm.adv_status = offerData.status
+    setBuzzOffer(offerData)
   }
-  state.ruleForm.country = ['a', 'c']
+}
+const setBuzzOffer = (data: any) => {
+  state.ruleForm.channel = data.channel
+  state.ruleForm.attribute_provider = data.attribute_provider
+  state.ruleForm.conversion_flow = data.conversion_flow
+  state.ruleForm.title = data.title
+  state.ruleForm.pkg = data.pkg_name
+  state.ruleForm.pid = data.pid
+  state.ruleForm.platform = data.platform
+  state.ruleForm.revenue = data.payout
+  state.ruleForm.adv_tracking_link = data.tracking_link
+  setCountry(data.country)
+}
+const setDumpOffer = (data: any) => {
+  state.ruleForm.pkg = data.app_pkg_name
+  state.ruleForm.channel = data.channel
+  state.ruleForm.country = data.country
+  const platform = state.options.platform.find(ele => {
+    return ele.label === data.platform
+  })?.value
+  state.ruleForm.platform = platform ? platform : 1
+  state.ruleForm.revenue = data.revenue
+  state.ruleForm.title = data.title
+  state.ruleForm.adv_tracking_link = data.tracking_link
+}
+const setCountry = (data: any) => {
+  if (Array.isArray(data)) {
+    state.ruleForm.country = data
+  } else {
+    state.ruleForm.country = [data]
+  }
 }
 </script>
