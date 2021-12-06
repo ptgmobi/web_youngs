@@ -1,1 +1,0 @@
-import{k as t}from"./index.136e6deb.js";function r(){return t({url:"/roles",method:"get"})}function e(r){return t({url:`/roles/${r}`,method:"get"})}function o(r){return t({url:"/roles",method:"post",data:r})}function n(r,e){return t({url:`/roles/${r}`,method:"patch",data:e})}export{e as a,n as b,r as g,o as s};
