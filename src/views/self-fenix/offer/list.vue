@@ -3,15 +3,15 @@
     <div class='control-box w100 mb-10'>
       <div class="mb-10">
         <router-link to="/fenix/offer/create">
-          <el-button type="primary">Create</el-button>
+          <el-button type="primary">Offer Create</el-button>
         </router-link>
       </div>
       <el-form :inline="true" v-model="state.searchData" class="flex jc-between w100 ai-end">
         <div class="flex jc-start flex-wrap w100">
           <el-form-item label="">
-            <el-select v-model="state.searchData.attribute_provider" clearable class="search-con" placeholder="Attribute Provider" style="min-width: 140px;">
+            <el-select v-model="state.searchData.adv_status" clearable class="search-con" placeholder="Adv Status">
               <el-option
-                v-for="item in state.options.attribute_provider"
+                v-for="item in state.options.status"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -19,7 +19,27 @@
             </el-select>
           </el-form-item>
           <el-form-item label="">
-            <el-select v-model="state.searchData.platform" clearable class="search-con" placeholder="Platform" style="min-width: 95px;">
+            <el-select v-model="state.searchData.status" clearable class="search-con" placeholder="Status">
+              <el-option
+                v-for="item in state.options.status"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+          <!-- <el-form-item label="">
+            <el-select v-model="state.searchData.cvr_status" clearable class="search-con" placeholder="Cvr Status">
+              <el-option
+                v-for="item in state.options.status"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item> -->
+          <el-form-item label="">
+            <el-select v-model="state.searchData.platform" clearable class="search-con" placeholder="Platform">
               <el-option
                 v-for="item in state.options.platform"
                 :key="item.value"
@@ -29,22 +49,52 @@
             </el-select>
           </el-form-item>
           <el-form-item label="">
-            <el-input placeholder="Package Name" v-model="state.searchData.package_name" class="search-con" style="min-width: 120px;" />
+            <el-select v-model="state.searchData.attribute_provider" clearable class="search-con" placeholder="Attribute Provider">
+              <el-option
+                v-for="item in state.options.attribute_provider"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="">
-            <el-input placeholder="Channel" v-model="state.searchData.channel" class="search-con" style="min-width: 80px;" />
+            <el-select v-model="state.searchData.pub_name" clearable class="search-con" placeholder="Pub Name">
+              <el-option
+                v-for="item in state.options.pub"
+                :key="item.id"
+                :label="item.pub_name"
+                :value="item.pub_name"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="">
-            <el-input placeholder="ID" v-model="state.searchData.id" class="search-con" />
+            <el-input placeholder="Offer ID" v-model="state.searchData.offer_id" class="search-con"  />
           </el-form-item>
           <el-form-item label="">
-            <el-input placeholder="Offer Title" v-model="state.searchData.offer_title" class="search-con" style="min-width: 90px;" />
+            <el-input placeholder="Adv Offer" v-model="state.searchData.adv_offer" class="search-con"  />
           </el-form-item>
           <el-form-item label="">
-            <el-input placeholder="Country" v-model="state.searchData.country" class="search-con" style="min-width: 80px;" />
+            <el-input placeholder="Pachage Name" v-model="state.searchData.pkg" class="search-con"  />
           </el-form-item>
           <el-form-item label="">
-            <el-input placeholder="Pid" v-model="state.searchData.pid" class="search-con" />
+            <el-input placeholder="Offer Title" v-model="state.searchData.title" class="search-con"  />
+          </el-form-item>
+          <el-form-item label="">
+            <el-input placeholder="Channel" v-model="state.searchData.channel" class="search-con"  />
+          </el-form-item>
+          <el-form-item label="">
+            <el-input placeholder="Country" v-model="state.searchData.country" class="search-con"  />
+          </el-form-item>
+          <el-form-item label="">
+            <el-select v-model="state.searchData.channel_type" clearable class="search-con" placeholder="Channel Type">
+              <el-option
+                v-for="item in state.options.channel_type"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
           </el-form-item>
         </div>
         <div class="flex">
@@ -187,7 +237,8 @@
 </template>
 <script lang="ts" setup>
 import { ref, reactive, toRefs, toRef, onMounted } from 'vue'
-import { ApiGetOfferList, ApiOfferForChangeStatus, ApiOfferForDelete } from '@/api/fenix'
+import { ApiGetOfferList, ApiOfferForChangeStatus, ApiOfferForDelete, ApiGetAllManageSlot } from '@/api/fenix'
+
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { messageFun } from '@/utils/message'
 interface tableDataType {
@@ -206,22 +257,98 @@ interface tableDataType {
 let dialogTableVisible = ref(false)
 const tableDataDefault: Array<tableDataType> = []
 interface sarchDataType {
-  
+  adv_status: number | undefined
+  status:  number | undefined
+  cvr_status: number | undefined
+  platform: number | undefined
+  attribute_provider: string
+  pub_name: string
+  offer_id: string
+  adv_offer: string
+  pkg: string
+  title: string
+  channel: string
+  country: string
+  channel_type: number | undefined
 }
 const sarchDataDefault: sarchDataType = {
+  adv_status: undefined,
+  status: undefined,
+  cvr_status: undefined,
+  platform: undefined,
   attribute_provider: '',
-  platform: '',
-  package_name: '',
+  pub_name: '',
+  offer_id: '',
+  adv_offer: '',
+  pkg: '',
+  title: '',
   channel: '',
-  id: '',
-  offer_title: '',
   country: '',
-  pid: ''
+  channel_type: undefined
 }
 const state = reactive({
   searchData: sarchDataDefault,
   tableData: tableDataDefault,
-  options: {},
+  options: {
+    status: [
+      {
+        value: 1,
+        label: '开'
+      },
+      {
+        value: 2,
+        label: '关'
+      }
+    ],
+    platform: [
+      {
+        value: 1,
+        label: 'Android'
+      },
+      {
+        value: 2,
+        label: 'iOS'
+      }
+    ],
+    attribute_provider: [
+      {
+        value: 'AppsFlyer',
+        label: 'AppsFlyer'
+      },
+      {
+        value: 'Branch',
+        label: 'Branch'
+      },
+      {
+        value: 'Adjust',
+        label: 'Adjust'
+      },
+      {
+        value: 'Singular',
+        label: 'Singular'
+      },
+      {
+        value: 'AppMetrica',
+        label: 'AppMetrica'
+      }
+    ],
+    pub: [
+      {
+        id: '',
+        pub_name: ''
+      }
+    ],
+    channel_type: [
+      {
+        value: '1',
+        label: 'BUZZ'
+      },
+      {
+        value: '2',
+        label: 'SDK'
+      }
+    ],
+  },
   pagination: {
     pageSizes: ['50', '100', '500', '1000'],
     total: 1,
@@ -255,17 +382,35 @@ const changeStatusFn = async ({ row }: any) => {
     row.status = row.status === 1 ? 2 : 1
   }
 }
+const getSlot = async () => {
+  const { data: slotList } = await ApiGetAllManageSlot()
+  state.options.pub = slotList
+}
+const getConfig = async () => {
+  return Promise.all([getSlot()])
+}
 const init = async () => {
-  const ajaxData = {
+  let ajaxData: any = {
     page: state.pagination.listQuery.page,
     page_size: state.pagination.listQuery.limit,
+  }
+  const object: any = {
+    ...state.searchData
+  }
+  for (const key in object) {
+    if (Object.prototype.hasOwnProperty.call(object, key)) {
+      const element: any = object[key]
+      if (element) {
+        ajaxData[key] = element
+      }
+    }
   }
   const res = await ApiGetOfferList(ajaxData)
   state.tableData = res.data.data
   state.pagination.total = res.data.paging.count
 }
 const searchFn = () => {
-  
+  init()
 }
 const deleteFn = async (scope: any) => {
   const { row } = scope
@@ -275,6 +420,7 @@ const deleteFn = async (scope: any) => {
   }
 }
 onMounted(() => {
+  getConfig()
   init()
 })
 </script>
