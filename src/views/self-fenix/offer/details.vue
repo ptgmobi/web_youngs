@@ -664,16 +664,20 @@ const searchAdvOffer = async () => {
   console.log('get adv offer')
   state.ruleForm.adv_offer = state.search.adv_offer
   const str = state.ruleForm.adv_offer
-  // 首先判断是否已存在当前搜索的offer
-  const { data: offerCode } = await ApiJudgeOffer({
-    adv_offer: str,
-    channel: '',
-    country: ''
-  })
-  if (offerCode !== 0 ) {
-    ElMessage.error('当前offer已存在')
-    return false
-  }
+  if (!str) return false
+  // ! 首先判断是否已存在当前搜索的offer
+  // let judgeAjaxData: any = {
+  //   adv_offer: str,
+  //   channel: state.ruleForm.channel
+  // }
+  // if (state.ruleForm.country.length !== 0) {
+  //   judgeAjaxData.country = state.ruleForm.country[0]
+  // }
+  // const { data: offerCode } = await ApiJudgeOffer(judgeAjaxData)
+  // if (offerCode !== 0 ) {
+  //   ElMessage.error('当前offer已存在')
+  //   return false
+  // }
   // 判断是否包含下划线
   const ajaxData = {
     adv_offer: str,
