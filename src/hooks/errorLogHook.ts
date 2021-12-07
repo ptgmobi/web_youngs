@@ -5,20 +5,21 @@ import bus from '@/utils/bus'
 import pack from '../../package.json'
 import { ObjTy } from '@/types/common'
 const errorLogReq = (errLog: string) => {
-  request({
-    url: '/ty-user/errorCollection/insert',
-    data: {
-      pageUrl: window.location.href,
-      errorLog: errLog,
-      browserType: navigator.userAgent,
-      version: pack.version
-    },
-    method: 'post',
-    bfLoading: false,
-    isAlertErrorMsg: true
-  }).then(() => {
-    bus.emit('reloadErrorPage', {})
-  })
+  bus.emit('reloadErrorPage', {})
+  // request({
+  //   url: '/ty-user/errorCollection/insert',
+  //   data: {
+  //     pageUrl: window.location.href,
+  //     errorLog: errLog,
+  //     browserType: navigator.userAgent,
+  //     version: pack.version
+  //   },
+  //   method: 'post',
+  //   bfLoading: false,
+  //   isAlertErrorMsg: true
+  // }).then(() => {
+  //   bus.emit('reloadErrorPage', {})
+  // })
 }
 
 export default function (app: ObjTy) {
