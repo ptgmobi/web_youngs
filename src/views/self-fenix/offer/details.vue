@@ -127,7 +127,7 @@
             <el-option
               v-for="item in state.options.country"
               :key="item.id"
-              :label="item.zh_cn"
+              :label="item.short_name + '-' + item.zh_cn"
               :value="item.short_name">
             </el-option>
           </el-select>
