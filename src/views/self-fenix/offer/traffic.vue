@@ -3,7 +3,7 @@
     <div class="flex jc-end">
       <el-button type="primary" @click="addTrafficFn">Add</el-button>
     </div>
-    <el-table class="mt-10" :data="manage_traffic" style="width: 100%" border>
+    <el-table class="mt-10" :data="state.manage_traffic" style="width: 100%" border>
       <el-table-column label="Pub Name" align="center">
         <template #default="scope">
           <el-select filterable v-model="scope.row.pub" @change="selectPub(scope)" clearable placeholder="">
@@ -93,10 +93,12 @@ interface trafficObjType {
   pub_status: number
   pub_tracking_link: string
 }
-let manage_traffic: any = computed(() => {
-  return toRefs(props.list)
+let state : any = reactive({
+  manage_traffic: []
 })
-console.log(manage_traffic)
+// let manage_traffic: any = computed(() => {
+//   return props.list
+// })
 const trafficObj: trafficObjType = {
   pub: '',
   slotid: '',
@@ -106,12 +108,11 @@ const trafficObj: trafficObjType = {
   pub_tracking_link: ''
 }
 const addTrafficFn = () => {
-  console.log(manage_traffic)
-  manage_traffic.push(_.cloneDeep(trafficObj))
+  state.manage_traffic.push(_.cloneDeep(trafficObj))
 }
 const deleteFn = (item: any) => {
   const index = item.$index
-  manage_traffic.splice(index, 1)
+  state.manage_traffic.splice(index, 1)
 }
 const selectPub = (scope: any) => {
   const { row } = scope
@@ -131,7 +132,6 @@ const copyFn = ({ row }: any) => {
   clipboardFn(text)
 
 }
-const emit = defineEmits(['kk', 'up'])
 const changeStatusFn = ({ row }: any) => {
   console.log(row)
 }
@@ -141,32 +141,34 @@ const init = async () => {
   options.pub = slotList
 }
 const handleFn = (arr: any) => {
-  let newArr: Array<trafficObjType> = []
   arr.map((ele: any) => {
-    let obj = {
-      ...ele
-    }
     if (ele.payout) {
-      obj['payout'] = parseFloat(ele.payout)
+      ele['payout'] = parseFloat(ele.payout)
     }
     if (ele.cap_daily) {
-      obj['cap_daily'] = parseFloat(ele.cap_daily)
+      ele['cap_daily'] = parseFloat(ele.cap_daily)
     }
-    newArr.push(obj)
+    return ele
   })
-  return newArr
+  return arr
 }
+watch(() => props.list, (newVal, oldVal) => {
+  state.manage_traffic = handleFn(newVal)
+}, {
+  immediate: true,
+  deep: true
+})
 
+const emit = defineEmits(['kk', 'up'])
+watch(() => state.manage_traffic, (newVal, oldVal) => {
+  // console.log('emit')
+  // let arr = handleFn(newVal)
+  // emit('kk', arr)
+}, {
+  immediate: true,
+  deep: true
+})
 onMounted(() => {
   init()
-  watch(() => manage_traffic, (newVal, oldVal) => {
-    console.log('emit')
-    console.log(manage_traffic)
-    let arr = handleFn(newVal)
-    emit('kk', arr)
-  }, {
-    immediate: true,
-    deep: true
-  })
 })
 </script>

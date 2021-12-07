@@ -147,7 +147,7 @@
           <div class='form-one'>
             <Traffic
               ref="traffic"
-              :list="state.ruleForm.traffic"
+              v-model:list="state.ruleForm.traffic"
               :offer="state.ruleForm.offer_id"
               @kk="saveTraffic"
             ></Traffic>
@@ -279,6 +279,7 @@ import {useRouter } from 'vue-router'
 import { ApiGetOfferCreateId, ApiJudgeOffer, ApiGetAdvOfferForDump, ApiGetAdvOfferForBuzzList, ApiGetChannelList, ApiGetCountryList, ApiCreateOffer, ApiEditOffer, ApietOfferForOne } from '@/api/fenix'
 import Traffic from './traffic'
 import { ElMessage } from 'element-plus'
+import { messageFun } from '@/utils/message'
 
 let { proxy }: any = getCurrentInstance()
 const router = useRouter()
@@ -298,7 +299,7 @@ const judgeTraffic = (data: Array<any>) => {
     for (const key in ele) {
       if (Object.prototype.hasOwnProperty.call(ele, key)) {
         const element = ele[key]
-        if (element === '' || element === undefined) {
+        if ((element === '' || element === undefined) && element !== 0) {
           flag = false
           break
         }
@@ -542,16 +543,17 @@ const submitFn = async () => {
   } else {
     delete ajaxData.traffic
   }
-  console.log(ajaxData)
+  let res: any
   // 创建
   if (type.value === 'create') {
-    await ApiCreateOffer(ajaxData)
+    res = await ApiCreateOffer(ajaxData)
   }
   // 修改
   if (type.value === 'edit') {
-    await ApiEditOffer(ajaxData)
+    res = await ApiEditOffer(ajaxData)
   }
   loading.value = false
+  messageFun(res)
 }
 const getConversionFlowValueToLabel = (n: any) => {
   if (n) {
@@ -627,7 +629,6 @@ const getOfferForOne = async () => {
   state.ruleForm.country = [offerData.country]
   state.search.adv_offer = offerData.adv_offer
   state.ruleForm.traffic = offerData.traffic ? JSON.parse(offerData.traffic) : []
-  console.log(state.ruleForm.traffic)
 }
 const judgeSiteType = computed(() => {
   if (state.ruleForm.site_type === 'rule_value') {
@@ -652,11 +653,12 @@ watch(() => state.ruleForm.adv_offer,  (newVal, oldVal) => {
   immediate: true,
   deep: true
 })
+// !!! 会陷入死循环，舍弃此用法
 const saveTraffic = (data: any) => {
   console.log(data)
-  state.ruleForm.traffic = _.cloneDeep(data)
-  proxy.$refs['ruleForm'].validateField('traffic')
-  return true
+  // state.ruleForm.traffic = _.cloneDeep(data)
+  // proxy.$refs['ruleForm'].validateField('traffic')
+  // return true
 }
 const searchAdvOffer = async () => {
   console.log('get adv offer')

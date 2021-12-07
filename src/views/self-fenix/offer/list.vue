@@ -263,7 +263,6 @@ const init = async () => {
   const res = await ApiGetOfferList(ajaxData)
   state.tableData = res.data.data
   state.pagination.total = res.data.paging.count
-  console.log(res)
 }
 const searchFn = () => {
   
