@@ -22,6 +22,7 @@
             v-model="scope.row.payout"
             type="number"
             min="0"
+            step="0.001"
             placeholder="Please input"
             class="input-with-select"
           />
@@ -33,6 +34,7 @@
             v-model="scope.row.cap_daily"
             type="number"
             min="0"
+            step="0.001"
             placeholder="Please input"
             class="input-with-select"
           />
@@ -139,20 +141,8 @@ const init = async () => {
   const { data: slotList } = await ApiGetAllManageSlot()
   options.pub = slotList
 }
-const handleFn = (arr: any) => {
-  arr.map((ele: any) => {
-    if (ele.payout) {
-      ele['payout'] = parseFloat(ele.payout)
-    }
-    if (ele.cap_daily) {
-      ele['cap_daily'] = parseFloat(ele.cap_daily)
-    }
-    return ele
-  })
-  return arr
-}
 watch(() => props.list, (newVal, oldVal) => {
-  state.manage_traffic = handleFn(newVal)
+  state.manage_traffic = newVal
 }, {
   immediate: true,
   deep: true
@@ -161,7 +151,6 @@ watch(() => props.list, (newVal, oldVal) => {
 const emit = defineEmits(['kk', 'up'])
 watch(() => state.manage_traffic, (newVal, oldVal) => {
   // console.log('emit')
-  // let arr = handleFn(newVal)
   // emit('kk', arr)
 }, {
   immediate: true,

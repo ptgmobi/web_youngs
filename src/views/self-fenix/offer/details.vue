@@ -528,6 +528,21 @@ const state = reactive({
 let name: any = ref('')
 let id: any = ref('')
 let type: any = ref('')
+const handleTraffic = (arr: Array<any>) => {
+  const finalArr: Array<any> = []
+  arr.map((ele: any) => {
+    let obj: any = {...ele}
+    if (ele.payout) {
+      obj['payout'] = Number(ele.payout)
+    }
+    if (ele.cap_daily) {
+      obj['cap_daily'] = Number(ele.cap_daily)
+    }
+    finalArr.push(obj)
+    return ele
+  })
+  return finalArr
+}
 const submitFn = async () => {
   loading.value = true
   const baseAjax = _.cloneDeep(state.ruleForm)
@@ -539,7 +554,8 @@ const submitFn = async () => {
   ajaxData.country = baseAjax.country[0]
   ajaxData.target_cvr = parseFloat(ajaxData.target_cvr)
   if (baseAjax.traffic.length !== 0) {
-    ajaxData.traffic = JSON.stringify(baseAjax.traffic)
+    const finalTraffic = handleTraffic(baseAjax.traffic)
+    ajaxData.traffic = JSON.stringify(finalTraffic)
   } else {
     delete ajaxData.traffic
   }
@@ -729,6 +745,7 @@ const setDumpOffer = (data: any) => {
   state.ruleForm.revenue = data.revenue
   state.ruleForm.title = data.title
   state.ruleForm.adv_tracking_link = data.tracking_link
+  state.ruleForm.conversion_flow = 9
 }
 const setCountry = (data: any) => {
   if (Array.isArray(data)) {
