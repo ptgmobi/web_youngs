@@ -429,8 +429,8 @@ const state = reactive({
     ],
     site_type: [
       {
-        value: 'rule_sdkcvrlist',
-        label: '匹配SDK CVR'
+        value: 'rule_sdkindex',
+        label: '匹配SDK自定义'
       },
       {
         value: 'rule_pubredirect',
