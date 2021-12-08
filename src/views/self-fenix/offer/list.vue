@@ -112,10 +112,10 @@
     </div>
     <!-- table -->
     <div class="body-box mt-10">
-      <el-table :data="state.tableData" style="width: 100%" border>
-        <el-table-column prop="id" label="ID" align="center" />
-        <el-table-column prop="adv_offer" label="Adv Offer" align="center" />
-        <el-table-column prop="channel" label="Channel" align="center" />
+      <el-table :data="state.tableData" height="600" style="width: 100%" border>
+        <el-table-column fixed prop="offer_id" label="Offer ID" align="center" />
+        <el-table-column fixed prop="adv_offer" label="Adv Offer" align="center" />
+        <el-table-column fixed prop="channel" label="Channel" align="center" />
         <el-table-column prop="attribute_provider" label="Attribute Provider" align="center" />
         <el-table-column prop="pkg" label="Package Name" align="center" />
         <el-table-column prop="title" label="Offer Title" align="center" />
@@ -148,27 +148,33 @@
         <el-table-column
           label="Target Cvr*w"
           align="center"
-          width="200px"
+          width="180px"
         >
           <template #default="scope">
-            <el-input
-              v-model="scope.row.target_cvr"
-              placeholder="Please input"
-              class="input-with-select"
-            >
-              <template #append>
-                <el-button icon="Edit"></el-button>
-              </template>
-            </el-input>
+            <div class="flex">
+              <el-input
+                v-model="scope.row.target_cvr"
+                placeholder="Please input"
+                class="input-with-select mr-10"
+              />
+              <el-button class="mr-10" type="primary" icon="Edit" circle></el-button>
+              <el-switch
+                v-model="scope.row.target_cvr_status"
+                :active-value="1"
+                :inactive-value="2"
+                @change="changeTargetCvrStatusFn(scope)"
+              />
+            </div>
           </template>
         </el-table-column>
         <el-table-column
           label="Traffic Data"
           align="center"
-          width="200px"
+          width="220px"
         >
           <template #default="scope">
             <div v-if="scope.row.traffic" v-for="o in JSON.parse(scope.row.traffic)">
+              <span>{{o.pub_status === 1 ? '开' : '关'}}</span>.
               <span>{{o.pub}}</span>.
               <span>{{o.payout}}</span>.
               <span>{{o.cap_daily}}</span>:
@@ -179,7 +185,7 @@
         <el-table-column
           label="Operation"
           align="center"
-          width="200px"
+          width="150px"
         >
           <template #default="scope">
             <router-link :to="getEditUrl(scope)">
@@ -206,18 +212,17 @@
         <el-table-column
           label="Comment"
           align="center"
-          width="200px"
+          width="150px"
         >
           <template #default="scope">
-            <el-input
-              v-model="scope.row.description"
-              placeholder="Please input"
-              class="input-with-select"
-            >
-              <template #append>
-                <el-button icon="Edit"></el-button>
-              </template>
-            </el-input>
+            <div class="flex">
+              <el-input
+                v-model="scope.row.description"
+                placeholder="Please input"
+                class="input-with-select mr-10"
+              />
+              <el-button type="primary" icon="Edit" circle></el-button>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -350,11 +355,11 @@ const state = reactive({
     ],
   },
   pagination: {
-    pageSizes: ['50', '100', '500', '1000'],
+    pageSizes: ['20', '50', '100', '500', '1000'],
     total: 1,
     listQuery: {
       page: 1,
-      limit: 50,
+      limit: 100,
       importance: undefined,
       title: undefined,
       type: undefined,
@@ -382,6 +387,9 @@ const changeStatusFn = async ({ row }: any) => {
     row.status = row.status === 1 ? 2 : 1
   }
 }
+const changeTargetCvrStatusFn = async ({ row }: any) => {
+  
+}
 const getSlot = async () => {
   const { data: slotList } = await ApiGetAllManageSlot()
   state.options.pub = slotList
@@ -392,7 +400,7 @@ const getConfig = async () => {
 const init = async () => {
   let ajaxData: any = {
     page: state.pagination.listQuery.page,
-    page_size: state.pagination.listQuery.limit,
+    limit: state.pagination.listQuery.limit,
   }
   const object: any = {
     ...state.searchData

@@ -117,15 +117,14 @@ const deleteFn = (item: any) => {
 const selectPub = (scope: any) => {
   const { row } = scope
   // 生成对应的pub_tracking_link
-  const url = 'http://track.adsforward.com/api/track?offer=6011690&mid={slot}&pub_id={siteid}&gaid={gaid}&idfa={idfa}&click_id={clickid}&ip={ip}&ua={ua}&osv={osv}&lang={lang}'
+  const url = 'http://track.adsforward.com/api/track?offer={offer}&mid={slot}&pub_id={siteid}&gaid={gaid}&idfa={idfa}&click_id={clickid}&ip={ip}&ua={ua}&osv={osv}&lang={lang}'
   row.pub_tracking_link = url
-  const offer = props.offer
   const slot: any = options.pub.find(ele => {
     return ele.pub_name === row.pub
   })
   row.slotid = slot.slot_id
   row.pub_status = slot.status
-  row.pub_tracking_link = url.replace('{offer}', offer).replace('{slot}', slot.slot_id)
+  row.pub_tracking_link = url.replace('{offer}', props.offer).replace('{slot}', slot.slot_id)
 }
 const copyFn = ({ row }: any) => {
   const { pub_tracking_link: text } = row
