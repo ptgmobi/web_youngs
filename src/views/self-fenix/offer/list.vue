@@ -198,7 +198,11 @@
               class="mr-10"
               @change="changeStatusFn(scope)"
             />
-            <el-button type="danger" icon="Delete" circle @click="deleteFn(scope)"></el-button>
+            <el-popconfirm title="删除后无法再生成该Offer ID，请谨慎操作！" @confirm="deleteFn(scope)">
+              <template #reference>
+                <el-button type="danger" icon="Delete" circle></el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
         <el-table-column

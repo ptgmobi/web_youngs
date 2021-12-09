@@ -49,7 +49,7 @@
           <div class="flex">
             <el-button class="mr-10" type="danger" icon="Delete" circle @click="deleteFn(scope)"></el-button>
             <el-switch
-              v-model="scope.row.status"
+              v-model="scope.row.pub_status"
               :active-value="1"
               :inactive-value="2"
               class="mr-10"
@@ -106,7 +106,7 @@ const trafficObj: trafficObjType = {
   slotid: '',
   payout: 0,
   cap_daily: 0,
-  pub_status: 2,
+  pub_status: 1,
   pub_tracking_link: ''
 }
 const addTrafficFn = () => {
@@ -124,6 +124,7 @@ const selectPub = (scope: any) => {
   const slot: any = options.pub.find(ele => {
     return ele.pub_name === row.pub
   })
+  console.log(slot)
   row.slotid = slot.slot_id
   row.pub_status = slot.status
   row.pub_tracking_link = url.replace('{offer}', props.offer).replace('{slot}', slot.slot_id)
