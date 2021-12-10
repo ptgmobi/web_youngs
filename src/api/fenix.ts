@@ -150,7 +150,7 @@ export function ApiGetAllManageSlot() {
   })
 }
 
-// ! list
+// ! finix offer list
 export function ApiGetOfferList(data: ObjTy) {
   return request({
     url: '/offer',
@@ -179,5 +179,21 @@ export function ApietOfferForOne(id: string) {
   return request({
     url: `/offer/view/${id}`,
     method: 'get'
+  })
+}
+// 修改target cvr status
+export function ApiChangeTargetCvrStatus(data: ObjTy) {
+  return request({
+    url: '/offer/cvr-status',
+    data,
+    method: 'patch'
+  })
+}
+// 修改target cvr 的值
+export function ApiChangeTargetCvr(data: ObjTy) {
+  return request({
+    url: '/offer/target-cvr',
+    data,
+    method: 'patch'
   })
 }

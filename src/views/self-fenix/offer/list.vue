@@ -157,9 +157,9 @@
                 placeholder="Please input"
                 class="input-with-select mr-10"
               />
-              <el-button class="mr-10" type="primary" icon="Edit" circle></el-button>
+              <el-button class="mr-10" type="primary" icon="RefreshLeft" circle @click="changeTargetCvr(scope)"></el-button>
               <el-switch
-                v-model="scope.row.target_cvr_status"
+                v-model="scope.row.cvr_status"
                 :active-value="1"
                 :inactive-value="2"
                 @change="changeTargetCvrStatusFn(scope)"
@@ -225,7 +225,7 @@
                 placeholder="Please input"
                 class="input-with-select mr-10"
               />
-              <el-button type="primary" icon="Edit" circle></el-button>
+              <el-button type="primary" icon="RefreshLeft" circle></el-button>
             </div>
           </template>
         </el-table-column>
@@ -246,10 +246,10 @@
 </template>
 <script lang="ts" setup>
 import { ref, reactive, toRefs, toRef, onMounted } from 'vue'
-import { ApiGetOfferList, ApiOfferForChangeStatus, ApiOfferForDelete, ApiGetAllManageSlot } from '@/api/fenix'
-
+import { ApiGetOfferList, ApiOfferForChangeStatus, ApiOfferForDelete, ApiGetAllManageSlot, ApiChangeTargetCvrStatus, ApiChangeTargetCvr } from '@/api/fenix'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { messageFun } from '@/utils/message'
+import { handleAjaxDataObjectFn } from '@/utils/new-format'
 interface tableDataType {
   id: number
   email: string
@@ -363,7 +363,7 @@ const state = reactive({
     total: 1,
     listQuery: {
       page: 1,
-      limit: 100,
+      limit: 50,
       importance: undefined,
       title: undefined,
       type: undefined,
@@ -392,7 +392,24 @@ const changeStatusFn = async ({ row }: any) => {
   }
 }
 const changeTargetCvrStatusFn = async ({ row }: any) => {
-  
+  let ajaxData = {
+    id: row.id,
+    cvr_status: row.cvr_status
+  }
+  ajaxData = handleAjaxDataObjectFn(ajaxData)
+  const res = await ApiChangeTargetCvrStatus(ajaxData)
+  if (!messageFun(res)) {
+    row.cvr_status = row.cvr_status === 1 ? 2 : 1
+  }
+}
+const changeTargetCvr = async ({row}: any) => {
+  let ajaxData = {
+    id: row.id,
+    target_cvr: row.target_cvr
+  }
+  ajaxData = handleAjaxDataObjectFn(ajaxData)
+  const res = await ApiChangeTargetCvr(ajaxData)
+  messageFun(res)
 }
 const getSlot = async () => {
   const { data: slotList } = await ApiGetAllManageSlot()

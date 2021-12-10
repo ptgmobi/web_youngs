@@ -35,7 +35,7 @@ export function ApichangeCutoff(data: ObjTy) {
   })
 }
 
-export function ApiChangeStatus(data: ObjTy) {
+export function ApiChangeBuzzStatus(data: ObjTy) {
   return request({
     url: '/buzz/status',
     data,

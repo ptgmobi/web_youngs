@@ -193,7 +193,7 @@
 <script lang="ts" setup>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { getCurrentInstance, reactive, ref, shallowRef, onMounted, computed } from 'vue'
-import { ApiGetBuzzList, ApichangeClk, ApichangeCutoff, ApiChangeStatus } from '@/api/buzz'
+import { ApiGetBuzzList, ApichangeClk, ApichangeCutoff, ApiChangeBuzzStatus } from '@/api/buzz'
 import { ElMessage } from 'element-plus'
 import { messageFun } from '@/utils/message'
 import _ from 'lodash'
@@ -318,7 +318,7 @@ const changeStatus = async (row: any) => {
     status: row.status
   }
   ajaxData = handleAjaxDataObjectFn(ajaxData)
-  const res = await ApiChangeStatus(ajaxData)
+  const res = await ApiChangeBuzzStatus(ajaxData)
   messageFun(res)
 }
 const editFun = (row: any) => {
