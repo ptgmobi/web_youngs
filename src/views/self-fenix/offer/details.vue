@@ -310,6 +310,7 @@ const judgeTraffic = (data: Array<any>) => {
 }
 let validatorTraffic = (rule: any, value: Array<trafficType>, callback: (arg0: Error | undefined) => void) => {
   if (value.length !== 0) {
+    console.log(value)
     if (!judgeTraffic(value)) {
       callback(new Error('不允许有空值'))
     } else {
@@ -569,7 +570,10 @@ const submitFn = async () => {
     res = await ApiEditOffer(ajaxData)
   }
   loading.value = false
-  messageFun(res)
+  if (messageFun(res)) {
+    // 回到list页面
+    proxy.$router.push({ path: '/fenix/offer/list' })
+  }
 }
 const getConversionFlowValueToLabel = (n: any) => {
   if (n) {

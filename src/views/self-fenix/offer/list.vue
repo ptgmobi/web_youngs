@@ -113,28 +113,21 @@
     <!-- table -->
     <div class="body-box mt-10">
       <el-table :data="state.tableData" height="600" style="width: 100%" border>
-        <el-table-column fixed prop="offer_id" label="Offer ID" align="center" />
-        <el-table-column fixed prop="adv_offer" label="Adv Offer" align="center" />
-        <el-table-column fixed prop="channel" label="Channel" align="center" />
-        <el-table-column prop="attribute_provider" label="Attribute Provider" align="center" />
-        <el-table-column prop="pkg" label="Package Name" align="center" />
-        <el-table-column prop="title" label="Offer Title" align="center" />
-        <el-table-column prop="pid" label="Pid" align="center" />
-        <el-table-column
-          label="Platform"
-          align="center"
-        >
-          <template #default="scope">
-            <div>
-              <span>{{scope.row.platform === 1 ? 'Android' : 'iOS'}}</span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="country" label="Country" align="center" />
-        <el-table-column prop="revenue" label="Revenue" align="center" />
+        <el-table-column fixed prop="offer_id" label="Offer ID" align="center" width="60" />
+        <el-table-column fixed prop="adv_offer" label="Adv Offer" align="center" width="87" />
+        <el-table-column fixed prop="channel" label="Channel" align="center" width="42" />
+        <el-table-column prop="revenue" label="Revenue" align="center"  width="45" />
+        
+        <el-table-column prop="pkg" label="Package Name" align="center" width="100" />
+        <el-table-column prop="title" label="Offer Title" align="center" width="90" />
+        <el-table-column prop="pid" label="Pid" align="center" width="77" />
+        
+        <el-table-column prop="country" label="Country" align="center" width="40" />
+        
         <el-table-column
           label="Adv Status"
           align="center"
+          width="47"
         >
           <template #default="scope">
             <div>
@@ -142,23 +135,24 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="click_w" label="Click*w" align="center" />
-        <el-table-column prop="installs" label="Installs" align="center" />
-        <el-table-column prop="cvr_w" label="Cvr*w" align="center" />
+        <el-table-column prop="click_w" label="Click*w" align="center" width="55" />
+        <el-table-column prop="installs" label="Installs" align="center" width="50" />
+        <el-table-column prop="cvr_w" label="Cvr*w" align="center" width="48" />
         <el-table-column
           label="Target Cvr*w"
           align="center"
-          width="180px"
+          width="180"
         >
           <template #default="scope">
             <div class="flex">
               <el-input
                 v-model="scope.row.target_cvr"
                 placeholder="Please input"
-                class="input-with-select mr-10"
+                class="input-with-select mr-5"
               />
-              <el-button class="mr-10" type="primary" icon="RefreshLeft" circle @click="changeTargetCvr(scope)"></el-button>
+              <el-button class="mr-5 scale-button" type="default" icon="Edit" circle @click="changeTargetCvr(scope)"></el-button>
               <el-switch
+                class="scale-button"
                 v-model="scope.row.cvr_status"
                 :active-value="1"
                 :inactive-value="2"
@@ -170,7 +164,7 @@
         <el-table-column
           label="Traffic Data"
           align="center"
-          width="220px"
+          width="220"
         >
           <template #default="scope">
             <div v-if="scope.row.traffic" v-for="o in JSON.parse(scope.row.traffic)">
@@ -185,17 +179,17 @@
         <el-table-column
           label="Operation"
           align="center"
-          width="150px"
+          width="130"
         >
           <template #default="scope">
             <router-link :to="getEditUrl(scope)">
-              <el-button class='cp mr-10' type="primary" icon="Edit" circle></el-button>
+              <el-button class='cp mr-5' type="primary" icon="Edit" circle></el-button>
             </router-link>
             <el-switch
               v-model="scope.row.status"
               :active-value="1"
               :inactive-value="2"
-              class="mr-10"
+              class="mr-5"
               @change="changeStatusFn(scope)"
             />
             <el-popconfirm title="删除后无法再生成该Offer ID，请谨慎操作！" @confirm="deleteFn(scope)">
@@ -206,26 +200,39 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="Record"
+          label="Platform"
           align="center"
+          width="55"
         >
           <template #default="scope">
-            <el-button icon="View" circle></el-button>
+            <div>
+              <span>{{scope.row.platform === 1 ? 'Android' : 'iOS'}}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="attribute_provider" label="Attribute Provider" align="center" width="80" />
+        <el-table-column
+          label="Record"
+          align="center"
+          width="52"
+        >
+          <template #default="scope">
+            <el-button class="scale-button" icon="View" circle></el-button>
           </template>
         </el-table-column>
         <el-table-column
           label="Comment"
           align="center"
-          width="150px"
+          width="150"
         >
           <template #default="scope">
             <div class="flex">
               <el-input
                 v-model="scope.row.description"
                 placeholder="Please input"
-                class="input-with-select mr-10"
+                class="input-with-select mr-5"
               />
-              <el-button type="primary" icon="RefreshLeft" circle></el-button>
+              <el-button class="scale-button"  type="default" icon="Edit" circle></el-button>
             </div>
           </template>
         </el-table-column>
@@ -363,7 +370,7 @@ const state = reactive({
     total: 1,
     listQuery: {
       page: 1,
-      limit: 50,
+      limit: 20,
       importance: undefined,
       title: undefined,
       type: undefined,
@@ -453,3 +460,8 @@ onMounted(() => {
   init()
 })
 </script>
+<style scoped lang="scss">
+  .scale-button{
+    transform: scale(0.7);
+  }
+</style>

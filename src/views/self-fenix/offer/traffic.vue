@@ -87,11 +87,17 @@ const options = reactive({
     }
   ]
 })
+const slot_obj: any = {
+  '55527824': 0.1,
+  '95108831': 0.1,
+  '95846929': 0.01,
+  '59845210': 0.01,
+}
 interface trafficObjType {
   pub: string
   slotid: string
-  payout: number
-  cap_daily: number
+  payout: number | undefined
+  cap_daily: number | undefined
   pub_status: number
   pub_tracking_link: string
 }
@@ -104,8 +110,8 @@ let state : any = reactive({
 const trafficObj: trafficObjType = {
   pub: '',
   slotid: '',
-  payout: 0,
-  cap_daily: 0,
+  payout: undefined,
+  cap_daily: undefined,
   pub_status: 1,
   pub_tracking_link: ''
 }
@@ -128,6 +134,10 @@ const selectPub = (scope: any) => {
   row.slotid = slot.slot_id
   row.pub_status = slot.status
   row.pub_tracking_link = url.replace('{offer}', props.offer).replace('{slot}', slot.slot_id)
+  // 针对个别的slot生成默认的payout
+  if (slot_obj[slot.slot_id]) {
+    row.payout = slot_obj[slot.slot_id]
+  }
 }
 const copyFn = ({ row }: any) => {
   const { pub_tracking_link: text } = row
@@ -159,5 +169,6 @@ watch(() => state.manage_traffic, (newVal, oldVal) => {
 })
 onMounted(() => {
   init()
+  addTrafficFn()
 })
 </script>
