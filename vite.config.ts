@@ -31,7 +31,6 @@ export default ({ command }: any) => {
       // }
       proxy: {
         '/dev-api': {
-          // target: 'http://dataeye.adsgreat.cn/prod-api',
           // 本地测试
           // target: 'http://172.31.20.63:8888',
           // 线上地址

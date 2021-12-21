@@ -141,7 +141,7 @@
         <el-table-column
           label="Target Cvr*w"
           align="center"
-          width="180"
+          width="150"
         >
           <template #default="scope">
             <div class="flex">
@@ -164,7 +164,7 @@
         <el-table-column
           label="Traffic Data"
           align="center"
-          width="220"
+          width="190"
         >
           <template #default="scope">
             <div v-if="scope.row.traffic" v-for="o in JSON.parse(scope.row.traffic)">
@@ -252,11 +252,16 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, toRefs, toRef, onMounted } from 'vue'
+import { getCurrentInstance, ref, reactive, toRefs, toRef, onBeforeMount, onMounted, onUnmounted, watch} from 'vue'
+import {useRouter, onBeforeRouteLeave } from 'vue-router'
 import { ApiGetOfferList, ApiOfferForChangeStatus, ApiOfferForDelete, ApiGetAllManageSlot, ApiChangeTargetCvrStatus, ApiChangeTargetCvr } from '@/api/fenix'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { messageFun } from '@/utils/message'
 import { handleAjaxDataObjectFn } from '@/utils/new-format'
+import { ElMessageBox } from 'element-plus'
+let { proxy }: any = getCurrentInstance()
+const router = useRouter()
+let isJump: any = ref(true)
 interface tableDataType {
   id: number
   email: string
@@ -455,13 +460,38 @@ const deleteFn = async (scope: any) => {
     state.tableData.splice(scope.$index, 1)
   }
 }
+const backChange = () => {
+  // let r=confirm('确认退出当前页面?')
+  // if ( r==true ) {
+  //   isJump.value = true
+  // }
+  // else{
+  //   isJump.value = false
+  // }
+  // proxy.$router.push({ path: '/fenix/offer/list' })
+  // console.log(isJump.value, router.currentRoute.value)
+}
+onBeforeRouteLeave((to, from, next) => {
+  console.log(isJump.value)
+  console.log(to, from, next)
+})
+onBeforeMount(() => {})
 onMounted(() => {
   getConfig()
   init()
+  window.onpopstate = () => {
+    console.log('onpopstate')
+    backChange()
+  }
 })
+onUnmounted(() => {})
+
 </script>
 <style scoped lang="scss">
   .scale-button{
     transform: scale(0.7);
+  }
+  .input-with-select{
+    width: 60px;
   }
 </style>
