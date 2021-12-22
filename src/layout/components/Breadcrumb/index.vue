@@ -1,29 +1,47 @@
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
-    <transition-group name="breadcrumb">
+    <!--has transition  Judging by settings.mainNeedAnimation-->
+    <transition-group name="breadcrumb" v-if="settings.mainNeedAnimation">
       <el-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
         <span v-if="item.redirect === 'noRedirect' || index === levelList.length - 1" class="no-redirect">
           {{ item.meta?.title }}
         </span>
-        <a href="#" v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
+        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
       </el-breadcrumb-item>
     </transition-group>
+    <!--no transition-->
+    <template v-else>
+      <el-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
+        <span v-if="item.redirect === 'noRedirect' || index === levelList.length - 1" class="no-redirect">
+          {{ item.meta?.title }}
+        </span>
+        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
+      </el-breadcrumb-item>
+    </template>
   </el-breadcrumb>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onBeforeMount, getCurrentInstance, watch, ref } from 'vue'
+import { onBeforeMount, getCurrentInstance, watch, ref, computed } from 'vue'
 import { compile } from 'path-to-regexp'
-import { RouteItemTy } from '@/types/router'
-let levelList = ref(null)
+let levelList: any = ref(null)
 let { proxy }: any = getCurrentInstance()
+
+//Whether close the animation fo breadcrumb
+import { useStore } from 'vuex'
+let store = useStore()
+let settings = computed(() => {
+  return store.state.app.settings
+})
+
+import { RouteItemTy } from '@/types/router'
 const getBreadcrumb = () => {
   // only show routes with meta.title
   let matched = proxy.$route.matched.filter((item: RouteItemTy) => item.meta && item.meta.title)
   const first = matched[0]
   if (!isDashboard(first)) {
     //it can replace the first page if not exits
-    // matched = [{ path: '/dashboard', meta: { title: 'Dashboard' } }].concat(matched)
+    matched = [{ path: '/dashboard', meta: { title: 'Dashboard' } }].concat(matched)
   }
   levelList.value = matched.filter(
     (item: RouteItemTy) => item.meta && item.meta.title && item.meta.breadcrumb !== false
@@ -35,7 +53,7 @@ const isDashboard = (route: RouteItemTy) => {
   if (!name) {
     return false
   }
-  return name.trim().toLocaleLowerCase() === '/'.toLocaleLowerCase()
+  return name.trim().toLocaleLowerCase() === 'Dashboard'.toLocaleLowerCase()
 }
 const pathCompile = (path: string) => {
   const { params } = proxy.$route
@@ -59,9 +77,6 @@ watch(
   },
   { immediate: true }
 )
-onMounted(() => {
-  // console.log(proxy.$route)
-})
 onBeforeMount(() => {
   getBreadcrumb()
 })

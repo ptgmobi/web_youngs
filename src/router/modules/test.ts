@@ -1,6 +1,32 @@
 import Layout from '@/layout'
 export default [
   {
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path(.*)',
+        component: () => import('@/views/redirect')
+      }
+    ]
+  },
+  {
+    path: '/login',
+    component: () => import('@/views/login/Login.vue'),
+    hidden: true
+  },
+  {
+    path: '/404',
+    component: () => import('@/views/error-page/404.vue'),
+    hidden: true
+  },
+  {
+    path: '/401',
+    component: () => import('@/views/error-page/401.vue'),
+    hidden: true
+  },
+  {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
@@ -8,124 +34,41 @@ export default [
       {
         path: 'dashboard',
         name: 'Dashboard',
-        component: () => import('@/views/dashboard/index'),
-        meta: { title: 'Dashboard', icon: 'table' }
+        component: () => import('@/views/dashboard/index.vue'),
+        //using el svg icon, the elSvgIcon first when at the same time using elSvgIcon and icon
+        meta: { title: 'Dashboard', elSvgIcon: 'Fold' }
       }
     ]
   },
   {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
-    path: '/form',
+    path: '/setting-switch',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'table' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        name: 'Menu2',
-        meta: { title: 'menu2' }
-      }
-    ]
-  },
-  {
-    path: '/external-link',
-    component: Layout,
-    children: [
-      {
-        component: () => {},
-        path: 'https://github.com/jzfai/vue3-admin-ts.git',
-        meta: { title: 'External Link', icon: 'link' }
+        component: () => import('@/views/setting-switch'),
+        name: 'SettingSwitch',
+        meta: { title: 'Setting Switch', icon: 'example' }
       }
     ]
   },
   {
     path: '/error-log',
     component: Layout,
+    redirect: '/error-log/list',
+    meta: { title: 'ErrorLog', icon: 'bug' },
     children: [
       {
-        path: 'log',
-        component: () => import('@/views/error-log/index'),
+        path: 'list',
+        component: () => import('@/views/error-log'),
         name: 'ErrorLog',
-        meta: { title: 'Error Log', icon: 'bug' }
+        meta: { title: 'Error Log' }
+      },
+      {
+        path: 'error-log-test',
+        component: () => import('@/views/error-log/ErrorLogTest.vue'),
+        name: 'ErrorLogTest',
+        meta: { title: 'ErrorLog Test' }
       }
     ]
   },
@@ -164,9 +107,140 @@ export default [
         component: () => import('@/views/example/parent-children/Parent.vue'),
         name: 'Parent',
         meta: { title: 'Parent-Children' }
+      },
+      {
+        path: 'keep-alive',
+        component: () => import('@/views/example/keep-alive'),
+        name: 'KeepAlive',
+        //cachePage: cachePage when page enter, default false
+        //leaveRmCachePage: remove cachePage when page leave, default false
+        meta: { title: 'Keep-Alive', cachePage: true, leaveRmCachePage: false }
+      },
+      {
+        path: 'router-demo-f',
+        name: 'routerDemoF',
+        hidden: true,
+        component: () => import('@/views/example/keep-alive/RouterDemoF.vue'),
+        meta: { title: 'RouterDemo-F', activeMenu: '/writing-demo/keep-alive' }
+      },
+      {
+        path: 'router-demo-s',
+        name: 'routerDemoS',
+        hidden: true,
+        component: () => import('@/views/example/keep-alive/RouterDemoS.vue'),
+        meta: { title: 'RouterDemo-S', activeMenu: '/writing-demo/keep-alive' }
       }
     ]
   },
+  {
+    path: '/example',
+    component: Layout,
+    redirect: '/example/table',
+    name: 'Example',
+    meta: { title: 'Example', icon: 'example' },
+    children: [
+      {
+        path: 'table',
+        name: 'Table',
+        component: () => import('@/views/table/index.vue'),
+        meta: { title: 'Table', icon: 'table' }
+      },
+      {
+        path: 'tree',
+        name: 'Tree',
+        component: () => import('@/views/tree/index.vue'),
+        meta: { title: 'Tree', icon: 'tree' }
+      }
+    ]
+  },
+  {
+    path: '/form',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Form',
+        component: () => import('@/views/form/index.vue'),
+        meta: { title: 'Form', icon: 'table' }
+      }
+    ]
+  },
+
+  {
+    path: '/nested',
+    component: Layout,
+    redirect: '/nested/menu1',
+    name: 'Nested',
+    meta: {
+      title: 'Nested',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'menu1',
+        component: () => import('@/views/nested/menu1/index.vue'), // Parent router-view
+        name: 'Menu1',
+        meta: { title: 'Menu1' },
+        children: [
+          {
+            path: 'menu1-1',
+            component: () => import('@/views/nested/menu1/menu1-1/index.vue'),
+            name: 'Menu1-1',
+            meta: { title: 'Menu1-1' }
+          },
+          {
+            path: 'menu1-2',
+            component: () => import('@/views/nested/menu1/menu1-2/index.vue'),
+            name: 'Menu1-2',
+            meta: { title: 'Menu1-2' },
+            children: [
+              {
+                path: 'menu1-2-1',
+                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1/index.vue'),
+                name: 'Menu1-2-1',
+                meta: { title: 'Menu1-2-1' }
+              },
+              {
+                path: 'menu1-2-2',
+                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2/index.vue'),
+                name: 'Menu1-2-2',
+                meta: { title: 'Menu1-2-2' }
+              }
+            ]
+          },
+          {
+            path: 'menu1-3',
+            component: () => import('@/views/nested/menu1/menu1-3/index.vue'),
+            name: 'Menu1-3',
+            meta: { title: 'Menu1-3' }
+          }
+        ]
+      },
+      {
+        path: 'menu2',
+        component: () => import('@/views/nested/menu2/index.vue'),
+        name: 'Menu2',
+        meta: { title: 'menu2' }
+      }
+    ]
+  },
+  {
+    path: '/external-link',
+    component: Layout,
+    children: [
+      {
+        component: () => {},
+        path: 'https://github.com/jzfai/vue3-admin-ts.git',
+        meta: { title: 'External Link', icon: 'link' }
+      }
+    ]
+  }
+]
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes: RouterTy = [
   {
     path: '/permission',
     component: Layout,
@@ -181,7 +255,7 @@ export default [
     children: [
       {
         path: 'roleIndex',
-        component: () => import('@/views/permission/index'),
+        component: () => import('@/views/permission'),
         name: 'Permission',
         meta: {
           title: 'role Index'
@@ -190,7 +264,7 @@ export default [
       },
       {
         path: 'page',
-        component: () => import('@/views/permission/page'),
+        component: () => import('@/views/permission/page.vue'),
         name: 'PagePermission',
         meta: {
           title: 'Page Permission',
@@ -199,7 +273,7 @@ export default [
       },
       {
         path: 'directive',
-        component: () => import('@/views/permission/directive'),
+        component: () => import('@/views/permission/directive.vue'),
         name: 'DirectivePermission',
         meta: {
           title: 'Directive Permission'
@@ -208,7 +282,7 @@ export default [
       },
       {
         path: 'code-index',
-        component: () => import('@/views/permission/CodePermission'),
+        component: () => import('@/views/permission/CodePermission.vue'),
         name: 'CodePermission',
         meta: {
           title: 'Code Index'
@@ -216,7 +290,7 @@ export default [
       },
       {
         path: 'code-page',
-        component: () => import('@/views/permission/CodePage'),
+        component: () => import('@/views/permission/CodePage.vue'),
         name: 'CodePage',
         meta: {
           title: 'Code Page',

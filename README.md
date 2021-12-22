@@ -2,7 +2,7 @@
 
 **English** | [中文](./README-zh_CN.md)
 
-> A basic vue3 admin template with  vite2 & Element-Plus UI & axios & svg-icon& permission control & lint
+> vue3 admin plus provides enterprise-level development demo
 
 A new  generation admin  construct   using  vue3(setup-script)+vite2+element-plus ，It's fast!
 
@@ -11,18 +11,13 @@ Use eslint+prettier+gitHooks format and verification code to improve code standa
 
 ## Update log
 
-```javascript
-//11-11
-update element-plus vite2 vue3 version ,add func of element-svg icon for side menu
-add domo of 'import export download template' in CRUD
-//11-26
-update vue3 version and so on;
-add keep-alive use demo and router using  demo ，look for "http://8.135.1.141/vue3-admin-template/#/writing-demo/keep-alive"
-add the param cachePage and leaveRmCachePage to route for keep-alive look for https://github.com/jzfai/vue3-admin-template/blob/master/src/router/index.js
-add collection  the error log of img loading fail look for "http://8.135.1.141/vue3-admin-template/#/error-log/log"
-in router page you need add root element,such as div, but is not necessary for children component
-fix some issue
-```
+--- to look the doc
+
+- [真香定律！带你用vue3+vite2撸后台（系列文章入口）](https://juejin.cn/post/7036302298435289095)
+
+## Documents
+
+- [真香定律！带你用vue3+vite2撸后台（系列文章入口）](https://juejin.cn/post/7036302298435289095)
 
 ## Online experience
 
@@ -40,7 +35,7 @@ github 地址：  https://github.com/jzfai/vue3-admin-ts.git
 
 ![template-speed-analysis](http://8.135.1.141/file/images/template-speed-analysis.png)
 
-![template-demo](http://8.135.1.141/file/images/template-demo.png)
+![template-demo](http://8.135.1.141/file/images/plus-demo.png)
 
 
 ## Related items
@@ -52,20 +47,6 @@ The framework is available in js, ts and plus versions
 - react version： [react-admin-template](https://github.com/jzfai/react-admin-template.git)
 - java Micro-service background data：[micro-service-plus](https://github.com/jzfai/micro-service-plus)
 > development and  experience：two words  Really fragrant！！！！！
-
-## Documents
-
-- [目录结构，代码格式eslint+pretty，以及git hooks 使用（基础篇）](https://juejin.cn/post/7036301333304967181)
-- [前端proxy跨域，nginx，后端跨域配置介绍， 以及跨域原理简介（基础篇）](https://juejin.cn/post/7029560170451566606)
-- [Vue3 ref和reactive的使用和区别以及响应式原理](https://juejin.cn/post/7029559671648518151)
-
-#### The difference with vue-admin-template
-
-1.The layout method uses flex instead of the previous float, and the float layout method is completely removed, and some layout methods are optimized.
-
-2.Use vue3 (setup-script) to write, replace webpack with vite2, add vue3's jsx writing method, vite2 is faster, use vue3 composition instead of vue2 option api writing, easier to maintain and migrate
-
-3.Simplified some complex logic and optimized the design method of the architecture part
 
 
 #### Comparison of performance between vue3 and vue2
@@ -81,7 +62,7 @@ The framework is available in js, ts and plus versions
 - **Rewrite the implementation of virtual DOM and Tree-Shaking**
 
 
-[Comparison of packaging speed between vite2 and webpack](https://github.com/jzfai/vue3-admin-ts/issues/2)
+[Comparison of packaging speed between vite2 and webpack](https://github.com/jzfai/vue3-admin-temlate/issues/2)
 
 ## Build Setup
 
@@ -92,11 +73,12 @@ git clone https://github.com/jzfai/vue3-admin-ts.git
 # enter the project directory
 cd vue3-admin-ts
 
-# install dependency(Recommend use yarn)
-yarn
+# install dependency(Recommend use pnpm)
+#you can run npm i -g pnpm to install it  
+pnpm
 
 # develop
-yarn run dev
+pnpm run dev
 ```
 
 using the browser to open http://localhost:5001
@@ -104,30 +86,28 @@ using the browser to open http://localhost:5001
 ## Build
 
 ```bash
-# build for dev environment
-yarn run build-serve
+# build for test environment
+pnpm run build-test
 
 # build for production environment
-yarn run  build
+pnpm run  build
 ```
 
 ## Others
 
 ```bash
-# preview the dev environment effect
-yarn run preview:build-serve
-
 # preview the release environment effect
-yarn run preview
+pnpm run preview
 
 # code format check
-yarn run lint
+pnpm run lint
 
 ```
 
 ## Extra
 
 Architecture development is not easy. If you feel good, please give me a **start**. The architecture is still being improved. Welcome to join me in development and become Contributors together! ! ! !
+
 
 ## Browsers support
 

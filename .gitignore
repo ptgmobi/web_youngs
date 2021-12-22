@@ -6,4 +6,6 @@ node_modules
 # dist
 # dist-ssr
 *.local
-yarn.lock
+yarn*
+ts-out-dir
+pnpm*

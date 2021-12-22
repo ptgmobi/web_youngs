@@ -1,6 +1,6 @@
 import { ObjTy } from '@/types/common'
 import { AppTy } from '@/types/store'
-
+import defaultSettings from '@/settings'
 const state: AppTy = {
   sidebar: {
     opened: true
@@ -8,6 +8,7 @@ const state: AppTy = {
     // withoutAnimation: false
   },
   device: 'desktop',
+  settings: defaultSettings,
   cachedViews: []
 }
 
