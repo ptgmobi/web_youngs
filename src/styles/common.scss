@@ -479,7 +479,7 @@ th{
 
 @mixin scaleFn ($x) {
   .scale-#{$x} {
-    transform: scale($x / 10);
+    transform: scale(math.div($x , 10));
   }
 }
 
