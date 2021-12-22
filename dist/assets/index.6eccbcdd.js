@@ -1,1 +1,0 @@
-import{d as a,L as s,N as r,e,g as t,y as p}from"./vendor.abf78dba.js";var o=a({setup(){const a=s(),o=r();return e((()=>{const{params:s,query:r}=a,{path:e}=s;o.replace({path:"/"+e,query:r})})),()=>t("div",null,[p(" ")])}});export{o as default};
