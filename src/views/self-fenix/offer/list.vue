@@ -172,7 +172,7 @@
               <span>{{o.pub}}</span>.
               <span>{{o.payout}}</span>.
               <span>{{o.cap_daily}}</span>:
-              <span>cap_daily_cost</span>
+              <span>{{handleGetDailyCapCount(scope.row, o)}}</span>
             </div>
           </template>
         </el-table-column>
@@ -254,7 +254,7 @@
 <script lang="ts" setup>
 import { getCurrentInstance, ref, reactive, toRefs, toRef, onBeforeMount, onMounted, onUnmounted, watch} from 'vue'
 import {useRouter, onBeforeRouteLeave } from 'vue-router'
-import { ApiGetOfferList, ApiOfferForChangeStatus, ApiOfferForDelete, ApiGetAllManageSlot, ApiChangeTargetCvrStatus, ApiChangeTargetCvr } from '@/api/fenix'
+import { ApiGetOfferList, ApiOfferForChangeStatus, ApiOfferForDelete, ApiGetAllManageSlot, ApiChangeTargetCvrStatus, ApiChangeTargetCvr, ApiGetOfferDailyCapCount } from '@/api/fenix'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { messageFun } from '@/utils/message'
 import { handleAjaxDataObjectFn } from '@/utils/new-format'
@@ -307,6 +307,7 @@ const sarchDataDefault: sarchDataType = {
   country: '',
   channel_type: undefined
 }
+const dailyCapCountDefault: any = {}
 const state = reactive({
   searchData: sarchDataDefault,
   tableData: tableDataDefault,
@@ -369,6 +370,7 @@ const state = reactive({
         label: 'SDK'
       }
     ],
+    dailyCapCount: dailyCapCountDefault,
   },
   pagination: {
     pageSizes: ['20', '50', '100', '500', '1000'],
@@ -427,8 +429,12 @@ const getSlot = async () => {
   const { data: slotList } = await ApiGetAllManageSlot()
   state.options.pub = slotList
 }
+const getDailyCapCount = async () => {
+  const { data } = await ApiGetOfferDailyCapCount()
+  state.options.dailyCapCount = data
+}
 const getConfig = async () => {
-  return Promise.all([getSlot()])
+  return Promise.all([getSlot(), getDailyCapCount()])
 }
 const init = async () => {
   let ajaxData: any = {
@@ -459,6 +465,12 @@ const deleteFn = async (scope: any) => {
   if (messageFun(res)) {
     state.tableData.splice(scope.$index, 1)
   }
+}
+const handleGetDailyCapCount = (offer: any, slot: any) => {
+  // egp_1245040_IN_95108831
+  const key = `${offer.channel}_${offer.adv_offer}_${offer.country}_${slot.slotid}`
+  const value = state.options.dailyCapCount[key]
+  return value
 }
 onBeforeRouteLeave((to, from, next) => {
   let r = window.confirm('确认退出当前页面?')

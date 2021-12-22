@@ -159,6 +159,12 @@ export function ApiGetOfferList(data: ObjTy) {
     isParams: true,
   })
 }
+export function ApiGetOfferDailyCapCount() {
+  return request({
+    url: '/offer/daily-cap',
+    method: 'get',
+  })
+}
 // 修改开关
 export function ApiOfferForChangeStatus(data: ObjTy) {
   return request({
