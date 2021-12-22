@@ -5,7 +5,6 @@ import { getToken, setToken } from '@/utils/auth'
 import { AxiosConfigTy, AxiosReqTy, ObjTy } from '@/types/common'
 let reqConfig: any
 // import qs from 'qs'
-let reqConfig: any
 let loadingE: any
 
 const service: any = axios.create({

@@ -133,16 +133,7 @@ const addTags = () => {
   }
   return false
 }
-
 const refreshSelectedTag = (view: RouteItemTy) => {
-  // store.dispatch('tagsView/delCachedView', view).then(() => {
-  //   const { fullPath } = view
-  //   proxy.$nextTick(() => {
-  //     proxy.$router.replace({
-  //       path: '/redirect' + fullPath
-  //     })
-  //   })
-  // })
   const { fullPath } = view
   proxy.$nextTick(() => {
     proxy.$router.replace({
@@ -159,9 +150,7 @@ const closeSelectedTag = (view: RouteItemTy) => {
 }
 const closeOthersTags = () => {
   proxy.$router.push(state.selectedTag)
-  // store.dispatch('tagsView/delOthersViews', state.selectedTag).then(() => {
-  //   // moveToCurrentTag()
-  // })
+  store.dispatch('tagsView/delOthersViews', state.selectedTag)
 }
 const closeAllTags = (view: RouteItemTy) => {
   store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {

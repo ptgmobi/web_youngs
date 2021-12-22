@@ -38,7 +38,7 @@ export const constantRoutes: RouterTy = [
   {
     path: '/',
     component: Layout,
-    redirect: '/buzz',
+    // redirect: '/buzz',
     children: [
       {
         path: 'index',
@@ -49,6 +49,38 @@ export const constantRoutes: RouterTy = [
       }
     ]
   },
+  {
+    path: '/setting-switch',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/setting-switch'),
+        name: 'SettingSwitch',
+        meta: { title: 'Setting Switch', icon: 'example' }
+      }
+    ]
+  },
+  // {
+  //   path: '/error-log',
+  //   component: Layout,
+  //   redirect: '/error-log/list',
+  //   meta: { title: 'ErrorLog', icon: 'bug' },
+  //   children: [
+  //     {
+  //       path: 'list',
+  //       component: () => import('@/views/error-log'),
+  //       name: 'ErrorLog',
+  //       meta: { title: 'Error Log' }
+  //     },
+  //     {
+  //       path: 'error-log-test',
+  //       component: () => import('@/views/error-log/ErrorLogTest.vue'),
+  //       name: 'ErrorLogTest',
+  //       meta: { title: 'ErrorLog Test' }
+  //     }
+  //   ]
+  // },
 ]
 /**
  * asyncRoutes
@@ -62,9 +94,8 @@ export const asyncRoutes: RouterTy = [
   ...password,
   // 404 page must be placed at the end !!!
   // using pathMatch install of "*" in vue-router 4.0
-  { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }
+  // { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }
 ]
-// console.log(process.env)
 const router: Router = createRouter({
   history: createWebHashHistory(),
   scrollBehavior: () => ({ top: 0 }),

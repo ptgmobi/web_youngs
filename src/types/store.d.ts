@@ -6,12 +6,18 @@ interface StateTy {
   app: AppTy
   permission: PermissionTy
   user: UserTy
+  element: UserTy
+  id: UserTy
 }
 
 interface UserTy {
   username: string
   avatar: string
   roles: Array<string>
+  email: string
+  id: string
+  token: string
+  element: Array<string>
 }
 
 interface AppTy {

@@ -20,7 +20,7 @@ interface SettingTy {
 }
 
 const setting: SettingTy = {
-  title: 'Vue3 Admin Ts',
+  title: 'Youngs',
   /**
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
@@ -81,7 +81,7 @@ const setting: SettingTy = {
   /**
    * @type {string} 'roles' | 'code'
    */
-  permissionMode: 'roles',
+  permissionMode: 'code',
   /**
    * @type {boolean} true | false
    * @description Whether  open prod mock
