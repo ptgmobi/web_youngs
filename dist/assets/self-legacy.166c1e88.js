@@ -1,1 +1,0 @@
-System.register(["./vendor-legacy.c7165044.js"],(function(e){"use strict";var t;return{setters:[function(e){t=e.v}],execute:function(){e("m",{data:function(){return{}},created:function(){},methods:{judgePermissionElementFn:function(e){return t().getters.element,!0}}})}}}));
