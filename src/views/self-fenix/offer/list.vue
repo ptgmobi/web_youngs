@@ -460,27 +460,34 @@ const deleteFn = async (scope: any) => {
     state.tableData.splice(scope.$index, 1)
   }
 }
-// onBeforeRouteLeave((to, from, next) => {
-//   ElMessageBox.confirm(
-//     '确认退出当前页面?',
-//     '警告',
-//     {
-//       confirmButtonText: '确认',
-//       cancelButtonText: '取消',
-//       type: 'warning',
-//     }
-//   )
-//     .then(() => {
-//       next()
-//     })
-//     .catch(() => {
-//       next(false)
-//     })
+onBeforeRouteLeave((to, from, next) => {
+  let r = window.confirm('确认退出当前页面?')
+  if (r) {
+    next()
+  } else {
+    next(false)
+  }
+  // ! ElMessageBox没有效果
+  // ElMessageBox.confirm(
+  //   '确认退出当前页面?',
+  //   '警告',
+  //   {
+  //     confirmButtonText: '确认',
+  //     cancelButtonText: '取消',
+  //     type: 'warning',
+  //   }
+  // )
+  //   .then(() => {
+  //     next()
+  //   })
+  //   .catch(() => {
+  //     next(false)
+  //   })
   
-// })
+})
 const backChange = () => {
   // window.history.pushState({}, '', window.location.href)
-  window.history.forward()
+  // window.history.forward()
 }
 onBeforeMount(() => {})
 onMounted(() => {
