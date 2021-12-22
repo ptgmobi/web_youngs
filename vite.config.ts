@@ -106,19 +106,18 @@ export default ({ command, mode }: any) => {
         '@': resolve(__dirname, 'src')
       },
       //why remove it , look for https://github.com/vitejs/vite/issues/6026
-      // extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.mjs']
+      extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.mjs']
     },
     css: {
       preprocessorOptions: {
         //define global scss variable
         scss: {
           additionalData: `@use "sass:math";@import "@/styles/variables.scss";`
-          
         }
       }
     },
     optimizeDeps: {
       include: ['element-plus/lib/locale/lang/zh-cn', 'element-plus/lib/locale/lang/en']
-    }
+    },
   }
 }
