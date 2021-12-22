@@ -460,21 +460,28 @@ const deleteFn = async (scope: any) => {
     state.tableData.splice(scope.$index, 1)
   }
 }
+// onBeforeRouteLeave((to, from, next) => {
+//   ElMessageBox.confirm(
+//     '确认退出当前页面?',
+//     '警告',
+//     {
+//       confirmButtonText: '确认',
+//       cancelButtonText: '取消',
+//       type: 'warning',
+//     }
+//   )
+//     .then(() => {
+//       next()
+//     })
+//     .catch(() => {
+//       next(false)
+//     })
+  
+// })
 const backChange = () => {
-  // let r=confirm('确认退出当前页面?')
-  // if ( r==true ) {
-  //   isJump.value = true
-  // }
-  // else{
-  //   isJump.value = false
-  // }
-  // proxy.$router.push({ path: '/fenix/offer/list' })
-  // console.log(isJump.value, router.currentRoute.value)
+  // window.history.pushState({}, '', window.location.href)
+  window.history.forward()
 }
-onBeforeRouteLeave((to, from, next) => {
-  console.log(isJump.value)
-  console.log(to, from, next)
-})
 onBeforeMount(() => {})
 onMounted(() => {
   getConfig()
