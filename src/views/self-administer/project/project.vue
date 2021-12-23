@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <!-- dialog -->
-    <el-dialog v-model="dialogVisible" :title="dialogType==='edit'?'修改项目组':'创建项目组'" width="80%">
+    <el-dialog v-model="dialogVisible" :title="dialogType === 'edit' ? '修改项目组' : '创建项目组'" width="80%">
       <el-form ref="ruleForm" :model="busData.data" :rules="busData.rules" label-width="150px" label-position="left">
         <el-form-item label="项目名称" prop="name">
-          <el-input v-model="busData.data.name" placeholder="" :disabled="dialogType==='edit'" />
+          <el-input v-model="busData.data.name" placeholder="" :disabled="dialogType === 'edit'" />
         </el-form-item>
         <el-form-item label="产品" prop="project">
           <el-select v-model="busData.data.product" filterable multiple class="w100" placeholder="产品">
@@ -18,8 +18,8 @@
           </el-select>
         </el-form-item>
       </el-form>
-      <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible=false">取消 </el-button>
+      <div style="text-align: right">
+        <el-button type="danger" @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="submitFn">确定</el-button>
       </div>
     </el-dialog>
@@ -31,10 +31,12 @@
         </el-input> -->
         <el-input v-model="control.search" class="mr-10" placeholder="请输入内容" />
         <el-button type="primary" @click="handleSearch">搜索</el-button>
-        <el-button v-if="judgePermissionElementFn('A-AP-PROJECT-ADD-V')" type="primary" @click="handleCreate">创建项目组</el-button>
+        <el-button v-if="judgePermissionElementFn('A-AP-PROJECT-ADD-V')" type="primary" @click="handleCreate">
+          创建项目组
+        </el-button>
       </div>
     </div>
-    <el-table :data="list" style="width: 100%;margin-top:30px;" border>
+    <el-table :data="list" style="width: 100%; margin-top: 30px" border>
       <el-table-column align="center" label="项目组ID">
         <template #default="scope">
           {{ scope.row.id }}
@@ -63,8 +65,22 @@
       <el-table-column align="center" label="操作">
         <template #default="scope">
           <div class="flex">
-            <el-button v-if="judgePermissionElementFn('A-AP-PROJECT-EDIT-V')" type="primary" size="small" @click="handleEdit(scope)">编辑</el-button>
-            <el-button v-if="judgePermissionElementFn('A-AP-PROJECT-DEL-V')" type="danger" size="small" @click="handleDelete(scope)">删除</el-button>
+            <el-button
+              v-if="judgePermissionElementFn('A-AP-PROJECT-EDIT-V')"
+              type="primary"
+              size="small"
+              @click="handleEdit(scope)"
+            >
+              编辑
+            </el-button>
+            <el-button
+              v-if="judgePermissionElementFn('A-AP-PROJECT-DEL-V')"
+              type="danger"
+              size="small"
+              @click="handleDelete(scope)"
+            >
+              删除
+            </el-button>
           </div>
         </template>
       </el-table-column>
@@ -75,8 +91,8 @@
         v-show="pagination.total"
         :total="pagination.total"
         :page-sizes="pagination.pageSizes"
-        :page.sync="pagination.listQuery.page"
-        :limit.sync="pagination.listQuery.limit"
+        v-model:page="pagination.listQuery.page"
+        v-model:limit="pagination.listQuery.limit"
         @pagination="init"
       />
     </div>
@@ -97,7 +113,7 @@ const defaultData = {
   product: []
 }
 export default {
-  mixins: [ self ],
+  mixins: [self],
   components: { Pagination },
   directives: { waves },
   data() {
@@ -177,9 +193,7 @@ export default {
       this.list = data
     },
     // 搜索
-    handleSearch() {
-
-    },
+    handleSearch() {},
     // 新增
     handleCreate() {
       this.dialogType = 'new'
@@ -201,9 +215,7 @@ export default {
       this.date = date.getTime()
     },
     // 删除
-    handleDelete(scope) {
-
-    },
+    handleDelete(scope) {},
     // 选择tree触发
     roleChangeChoice(name, data) {
       this.busData.choiceData[name] = data

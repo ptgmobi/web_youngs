@@ -8,11 +8,11 @@ import jwtDecode from 'jwt-decode'
 //token: getToken(),
 
 type defaultState = {
-  token: string,
-  username: string,
-  avatar: string,
-  email: string,
-  id: string,
+  token: string
+  username: string
+  avatar: string
+  email: string
+  id: string
   element: Array<string>
 }
 
@@ -79,26 +79,26 @@ const actions = {
     const token = getToken()
     const decodeToken: any = jwtDecode(token)
     console.log(decodeToken)
-    const { User: {
-      Email: email, Id: id, Username: name
-    }} = decodeToken
+    const {
+      User: { Email: email, Id: id, Username: name }
+    } = decodeToken
     commit('SET_EMAIL', email)
     commit('SET_ID', id)
     commit('SET_NAME', name)
     return new Promise((resolve, reject) => {
-    getInfoReq(id)
-      .then((response: ObjTy) => {
-        const { data } = response
-        if (!data) {
-          return reject('Verification failed, please Login again.')
-        }
-        commit('SET_NAME', 'username')
-        resolve(data)
-      })
-      .catch((error: any) => {
-        console.log(error)
-        reject(error)
-      })
+      getInfoReq(id)
+        .then((response: ObjTy) => {
+          const { data } = response
+          if (!data) {
+            return reject('Verification failed, please Login again.')
+          }
+          commit('SET_NAME', 'username')
+          resolve(data)
+        })
+        .catch((error: any) => {
+          console.log(error)
+          reject(error)
+        })
     })
     // return {
     //   roles: ['admin']

@@ -60,7 +60,7 @@ export const constantRoutes: RouterTy = [
         meta: { title: 'Setting Switch', icon: 'example' }
       }
     ]
-  },
+  }
   // {
   //   path: '/error-log',
   //   component: Layout,
@@ -91,7 +91,7 @@ export const asyncRoutes: RouterTy = [
   ...buzz,
   ...fenix,
   ...administer,
-  ...password,
+  ...password
   // 404 page must be placed at the end !!!
   // using pathMatch install of "*" in vue-router 4.0
   // { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }

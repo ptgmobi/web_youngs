@@ -23,11 +23,7 @@
             <el-input v-model="scope.row.comment" placeholder="Please input" />
           </template>
         </el-table-column>
-        <el-table-column
-          label="Operation"
-          align="center"
-          width="200px"
-        >
+        <el-table-column label="Operation" align="center" width="200px">
           <template #default="scope">
             <div class="flex">
               <el-button class="cp" type="primary" @click="saveFn(scope)">Save</el-button>
@@ -54,7 +50,7 @@
 <script lang="ts" setup>
 import { ref, reactive, toRef, toRefs, onMounted } from 'vue'
 import { ApiFenixFenixDetails, ApiFenixFenixEdit, ApiFenixFenixDelete, ApiFenixFenixChangeStatus } from '@/api/fenix'
-import {useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { messageFun } from '@/utils/message'
 import { clipboardFn } from '@/utils/clipboard'
 const router = useRouter()

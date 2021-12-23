@@ -1,22 +1,25 @@
 <template>
   <div v-loading="loading">
     <!-- form -->
-    <el-form enctype="multipart/form-data" ref='ruleForm' :rules='state.rules' :model='state.ruleForm' label-width="240px" label-position="right">
-      <div class='content-con flex column'>
+    <el-form
+      enctype="multipart/form-data"
+      ref="ruleForm"
+      :rules="state.rules"
+      :model="state.ruleForm"
+      label-width="240px"
+      label-position="right"
+    >
+      <div class="content-con flex column">
         <!-- Offer -->
         <el-form-item label="Offer:" prop="offer">
-          <div class='flex jc-start ai-center form-one'>
-            <span v-text='state.ruleForm.offer_id'></span>
+          <div class="flex jc-start ai-center form-one">
+            <span v-text="state.ruleForm.offer_id"></span>
           </div>
         </el-form-item>
         <!-- Adv Offer -->
         <el-form-item label="Adv Offer:" prop="adv_offer">
-          <div class='flex jc-start ai-center form-one'>
-            <el-input
-              v-model="state.search.adv_offer"
-              placeholder="Please input"
-              class="input-with-select"
-            >
+          <div class="flex jc-start ai-center form-one">
+            <el-input v-model="state.search.adv_offer" placeholder="Please input" class="input-with-select">
               <template #append>
                 <el-button type="primary" icon="Search" @click="searchAdvOffer"></el-button>
               </template>
@@ -25,126 +28,106 @@
         </el-form-item>
         <!-- Channel -->
         <el-form-item label="Channel:" prop="channel">
-          <el-select filterable class='form-one' v-model="state.ruleForm.channel" clearable placeholder="">
+          <el-select filterable class="form-one" v-model="state.ruleForm.channel" clearable placeholder="">
             <el-option
               v-for="item in state.options.channel"
               :key="item.id"
               :label="item.short_name"
-              :value="item.short_name">
-            </el-option>
+              :value="item.short_name"
+            ></el-option>
           </el-select>
         </el-form-item>
         <!-- Channel Type -->
         <el-form-item label="Channel Type:" prop="channel_type">
-          <el-radio-group class='form-one' v-model="state.ruleForm.channel_type">
+          <el-radio-group class="form-one" v-model="state.ruleForm.channel_type">
             <el-radio :label="1">BUZZ</el-radio>
             <el-radio :label="2">SDK</el-radio>
           </el-radio-group>
         </el-form-item>
         <!-- Adv Status -->
         <el-form-item label="Adv Status:" prop="adv_status">
-          <div class='flex jc-start ai-center form-one'>
-            <span v-if='state.ruleForm.adv_status === 1'>开</span>
-            <span v-if='state.ruleForm.adv_status === 2'>关</span>
+          <div class="flex jc-start ai-center form-one">
+            <span v-if="state.ruleForm.adv_status === 1">开</span>
+            <span v-if="state.ruleForm.adv_status === 2">关</span>
           </div>
         </el-form-item>
         <!-- conversion_flow -->
         <el-form-item label="Conversion Flow:" prop="conversion_flow">
-          <el-select filterable class='form-one' v-model="state.ruleForm.conversion_flow" clearable placeholder="">
+          <el-select filterable class="form-one" v-model="state.ruleForm.conversion_flow" clearable placeholder="">
             <el-option
               v-for="item in state.options.conversion_flow"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
-            </el-option>
+              :value="item.value"
+            ></el-option>
           </el-select>
         </el-form-item>
         <!-- Status -->
         <el-form-item label="Status:" prop="status">
-          <div class='flex jc-start ai-center form-one'>
-            <el-switch
-              v-model="state.ruleForm.status"
-              :active-value="1"
-              :inactive-value="2"
-            />
+          <div class="flex jc-start ai-center form-one">
+            <el-switch v-model="state.ruleForm.status" :active-value="1" :inactive-value="2" />
           </div>
         </el-form-item>
         <!-- Offer Title -->
         <el-form-item label="Offer Title:" prop="title">
-          <div class='flex jc-start ai-center form-one'>
-            <el-input
-              v-model="state.ruleForm.title"
-              placeholder="Please input"
-              class="input-with-select"
-            />
+          <div class="flex jc-start ai-center form-one">
+            <el-input v-model="state.ruleForm.title" placeholder="Please input" class="input-with-select" />
           </div>
         </el-form-item>
         <!-- Package Name -->
         <el-form-item label="Package Name:" prop="pkg">
-          <div class='flex jc-start ai-center form-one'>
-            <el-input
-              v-model="state.ruleForm.pkg"
-              placeholder="Please input"
-              class="input-with-select"
-            />
+          <div class="flex jc-start ai-center form-one">
+            <el-input v-model="state.ruleForm.pkg" placeholder="Please input" class="input-with-select" />
           </div>
         </el-form-item>
         <!-- Attribute Provider -->
         <el-form-item label="Attribute Provider:" prop="attribute_provider">
-          <el-select filterable class='form-one' v-model="state.ruleForm.attribute_provider" clearable placeholder="">
+          <el-select filterable class="form-one" v-model="state.ruleForm.attribute_provider" clearable placeholder="">
             <el-option
               v-for="item in state.options.attribute_provider"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
-            </el-option>
+              :value="item.value"
+            ></el-option>
           </el-select>
         </el-form-item>
         <!-- Pid -->
         <el-form-item label="Pid:" prop="pid">
-          <div class='flex jc-start ai-center form-one'>
-            <el-input
-              v-model="state.ruleForm.pid"
-              placeholder="Please input"
-              class="input-with-select"
-            />
+          <div class="flex jc-start ai-center form-one">
+            <el-input v-model="state.ruleForm.pid" placeholder="Please input" class="input-with-select" />
           </div>
         </el-form-item>
         <!-- Platform -->
         <el-form-item label="Platform:" prop="platform">
-          <el-select filterable class='form-one' v-model="state.ruleForm.platform" placeholder="">
+          <el-select filterable class="form-one" v-model="state.ruleForm.platform" placeholder="">
             <el-option
               v-for="item in state.options.platform"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
-            </el-option>
+              :value="item.value"
+            ></el-option>
           </el-select>
         </el-form-item>
         <!-- Country -->
         <el-form-item label="Country:" prop="country">
-          <el-select filterable class='form-one' v-model="state.ruleForm.country" multiple clearable placeholder="">
+          <el-select filterable class="form-one" v-model="state.ruleForm.country" multiple clearable placeholder="">
             <el-option
               v-for="item in state.options.country"
               :key="item.id"
               :label="item.short_name + '-' + item.zh_cn"
-              :value="item.short_name">
-            </el-option>
+              :value="item.short_name"
+            ></el-option>
           </el-select>
         </el-form-item>
         <!-- Revenue -->
         <el-form-item label="Revenue:" prop="revenue">
-          <div class='flex jc-start ai-center form-one'>
-            <el-input
-              v-model="state.ruleForm.revenue"
-              placeholder="Please input"
-              class="input-with-select"
-            />
+          <div class="flex jc-start ai-center form-one">
+            <el-input v-model="state.ruleForm.revenue" placeholder="Please input" class="input-with-select" />
           </div>
         </el-form-item>
         <!-- Manage Traffic -->
         <el-form-item label="Manage Traffic:" prop="traffic">
-          <div class='form-one'>
+          <div class="form-one">
             <Traffic
               ref="traffic"
               v-model:list="state.ruleForm.traffic"
@@ -155,7 +138,7 @@
         </el-form-item>
         <!-- Adv Tracking Link -->
         <el-form-item label="Adv Tracking Link:" prop="adv_tracking_link">
-          <div class='flex jc-start ai-center form-one'>
+          <div class="flex jc-start ai-center form-one">
             <el-input
               :rows="3"
               type="textarea"
@@ -167,7 +150,7 @@
         </el-form-item>
         <!-- Target CVR -->
         <el-form-item label="Target CVR:" prop="target_cvr">
-          <div class='flex jc-start ai-center form-one'>
+          <div class="flex jc-start ai-center form-one">
             <el-input
               v-model="state.ruleForm.target_cvr"
               type="number"
@@ -178,54 +161,44 @@
         </el-form-item>
         <!-- CVR Status -->
         <el-form-item label="CVR Status:" prop="cvr_status">
-          <div class='flex jc-start ai-center form-one'>
-            <el-switch
-              v-model="state.ruleForm.cvr_status"
-              :active-value="1"
-              :inactive-value="2"
-            />
+          <div class="flex jc-start ai-center form-one">
+            <el-switch v-model="state.ruleForm.cvr_status" :active-value="1" :inactive-value="2" />
           </div>
         </el-form-item>
         <!-- Site Type -->
         <el-form-item label="Site Type:" prop="site_type">
-          <el-select filterable class='form-one' v-model="state.ruleForm.site_type" clearable placeholder="">
+          <el-select filterable class="form-one" v-model="state.ruleForm.site_type" clearable placeholder="">
             <el-option
               v-for="item in state.options.site_type"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
-            </el-option>
+              :value="item.value"
+            ></el-option>
           </el-select>
         </el-form-item>
         <!-- Site Value -->
-        <el-form-item label="Site Value:"
+        <el-form-item
+          label="Site Value:"
           prop="site_value"
           :rules="judgeSiteType ? state.rules.site_value : state.rules.no_required"
         >
-          <div class='flex jc-start ai-center form-one'>
-            <el-input
-              v-model="state.ruleForm.site_value"
-              placeholder="Please input"
-              class="input-with-select"
-            />
+          <div class="flex jc-start ai-center form-one">
+            <el-input v-model="state.ruleForm.site_value" placeholder="Please input" class="input-with-select" />
           </div>
         </el-form-item>
         <!-- S2S Async -->
         <el-form-item label="S2S Async:" prop="is_s2s">
-          <div class='flex jc-start ai-center form-one'>
-            <el-switch
-              v-model="state.ruleForm.is_s2s"
-              :active-value="1"
-              :inactive-value="2"
-            />
+          <div class="flex jc-start ai-center form-one">
+            <el-switch v-model="state.ruleForm.is_s2s" :active-value="1" :inactive-value="2" />
           </div>
         </el-form-item>
         <!-- S2S Tracking Link -->
-        <el-form-item label="S2S Tracking Link:"
+        <el-form-item
+          label="S2S Tracking Link:"
           prop="s2s_tracking_link"
           :rules="state.ruleForm.is_s2s === 1 ? state.rules.s2s_tracking_link : state.rules.no_required"
         >
-          <div class='flex jc-start ai-center form-one'>
+          <div class="flex jc-start ai-center form-one">
             <el-input
               :rows="2"
               type="textarea"
@@ -236,11 +209,12 @@
           </div>
         </el-form-item>
         <!-- Preview URL -->
-        <el-form-item label="Preview URL:"
+        <el-form-item
+          label="Preview URL:"
           prop="app_url"
           :rules="state.ruleForm.is_s2s === 1 ? state.rules.app_url : state.rules.no_required"
         >
-          <div class='flex jc-start ai-center form-one'>
+          <div class="flex jc-start ai-center form-one">
             <el-input
               :rows="2"
               type="textarea"
@@ -252,7 +226,7 @@
         </el-form-item>
         <!-- Description -->
         <el-form-item label="Description:" prop="description">
-          <div class='flex jc-start ai-center form-one'>
+          <div class="flex jc-start ai-center form-one">
             <el-input
               :rows="2"
               type="textarea"
@@ -267,16 +241,26 @@
     </el-form>
     <!-- form -->
     <!-- footer -->
-    <div class='w100 flex'>
-      <el-button type="primary" @click.prevent='saveFun'>Save</el-button>
+    <div class="w100 flex">
+      <el-button type="primary" @click.prevent="saveFun">Save</el-button>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
 import { getCurrentInstance, reactive, toRef, toRefs, watch, watchEffect, onMounted, ref, computed } from 'vue'
 import _ from 'lodash'
-import {useRouter } from 'vue-router'
-import { ApiGetOfferCreateId, ApiJudgeOffer, ApiGetAdvOfferForDump, ApiGetAdvOfferForBuzzList, ApiGetChannelList, ApiGetCountryList, ApiCreateOffer, ApiEditOffer, ApietOfferForOne } from '@/api/fenix'
+import { useRouter } from 'vue-router'
+import {
+  ApiGetOfferCreateId,
+  ApiJudgeOffer,
+  ApiGetAdvOfferForDump,
+  ApiGetAdvOfferForBuzzList,
+  ApiGetChannelList,
+  ApiGetCountryList,
+  ApiCreateOffer,
+  ApiEditOffer,
+  ApietOfferForOne
+} from '@/api/fenix'
 import Traffic from './traffic'
 import { ElMessage } from 'element-plus'
 import { messageFun } from '@/utils/message'
@@ -295,7 +279,7 @@ interface trafficType {
 }
 const judgeTraffic = (data: Array<any>) => {
   let flag = true
-  data.map(ele => {
+  data.map((ele) => {
     for (const key in ele) {
       if (Object.prototype.hasOwnProperty.call(ele, key)) {
         const element = ele[key]
@@ -356,11 +340,11 @@ interface dataType {
   target_cvr: number | undefined
   cvr_status: number
   is_s2s: number
-  s2s_tracking_link: string,
-  app_url: string,
-  site_type: string,
-  site_value: string,
-  description: string,
+  s2s_tracking_link: string
+  app_url: string
+  site_type: string
+  site_value: string
+  description: string
 }
 const defaultRuleForm: dataType = {
   id: undefined,
@@ -390,20 +374,24 @@ const defaultRuleForm: dataType = {
   app_url: '',
   site_type: 'rule_value',
   site_value: '',
-  description: '',
+  description: ''
 }
 let loading = ref(false)
 const state = reactive({
   options: {
-    channel: [{
-      id: '',
-      short_name: ''
-    }],
-    country: [{
-      id: '',
-      short_name: '',
-      zh_cn: ''
-    }],
+    channel: [
+      {
+        id: '',
+        short_name: ''
+      }
+    ],
+    country: [
+      {
+        id: '',
+        short_name: '',
+        zh_cn: ''
+      }
+    ],
     conversion_flow: [
       {
         value: 1,
@@ -470,55 +458,25 @@ const state = reactive({
     ]
   },
   rules: {
-    no_required: [
-      { required: false}
-    ],
-    channel: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] }
-    ],
-    channel_type: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] }
-    ],
-    status: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] }
-    ],
-    title: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] }
-    ],
-    pkg: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] }
-    ],
-    platform: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] }
-    ],
+    no_required: [{ required: false }],
+    channel: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    channel_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    status: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    title: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    pkg: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    platform: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
     country: [
       { required: true, message: message.required, trigger: ['blur', 'change'] },
       { validator: validatorCountry, trigger: ['blur', 'change'] }
     ],
-    revenue: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] }
-    ],
-    traffic: [
-      { required: false, validator: validatorTraffic, trigger: ['blur', 'change'] }
-    ],
-    adv_tracking_link: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] }
-    ],
-    site_type: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] }
-    ],
-    site_value: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] }
-    ],
-    is_s2s: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] }
-    ],
-    s2s_tracking_link: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] }
-    ],
-    app_url: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] }
-    ],
+    revenue: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    traffic: [{ required: false, validator: validatorTraffic, trigger: ['blur', 'change'] }],
+    adv_tracking_link: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    site_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    site_value: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    is_s2s: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    s2s_tracking_link: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    app_url: [{ required: true, message: message.required, trigger: ['blur', 'change'] }]
   },
   ruleForm: defaultRuleForm,
   search: {
@@ -532,7 +490,7 @@ let type: any = ref('')
 const handleTraffic = (arr: Array<any>) => {
   const finalArr: Array<any> = []
   arr.map((ele: any) => {
-    let obj: any = {...ele}
+    let obj: any = { ...ele }
     if (ele.payout) {
       obj['payout'] = Number(ele.payout)
     }
@@ -577,7 +535,7 @@ const submitFn = async () => {
 }
 const getConversionFlowValueToLabel = (n: any) => {
   if (n) {
-    const obj = state.options.conversion_flow.find(ele => {
+    const obj = state.options.conversion_flow.find((ele) => {
       return ele.value === n
     })
     return obj?.label
@@ -585,7 +543,7 @@ const getConversionFlowValueToLabel = (n: any) => {
 }
 const getConversionFlowLabelToValue = (s: any) => {
   if (s) {
-    const obj = state.options.conversion_flow.find(ele => {
+    const obj = state.options.conversion_flow.find((ele) => {
       return ele.label === s
     })
     return obj?.value
@@ -656,23 +614,31 @@ const judgeSiteType = computed(() => {
   }
   return false
 })
-watch(() => state.ruleForm.traffic, (newVal, oldVal) => {
-  // trafficList.value = newVal
-}, {
-  immediate: true,
-  deep: true
-})
-watch(() => state.ruleForm.adv_offer,  (newVal, oldVal) => {
-  // 导入是2，自建是1
-  if (newVal) {
-    state.ruleForm.create_type = 2
-  } else {
-    state.ruleForm.create_type = 1
+watch(
+  () => state.ruleForm.traffic,
+  (newVal, oldVal) => {
+    // trafficList.value = newVal
+  },
+  {
+    immediate: true,
+    deep: true
   }
-}, {
-  immediate: true,
-  deep: true
-})
+)
+watch(
+  () => state.ruleForm.adv_offer,
+  (newVal, oldVal) => {
+    // 导入是2，自建是1
+    if (newVal) {
+      state.ruleForm.create_type = 2
+    } else {
+      state.ruleForm.create_type = 1
+    }
+  },
+  {
+    immediate: true,
+    deep: true
+  }
+)
 // !!! 会陷入死循环，舍弃此用法
 const saveTraffic = (data: any) => {
   console.log(data)
@@ -742,7 +708,7 @@ const setDumpOffer = (data: any) => {
   state.ruleForm.pkg = data.app_pkg_name
   state.ruleForm.channel = data.channel
   state.ruleForm.country = data.country
-  const platform = state.options.platform.find(ele => {
+  const platform = state.options.platform.find((ele) => {
     return ele.label === data.platform
   })?.value
   state.ruleForm.platform = platform ? platform : 1

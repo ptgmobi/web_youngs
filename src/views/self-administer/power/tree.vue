@@ -2,11 +2,7 @@
   <el-form label-width="150px" label-position="top">
     <el-form-item :label="title">
       <div class="">
-        <el-input
-          v-model="filterApiText"
-          class="w100"
-          placeholder="输入关键字进行过滤"
-        />
+        <el-input v-model="filterApiText" class="w100" placeholder="输入关键字进行过滤" />
         <el-tree
           :ref="handleRef"
           :data="handleTree"
@@ -93,7 +89,7 @@ export default {
           // console.log(this.name, newval)
           // 先置空
           this.$refs[this.handleRef].setCheckedKeys([])
-          newval.forEach(o => {
+          newval.forEach((o) => {
             const node = this.$refs[this.handleRef].getNode(o)
             // 只给子节点设置
             if (node && node.isLeaf) {
@@ -105,7 +101,7 @@ export default {
       }
     },
     // 搜索tree
-    'filterApiText'(val) {
+    filterApiText(val) {
       if (this.$refs[this.handleRef]) {
         this.$refs[this.handleRef].filter(val)
       }
@@ -151,7 +147,7 @@ export default {
         }
         if (this.dialogData.treeData.choiceApiDataAdd.includes(myid)) {
           // 在delarr中存在的要删除
-          this.dialogData.treeData.choiceApiDataDel = this.dialogData.treeData.choiceApiDataDel.filter(o => {
+          this.dialogData.treeData.choiceApiDataDel = this.dialogData.treeData.choiceApiDataDel.filter((o) => {
             return o !== myid
           })
         }
@@ -166,7 +162,7 @@ export default {
         }
         if (this.dialogData.treeData.choiceApiDataAdd.includes(data.id)) {
           // 在addarr中存在要删除
-          this.dialogData.treeData.choiceApiDataAdd = this.dialogData.treeData.choiceApiDataAdd.filter(o => {
+          this.dialogData.treeData.choiceApiDataAdd = this.dialogData.treeData.choiceApiDataAdd.filter((o) => {
             return o !== data.id
           })
         }
@@ -177,7 +173,9 @@ export default {
       const res = []
       for (let { route } of routes) {
         // skip some route
-        if (route.hidden) { continue }
+        if (route.hidden) {
+          continue
+        }
 
         const onlyOneShowingChild = this.onlyOneShowingChild(route.children, route)
 
@@ -201,7 +199,7 @@ export default {
     },
     generateArr(routes) {
       let data = []
-      routes.forEach(route => {
+      routes.forEach((route) => {
         data.push(route)
         if (route.children) {
           const temp = this.generateArr(route.children)
@@ -232,7 +230,7 @@ export default {
     // reference: src/view/layout/components/Sidebar/SidebarItem.vue
     onlyOneShowingChild(children = [], parent) {
       let onlyOneChild = null
-      const showingChildren = children.filter(item => !item.hidden)
+      const showingChildren = children.filter((item) => !item.hidden)
 
       // When there is only one child route, the child route is displayed by default
       if (showingChildren.length === 1) {
@@ -243,7 +241,7 @@ export default {
 
       // Show parent if there are no child route to display
       if (showingChildren.length === 0) {
-        onlyOneChild = { ... parent, path: '', noShowingChildren: true }
+        onlyOneChild = { ...parent, path: '', noShowingChildren: true }
         return onlyOneChild
       }
 

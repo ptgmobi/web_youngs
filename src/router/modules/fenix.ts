@@ -8,7 +8,7 @@ export default [
     meta: {
       title: 'Fenix',
       elSvgIcon: 'MagicStick',
-      roles: [],
+      roles: []
     },
     children: [
       {
@@ -18,7 +18,7 @@ export default [
         redirect: '/fenix/fenix/list',
         meta: {
           title: 'Fenix Publisher',
-          roles: [],
+          roles: []
         },
         children: [
           {
@@ -27,7 +27,7 @@ export default [
             component: () => import('@/views/self-fenix/fenix/list'),
             meta: {
               title: 'Fenix Publisher List',
-              roles: [],
+              roles: []
             },
             hidden: true
           },
@@ -37,7 +37,7 @@ export default [
             component: () => import('@/views/self-fenix/fenix/details'),
             meta: {
               title: 'Fenix Publisher Create',
-              roles: [],
+              roles: []
             },
             hidden: true
           },
@@ -47,10 +47,10 @@ export default [
             component: () => import('@/views/self-fenix/fenix/details'),
             meta: {
               title: 'Fenix Publisher Edit',
-              roles: [],
+              roles: []
             },
             hidden: true
-          },
+          }
         ]
       },
       {
@@ -60,7 +60,7 @@ export default [
         redirect: '/fenix/offer/list',
         meta: {
           title: 'Fenix Offer',
-          roles: [],
+          roles: []
         },
         children: [
           {
@@ -69,7 +69,7 @@ export default [
             component: () => import('@/views/self-fenix/offer/list'),
             meta: {
               title: 'Fenix Offer List',
-              roles: [],
+              roles: []
             },
             hidden: true
           },
@@ -79,7 +79,7 @@ export default [
             component: () => import('@/views/self-fenix/offer/details'),
             meta: {
               title: 'Fenix Offer Create',
-              roles: [],
+              roles: []
             },
             hidden: true
           },
@@ -90,12 +90,12 @@ export default [
             meta: {
               title: 'Fenix Offer Edit',
               icon: 'dashboard',
-              roles: [],
+              roles: []
             },
             hidden: true
           }
         ]
-      },
+      }
     ]
   }
 ]

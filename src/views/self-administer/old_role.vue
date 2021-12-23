@@ -1,14 +1,14 @@
 <template>
   <div class="app-container">
     <el-button type="primary" @click="handleAdd">New Role</el-button>
-    <el-table :data="list" style="width: 100%;margin-top:30px;" border>
+    <el-table :data="list" style="width: 100%; margin-top: 30px" border>
       <el-table-column align="center" label="Role ID">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="Group Name">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           {{ scope.row.groupname }}
         </template>
       </el-table-column>
@@ -23,21 +23,21 @@
         </template>
       </el-table-column> -->
       <el-table-column align="center" label="Operations">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button type="primary" size="small" @click="handleEdit(scope)">Role</el-button>
           <el-button type="danger" size="small" @click="handleDelete(scope)">Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Role':'New Role'" width="80%">
+    <el-dialog v-model:visible="dialogVisible" :title="dialogType === 'edit' ? 'Edit Role' : 'New Role'" width="80%">
       <el-form :model="dialogData.data" label-width="150px" label-position="left">
         <el-form-item label="Name">
-          <el-input v-model="dialogData.data.name" placeholder="Role Name" :disabled="dialogType==='edit'" />
+          <el-input v-model="dialogData.data.name" placeholder="Role Name" :disabled="dialogType === 'edit'" />
         </el-form-item>
       </el-form>
-      <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible=false">Cancel</el-button>
+      <div style="text-align: right">
+        <el-button type="danger" @click="dialogVisible = false">Cancel</el-button>
         <el-button type="primary" @click="confirmFun">Confirm</el-button>
       </div>
     </el-dialog>
@@ -46,7 +46,16 @@
 
 <script>
 import path from 'path'
-import { getRoles, addRole, deleteRole, updateRoleStatus, getApiRoles, getApiRole, addApiRole, deleteApiRole } from '@/api/role'
+import {
+  getRoles,
+  addRole,
+  deleteRole,
+  updateRoleStatus,
+  getApiRoles,
+  getApiRole,
+  addApiRole,
+  deleteApiRole
+} from '@/api/role'
 import ChoiceRole from '@/components/Self/ChoiceRole'
 import { mapGetters } from 'vuex'
 import { baseAsyncRoutes } from '@/router'
@@ -87,12 +96,12 @@ export default {
   },
   computed: {
     handleChoiceApiDataID() {
-      return this.dialogData.treeData.choiceApiData.map(ele => {
+      return this.dialogData.treeData.choiceApiData.map((ele) => {
         return ele.id
       })
     },
     handleChoiceApiDataPermissionID() {
-      return this.dialogData.treeData.choiceApiData.map(ele => {
+      return this.dialogData.treeData.choiceApiData.map((ele) => {
         return ele
       })
     }
@@ -138,7 +147,7 @@ export default {
         }
         if (this.dialogData.treeData.choiceApiDataAdd.includes(myid)) {
           // 在delarr中存在的要删除
-          this.dialogData.treeData.choiceApiDataDel = this.dialogData.treeData.choiceApiDataDel.filter(o => {
+          this.dialogData.treeData.choiceApiDataDel = this.dialogData.treeData.choiceApiDataDel.filter((o) => {
             return o !== myid
           })
         }
@@ -153,7 +162,7 @@ export default {
         }
         if (this.dialogData.treeData.choiceApiDataAdd.includes(data.id)) {
           // 在addarr中存在要删除
-          this.dialogData.treeData.choiceApiDataAdd = this.dialogData.treeData.choiceApiDataAdd.filter(o => {
+          this.dialogData.treeData.choiceApiDataAdd = this.dialogData.treeData.choiceApiDataAdd.filter((o) => {
             return o !== data.id
           })
         }
@@ -162,13 +171,18 @@ export default {
     // TODO ??
     renderContent(h, { node, data, store }) {
       return (
-        <span class='custom-tree-node'>
+        <span class="custom-tree-node">
           <span>{node.label}</span>
           <span>
-            <el-button size='mini' type='text' on-click={ () => this.append(data) }>Append</el-button>
-            <el-button size='mini' type='text' on-click={ () => this.remove(node, data) }>Delete</el-button>
+            <el-button size="mini" type="text" on-click={() => this.append(data)}>
+              Append
+            </el-button>
+            <el-button size="mini" type="text" on-click={() => this.remove(node, data)}>
+              Delete
+            </el-button>
           </span>
-        </span>)
+        </span>
+      )
     },
     // 获取tree树
     async getAllApiTree() {
@@ -201,7 +215,9 @@ export default {
       const res = []
       for (let { route } of routes) {
         // skip some route
-        if (route.hidden) { continue }
+        if (route.hidden) {
+          continue
+        }
 
         const onlyOneShowingChild = this.onlyOneShowingChild(route.children, route)
 
@@ -225,7 +241,7 @@ export default {
     },
     generateArr(routes) {
       let data = []
-      routes.forEach(route => {
+      routes.forEach((route) => {
         data.push(route)
         if (route.children) {
           const temp = this.generateArr(route.children)
@@ -243,7 +259,7 @@ export default {
         cancelButtonText: 'Cancel',
         type: 'warning'
       })
-        .then(async() => {
+        .then(async () => {
           await deleteRole(scope.row.id)
           this.list.splice(scope.$index, 1)
           this.$message({
@@ -251,7 +267,9 @@ export default {
             message: 'Delete succed!'
           })
         })
-        .catch(err => { console.error(err) })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     generateTree(routes, basePath = '/', checkedKeys) {
       const res = []
@@ -273,7 +291,7 @@ export default {
     // reference: src/view/layout/components/Sidebar/SidebarItem.vue
     onlyOneShowingChild(children = [], parent) {
       let onlyOneChild = null
-      const showingChildren = children.filter(item => !item.hidden)
+      const showingChildren = children.filter((item) => !item.hidden)
 
       // When there is only one child route, the child route is displayed by default
       if (showingChildren.length === 1) {
@@ -284,7 +302,7 @@ export default {
 
       // Show parent if there are no child route to display
       if (showingChildren.length === 0) {
-        onlyOneChild = { ... parent, path: '', noShowingChildren: true }
+        onlyOneChild = { ...parent, path: '', noShowingChildren: true }
         return onlyOneChild
       }
 
@@ -309,7 +327,7 @@ export default {
       this.dialogType = 'edit'
       this.dialogVisible = true
       this.checkStrictly = true
-      this.$nextTick(async() => {
+      this.$nextTick(async () => {
         this.clearDialogDataCache()
         // 此处根据当前组名称查询对应的权限
         const { data: apiRoleData } = await getApiRole({
@@ -333,7 +351,7 @@ export default {
       const choiceApiData = this.$refs.apitree.getCheckedNodes(false, true)
       console.log(choiceApiData)
       const arr = []
-      choiceApiData.forEach(ele => {
+      choiceApiData.forEach((ele) => {
         arr.push(ele.treeName)
       })
       console.log(arr)
@@ -355,35 +373,41 @@ export default {
             role_id: this.dialogData.data.id,
             ids: this.getChoiceApiDataDel(choiceApiData).join()
           })
-        ]).then(data => {
-          this.$notify({
-            title: 'Success',
-            message: data.info,
-            type: 'success'
+        ])
+          .then((data) => {
+            this.$notify({
+              title: 'Success',
+              message: data.info,
+              type: 'success'
+            })
           })
-        }).catch(error => {
-          console.log(error)
-        }).finally(data => {
-          this.dialogVisible = false
-        })
+          .catch((error) => {
+            console.log(error)
+          })
+          .finally((data) => {
+            this.dialogVisible = false
+          })
       } else {
-        Promise.all([addRole(this.dialogData.data), this.getList()]).then(data => {
-          this.$notify({
-            title: 'Success',
-            message: data.info,
-            type: 'success'
+        Promise.all([addRole(this.dialogData.data), this.getList()])
+          .then((data) => {
+            this.$notify({
+              title: 'Success',
+              message: data.info,
+              type: 'success'
+            })
           })
-        }).catch(error => {
-          console.log(error)
-        }).finally(data => {
-          this.dialogVisible = false
-        })
+          .catch((error) => {
+            console.log(error)
+          })
+          .finally((data) => {
+            this.dialogVisible = false
+          })
       }
     },
     getChoiceApiDataAdd(arr) {
       const oldArr = [...arr]
       const newArr = []
-      oldArr.forEach(ele => {
+      oldArr.forEach((ele) => {
         if (ele && !this.handleChoiceApiDataPermissionID.includes(ele)) {
           newArr.push(ele)
         }
@@ -393,7 +417,7 @@ export default {
     getChoiceApiDataDel(arr) {
       const oldArr = [...arr]
       const newArr = []
-      this.dialogData.treeData.choiceApiData.map(ele => {
+      this.dialogData.treeData.choiceApiData.map((ele) => {
         if (ele && !oldArr.includes(ele.permission_id)) {
           newArr.push(ele.id)
         }

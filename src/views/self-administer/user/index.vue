@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <!-- dialog -->
-    <el-dialog v-model="dialogVisible" :title="dialogType==='edit'?'Edit User':'New User'" width="80%">
+    <el-dialog v-model="dialogVisible" :title="dialogType === 'edit' ? 'Edit User' : 'New User'" width="80%">
       <el-form ref="ruleForm" :model="busData.data" :rules="busData.rules" label-width="150px" label-position="left">
         <el-form-item label="邮箱" prop="email">
-          <el-input v-model="busData.data.email" placeholder="邮箱" :disabled="dialogType==='edit'" />
+          <el-input v-model="busData.data.email" placeholder="邮箱" :disabled="dialogType === 'edit'" />
         </el-form-item>
         <el-form-item label="用户名" prop="username">
           <el-input v-model="busData.data.username" placeholder="用户名必须大于6位" />
@@ -21,51 +21,77 @@
           <el-input v-model="busData.data.comment" placeholder="描述" />
         </el-form-item>
         <el-form-item label="岗位权限" prop="position_id">
-          <el-select v-model="busData.data.position_id" filterable multiple class="w100" placeholder="岗位权限" :disabled="!judgePermissionElementFn('A-AU-USER-FORM-POSITION-C')" @change="selectChangeFn('position')">
-            <el-option
-              v-for="item in busData.options.position"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
+          <el-select
+            v-model="busData.data.position_id"
+            filterable
+            multiple
+            class="w100"
+            placeholder="岗位权限"
+            :disabled="!judgePermissionElementFn('A-AU-USER-FORM-POSITION-C')"
+            @change="selectChangeFn('position')"
+          >
+            <el-option v-for="item in busData.options.position" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="角色权限" prop="role_id">
-          <el-select v-model="busData.data.role_id" filterable multiple class="w100" placeholder="角色权限" :disabled="!judgePermissionElementFn('A-AU-USER-FORM-ROLE-C')" @change="selectChangeFn('role')">
-            <el-option
-              v-for="item in busData.options.role"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
+          <el-select
+            v-model="busData.data.role_id"
+            filterable
+            multiple
+            class="w100"
+            placeholder="角色权限"
+            :disabled="!judgePermissionElementFn('A-AU-USER-FORM-ROLE-C')"
+            @change="selectChangeFn('role')"
+          >
+            <el-option v-for="item in busData.options.role" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="所属项目组" prop="project_id">
-          <el-select v-model="busData.data.project_id" filterable multiple class="w100" placeholder="所属项目组" :disabled="!judgePermissionElementFn('A-AU-USER-FORM-PROJECT-C')" @change="selectChangeFn('project'), choiceProject()">
-            <el-option
-              v-for="item in busData.options.project"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
+          <el-select
+            v-model="busData.data.project_id"
+            filterable
+            multiple
+            class="w100"
+            placeholder="所属项目组"
+            :disabled="!judgePermissionElementFn('A-AU-USER-FORM-PROJECT-C')"
+            @change="selectChangeFn('project'), choiceProject()"
+          >
+            <el-option v-for="item in busData.options.project" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="可查看产品" prop="product_id">
-          <el-select v-model="busData.data.product_id" filterable multiple class="w100" placeholder="默认全部" :disabled="!judgePermissionElementFn('A-AU-USER-FORM-PRODUCT-C')" @change="selectChangeFn('product')">
-            <el-button style="float:left;margin-left:20px;z-index:1" type="primary" plain @click="selectAll()">全选</el-button>
-            <el-button style="float:right;margin-right:20px;z-index:1" type="danger" plain @click="unSelectedAll()">清空</el-button>
+          <el-select
+            v-model="busData.data.product_id"
+            filterable
+            multiple
+            class="w100"
+            placeholder="默认全部"
+            :disabled="!judgePermissionElementFn('A-AU-USER-FORM-PRODUCT-C')"
+            @change="selectChangeFn('product')"
+          >
+            <el-button style="float: left; margin-left: 20px; z-index: 1" type="primary" plain @click="selectAll()">
+              全选
+            </el-button>
+            <el-button
+              style="float: right; margin-right: 20px; z-index: 1"
+              type="danger"
+              plain
+              @click="unSelectedAll()"
+            >
+              清空
+            </el-button>
             <el-option
               v-for="item in busData.options.product"
               :key="item.id"
               :label="item.name"
               :value="item.id"
-              style="clear:both"
+              style="clear: both"
             />
           </el-select>
         </el-form-item>
       </el-form>
-      <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible=false">取消</el-button>
+      <div style="text-align: right">
+        <el-button type="danger" @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="confirmFun('ruleForm')">确定</el-button>
       </div>
     </el-dialog>
@@ -88,10 +114,12 @@
         </el-input> -->
         <el-input v-model="control.search" class="mr-10" placeholder="请输入用户名" />
         <el-button type="primary" @click="handleSearch">搜索</el-button>
-        <el-button v-if="judgePermissionElementFn('A-AU-USER-ADD-V')" type="primary" @click="handleCreate">添加用户</el-button>
+        <el-button v-if="judgePermissionElementFn('A-AU-USER-ADD-V')" type="primary" @click="handleCreate">
+          添加用户
+        </el-button>
       </div>
     </div>
-    <el-table :data="list" style="width: 100%;margin-top:30px;" border>
+    <el-table :data="list" style="width: 100%; margin-top: 30px" border>
       <el-table-column align="center" label="邮箱">
         <template #default="scope">
           {{ scope.row.email }}
@@ -141,9 +169,30 @@
       <el-table-column align="center" label="操作" width="250">
         <template #default="scope">
           <div class="flex">
-            <el-button v-if="judgePermissionElementFn('A-AU-USER-EDIT-V')" type="primary" size="small" @click="handleEdit(scope)">修改</el-button>
-            <el-button v-if="judgePermissionElementFn('A-AU-USER-PASS-V')" type="primary" size="small" @click="handleEditPass(scope)">修改密码</el-button>
-            <el-button v-if="judgePermissionElementFn('A-AU-USER-DEL-V')" type="danger" size="small" @click="handleDelete(scope)">删除</el-button>
+            <el-button
+              v-if="judgePermissionElementFn('A-AU-USER-EDIT-V')"
+              type="primary"
+              size="small"
+              @click="handleEdit(scope)"
+            >
+              修改
+            </el-button>
+            <el-button
+              v-if="judgePermissionElementFn('A-AU-USER-PASS-V')"
+              type="primary"
+              size="small"
+              @click="handleEditPass(scope)"
+            >
+              修改密码
+            </el-button>
+            <el-button
+              v-if="judgePermissionElementFn('A-AU-USER-DEL-V')"
+              type="danger"
+              size="small"
+              @click="handleDelete(scope)"
+            >
+              删除
+            </el-button>
           </div>
         </template>
       </el-table-column>
@@ -154,8 +203,8 @@
         v-show="pagination.total"
         :total="pagination.total"
         :page-sizes="pagination.pageSizes"
-        :page.sync="pagination.listQuery.page"
-        :limit.sync="pagination.listQuery.limit"
+        v-model:page="pagination.listQuery.page"
+        v-model:limit="pagination.listQuery.limit"
         @pagination="init"
       />
     </div>
@@ -202,7 +251,7 @@ const defaultData = {
   status: 1
 }
 export default {
-  mixins: [ self ],
+  mixins: [self],
   components: { Pagination, WwChangePass },
   directives: { waves },
   filters: {
@@ -265,10 +314,7 @@ export default {
         oldData: {},
         data: _.cloneDeep(defaultData),
         rules: {
-          email: [
-            { required: true, message: '必填', trigger: ['change', 'blur'] },
-            { validator: validateUserEmail }
-          ],
+          email: [{ required: true, message: '必填', trigger: ['change', 'blur'] }, { validator: validateUserEmail }],
           username: [
             { required: true, message: '必填', trigger: ['change', 'blur'] },
             { min: 6, max: 50, message: '长度在 6 到 50 个字符', trigger: 'blur' }
@@ -283,21 +329,11 @@ export default {
             { min: 8, max: 16, message: '长度在 8 到 16 个字符', trigger: 'blur' },
             { validator: validatePass2 }
           ],
-          comment: [
-            { required: false, message: '必填', trigger: ['change', 'blur'] }
-          ],
-          role_id: [
-            { required: false, message: '必填', trigger: ['change', 'blur'] }
-          ],
-          position_id: [
-            { required: true, message: '必填', trigger: ['change', 'blur'] }
-          ],
-          project_id: [
-            { required: true, message: '必填', trigger: ['change', 'blur'] }
-          ],
-          product_id: [
-            { required: true, message: '必填', trigger: ['change', 'blur'] }
-          ]
+          comment: [{ required: false, message: '必填', trigger: ['change', 'blur'] }],
+          role_id: [{ required: false, message: '必填', trigger: ['change', 'blur'] }],
+          position_id: [{ required: true, message: '必填', trigger: ['change', 'blur'] }],
+          project_id: [{ required: true, message: '必填', trigger: ['change', 'blur'] }],
+          product_id: [{ required: true, message: '必填', trigger: ['change', 'blur'] }]
         }
       },
       // 操作框
@@ -322,10 +358,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'rolesMap',
-      'element'
-    ])
+    ...mapGetters(['rolesMap', 'element'])
   },
   watch: {
     'busData.data.project': {
@@ -345,7 +378,7 @@ export default {
   methods: {
     // 显示所属项目组
     handleProjectFn(arr) {
-      const newarr = this.busData.options.project.filter(ele => {
+      const newarr = this.busData.options.project.filter((ele) => {
         return arr.includes(ele.id)
       })
       return newarr
@@ -383,11 +416,14 @@ export default {
     // 根据项目id获取对应的项目
     getUserProject(arr) {
       if (arr) {
-        return this.busData.options.project.filter(ele => {
-          return arr.includes(Number(ele.id))
-        }).map(ele => {
-          return ele.name
-        }).join(',')
+        return this.busData.options.project
+          .filter((ele) => {
+            return arr.includes(Number(ele.id))
+          })
+          .map((ele) => {
+            return ele.name
+          })
+          .join(',')
       } else {
         return arr
       }
@@ -395,11 +431,14 @@ export default {
     // 根据项目id获取对应的产品
     getUserProduct(arr) {
       if (arr) {
-        return this.busData.options.productArr.filter(ele => {
-          return arr.includes(Number(ele.id))
-        }).map(ele => {
-          return ele.name
-        }).join(',')
+        return this.busData.options.productArr
+          .filter((ele) => {
+            return arr.includes(Number(ele.id))
+          })
+          .map((ele) => {
+            return ele.name
+          })
+          .join(',')
       } else {
         return arr
       }
@@ -407,11 +446,14 @@ export default {
     // 根据项目id获取对应的岗位
     getUserPosition(arr) {
       if (arr) {
-        return this.busData.options.position.filter(ele => {
-          return arr.includes(ele.id)
-        }).map(ele => {
-          return ele.name
-        }).join(',')
+        return this.busData.options.position
+          .filter((ele) => {
+            return arr.includes(ele.id)
+          })
+          .map((ele) => {
+            return ele.name
+          })
+          .join(',')
       } else {
         return arr
       }
@@ -473,10 +515,12 @@ export default {
     async handleSubmitFn() {
       if (this.dialogType === 'new') {
         const ajaxData = _.cloneDeep(this.busData.data)
-        const res = await setCreateUser(ajaxData, 'post').catch(err => {
+        const res = await setCreateUser(ajaxData, 'post').catch((err) => {
           console.log(err)
           // this.$message.error('错了哦，这是一条错误消息')
-          const { data: { data: errdata }} = err
+          const {
+            data: { data: errdata }
+          } = err
           for (const key in errdata) {
             if (Object.hasOwnProperty.call(errdata, key)) {
               const element = errdata[key]
@@ -508,14 +552,16 @@ export default {
         cancelButtonText: 'Cancel',
         type: 'warning'
       })
-        .then(async() => {
+        .then(async () => {
           this.list.splice(scope.$index, 1)
           this.$message({
             type: 'success',
             message: 'Delete succed!'
           })
         })
-        .catch(err => { console.error(err) })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     // 清除模态框缓存
     clearBusData() {
@@ -560,15 +606,17 @@ export default {
       const arr = [...this.busData.data.project_id]
       const product = []
       if (arr.length !== 0) {
-        await Promise.all(arr.map(async(ele) => {
-          const { data } = await getProject(ele)
-          if (data.product_id.length !== 0) {
-            data.product_id.forEach(o => {
-              product.push(o)
-            })
-          }
-          return ele
-        }))
+        await Promise.all(
+          arr.map(async (ele) => {
+            const { data } = await getProject(ele)
+            if (data.product_id.length !== 0) {
+              data.product_id.forEach((o) => {
+                product.push(o)
+              })
+            }
+            return ele
+          })
+        )
         const newproduct = Array.from(new Set(product))
         // 取出产品列表里需要的对象
         this.busData.options.product = this.handleProductsFn(newproduct)
@@ -577,7 +625,7 @@ export default {
     // 根据数组获取到需要的产品数组
     handleProductsFn(arr) {
       const newArr = []
-      this.busData.options.productArr.map(ele => {
+      this.busData.options.productArr.map((ele) => {
         if (arr.includes(ele.id)) {
           newArr.push(ele)
         }

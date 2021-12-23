@@ -56,12 +56,8 @@ export default {
           checkPass: ''
         },
         rules: {
-          email: [
-            { required: true, message: '必填', trigger: ['change', 'blur'] }
-          ],
-          oldPass: [
-            { required: true, message: '必填', trigger: 'blur' }
-          ],
+          email: [{ required: true, message: '必填', trigger: ['change', 'blur'] }],
+          oldPass: [{ required: true, message: '必填', trigger: 'blur' }],
           pass: [
             { required: true, message: '必填', trigger: 'blur' },
             { validator: validatePass, trigger: 'blur' }
@@ -85,7 +81,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.password.focus()
       })
-    },
+    }
   }
 }
 </script>

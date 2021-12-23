@@ -1,19 +1,14 @@
 <template>
   <div class="app-container">
     <!-- dialog -->
-    <el-dialog v-model="dialogVisible" :title="dialogType==='edit'?'编辑产品':'创建产品'" width="80%">
+    <el-dialog v-model="dialogVisible" :title="dialogType === 'edit' ? '编辑产品' : '创建产品'" width="80%">
       <el-form ref="ruleForm" :model="busData.data" :rules="busData.rules" label-width="150px" label-position="left">
         <el-form-item label="产品名称" prop="name">
-          <el-input v-model="busData.data.name" placeholder="请输入产品名称" :disabled="dialogType==='edit'" />
+          <el-input v-model="busData.data.name" placeholder="请输入产品名称" :disabled="dialogType === 'edit'" />
         </el-form-item>
         <el-form-item label="项目组" prop="project">
           <el-select v-model="busData.data.project" class="w100" placeholder="请选择所属项目组">
-            <el-option
-              v-for="item in busData.options.project"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
+            <el-option v-for="item in busData.options.project" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
         <!-- <el-form-item label="APP_ID" prop="appid">
@@ -47,7 +42,7 @@
           </el-transfer>
         </el-form-item> -->
       </el-form>
-      <div style="text-align:right;">
+      <div style="text-align: right">
         <el-button type="danger" @click="cancelFn">取消</el-button>
         <el-button type="primary" @click="submitFn">确认</el-button>
       </div>
@@ -60,14 +55,22 @@
         </el-input> -->
         <el-input v-model="control.search" class="sw-200 mr-10" placeholder="请输入产品名称或APPID" />
         <el-button type="primary" @click="handleSearch">搜索</el-button>
-        <el-button v-if="judgePermissionElementFn('A-AP-PRODUCT-ADD-V')" type="primary" @click="handleCreate">创建产品</el-button>
+        <el-button v-if="judgePermissionElementFn('A-AP-PRODUCT-ADD-V')" type="primary" @click="handleCreate">
+          创建产品
+        </el-button>
       </div>
     </div>
-    <el-table :data="list" style="width: 100%;margin-top:30px;" border @filter-change="filterChange" @sort-change="sortChange">
+    <el-table
+      :data="list"
+      style="width: 100%; margin-top: 30px"
+      border
+      @filter-change="filterChange"
+      @sort-change="sortChange"
+    >
       <el-table-column align="center" label="ID" prop="id" sortable="custom" />
       <el-table-column align="center" label="项目组" :filters="filters.projectFilter">
         <template #default="scope">
-          {{ showCurrentProject (scope.row.project_id) }}
+          {{ showCurrentProject(scope.row.project_id) }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="产品名称">
@@ -92,13 +95,13 @@
             @onConfirm="confirmStatus(scope.row)"
             @onCancel="cancelStatus(scope.row)"
           > -->
-            <el-switch
-              slot="reference"
-              v-model="scope.row.status"
-              :active-value="1"
-              :inactive-value="2"
-              @change="changeStatus($event, scope.row)"
-            />
+          <el-switch
+            slot="reference"
+            v-model="scope.row.status"
+            :active-value="1"
+            :inactive-value="2"
+            @change="changeStatus($event, scope.row)"
+          />
           <!-- </el-popconfirm> -->
           <!-- <el-popover
             v-model="productPopVisible"
@@ -160,7 +163,7 @@ const defaultData = {
   status: '1'
 }
 export default {
-  mixins: [ self ],
+  mixins: [self],
   components: { Pagination },
   directives: { waves },
   data() {
@@ -182,7 +185,10 @@ export default {
         },
         options: {
           project: [],
-          status: [{ id: '1', name: '启动' }, { id: '2', name: '禁止' }]
+          status: [
+            { id: '1', name: '启动' },
+            { id: '2', name: '禁止' }
+          ]
         },
         data: {
           id: '',
@@ -199,21 +205,11 @@ export default {
             { required: true, message: '必填', trigger: ['change', 'blur'] },
             { min: 1, max: 50, message: '字符长度为1-50', trigger: ['change', 'blur'] }
           ],
-          project: [
-            { required: true, message: '必填', trigger: ['change', 'blur'] }
-          ],
-          status: [
-            { required: true, message: '必填', trigger: ['change', 'blur'] }
-          ],
-          appid: [
-            { required: false, message: '必填', trigger: ['change', 'blur'] }
-          ],
-          projectId: [
-            { required: false, message: '必填', trigger: ['change', 'blur'] }
-          ],
-          appkey: [
-            { required: false, message: '非必填', trigger: ['change', 'blur'] }
-          ]
+          project: [{ required: true, message: '必填', trigger: ['change', 'blur'] }],
+          status: [{ required: true, message: '必填', trigger: ['change', 'blur'] }],
+          appid: [{ required: false, message: '必填', trigger: ['change', 'blur'] }],
+          projectId: [{ required: false, message: '必填', trigger: ['change', 'blur'] }],
+          appkey: [{ required: false, message: '非必填', trigger: ['change', 'blur'] }]
         }
       },
       // 操作框
@@ -297,9 +293,7 @@ export default {
       this.date = date.getTime()
     },
     // 删除
-    handleDelete(scope) {
-
-    },
+    handleDelete(scope) {},
     // 选择tree触发
     roleChangeChoice(name, data) {
       this.busData.choiceData[name] = data

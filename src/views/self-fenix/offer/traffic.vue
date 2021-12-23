@@ -11,8 +11,8 @@
               v-for="item in options.pub"
               :key="item.id"
               :label="item.pub_name"
-              :value="item.pub_name">
-            </el-option>
+              :value="item.pub_name"
+            ></el-option>
           </el-select>
         </template>
       </el-table-column>
@@ -40,11 +40,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column
-        label="Operation"
-        align="center"
-        width="180px"
-      >
+      <el-table-column label="Operation" align="center" width="180px">
         <template #default="scope">
           <div class="flex">
             <el-button class="mr-10" type="danger" icon="Delete" circle @click="deleteFn(scope)"></el-button>
@@ -55,7 +51,9 @@
               class="mr-10"
               @change="changeStatusFn(scope)"
             />
-            <el-button v-if="scope.row.pub_tracking_link" class="cp" type="primary" @click="copyFn(scope)">Copy</el-button>
+            <el-button v-if="scope.row.pub_tracking_link" class="cp" type="primary" @click="copyFn(scope)">
+              Copy
+            </el-button>
           </div>
         </template>
       </el-table-column>
@@ -70,7 +68,9 @@ import { ApiGetAllManageSlot } from '@/api/fenix'
 const props = defineProps({
   list: {
     require: true,
-    default: [],
+    default: () => {
+      return []
+    },
     type: Array
   },
   offer: {
@@ -91,7 +91,7 @@ const slot_obj: any = {
   '55527824': 0.1,
   '95108831': 0.1,
   '95846929': 0.01,
-  '59845210': 0.01,
+  '59845210': 0.01
 }
 interface trafficObjType {
   pub: string
@@ -101,7 +101,7 @@ interface trafficObjType {
   pub_status: number
   pub_tracking_link: string
 }
-let state : any = reactive({
+let state: any = reactive({
   manage_traffic: []
 })
 // let manage_traffic: any = computed(() => {
@@ -125,9 +125,10 @@ const deleteFn = (item: any) => {
 const selectPub = (scope: any) => {
   const { row } = scope
   // 生成对应的pub_tracking_link
-  const url = 'http://track.adsforward.com/api/track?offer={offer}&mid={slot}&pub_id={siteid}&gaid={gaid}&idfa={idfa}&click_id={clickid}&ip={ip}&ua={ua}&osv={osv}&lang={lang}'
+  const url =
+    'http://track.adsforward.com/api/track?offer={offer}&mid={slot}&pub_id={siteid}&gaid={gaid}&idfa={idfa}&click_id={clickid}&ip={ip}&ua={ua}&osv={osv}&lang={lang}'
   row.pub_tracking_link = url
-  const slot: any = options.pub.find(ele => {
+  const slot: any = options.pub.find((ele) => {
     return ele.pub_name === row.pub
   })
   console.log(slot)
@@ -142,7 +143,6 @@ const selectPub = (scope: any) => {
 const copyFn = ({ row }: any) => {
   const { pub_tracking_link: text } = row
   clipboardFn(text)
-
 }
 const changeStatusFn = ({ row }: any) => {
   console.log(row)
@@ -152,21 +152,29 @@ const init = async () => {
   const { data: slotList } = await ApiGetAllManageSlot()
   options.pub = slotList
 }
-watch(() => props.list, (newVal, oldVal) => {
-  state.manage_traffic = newVal
-}, {
-  immediate: true,
-  deep: true
-})
+watch(
+  () => props.list,
+  (newVal, oldVal) => {
+    state.manage_traffic = newVal
+  },
+  {
+    immediate: true,
+    deep: true
+  }
+)
 
 const emit = defineEmits(['kk', 'up'])
-watch(() => state.manage_traffic, (newVal, oldVal) => {
-  // console.log('emit')
-  // emit('kk', arr)
-}, {
-  immediate: true,
-  deep: true
-})
+watch(
+  () => state.manage_traffic,
+  (newVal, oldVal) => {
+    // console.log('emit')
+    // emit('kk', arr)
+  },
+  {
+    immediate: true,
+    deep: true
+  }
+)
 onMounted(() => {
   init()
   addTrafficFn()

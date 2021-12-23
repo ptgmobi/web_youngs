@@ -1,6 +1,6 @@
-export function handleAjaxDataObjectFn (data: any) {
+export function handleAjaxDataObjectFn(data: any) {
   console.log(data)
-  let newObj: any = {}
+  const newObj: any = {}
   for (const key in data) {
     if (Object.prototype.hasOwnProperty.call(data, key)) {
       const element = data[key]

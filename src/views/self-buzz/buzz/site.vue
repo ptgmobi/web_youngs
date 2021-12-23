@@ -1,7 +1,13 @@
 <template>
-  <el-form enctype="multipart/form-data" ref='siteRuleForm' :rules='data.siteRules' :model='data.siteRuleForm' label-position="right">
+  <el-form
+    enctype="multipart/form-data"
+    ref="siteRuleForm"
+    :rules="data.siteRules"
+    :model="data.siteRuleForm"
+    label-position="right"
+  >
     <el-form-item label="diy_siteid:" prop="site">
-      <el-input class='w100' type='textarea' v-model="data.siteRuleForm.site" :rows="4" placeholder=''></el-input>
+      <el-input class="w100" type="textarea" v-model="data.siteRuleForm.site" :rows="4" placeholder=""></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="addSiteFn">添加</el-button>
@@ -16,10 +22,10 @@
       </template>
     </el-table-column>
   </el-table>
-  <span slot="footer" class="dialog-footer mt-10">
+  <span class="dialog-footer mt-10">
     <!-- <el-button @click="cancleDevice">取 消</el-button> -->
-    <el-button type="primary" @click=deleteAllSite>清 空</el-button>
-    <el-button type="primary" @click=saveSite>确 定</el-button>
+    <el-button type="primary" @click="deleteAllSite">清 空</el-button>
+    <el-button type="primary" @click="saveSite">确 定</el-button>
   </span>
 </template>
 <script lang="ts" setup>
@@ -27,7 +33,9 @@ import { getCurrentInstance, reactive, watch, onMounted, defineEmits } from 'vue
 const props = defineProps({
   msg: {
     require: true,
-    default: '',
+    default: () => {
+      return ''
+    },
     type: Array
   }
 })
@@ -80,9 +88,7 @@ const analysisExcelFn = (str: string) => {
 let data = reactive({
   siteData: props.msg,
   siteRules: {
-    site: [
-      { required: true, validator: validateSiteExcel, trigger: 'blur' }
-    ]
+    site: [{ required: true, validator: validateSiteExcel, trigger: 'blur' }]
   },
   siteRuleForm: {
     site: ''

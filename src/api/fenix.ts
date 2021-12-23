@@ -74,7 +74,6 @@ export function ApiFenixFenixChangeStatus(uid: string, data: ObjTy) {
   })
 }
 
-
 // ! finix offer
 // ! create
 // 新建offer时获取一个新的offer id
@@ -104,7 +103,7 @@ export function ApiJudgeOffer(data: ObjTy) {
     url: '/offer/exists',
     data,
     method: 'get',
-    isParams: true,
+    isParams: true
   })
 }
 // dump接口获取当前offer信息
@@ -113,7 +112,7 @@ export function ApiGetAdvOfferForDump(data: ObjTy) {
     url: '/offer/dump',
     data,
     method: 'get',
-    isParams: true,
+    isParams: true
   })
 }
 // buzz获取当前offer信息
@@ -122,7 +121,7 @@ export function ApiGetAdvOfferForBuzzList(data: ObjTy) {
     url: '/offer/buzz',
     data,
     method: 'get',
-    isParams: true,
+    isParams: true
   })
 }
 // 创建offer
@@ -130,7 +129,7 @@ export function ApiCreateOffer(data: ObjTy) {
   return request({
     url: '/offer',
     data,
-    method: 'post',
+    method: 'post'
   })
 }
 // 修改offer
@@ -138,7 +137,7 @@ export function ApiEditOffer(data: ObjTy) {
   return request({
     url: '/offer',
     data,
-    method: 'put',
+    method: 'put'
   })
 }
 
@@ -146,7 +145,7 @@ export function ApiEditOffer(data: ObjTy) {
 export function ApiGetAllManageSlot() {
   return request({
     url: '/offer/pub-name',
-    method: 'get',
+    method: 'get'
   })
 }
 
@@ -156,13 +155,13 @@ export function ApiGetOfferList(data: ObjTy) {
     url: '/offer',
     data,
     method: 'get',
-    isParams: true,
+    isParams: true
   })
 }
 export function ApiGetOfferDailyCapCount() {
   return request({
     url: '/offer/daily-cap',
-    method: 'get',
+    method: 'get'
   })
 }
 // 修改开关
