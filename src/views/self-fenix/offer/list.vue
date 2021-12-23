@@ -419,7 +419,8 @@ const getSlot = async () => {
   state.options.pub = slotList
 }
 const getDailyCapCount = async () => {
-  const { data } = await ApiGetOfferDailyCapCount()
+  // const { data } = await ApiGetOfferDailyCapCount()
+  const data = {}
   state.options.dailyCapCount = data
 }
 const getConfig = async () => {
