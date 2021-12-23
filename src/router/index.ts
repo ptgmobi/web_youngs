@@ -38,7 +38,7 @@ export const constantRoutes: RouterTy = [
   {
     path: '/',
     component: Layout,
-    // redirect: '/buzz',
+    redirect: '/buzz',
     children: [
       {
         path: 'index',
