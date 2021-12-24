@@ -54,6 +54,6 @@ import '@/styles/common.scss'
 // app.config.globalProperties._ = _
 
 //error log  collection
-import errorLog from '@/hooks/useErrorLog'
-errorLog()
+// import errorLog from '@/hooks/useErrorLog'
+// errorLog()
 app.use(router).mount('#app')
