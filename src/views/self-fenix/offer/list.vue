@@ -162,17 +162,19 @@
         </el-table-column>
         <el-table-column label="Traffic Data" align="center" width="190">
           <template #default="scope">
-            <div v-for="o in JSON.parse(scope.row.traffic)" :key="o">
-              <div v-if="scope.row.traffic">
-                <span>{{ o.pub_status === 1 ? '开' : '关' }}</span>
-                .
-                <span>{{ o.pub }}</span>
-                .
-                <span>{{ o.payout }}</span>
-                .
-                <span>{{ o.cap_daily }}</span>
-                :
-                <span>{{ handleGetDailyCapCount(scope.row, o) }}</span>
+            <div v-if="scope.row.traffic">
+              <div v-for="o in JSON.parse(scope.row.traffic)" :key="o">
+                <div>
+                  <span>{{ o.pub_status === 1 ? '开' : '关' }}</span>
+                  .
+                  <span>{{ o.pub }}</span>
+                  .
+                  <span>{{ o.payout }}</span>
+                  .
+                  <span>{{ o.cap_daily }}</span>
+                  :
+                  <span>{{ handleGetDailyCapCount(scope.row, o) }}</span>
+                </div>
               </div>
             </div>
           </template>
