@@ -1,0 +1,1 @@
+import{af as e}from"./vendor-691ef2b9.js";function r(r){return e({title:200===r.code?"success":"error",dangerouslyUseHTMLString:!0,message:r.info,type:200===r.code?"success":"error"}),200===r.code}export{r as m};
