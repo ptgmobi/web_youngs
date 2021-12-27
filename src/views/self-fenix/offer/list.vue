@@ -160,7 +160,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="Traffic Data" align="center" width="190">
+        <el-table-column label="Traffic Data" align="left" width="200">
           <template #default="scope">
             <div v-if="scope.row.traffic">
               <div v-for="o in JSON.parse(scope.row.traffic)" :key="o">
@@ -421,8 +421,7 @@ const getSlot = async () => {
   state.options.pub = slotList
 }
 const getDailyCapCount = async () => {
-  // const { data } = await ApiGetOfferDailyCapCount()
-  const data = {}
+  const { data } = await ApiGetOfferDailyCapCount()
   state.options.dailyCapCount = data
 }
 const getConfig = async () => {
