@@ -8,7 +8,7 @@ export default [
     meta: {
       title: 'Fenix',
       elSvgIcon: 'MagicStick',
-      roles: []
+      code: 4
     },
     children: [
       {
@@ -18,7 +18,7 @@ export default [
         redirect: '/fenix/fenix/list',
         meta: {
           title: 'Fenix Publisher',
-          roles: []
+          code: 40
         },
         children: [
           {
@@ -27,7 +27,7 @@ export default [
             component: () => import('@/views/self-fenix/fenix/list'),
             meta: {
               title: 'Fenix Publisher List',
-              roles: []
+              code: 400
             },
             hidden: true
           },
@@ -37,7 +37,7 @@ export default [
             component: () => import('@/views/self-fenix/fenix/details'),
             meta: {
               title: 'Fenix Publisher Create',
-              roles: []
+              code: 401
             },
             hidden: true
           },
@@ -47,7 +47,7 @@ export default [
             component: () => import('@/views/self-fenix/fenix/details'),
             meta: {
               title: 'Fenix Publisher Edit',
-              roles: []
+              code: 402
             },
             hidden: true
           }
@@ -60,7 +60,7 @@ export default [
         redirect: '/fenix/offer/list',
         meta: {
           title: 'Fenix Offer',
-          roles: []
+          code: 41
         },
         children: [
           {
@@ -69,7 +69,7 @@ export default [
             component: () => import('@/views/self-fenix/offer/list'),
             meta: {
               title: 'Fenix Offer List',
-              roles: []
+              code: 410
             },
             hidden: true
           },
@@ -79,7 +79,7 @@ export default [
             component: () => import('@/views/self-fenix/offer/details'),
             meta: {
               title: 'Fenix Offer Create',
-              roles: []
+              code: 411
             },
             hidden: true
           },
@@ -90,7 +90,7 @@ export default [
             meta: {
               title: 'Fenix Offer Edit',
               icon: 'dashboard',
-              roles: []
+              code: 412
             },
             hidden: true
           }

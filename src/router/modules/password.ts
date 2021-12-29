@@ -9,7 +9,7 @@ export default [
     meta: {
       title: '密码',
       icon: 'el-icon-s-order',
-      roles: []
+      code: 8
     },
     children: [
       {
@@ -18,7 +18,7 @@ export default [
         name: 'password-change',
         meta: {
           title: '修改密码',
-          roles: []
+          code: 80
         }
       }
     ]

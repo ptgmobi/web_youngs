@@ -8,7 +8,7 @@ export default [
     meta: {
       title: 'Buzz',
       elSvgIcon: 'MagicStick',
-      roles: []
+      code: 3
     },
     children: [
       // {
@@ -30,7 +30,7 @@ export default [
         meta: {
           title: 'Buzz List',
           icon: 'dashboard',
-          roles: []
+          code: 30
         },
         hidden: true
       },
@@ -41,7 +41,7 @@ export default [
         meta: {
           title: 'Buzz Create',
           icon: 'dashboard',
-          roles: []
+          code: 31
         },
         hidden: true
       },
@@ -52,7 +52,7 @@ export default [
         meta: {
           title: 'Buzz Edit',
           icon: 'dashboard',
-          roles: []
+          code: 32
         },
         hidden: true
       }

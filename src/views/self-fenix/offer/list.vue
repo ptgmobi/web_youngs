@@ -459,7 +459,14 @@ const deleteFn = async (scope: any) => {
 }
 const handleGetDailyCapCount = (offer: any, slot: any) => {
   // egp_1245040_IN_95108831
-  const key = `${offer.channel}_${offer.adv_offer}_${offer.country}_${slot.slotid}`
+  let key: string = ''
+  // if (offer.channel_type === 1) {
+  //   key = `${offer.adv_offer}_${offer.country}_${slot.slotid}`
+  // }
+  // if (offer.channel_type === 2) {
+  //   key = `${offer.channel}_${offer.adv_offer}_${offer.country}_${slot.slotid}`
+  // }
+  key = `${offer.channel}_${offer.adv_offer}_${offer.country}_${slot.slotid}`
   const value = state.options.dailyCapCount[key]
   return value
 }

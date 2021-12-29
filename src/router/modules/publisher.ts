@@ -8,14 +8,18 @@ export default [
     meta: {
       title: 'Publisher',
       icon: 'table',
-      roles: []
+      code: 2
     },
     children: [
       {
         path: 'overview',
         name: 'Overview',
         component: () => import('@/views/self-publisher/overview'),
-        meta: { title: 'Overview', icon: 'dashboard', roles: [] }
+        meta: {
+          title: 'Overview',
+          icon: 'dashboard',
+          code: 20
+        }
       },
       {
         path: 'report',
@@ -24,7 +28,7 @@ export default [
         meta: {
           title: 'Report',
           icon: 'el-icon-data-line',
-          roles: []
+          code: 21
         }
       }
     ]

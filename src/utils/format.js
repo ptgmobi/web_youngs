@@ -192,8 +192,9 @@ export function handleIdTree(data) {
     data.map((ele) => {
       ele.value = ele.url
       ele.label = ele.name
-      if (ele.pid) {
-        if (ele.pid === parent) {
+      // !数字0是false,字符串'0'是true
+      if (ele.hasOwnProperty('pid')) {
+        if (Number(ele.pid) === Number(parent)) {
           temp = filterArray(data, ele.id)
           if (temp.length > 0) {
             ele.children = temp

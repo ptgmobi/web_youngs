@@ -38,29 +38,32 @@ export const constantRoutes: RouterTy = [
   {
     path: '/',
     component: Layout,
-    redirect: '/buzz',
     children: [
       {
         path: 'index',
         name: 'index',
         component: () => import('@/views/self-index/index'),
         //using el svg icon, the elSvgIcon first when at the same time using elSvgIcon and icon
-        meta: { title: 'index', elSvgIcon: 'HomeFilled' }
+        meta: {
+          title: 'index',
+          elSvgIcon: 'HomeFilled',
+          code: 1
+        }
       }
     ]
   },
-  {
-    path: '/setting-switch',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/setting-switch'),
-        name: 'SettingSwitch',
-        meta: { title: 'Setting Switch', icon: 'example' }
-      }
-    ]
-  }
+  // {
+  //   path: '/setting-switch',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/setting-switch'),
+  //       name: 'SettingSwitch',
+  //       meta: { title: 'Setting Switch', icon: 'example' }
+  //     }
+  //   ]
+  // }
   // {
   //   path: '/error-log',
   //   component: Layout,

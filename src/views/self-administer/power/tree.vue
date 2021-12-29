@@ -72,7 +72,8 @@ export default {
   computed: {
     handleTree() {
       // return this.list
-      return handleIdTree(this.list)
+      const tree = handleIdTree(this.list)
+      return tree
     },
     handleRef() {
       return `tree${this.name}`
@@ -89,14 +90,15 @@ export default {
           // console.log(this.name, newval)
           // 先置空
           this.$refs[this.handleRef].setCheckedKeys([])
-          newval.forEach((o) => {
-            const node = this.$refs[this.handleRef].getNode(o)
-            // 只给子节点设置
-            if (node && node.isLeaf) {
-              this.$refs[this.handleRef].setChecked(node, true)
-            }
-          })
-          // this.choiceArr = newval
+          if (newval) {
+            newval.forEach((o) => {
+              const node = this.$refs[this.handleRef].getNode(o)
+              // 只给子节点设置
+              if (node && node.isLeaf) {
+                this.$refs[this.handleRef].setChecked(node, true)
+              }
+            })
+          }
         })
       }
     },

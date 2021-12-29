@@ -8,8 +8,7 @@ export default [
     meta: {
       title: '后台管理',
       elSvgIcon: 'Tools',
-      roles: [],
-      code: 3
+      code: 9
     },
     children: [
       {
@@ -18,8 +17,7 @@ export default [
         name: 'administer-user',
         meta: {
           title: '用户管理',
-          roles: [],
-          code: 9
+          code: 90
         }
       },
       {
@@ -29,8 +27,7 @@ export default [
         name: 'administer-power',
         meta: {
           title: '权限管理',
-          roles: [],
-          code: 10
+          code: 91
         }
       },
       {
@@ -39,8 +36,7 @@ export default [
         name: 'administer-role',
         meta: {
           title: '角色管理',
-          roles: [],
-          code: 11
+          code: 92
         }
       },
       {
@@ -49,8 +45,7 @@ export default [
         name: 'administer-station',
         meta: {
           title: '岗位管理',
-          roles: [],
-          code: 12
+          code: 93
         }
       },
       {
@@ -59,8 +54,7 @@ export default [
         name: 'administer-project',
         meta: {
           title: '项目管理',
-          roles: [],
-          code: 13
+          code: 94
         }
       }
     ]
