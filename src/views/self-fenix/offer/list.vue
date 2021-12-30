@@ -172,7 +172,6 @@
                   <span>{{ o.payout }}</span>
                   .
                   <span>{{ o.cap_daily }}</span>
-                  :
                   <span>{{ handleGetDailyCapCount(scope.row, o) }}</span>
                 </div>
               </div>
@@ -460,15 +459,12 @@ const deleteFn = async (scope: any) => {
 const handleGetDailyCapCount = (offer: any, slot: any) => {
   // egp_1245040_IN_95108831
   let key: string = ''
-  // if (offer.channel_type === 1) {
-  //   key = `${offer.adv_offer}_${offer.country}_${slot.slotid}`
-  // }
-  // if (offer.channel_type === 2) {
-  //   key = `${offer.channel}_${offer.adv_offer}_${offer.country}_${slot.slotid}`
-  // }
-  key = `${offer.channel}_${offer.adv_offer}_${offer.country}_${slot.slotid}`
+  key = `${offer.offer_id}_${slot.slotid}`
   const value = state.options.dailyCapCount[key]
-  return value
+  if (value) {
+    return `: ${value}`
+  }
+  return ''
 }
 // onBeforeRouteLeave((to, from, next) => {
 //   let r = window.confirm('确认退出当前页面?')
