@@ -45,7 +45,10 @@ const mutations = {
   SET_TOKEN: (state: UserTy, token: string) => {
     state.token = token
     setToken(token)
-  }
+  },
+  SET_ELEMENT: (state: UserTy, data: Array<string>) => {
+    state.element = data
+  },
 }
 
 const actions = {
@@ -92,6 +95,8 @@ const actions = {
           if (!data) {
             return reject('Verification failed, please Login again.')
           }
+          const { element } = data
+          commit('SET_ELEMENT', element)
           commit('SET_NAME', 'username')
           resolve(data)
         })

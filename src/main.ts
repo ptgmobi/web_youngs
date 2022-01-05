@@ -28,6 +28,8 @@ import commonMixin from '@/mixins/commonMixin'
 app.mixin(commonMixin)
 import routerMixin from '@/mixins/routerMixin'
 app.mixin(routerMixin)
+// import selfMixin from '@/mixins/self'
+// app.mixin(selfMixin)
 //import axios req
 import axiosReq from '@/utils/axiosReq'
 app.config.globalProperties.$axiosReq = axiosReq

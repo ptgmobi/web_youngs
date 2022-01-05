@@ -206,8 +206,8 @@
         </el-table-column>
         <el-table-column prop="attribute_provider" label="Attribute Provider" align="center" width="80" />
         <el-table-column label="Record" align="center" width="52">
-          <template #default="scope">
-            <el-button class="scale-button" icon="View" circle></el-button>
+          <template #default="{ row }">
+            <el-button class="scale-button" icon="View" @click="showRecord(row)" circle></el-button>
           </template>
         </el-table-column>
         <el-table-column label="Comment" align="center" width="150">
@@ -231,6 +231,11 @@
         @pagination="init"
       />
     </div>
+    <!-- record -->
+    <el-dialog title="日志" width="80%" v-model="dialogRecordVisible">
+      <Record v-model="dialogRecordVisible" :busData="busData"></Record>
+    </el-dialog>
+    
   </div>
 </template>
 <script lang="ts" setup>
@@ -246,9 +251,11 @@ import {
   ApiGetOfferDailyCapCount
 } from '@/api/fenix'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import Record from './record.vue'
 import { messageFun } from '@/utils/message'
 import { handleAjaxDataObjectFn } from '@/utils/new-format'
 import { ElMessageBox } from 'element-plus'
+import _ from 'lodash'
 let { proxy }: any = getCurrentInstance()
 const router = useRouter()
 let isJump: any = ref(true)
@@ -265,6 +272,7 @@ interface tableDataType {
   api_url: string
   status: number
 }
+let dialogRecordVisible = ref(false)
 let dialogTableVisible = ref(false)
 const tableDataDefault: Array<tableDataType> = []
 interface sarchDataType {
@@ -375,6 +383,8 @@ const state = reactive({
     }
   }
 })
+const defaultbusData: any = {}
+let busData = reactive(defaultbusData)
 const { value: tableData } = toRef(state, 'tableData')
 const emitParent = (row: tableDataType) => {
   tableData.push(row)
@@ -504,6 +514,10 @@ onMounted(() => {
   }
 })
 onUnmounted(() => {})
+const showRecord = (row) => {
+  busData.offer = row
+  dialogRecordVisible.value = true
+}
 </script>
 <style scoped lang="scss">
 .scale-button {

@@ -223,7 +223,7 @@ import WwChangePass from '@/components/Self/ChangePass/WwChangePass'
 import { messageFun } from '@/utils/message'
 import { validEmail } from '@/utils/validate'
 import _ from 'lodash'
-import self from '@/mixins/self'
+import selfMixins from '@/mixins/self'
 import { useStore } from 'vuex'
 const defaultData = {
   // 邮箱
@@ -251,7 +251,7 @@ const defaultData = {
   status: 1
 }
 export default {
-  mixins: [self],
+  mixins: [selfMixins],
   components: { Pagination, WwChangePass },
   directives: { waves },
   filters: {

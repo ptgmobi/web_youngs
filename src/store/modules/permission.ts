@@ -26,7 +26,6 @@ function filterRouterByCodeArr(codeArr: Array<number>, asyncRoutes: RouterTy): P
   return new Promise((resolve) => {
     const filterRouter: RouterTy = []
     asyncRoutes.forEach(async (routeItem: RouterRowTy) => {
-      console.log(hasCodePermission(codeArr, routeItem))
       if (hasCodePermission(codeArr, routeItem)) {
         if (routeItem.children) {
           routeItem.children = await filterRouterByCodeArr(codeArr, routeItem.children)
@@ -99,9 +98,7 @@ const actions = {
         //   localStorage.setItem('codeArr', JSON.stringify(roles))
         //   codeArr = localStorage.getItem('codeArr')
         // }
-        console.log(codeArr, asyncRoutes)
         accessedRoutes = await filterRouterByCodeArr(codeArr, asyncRoutes)
-        console.log(accessedRoutes)
       }
       commit('M_routes', accessedRoutes)
       resolve(accessedRoutes)
