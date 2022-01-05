@@ -10,11 +10,11 @@ import { ObjTy } from '@/types/common'
  * @param routeItem
  */
 function hasCodePermission(codeArr: Array<number>, routeItem: RouteItemTy) {
-  return true
+  // return true
   if (routeItem.meta && routeItem.meta.code) {
     return codeArr.includes(routeItem.meta.code) || routeItem.hidden
   } else {
-    return true
+    return false
   }
 }
 /**
@@ -26,6 +26,7 @@ function filterRouterByCodeArr(codeArr: Array<number>, asyncRoutes: RouterTy): P
   return new Promise((resolve) => {
     const filterRouter: RouterTy = []
     asyncRoutes.forEach(async (routeItem: RouterRowTy) => {
+      console.log(hasCodePermission(codeArr, routeItem))
       if (hasCodePermission(codeArr, routeItem)) {
         if (routeItem.children) {
           routeItem.children = await filterRouterByCodeArr(codeArr, routeItem.children)
@@ -90,14 +91,17 @@ const actions = {
       } else {
         //filter by codeArr
         //req code arr
-        let codeArr: any = localStorage.getItem('codeArr')
-        if (codeArr) {
-          codeArr = JSON.parse(codeArr)
-        } else {
-          localStorage.setItem('codeArr', JSON.stringify(roles))
-          codeArr = localStorage.getItem('codeArr')
-        }
+        // let codeArr: any = localStorage.getItem('codeArr')
+        let codeArr: any = [...roles]
+        // if (codeArr) {
+        //   codeArr = JSON.parse(codeArr)
+        // } else {
+        //   localStorage.setItem('codeArr', JSON.stringify(roles))
+        //   codeArr = localStorage.getItem('codeArr')
+        // }
+        console.log(codeArr, asyncRoutes)
         accessedRoutes = await filterRouterByCodeArr(codeArr, asyncRoutes)
+        console.log(accessedRoutes)
       }
       commit('M_routes', accessedRoutes)
       resolve(accessedRoutes)

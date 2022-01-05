@@ -135,7 +135,9 @@ export default {
       console.log(choiceData.position)
       this.busData.item.id = choiceData.position.id
       this.busData.item.name = choiceData.position.name
-      this.busData.item.pid = choiceData.position.pid.toString()
+      if (choiceData.position.pid) {
+        this.busData.item.pid = choiceData.position.pid.toString()
+      }
       this.busData.item.role = choiceData.position_role
       this.dialogVisible = true
       const date = new Date()

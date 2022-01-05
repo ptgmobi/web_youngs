@@ -332,8 +332,8 @@ export default {
           comment: [{ required: false, message: '必填', trigger: ['change', 'blur'] }],
           role_id: [{ required: false, message: '必填', trigger: ['change', 'blur'] }],
           position_id: [{ required: true, message: '必填', trigger: ['change', 'blur'] }],
-          project_id: [{ required: true, message: '必填', trigger: ['change', 'blur'] }],
-          product_id: [{ required: true, message: '必填', trigger: ['change', 'blur'] }]
+          // project_id: [{ required: true, message: '必填', trigger: ['change', 'blur'] }],
+          // product_id: [{ required: true, message: '必填', trigger: ['change', 'blur'] }]
         }
       },
       // 操作框
@@ -603,7 +603,11 @@ export default {
       this.busData.data[`${name}_ischange`] = true
     },
     async choiceProject() {
-      const arr = [...this.busData.data.project_id]
+      console.log(this.busData.data)
+      let arr = []
+      if (this.busData.data.project_id) {
+        arr = [...this.busData.data.project_id]
+      }
       const product = []
       if (arr.length !== 0) {
         await Promise.all(

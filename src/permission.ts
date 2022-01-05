@@ -46,7 +46,7 @@ router.beforeEach(async (to: any, from, next: any) => {
             // ! code end
             // const roles = ['admin']
             accessRoutes = await store.dispatch('permission/generateRoutes', roles)
-            console.log(accessRoutes)
+            // console.log(accessRoutes)
           } else {
             accessRoutes = asyncRoutes
             store.commit('permission/M_routes', accessRoutes)
