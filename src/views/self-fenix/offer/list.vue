@@ -136,9 +136,27 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="click_w" label="Click*w" align="center" width="55" />
-        <el-table-column prop="installs" label="Installs" align="center" width="50" />
-        <el-table-column prop="cvr_w" label="Cvr*w" align="center" width="48" />
+        <el-table-column prop="offer_id" label="Click*w" align="center" width="55" >
+          <template #default="scope">
+            <div>
+              <span>{{ state.options.cvr[scope.row.offer_id]?.click_w }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="offer_id" label="Installs" align="center" width="50" >
+          <template #default="scope">
+            <div>
+              <span>{{ state.options.cvr[scope.row.offer_id]?.installs }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="offer_id" label="Cvr*w" align="center" width="48" >
+          <template #default="scope">
+            <div>
+              <span>{{ state.options.cvr[scope.row.offer_id]?.cvr_w }}</span>
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column label="Target Cvr*w" align="center" width="150">
           <template #default="scope">
             <div class="flex">
@@ -248,7 +266,8 @@ import {
   ApiGetAllManageSlot,
   ApiChangeTargetCvrStatus,
   ApiChangeTargetCvr,
-  ApiGetOfferDailyCapCount
+  ApiGetOfferDailyCapCount,
+  ApiGetOfferOtherInfo
 } from '@/api/fenix'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import Record from './record.vue'
@@ -306,6 +325,7 @@ const sarchDataDefault: sarchDataType = {
   channel_type: undefined
 }
 const dailyCapCountDefault: any = {}
+const dailyCvrDefault: any = {}
 const state = reactive({
   searchData: sarchDataDefault,
   tableData: tableDataDefault,
@@ -368,7 +388,8 @@ const state = reactive({
         label: 'SDK'
       }
     ],
-    dailyCapCount: dailyCapCountDefault
+    dailyCapCount: dailyCapCountDefault,
+    cvr: dailyCvrDefault
   },
   pagination: {
     pageSizes: ['20', '50', '100', '500', '1000'],
@@ -429,12 +450,29 @@ const getSlot = async () => {
   const { data: slotList } = await ApiGetAllManageSlot()
   state.options.pub = slotList
 }
+const getOfferOtherInfo = async () => {
+  const { data: object } = await ApiGetOfferOtherInfo()
+  const obj = {}
+  for (const key in object) {
+    if (Object.prototype.hasOwnProperty.call(object, key)) {
+      const element = object[key]
+      const arr = element.split('_')
+      const o = {
+        click_w: arr[0],
+        installs: arr[1],
+        cvr_w: arr[2],
+      }
+      obj[key] = o
+    }
+  }
+  state.options.cvr = obj
+}
 const getDailyCapCount = async () => {
   const { data } = await ApiGetOfferDailyCapCount()
   state.options.dailyCapCount = data
 }
 const getConfig = async () => {
-  return Promise.all([getSlot(), getDailyCapCount()])
+  return Promise.all([getSlot(), getDailyCapCount(), getOfferOtherInfo()])
 }
 const init = async () => {
   let ajaxData: any = {

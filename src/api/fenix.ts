@@ -158,9 +158,26 @@ export function ApiGetOfferList(data: ObjTy) {
     isParams: true
   })
 }
+// 获取slot daily cap count
 export function ApiGetOfferDailyCapCount() {
   return request({
     url: '/offer/daily-cap',
+    method: 'get'
+  })
+}
+// 获取操作日志
+export function ApiGetOfferLog(data: ObjTy) {
+  return request({
+    url: '/offer/offer-log',
+    data,
+    method: 'get',
+    isParams: true
+  })
+}
+// 获取cvr
+export function ApiGetOfferOtherInfo() {
+  return request({
+    url: '/offer/other-info',
     method: 'get'
   })
 }

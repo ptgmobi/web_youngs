@@ -19,8 +19,8 @@
         <!-- Adv Offer -->
         <el-form-item label="Adv Offer:" prop="adv_offer">
           <div class="flex jc-start ai-center form-one">
-            <el-input v-model="state.search.adv_offer" placeholder="Please input" class="input-with-select">
-              <template #append>
+            <el-input v-model="state.search.adv_offer" placeholder="Please input" class="input-with-select" :disabled="type === 'edit'">
+              <template v-if="type === 'create'" #append>
                 <el-button type="primary" icon="Search" @click="searchAdvOffer"></el-button>
               </template>
             </el-input>
@@ -294,7 +294,6 @@ const judgeTraffic = (data: Array<any>) => {
 }
 let validatorTraffic = (rule: any, value: Array<trafficType>, callback: (arg0: Error | undefined) => void) => {
   if (value.length !== 0) {
-    console.log(value)
     if (!judgeTraffic(value)) {
       callback(new Error('不允许有空值'))
     } else {
@@ -324,7 +323,7 @@ interface dataType {
   channel: string
   channel_type: number
   adv_status: number
-  conversion_flow: number | string
+  conversion_flow: number | undefined
   status: number
   title: string
   pkg: string
@@ -354,7 +353,7 @@ const defaultRuleForm: dataType = {
   channel: '',
   channel_type: 1,
   adv_status: 1,
-  conversion_flow: '',
+  conversion_flow: undefined,
   status: 1,
   title: '',
   pkg: '',
@@ -509,8 +508,11 @@ const submitFn = async () => {
     ...baseAjax
   }
   // ajaxData.conversion_flow = getConversionFlowValueToLabel(baseAjax.conversion_flow)
-  ajaxData.conversion_flow = baseAjax.conversion_flow
+  if (baseAjax.conversion_flow) {
+    ajaxData.conversion_flow = baseAjax.conversion_flow
+  }
   ajaxData.country = baseAjax.country[0]
+  ajaxData.revenue = parseFloat(ajaxData.revenue)
   ajaxData.target_cvr = parseFloat(ajaxData.target_cvr)
   if (baseAjax.traffic.length !== 0) {
     const finalTraffic = handleTraffic(baseAjax.traffic)
@@ -647,6 +649,7 @@ const saveTraffic = (data: any) => {
   // return true
 }
 const searchAdvOffer = async () => {
+  if (type.value === 'edit') return false
   console.log('get adv offer')
   state.ruleForm.adv_offer = state.search.adv_offer
   const str = state.ruleForm.adv_offer
