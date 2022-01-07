@@ -250,7 +250,7 @@
       />
     </div>
     <!-- record -->
-    <el-dialog title="日志" width="80%" v-model="dialogRecordVisible">
+    <el-dialog title="日志" width="80%" v-model="dialogRecordVisible" destroy-on-close>
       <Record v-model="dialogRecordVisible" :busData="busData"></Record>
     </el-dialog>
     

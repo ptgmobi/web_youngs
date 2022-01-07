@@ -11,6 +11,7 @@
 import { ref, toRefs, computed, reactive, watch, onMounted } from 'vue'
 import { ApiGetOfferLog } from '@/api/fenix'
 import { DataAnalysis } from '@element-plus/icons'
+import moment from 'moment'
 const props = defineProps({
   busData: {
     require: true,
@@ -35,16 +36,24 @@ const init = async () => {
   }
   state.tableData = []
   const { data } = await ApiGetOfferLog(ajaxData)
-  state.tableData = data
+  const arr = data.sort((a, b) => {
+    // 2022-01-07 07:29:51
+    // const str = 'YYYY-MM-DD HH:mm:ss'
+    const aa = Number(moment(a.date, moment.ISO_8601).format('X'))
+    const bb = Number(moment(b.date, moment.ISO_8601).format('X'))
+    return aa - bb
+  })
+  // console.log(arr)
+  state.tableData = arr
 }
 watch(() => props.busData.offer.offer_id, (oldValue, newValue) => {
-  init()
+  // init()
 },
 {
   immediate: true
 });
 onMounted(() => {
-  // console.log(props.busData)
-  // init()
+  console.log(props.busData)
+  init()
 })
 </script>
