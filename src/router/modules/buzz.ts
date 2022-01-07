@@ -31,8 +31,7 @@ export default [
           title: 'Buzz List',
           icon: 'dashboard',
           code: 30
-        },
-        hidden: true
+        }
       },
       {
         path: 'create',
@@ -55,7 +54,30 @@ export default [
           code: 32
         },
         hidden: true
-      }
+      },
+      {
+        path: 'old-buzz-index',
+        name: 'old-buzz-index',
+        redirect: '/buzz/old-buzz-index/list',
+        component: () => import('@/views/self-buzz/old-buzz/index'),
+        meta: {
+          title: 'Old Buzz Index',
+          icon: 'dashboard',
+          code: 33
+        },
+        children: [
+          {
+            path: 'list',
+            name: 'old-buzz-list',
+            component: () => import('@/views/self-buzz/old-buzz/list'),
+            meta: {
+              title: 'Old Buzz List',
+              code: 330
+            },
+            hidden: true
+          }
+        ]
+      },
     ]
   }
 ]

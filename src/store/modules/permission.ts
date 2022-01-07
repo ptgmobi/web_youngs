@@ -10,7 +10,7 @@ import { ObjTy } from '@/types/common'
  * @param routeItem
  */
 function hasCodePermission(codeArr: Array<number>, routeItem: RouteItemTy) {
-  // return true
+  return true
   if (routeItem.meta && routeItem.meta.code) {
     return codeArr.includes(routeItem.meta.code) || routeItem.hidden
   } else {
