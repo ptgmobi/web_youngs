@@ -58,15 +58,16 @@ const props = defineProps({
     type: Object
   }
 })
+let arr: Array<any> = []
 const state = reactive({
   search: {
     id: ''
   },
   set: new Set(),
   setObj: {},
-  spanArr: [],
-  arr: [],
-  select: [],
+  spanArr: arr,
+  arr: arr,
+  select: arr,
   statisticsCount: 0
 })
 const handleJsonAll = () => {
@@ -79,7 +80,7 @@ const handleJsonAll = () => {
         arr.map((ele) => {
           ele.select_status = false
           state.set.add(ele.source)
-          state.select.map((o) => {
+          state.select.map((o: any) => {
             if (ele.source === o.source && ele.label === o.label) {
               ele.select_status = true
             }
@@ -115,7 +116,7 @@ const handleJsonAll = () => {
     }
 const handleSet = () => {
       let arr = [...state.set]
-      let newArr = arr.map((ele) => {
+      let newArr = arr.map((ele: any) => {
         ele = [ele, false]
         return ele
       })
@@ -126,7 +127,7 @@ const changeAllSource = (key, value) => {
       console.log('change all')
       // console.log(key, value)
       // 批量修改props.arr
-      state.arr.map((ele) => {
+      state.arr.map((ele: any) => {
         if (ele.source === key) {
           ele.select_status = value
         }
@@ -146,8 +147,8 @@ const judgeSource = () => {
       // 获取全部的和选中的相对应的个数
       let setarr = Object.keys(state.setObj)
       setarr.forEach((ele) => {
-        let arr = []
-        state.arr.forEach((o) => {
+        let arr: Array<any> = []
+        state.arr.forEach((o: any) => {
           if (o.source === ele) {
             arr.push(o.select_status)
           }
@@ -161,7 +162,7 @@ const judgeSource = () => {
     }
     // 计算选择的总数
 const statisticsCountfun = () => {
-      let count = state.arr.reduce((total, ele) => {
+      let count = state.arr.reduce((total: number, ele: any) => {
         if (ele.select_status) {
           return total + parseInt(ele.device_count)
         } else {
@@ -173,9 +174,9 @@ const statisticsCountfun = () => {
 const emit = defineEmits(['changeselect', 'up'])
 const changeFun = () => {
       // 处理所有的all。取出select
-      let arr = []
+      let arr: Array<any> = []
       let count = 0
-      state.arr.forEach((ele) => {
+      state.arr.forEach((ele: any) => {
         if (ele.select_status) {
           arr.push({
             source: ele.source,
@@ -193,11 +194,11 @@ const changeFun = () => {
     }
 const getSpanArr = (data, key) => {
       state.spanArr = []
+      let pos: any = 0;
       for (var i = 0; i < data.length; i++) {
         if (i === 0) {
           // 如果是第一条记录（即索引是0的时候），向数组中加入１
           state.spanArr.push(1)
-          let pos = 0;
         } else {
           if (data[i][key] === data[i - 1][key]) {
             // 如果source相等就累加，并且push 0  这里是根据一样的source匹配
@@ -206,7 +207,7 @@ const getSpanArr = (data, key) => {
           } else {
             // 不相等push 1
             state.spanArr.push(1)
-            pos = i;
+            pos = i
           }
         }
       }
