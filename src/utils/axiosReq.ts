@@ -104,7 +104,7 @@ service.interceptors.response.use(
         type: 'error',
         duration: 5 * 1000
       })
-      if (code === 403) {
+      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
         // to re-login
         ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
           confirmButtonText: '重新登录',
