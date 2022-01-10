@@ -116,35 +116,18 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="Device Cutoff" width="250">
+      <el-table-column label="Site Click Limitation" width="150">
         <template #default="scope">
-          <div class="flex jc-around">
-            <div>
-              <div>
-                <el-select class="cutoff" v-model="scope.row.cutoff_start" filterable placeholder="start">
-                  <el-option
-                    v-for="item in data.options.cutoff_start"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
-                </el-select>
-                <span>-</span>
-                <el-select class="cutoff" v-model="scope.row.cutoff_end" filterable placeholder="end">
-                  <el-option
-                    v-for="item in data.options.cutoff_end"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
-                </el-select>
-              </div>
-              <div class="flex mt-10">
-                <span>{{ handleCutoff(scope.row) }}</span>
-              </div>
-            </div>
-            <el-button class="cp ml-10" type="primary" icon="Edit" circle @click="changeCutoff(scope.row)"></el-button>
+          <div class='flex jc-around'>
+            <el-input v-model="scope.row.site_clk_limit" placeholder=""></el-input>
+            <span class='cp icon ml-10'><i class="el-icon-edit"></i></span>
           </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="Select Device">
+        <template #default="scope">
+          <span v-text='scope.row.device_count'></span>
+          <el-button class="cp ml-10" type="primary" icon="Edit" circle @click="editDeviceFun(scope.row)"></el-button>
         </template>
       </el-table-column>
       <el-table-column width="100" label="Operation">
@@ -175,6 +158,10 @@
         @pagination="init"
       />
     </div>
+    <!-- device -->
+    <el-dialog title="diy_siteid" v-model="data.dialogVisibleDevice">
+      <Device :json = "device" @kk="saveDevice"></Device>
+    </el-dialog>
   </div>
 </template>
 <script lang="ts" setup>
@@ -186,6 +173,7 @@ import { messageFun } from '@/utils/message'
 import _ from 'lodash'
 import { number } from 'echarts'
 import { handleAjaxDataObjectFn } from '@/utils/new-format'
+import Device from './device.vue'
 let { proxy }: any = getCurrentInstance()
 const searchData = shallowRef({
   attribute_provider: [],
@@ -197,6 +185,7 @@ const searchData = shallowRef({
   country: '',
   pid: ''
 })
+let device: any = ref([])
 const OptionsCutoffStart = () => {
   const arr = [...new Array(20)].map((ele, index) => {
     const val = (index * 5) / 100
@@ -217,8 +206,10 @@ const OptionsCutoffEnd = () => {
   })
   return arr
 }
+let bus: any = reactive({})
 let data = reactive({
   dialogVisible: false,
+  dialogVisibleDevice: false,
   cache: {
     item: {},
     device: {}
@@ -365,6 +356,15 @@ const init = async () => {
   data.list = result?.data
   data.pagination.total = Number(result.count)
   data.loading = false
+}
+const editDeviceFun = (row) => {
+  console.log('get device')
+  data.dialogVisibleDevice = true
+  console.log(row)
+  bus = row
+}
+const saveDevice = () => {
+
 }
 onMounted(() => {
   searchFn()
