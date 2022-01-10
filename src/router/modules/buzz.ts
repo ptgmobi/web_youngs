@@ -56,9 +56,9 @@ export default [
         hidden: true
       },
       {
-        path: 'old-buzz-index',
+        path: 'old-buzz',
         name: 'old-buzz-index',
-        redirect: '/buzz/old-buzz-index/list',
+        redirect: '/buzz/old-buzz/list',
         component: () => import('@/views/self-buzz/old-buzz/index'),
         meta: {
           title: 'Old Buzz Index',
@@ -75,7 +75,29 @@ export default [
               code: 330
             },
             hidden: true
-          }
+          },
+          {
+            path: 'create',
+            name: 'old-buzz-create',
+            component: () => import('@/views/self-buzz/old-buzz/details'),
+            meta: {
+              title: 'Old Buzz Create',
+              icon: 'dashboard',
+              code: 331
+            },
+            hidden: true
+          },
+          {
+            path: 'edit/:id',
+            name: 'old-buzz-edit',
+            component: () => import('@/views/self-buzz/old-buzz/details'),
+            meta: {
+              title: 'Old Buzz Edit',
+              icon: 'dashboard',
+              code: 332
+            },
+            hidden: true
+          },
         ]
       },
     ]

@@ -11,7 +11,7 @@
     >
       <div class="content-con flex column">
         <!-- offer_id -->
-        <el-form-item label="Offer ID:" prop="offer_id" v-if="data.type === '2'">
+        <el-form-item label="Offer ID:" prop="offer_id">
           <div class="flex jc-start form-one radio-box">
             <span v-text="data.ruleForm.offer_id"></span>
           </div>
@@ -23,11 +23,13 @@
           </el-select>
         </el-form-item>
         <!-- copy_offer -->
-        <!-- <el-form-item label="Copy Offer:" prop="copy_offer">
+        <el-form-item label="Copy Offer:" prop="copy_offer">
           <el-input class='form-one copy-btn search-input' placeholder="" v-model.trim="data.ruleForm.copy_offer">
-            <el-button type="primary" slot="append" icon="Search" @click='copyFun'></el-button>
+            <template  #append>
+              <el-button type="primary" slot="append" icon="Search" @click='copyFun'></el-button>
+            </template>
           </el-input>
-        </el-form-item> -->
+        </el-form-item>
         <!-- attribute_provider -->
         <el-form-item label="Attribute Provider:" prop="attribute_provider">
           <el-select filterable class="form-one" v-model="data.ruleForm.attribute_provider" clearable placeholder="">
@@ -54,6 +56,12 @@
             placeholder=""
           ></el-input>
         </el-form-item>
+        <!-- pid -->
+        <el-form-item label="Pid:" prop="pid">
+          <div class="form-one flex jc-start">
+              <span>{{handlePid}}</span><span class="dn">{{data.ruleForm.pid}}</span>
+            </div>
+        </el-form-item>
         <!-- pkg_name -->
         <el-form-item label="Package Name:" prop="pkg_name">
           <el-input class="form-one" type="text" v-model.trim="data.ruleForm.pkg_name" placeholder=""></el-input>
@@ -66,7 +74,7 @@
           </div>
         </el-form-item>
         <!-- conversion_flow -->
-        <el-form-item label="Event Name:" prop="event_name" v-if="data.ruleForm.conversion_flow === '2'">
+        <el-form-item label="Event Name:" prop="event_name" v-if="data.ruleForm.conversion_flow === 2">
           <el-input class="form-one" type="text" v-model.trim="data.ruleForm.event_name" placeholder=""></el-input>
         </el-form-item>
         <!-- payout -->
@@ -111,7 +119,7 @@
           </el-select>
         </el-form-item>
         <!-- site_install_limitation-->
-        <!-- <el-form-item label="Site Install Limitation:" prop="site_install_limitation">
+        <el-form-item label="Site Install Limitation:" prop="site_install_limitation">
           <el-select filterable class='form-one' v-model="data.ruleForm.site_install_limitation" clearable placeholder="">
             <el-option
               v-for="item in 6"
@@ -120,9 +128,16 @@
               :value="item - 1">
             </el-option>
           </el-select>
-        </el-form-item> -->
+        </el-form-item>
+        <!-- Select Device -->
+        <el-form-item label="Select Device:" prop="device">
+          <div class='flex jc-start form-one'>
+            <el-button class="cp ml-10" type="primary" icon="Setting" circle @click="editDeviceFun"></el-button>
+            <span class="ml-10" v-text='data.search.deviceData.count'></span>
+          </div>
+        </el-form-item>
         <!-- Device Cutoff -->
-        <el-form-item label="Device Cutoff:" prop="cutoff_start">
+        <!-- <el-form-item label="Device Cutoff:" prop="cutoff_start">
           <div class="flex ai-center">
             <span v-text="data.ruleForm.cutoff_start * 100"></span>
             %
@@ -148,7 +163,7 @@
               :max="100"
             ></el-slider>
           </div>
-        </el-form-item>
+        </el-form-item> -->
         <!-- diy_siteid -->
         <el-form-item label="Diy SiteID:" prop="site">
           <div class="flex jc-start form-one">
@@ -216,7 +231,11 @@
     </div>
     <!-- footer -->
     <!-- dialog -->
-    <Device :json = "device"></Device>
+    <!-- device -->
+    <el-dialog title="diy_siteid" v-model="data.dialogVisibleDevice">
+      <Device :json = "device" @kk="saveDevice"></Device>
+    </el-dialog>
+    <!-- site -->
     <el-dialog title="diy_siteid" v-model="data.dialogVisibleSite">
       <site :msg="data.siteData" @kk="saveSite"></site>
     </el-dialog>
@@ -235,6 +254,7 @@ import _ from 'lodash'
 import site from './site'
 import { handleAjaxDataObjectFn } from '@/utils/new-format'
 import { messageFun } from '@/utils/message'
+import { ElMessage } from 'element-plus'
 let { proxy }: any = getCurrentInstance()
 import { useRouter } from 'vue-router'
 import { DataAnalysis } from '@element-plus/icons'
@@ -330,7 +350,7 @@ let deviceNum = ref(0)
 // cutoff滑块
 let cutoff = ref([0, 100])
 let data: any = reactive({
-  dialogVisible: false,
+  dialogVisibleDevice: false,
   dialogVisibleSite: false,
   search: {
     id: '',
@@ -368,6 +388,7 @@ let data: any = reactive({
     title: '',
     // 过滤空格，制表符
     tracking_link: '',
+    pid: '',
     pkg_name: '',
     conversion_flow: '',
     event_name: '',
@@ -496,6 +517,11 @@ const saveSite = (arr: Array<siteType>) => {
   data.ruleForm.diy_siteid = arr
   data.dialogVisibleSite = false
 }
+const saveDevice = (arr: Array<siteType>) => {
+  console.log(arr)
+  data.ruleForm.device = arr
+  data.dialogVisibleDevice = false
+}
 const setCutoff = (newVal: Array<number>) => {
   data.ruleForm.cutoff_start = newVal[0] / 100
   data.ruleForm.cutoff_end = newVal[1] / 100
@@ -586,6 +612,52 @@ const getOfferData = async () => {
   // ! 给滑动条赋值
   cutoff.value = [Number(data.ruleForm.cutoff_start) * 100, Number(data.ruleForm.cutoff_end) * 100]
 }
+const handleEditDeviceFun = () => {
+  console.log('get device')
+}
+const editDeviceFun = () => {
+  // 先判断平台和国家
+  if (data.ruleForm.platform && data.ruleForm.country) {
+    // 模态框
+    data.dialogVisibleDevice = true
+    handleEditDeviceFun()
+  } else {
+    // 给用户提示应该先选择平台和国家
+    ElMessage.error('请提前选择平台和国家');
+  }
+}
+const copyFun = () => {
+  console.log('copy offer')
+}
+const handlePid = computed(() => {
+  const url = data.ruleForm.tracking_link
+  const ap = data.ruleForm.attribute_provider
+  let pid = ''
+  if (ap === 'AppsFlyer') {
+    const reg = /pid=([\s\S]*)_int/g
+    // return reg.exec(url)
+    const arr = [...url.matchAll(reg)]
+    console.log(arr)
+    if (arr.length !== 0) {
+      pid = arr[0][1]
+      data.ruleForm.pid = pid
+      return pid
+    }
+  }
+  if (ap === 'Adjust') {
+    const reg = /https:\/\/app.adjust.com\/([\s\S]*)\?/g
+    // return reg.exec(url)
+    const arr = [...url.matchAll(reg)]
+    console.log(arr)
+    if (arr.length !== 0) {
+      pid = arr[0][1]
+      data.ruleForm.pid = pid
+      return pid
+    }
+  }
+  data.ruleForm.pid = pid
+  return pid
+})
 onMounted(() => {
   getConfig()
   name = router.currentRoute.value.name

@@ -3,7 +3,7 @@
     <div class="controlBox w100 mb-10">
       <div class="mb-10">
         <!-- <el-button type="primary" @click='createFun'>Offer Create</el-button> -->
-        <router-link to="/old-buzz/create">
+        <router-link to="/buzz/old-buzz/create">
           <el-button type="primary">Offer Create</el-button>
         </router-link>
       </div>
@@ -319,7 +319,7 @@ const editFun = (row: any) => {
 }
 const getEditUrl = (row: any) => {
   const id = row.id
-  return `/buzz/edit/${id}`
+  return `/buzz/old-buzz/edit/${id}`
 }
 const init = async () => {
   data.loading = true

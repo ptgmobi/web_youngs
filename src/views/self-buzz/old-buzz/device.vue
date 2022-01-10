@@ -155,7 +155,7 @@ const statisticsCountfun = () => {
   }, 0)
   state.statisticsCount = count
 }
-const emit = defineEmits(['changeselect', 'up'])
+const emit = defineEmits(['kk', 'up'])
 const changeFun = () => {
   // 处理所有的all。取出select
   let arr: Array<any> = []
@@ -173,7 +173,7 @@ const changeFun = () => {
     select: arr,
     count: count
   }
-  emit('changeselect', arr)
+  emit('kk', arr)
   // this.$emit('update:changeselect', arr)
 }
 const getSpanArr = (data, key) => {
