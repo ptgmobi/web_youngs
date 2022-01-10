@@ -5,7 +5,7 @@
     </div>
     <Search v-model="dialogTableVisible" @emitParent="emitParent" />
     <div class="body-box mt-10">
-      <el-table :data="tableData" style="width: 100%" border>
+      <el-table :data="tableData" class="w100" height="70vh" border>
         <el-table-column prop="uid" label="UID" align="center" />
         <el-table-column prop="email" label="Email" align="center" />
         <el-table-column prop="username" label="User Name" align="center" />

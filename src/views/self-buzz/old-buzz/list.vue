@@ -94,7 +94,7 @@
       </el-input> -->
     </div>
     <!-- table -->
-    <el-table center v-loading="data.loading" :data="data.list" style="width: 100%" border>
+    <el-table center v-loading="data.loading" :data="data.list" class="w100" height="70vh" border>
       <el-table-column prop="offer_id" label="ID"></el-table-column>
       <el-table-column prop="channel" label="Channel"></el-table-column>
       <el-table-column prop="pkg_name" label="Package Name"></el-table-column>
