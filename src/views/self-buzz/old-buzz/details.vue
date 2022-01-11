@@ -233,7 +233,7 @@
     <!-- dialog -->
     <!-- device -->
     <el-dialog title="diy_siteid" v-model="data.dialogVisibleDevice">
-      <Device :json = "device" @kk="saveDevice"></Device>
+      <Device :json="bus.cacheDevice" @kk="saveDevice"></Device>
       <span slot="footer" class="dialog-footer">
         <!-- <el-button @click="cancleDevice">取 消</el-button> -->
         <el-button type="primary" @click="setDevice">确 定</el-button>
@@ -347,7 +347,11 @@ let validatorEndHour = (rule: any, value: string, callback: (arg0: Error | undef
     }
   }
 }
-let device: any = ref([])
+let bus: any = reactive({
+  offer: {},
+  index: null,
+  cacheDevice: {}
+})
 let name: any = ref('')
 // 设备数
 let deviceNum = ref(0)
@@ -521,10 +525,18 @@ const saveSite = (arr: Array<siteType>) => {
   data.ruleForm.diy_siteid = arr
   data.dialogVisibleSite = false
 }
-const saveDevice = (arr: Array<siteType>) => {
-  console.log(arr)
-  data.ruleForm.device = arr
-  data.dialogVisibleDevice = false
+
+// 修改device数据
+const saveDevice = (data) => {
+  bus.cacheDevice.select = data
+}
+// 保存提交device数据
+const setDevice = () => {
+  const ajaxData = {
+    id: bus.offer.id,
+    device: bus.cacheDevice.select
+  }
+  console.log(ajaxData)
 }
 const setCutoff = (newVal: Array<number>) => {
   data.ruleForm.cutoff_start = newVal[0] / 100
@@ -609,7 +621,7 @@ const getOfferData = async () => {
   const id = router.currentRoute.value.params.id
   // const res = await ApiGetOfferData(id.toString())
   const res = {
-    data: [{"id":"5926","channel":"ink","offer_id":"bz605826","attribute_provider":"AppsFlyer","title":" More TV-gzs","tracking_link":"https://app.appsflyer.com/com.ctcmediagroup.videomore?pid=blackknight_int&af_siteid={gz_siteid}&c=moreTV_Jan_TM&af_channel={af_siteid}&af_click_lookback=7d&clickid={clickid}&android_id={android_id}&advertising_id={advertising_id}&idfa={idfa}&af_prt=thinkmobile","pid":"blackknight","pkg_name":"com.ctcmediagroup.videomore","payout":"2.00","platform":"1","country":"RU","max_clk_num":"0","device":[{"source":"wm","label":"by"},{"source":"wm","label":"bz"},{"source":"wm","label":"cy"},{"source":"wm","label":"cz"},{"source":"wm","label":"dy"},{"source":"wm","label":"dz"}],"site_id":"1","hour":"0","clk_id":"1","site_clk_limit":"0","site_clk_id":"0","category_id":"0","site_install_limitation":"0","conversion_flow":"2","event_name":"Start_trial","status":"1","diy_siteid":[],"note":"","start_hour":"-1","end_hour":"-1","create_date":"2021-12-30 07:04:30","update_date":"2021-12-30 07:04:30"}]
+    data: [{"id":"5926","channel":"ink","offer_id":"bz605826","attribute_provider":"AppsFlyer","title":" More TV-gzs","tracking_link":"https://app.appsflyer.com/com.ctcmediagroup.videomore?pid=blackknight_int&af_siteid={gz_siteid}&c=moreTV_Jan_TM&af_channel={af_siteid}&af_click_lookback=7d&clickid={clickid}&android_id={android_id}&advertising_id={advertising_id}&idfa={idfa}&af_prt=thinkmobile","pid":"blackknight","pkg_name":"com.ctcmediagroup.videomore","payout":"2.00","platform":1,"country":"RU","max_clk_num":"0","device":[{"source":"wm","label":"by"},{"source":"wm","label":"bz"},{"source":"wm","label":"cy"},{"source":"wm","label":"cz"},{"source":"wm","label":"dy"},{"source":"wm","label":"dz"}],"site_id":"1","hour":"0","clk_id":"1","site_clk_limit":"0","site_clk_id":"0","category_id":"0","site_install_limitation":"0","conversion_flow":"2","event_name":"Start_trial","status":"1","diy_siteid":[],"note":"","start_hour":"-1","end_hour":"-1","create_date":"2021-12-30 07:04:30","update_date":"2021-12-30 07:04:30"}]
   }
   const { data: result } = res
   console.log(result)
@@ -617,6 +629,7 @@ const getOfferData = async () => {
     type: data.ruleForm.type,
     isCopy: false
   })
+  bus.offer = result[0]
   // ! 给滑动条赋值
   cutoff.value = [Number(data.ruleForm.cutoff_start) * 100, Number(data.ruleForm.cutoff_end) * 100]
 }
@@ -666,9 +679,6 @@ const handlePid = computed(() => {
   data.ruleForm.pid = pid
   return pid
 })
-const setDevice = () => {
-
-}
 onMounted(() => {
   getConfig()
   name.value = router.currentRoute.value.name
