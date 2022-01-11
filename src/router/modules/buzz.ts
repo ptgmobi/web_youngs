@@ -78,7 +78,7 @@ export default [
           },
           {
             path: 'create',
-            name: 'old-buzz-create',
+            name: 'buzz-old-create',
             component: () => import('@/views/self-buzz/old-buzz/details'),
             meta: {
               title: 'Old Buzz Create',
@@ -89,7 +89,7 @@ export default [
           },
           {
             path: 'edit/:id',
-            name: 'old-buzz-edit',
+            name: 'buzz-old-edit',
             component: () => import('@/views/self-buzz/old-buzz/details'),
             meta: {
               title: 'Old Buzz Edit',

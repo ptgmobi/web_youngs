@@ -127,7 +127,7 @@
       <el-table-column label="Select Device">
         <template #default="scope">
           <span v-text='scope.row.device_count'></span>
-          <el-button class="cp ml-10" type="primary" icon="Edit" circle @click="editDeviceFun(scope.row)"></el-button>
+          <el-button class="cp ml-10" type="primary" icon="Edit" circle @click="editDeviceFun(scope.$index, scope.row)"></el-button>
         </template>
       </el-table-column>
       <el-table-column width="100" label="Operation">
@@ -160,7 +160,7 @@
     </div>
     <!-- device -->
     <el-dialog title="diy_siteid" v-model="data.dialogVisibleDevice">
-      <Device :json = "device" @kk="saveDevice"></Device>
+      <Device :json="bus.cacheDevice" @kk="saveDevice"></Device>
       <span class="dialog-footer">
         <!-- <el-button @click="cancleDevice">取 消</el-button> -->
         <el-button type="primary" @click="setDevice">确 定</el-button>
@@ -189,7 +189,6 @@ const searchData = shallowRef({
   country: '',
   pid: ''
 })
-let device: any = ref([])
 const OptionsCutoffStart = () => {
   const arr = [...new Array(20)].map((ele, index) => {
     const val = (index * 5) / 100
@@ -210,7 +209,11 @@ const OptionsCutoffEnd = () => {
   })
   return arr
 }
-let bus: any = reactive({})
+let bus: any = reactive({
+  offer: {},
+  index: null,
+  cacheDevice: {}
+})
 let data = reactive({
   dialogVisible: false,
   dialogVisibleDevice: false,
@@ -361,17 +364,26 @@ const init = async () => {
   data.pagination.total = Number(result.count)
   data.loading = false
 }
-const editDeviceFun = (row) => {
+const editDeviceFun = (i, row) => {
   console.log('get device')
   data.dialogVisibleDevice = true
-  console.log(row)
-  bus = row
+  bus.offer = row
+  bus.index = i
+  const res = {"select":[{"id":"627909","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"by","slot_id":"37641287","device_count":"3092161"},{"id":"628270","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"bz","slot_id":"19760998","device_count":"894270"},{"id":"627595","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cy","slot_id":"78317974","device_count":"5650213"},{"id":"627755","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cz","slot_id":"35082647","device_count":"2579008"},{"id":"627664","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dy","slot_id":"46634509","device_count":"17162151"},{"id":"628339","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dz","slot_id":"33488006","device_count":"20869879"}],"all":[{"id":"627657","day":"2022-01-11","platform":"1","country":"RU","source":"adx","label":"aw","slot_id":"57351627","device_count":"3094129"},{"id":"628012","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"ax","slot_id":"35653768","device_count":"2276277"},{"id":"627689","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"ay","slot_id":"44225907","device_count":"1219696"},{"id":"627706","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"az","slot_id":"33347536","device_count":"182883"},{"id":"627434","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"bw","slot_id":"66660203","device_count":"3313520"},{"id":"628046","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"cw","slot_id":"14372948","device_count":"2841368"},{"id":"627753","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"bx","slot_id":"59188090","device_count":"3168514"},{"id":"627909","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"by","slot_id":"37641287","device_count":"3092161"},{"id":"628270","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"bz","slot_id":"19760998","device_count":"894270"},{"id":"627732","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cx","slot_id":"99431779","device_count":"4906792"},{"id":"627595","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cy","slot_id":"78317974","device_count":"5650213"},{"id":"627755","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cz","slot_id":"35082647","device_count":"2579008"},{"id":"628057","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dw","slot_id":"66196474","device_count":"4170112"},{"id":"627426","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dx","slot_id":"43347563","device_count":"7879852"},{"id":"627664","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dy","slot_id":"46634509","device_count":"17162151"},{"id":"628339","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dz","slot_id":"33488006","device_count":"20869879"}]}
+  bus.cacheDevice = res
+  console.log(bus)
 }
-const saveDevice = (row) => {
-  row.cacheDevice = {}
+// 修改device数据
+const saveDevice = (data) => {
+  bus.cacheDevice.select = data
 }
+// 保存提交device数据
 const setDevice = () => {
-  console.log(123)
+  const ajaxData = {
+    id: bus.offer.id,
+    device: bus.cacheDevice.select
+  }
+  console.log(ajaxData)
 }
 onMounted(() => {
   searchFn()

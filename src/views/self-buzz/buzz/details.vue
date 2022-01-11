@@ -584,13 +584,14 @@ const getOfferData = async () => {
 }
 onMounted(() => {
   getConfig()
-  name = router.currentRoute.value.name
-  if (name.value === 'create') {
+  name.value = router.currentRoute.value.name
+  console.log(name.value)
+  if (name.value === 'buzz-create') {
     data.ruleForm.operation_type = '1'
     data.ruleForm.type = '1'
   }
   // 如果是修改，获取当前id的值
-  if (name.value === 'edit') {
+  if (name.value === 'buzz-edit') {
     data.ruleForm.operation_type = '2'
     data.ruleForm.type = '2'
     getOfferData()

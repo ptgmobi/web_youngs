@@ -32,7 +32,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import { reactive, watch, onMounted } from 'vue'
 const props = defineProps({
   json: {
     require: true,
@@ -54,11 +54,15 @@ const state = reactive({
   select: arr,
   statisticsCount: 0
 })
+watch(props.json, (oldValue, newValue) => {
+  console.log(newValue)
+  // handleJsonAll()
+})
 const handleJsonAll = () => {
   if (props.json.all.length !== 0) {
     state.set = new Set()
-    let arr = JSON.parse(JSON.stringify(props.json.all))
-    state.select = JSON.parse(JSON.stringify(props.json.select))
+    let arr = props.json.all
+    state.select = props.json.select
     // console.log(arr)
     // console.log(select)
     arr.map((ele) => {
@@ -116,6 +120,7 @@ const changeAllSource = (key, value) => {
       ele.select_status = value
     }
   })
+  judgeSource()
   changeFun()
 }
 const changeOneSource = (item) => {
@@ -163,6 +168,7 @@ const changeFun = () => {
   state.arr.forEach((ele: any) => {
     if (ele.select_status) {
       arr.push({
+        ...ele,
         source: ele.source,
         label: ele.label
       })
@@ -207,4 +213,7 @@ const objectSpanMethod = ({ row, column, rowIndex, columnIndex }) => {
     };
   }
 }
+onMounted(() => {
+  handleJsonAll()
+})
 </script>

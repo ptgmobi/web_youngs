@@ -607,9 +607,13 @@ const handleCopyOffer = (result: any, options: any) => {
 
 const getOfferData = async () => {
   const id = router.currentRoute.value.params.id
-  const res = await ApiGetOfferData(id.toString())
+  // const res = await ApiGetOfferData(id.toString())
+  const res = {
+    data: [{"id":"5926","channel":"ink","offer_id":"bz605826","attribute_provider":"AppsFlyer","title":" More TV-gzs","tracking_link":"https://app.appsflyer.com/com.ctcmediagroup.videomore?pid=blackknight_int&af_siteid={gz_siteid}&c=moreTV_Jan_TM&af_channel={af_siteid}&af_click_lookback=7d&clickid={clickid}&android_id={android_id}&advertising_id={advertising_id}&idfa={idfa}&af_prt=thinkmobile","pid":"blackknight","pkg_name":"com.ctcmediagroup.videomore","payout":"2.00","platform":"1","country":"RU","max_clk_num":"0","device":[{"source":"wm","label":"by"},{"source":"wm","label":"bz"},{"source":"wm","label":"cy"},{"source":"wm","label":"cz"},{"source":"wm","label":"dy"},{"source":"wm","label":"dz"}],"site_id":"1","hour":"0","clk_id":"1","site_clk_limit":"0","site_clk_id":"0","category_id":"0","site_install_limitation":"0","conversion_flow":"2","event_name":"Start_trial","status":"1","diy_siteid":[],"note":"","start_hour":"-1","end_hour":"-1","create_date":"2021-12-30 07:04:30","update_date":"2021-12-30 07:04:30"}]
+  }
   const { data: result } = res
-  data.ruleForm = handleCopyOffer(result, {
+  console.log(result)
+  data.ruleForm = handleCopyOffer(result[0], {
     type: data.ruleForm.type,
     isCopy: false
   })
@@ -667,13 +671,14 @@ const setDevice = () => {
 }
 onMounted(() => {
   getConfig()
-  name = router.currentRoute.value.name
-  if (name.value === 'create') {
+  name.value = router.currentRoute.value.name
+  console.log(name.value)
+  if (name.value === 'buzz-old-create') {
     data.ruleForm.operation_type = '1'
     data.ruleForm.type = '1'
   }
   // 如果是修改，获取当前id的值
-  if (name.value === 'edit') {
+  if (name.value === 'buzz-old-edit') {
     data.ruleForm.operation_type = '2'
     data.ruleForm.type = '2'
     getOfferData()
