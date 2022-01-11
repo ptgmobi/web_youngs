@@ -97,7 +97,7 @@ service.interceptors.response.use(
     //   //如果未catch 走unhandledrejection进行收集
     //   return Promise.reject(res.data)
     // }
-    const { code, data } = res.data
+    const { code, message } = res.data
     if (code !== 200) {
       ElMessage({
         message: res.message || 'Error',
@@ -105,9 +105,9 @@ service.interceptors.response.use(
         duration: 5 * 1000
       })
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+      if (code === 50008 || code === 50012 || code === 50014) {
         // to re-login
-        ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
+        ElMessageBox.confirm(message, '系统提示', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
           type: 'warning'
