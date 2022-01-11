@@ -17,7 +17,11 @@
         </el-table-column>
         <el-table-column prop="label" label="Label"></el-table-column>
         <el-table-column prop="slot_id" label="Slot ID"></el-table-column>
-        <el-table-column prop="device_count" label="Count"></el-table-column>
+        <el-table-column prop="device_count" label="Count">
+          <template #default="scope">
+            <span>{{ thousandSeparator(scope.row.device_count) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="select" label="Select">
           <template #default="scope">
             <el-checkbox v-model="scope.row.select_status" @change="changeOneSource(scope.row)"></el-checkbox>
