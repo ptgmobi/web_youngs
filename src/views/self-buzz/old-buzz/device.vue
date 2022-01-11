@@ -33,6 +33,7 @@
 </template>
 <script lang="ts" setup>
 import { reactive, watch, onMounted } from 'vue'
+import { thousandSeparator } from '@/utils/format'
 const props = defineProps({
   json: {
     require: true,
@@ -158,7 +159,7 @@ const statisticsCountfun = () => {
       return total
     }
   }, 0)
-  state.statisticsCount = count
+  state.statisticsCount = thousandSeparator(count)
 }
 const emit = defineEmits(['kk', 'up'])
 const changeFun = () => {
