@@ -94,9 +94,9 @@
       </el-input> -->
     </div>
     <!-- table -->
-    <el-table center v-loading="data.loading" :data="data.list" class="w100" height="70vh" border>
-      <el-table-column prop="offer_id" label="ID"></el-table-column>
-      <el-table-column prop="channel" label="Channel"></el-table-column>
+    <el-table center v-loading="data.loading" :data="data.list" class="w100" height="60vh" border>
+      <el-table-column fixed prop="offer_id" label="ID"></el-table-column>
+      <el-table-column fixed prop="channel" label="Channel"></el-table-column>
       <el-table-column prop="pkg_name" label="Package Name"></el-table-column>
       <el-table-column prop="title" label="Offer Title" width="120"></el-table-column>
       <el-table-column prop="attribute_provider" label="Attribute Provider"></el-table-column>
@@ -161,6 +161,10 @@
     <!-- device -->
     <el-dialog title="diy_siteid" v-model="data.dialogVisibleDevice">
       <Device :json = "device" @kk="saveDevice"></Device>
+      <span class="dialog-footer">
+        <!-- <el-button @click="cancleDevice">取 消</el-button> -->
+        <el-button type="primary" @click="setDevice">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -363,8 +367,11 @@ const editDeviceFun = (row) => {
   console.log(row)
   bus = row
 }
-const saveDevice = () => {
-
+const saveDevice = (row) => {
+  row.cacheDevice = {}
+}
+const setDevice = () => {
+  console.log(123)
 }
 onMounted(() => {
   searchFn()

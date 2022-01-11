@@ -234,6 +234,10 @@
     <!-- device -->
     <el-dialog title="diy_siteid" v-model="data.dialogVisibleDevice">
       <Device :json = "device" @kk="saveDevice"></Device>
+      <span slot="footer" class="dialog-footer">
+        <!-- <el-button @click="cancleDevice">取 消</el-button> -->
+        <el-button type="primary" @click="setDevice">确 定</el-button>
+      </span>
     </el-dialog>
     <!-- site -->
     <el-dialog title="diy_siteid" v-model="data.dialogVisibleSite">
@@ -658,6 +662,9 @@ const handlePid = computed(() => {
   data.ruleForm.pid = pid
   return pid
 })
+const setDevice = () => {
+
+}
 onMounted(() => {
   getConfig()
   name = router.currentRoute.value.name

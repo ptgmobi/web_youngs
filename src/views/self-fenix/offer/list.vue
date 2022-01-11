@@ -117,7 +117,7 @@
     </div>
     <!-- table -->
     <div class="body-box mt-10">
-      <el-table :data="state.tableData" class="w100" height="70vh" border>
+      <el-table :data="state.tableData" class="w100" height="60vh" border>
         <el-table-column fixed prop="offer_id" label="Offer ID" align="center" width="60" />
         <el-table-column fixed prop="adv_offer" label="Adv Offer" align="center" width="87" />
         <el-table-column fixed prop="channel" label="Channel" align="center" width="42" />
