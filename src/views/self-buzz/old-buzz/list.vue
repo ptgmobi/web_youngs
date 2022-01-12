@@ -159,7 +159,7 @@
       />
     </div>
     <!-- device -->
-    <el-dialog title="diy_siteid" v-model="data.dialogVisibleDevice">
+    <el-dialog title="Device" v-model="data.dialogVisibleDevice">
       <Device :json="bus.cacheDevice" @kk="saveDevice"></Device>
       <span class="dialog-footer">
         <!-- <el-button @click="cancleDevice">取 消</el-button> -->

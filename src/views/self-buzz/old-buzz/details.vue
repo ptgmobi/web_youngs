@@ -133,7 +133,7 @@
         <el-form-item label="Select Device:" prop="device">
           <div class='flex jc-start form-one'>
             <el-button class="cp ml-10" type="primary" icon="Setting" circle @click="editDeviceFun"></el-button>
-            <span class="ml-10" v-text='data.search.deviceData.count'></span>
+            <span class="ml-10" v-text='countDevice'></span>
           </div>
         </el-form-item>
         <!-- Device Cutoff -->
@@ -232,7 +232,7 @@
     <!-- footer -->
     <!-- dialog -->
     <!-- device -->
-    <el-dialog title="diy_siteid" v-model="data.dialogVisibleDevice">
+    <el-dialog title="Device" v-model="data.dialogVisibleDevice">
       <Device :json="bus.cacheDevice" @kk="saveDevice"></Device>
       <span slot="footer" class="dialog-footer">
         <!-- <el-button @click="cancleDevice">取 消</el-button> -->
@@ -629,6 +629,8 @@ const getOfferData = async () => {
     type: data.ruleForm.type,
     isCopy: false
   })
+  const device = {"select":[{"id":"627909","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"by","slot_id":"37641287","device_count":"3092161"},{"id":"628270","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"bz","slot_id":"19760998","device_count":"894270"},{"id":"627595","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cy","slot_id":"78317974","device_count":"5650213"},{"id":"627755","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cz","slot_id":"35082647","device_count":"2579008"},{"id":"627664","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dy","slot_id":"46634509","device_count":"17162151"},{"id":"628339","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dz","slot_id":"33488006","device_count":"20869879"}],"all":[{"id":"627657","day":"2022-01-11","platform":"1","country":"RU","source":"adx","label":"aw","slot_id":"57351627","device_count":"3094129"},{"id":"628012","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"ax","slot_id":"35653768","device_count":"2276277"},{"id":"627689","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"ay","slot_id":"44225907","device_count":"1219696"},{"id":"627706","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"az","slot_id":"33347536","device_count":"182883"},{"id":"627434","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"bw","slot_id":"66660203","device_count":"3313520"},{"id":"628046","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"cw","slot_id":"14372948","device_count":"2841368"},{"id":"627753","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"bx","slot_id":"59188090","device_count":"3168514"},{"id":"627909","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"by","slot_id":"37641287","device_count":"3092161"},{"id":"628270","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"bz","slot_id":"19760998","device_count":"894270"},{"id":"627732","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cx","slot_id":"99431779","device_count":"4906792"},{"id":"627595","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cy","slot_id":"78317974","device_count":"5650213"},{"id":"627755","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cz","slot_id":"35082647","device_count":"2579008"},{"id":"628057","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dw","slot_id":"66196474","device_count":"4170112"},{"id":"627426","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dx","slot_id":"43347563","device_count":"7879852"},{"id":"627664","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dy","slot_id":"46634509","device_count":"17162151"},{"id":"628339","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dz","slot_id":"33488006","device_count":"20869879"}]}
+  bus.cacheDevice = device
   bus.offer = result[0]
   // ! 给滑动条赋值
   cutoff.value = [Number(data.ruleForm.cutoff_start) * 100, Number(data.ruleForm.cutoff_end) * 100]
@@ -678,6 +680,26 @@ const handlePid = computed(() => {
   }
   data.ruleForm.pid = pid
   return pid
+})
+const countDevice = computed(() => {
+  // data.search.deviceData.count
+  let count = 0
+  if (bus.cacheDevice.hasOwnProperty('all') && bus.cacheDevice.hasOwnProperty('select')) {
+    let arr = bus.cacheDevice.all
+    let select = bus.cacheDevice.select
+    if (arr.length !== 0 && select.length !== 0) {
+      arr.forEach((ele) => {
+        select.forEach((o) => {
+          if (ele.source === o.source && ele.label === o.label) {
+            count += parseInt(ele.device_count)
+          }
+        })
+      })
+    }
+    // console.log(count)
+    data.search.deviceData.count = count
+  }
+  return count ?? data.search.deviceData.count
 })
 onMounted(() => {
   getConfig()

@@ -486,3 +486,10 @@ th{
 @for $i from 0 through 10 {
   @include scaleFn($i);
 }
+
+// @media(prefers-color-scheme: dark) {
+//   body {
+//     background-color: #111;
+//     color: rgba(255,255,255,0.6);
+//   }
+// }
