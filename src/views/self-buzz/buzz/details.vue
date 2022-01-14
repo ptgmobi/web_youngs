@@ -258,6 +258,10 @@ let validatorTrackingLink = (rule: any, value: string, callback: (arg0: Error | 
     callback(new Error('链接中有空格'))
   } else {
     if (reg1.test(value)) {
+      // ! 2022年01月14日16:13:33 宋哥让添加
+      if (value.includes('af_installpostback')) {
+        callback(new Error('Traking Link中不允许出现af_installpostback关键字'))
+      }
       if (data.ruleForm.attribute_provider === 'AppsFlyer') {
         if (value.includes(data.ruleForm.pkg_name)) {
           callback(undefined)
