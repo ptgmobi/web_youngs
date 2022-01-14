@@ -4,17 +4,22 @@ import { PermissionTy } from '@/types/store'
 import { RouteItemTy, RouterRowTy, RouterTy } from '@/types/router'
 import { ObjTy } from '@/types/common'
 
+const type = process.env.NODE_ENV
+console.log(process.env.NODE_ENV)
 /**
  * Use meta.code to determine if the current user has permission
  * @param codeArr
  * @param routeItem
  */
 function hasCodePermission(codeArr: Array<number>, routeItem: RouteItemTy) {
-  return true
-  if (routeItem.meta && routeItem.meta.code) {
-    return codeArr.includes(routeItem.meta.code) || routeItem.hidden
+  if (type === 'serve-dev') {
+    return true
   } else {
-    return false
+    if (routeItem.meta && routeItem.meta.code) {
+      return codeArr.includes(routeItem.meta.code) || routeItem.hidden
+    } else {
+      return false
+    }
   }
 }
 /**
@@ -66,7 +71,6 @@ export function filterAsyncRoutes(routes: RouterTy, roles: Array<string>) {
       res.push(tmp)
     }
   })
-
   return res
 }
 

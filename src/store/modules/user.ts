@@ -4,6 +4,7 @@ import { setToken, getToken, removeToken } from '@/utils/auth'
 import { ObjTy } from '@/types/common'
 import { UserTy } from '@/types/store'
 import jwtDecode from 'jwt-decode'
+import { addAbortSignal } from 'stream'
 
 //token: getToken(),
 
@@ -97,7 +98,6 @@ const actions = {
           }
           const { element } = data
           commit('SET_ELEMENT', element)
-          commit('SET_NAME', 'username')
           resolve(data)
         })
         .catch((error: any) => {
@@ -123,6 +123,7 @@ const actions = {
     //       reject(error)
     //     })
     // })
+    commit('SET_TOKEN', undefined)
     removeToken()
   },
   // remove token

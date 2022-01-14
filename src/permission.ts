@@ -31,7 +31,9 @@ router.beforeEach(async (to: any, from, next: any) => {
     } else {
       //是否获取过用户信息
       const isGetUserInfo: boolean = store.state.permission.isGetUserInfo
+      console.log(isGetUserInfo)
       if (isGetUserInfo) {
+        store.commit('permission/M_isGetUserInfo', false)
         next()
       } else {
         try {

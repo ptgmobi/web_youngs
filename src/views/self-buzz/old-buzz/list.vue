@@ -171,11 +171,10 @@
 <script lang="ts" setup>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { getCurrentInstance, reactive, ref, shallowRef, onMounted, computed } from 'vue'
-import { ApiGetBuzzList, ApichangeClk, ApichangeCutoff, ApiChangeBuzzStatus } from '@/api/buzz'
+import { ApiGetBuzzList, ApichangeClk, ApichangeCutoff, ApiChangeBuzzStatus } from '@/api/oldbuzz'
 import { ElMessage } from 'element-plus'
 import { messageFun } from '@/utils/message'
 import _ from 'lodash'
-import { number } from 'echarts'
 import { handleAjaxDataObjectFn } from '@/utils/new-format'
 import Device from './device.vue'
 let { proxy }: any = getCurrentInstance()
