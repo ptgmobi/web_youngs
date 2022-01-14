@@ -251,8 +251,10 @@ import {
   ApiOperationOfferCreate,
   ApiOperationOfferEdit,
   ApiGetOfferData,
+  ApiGetCopyOfferData,
   ApiGetConfig,
-  ApiGetDeviceCount
+  ApiGetDeviceCount,
+  ApiGetOfferDevice
 } from '@/api/oldbuzz'
 import _ from 'lodash'
 import site from './site'
@@ -307,9 +309,9 @@ let validatorTrackingLink = (rule: any, value: string, callback: (arg0: Error | 
 let validatorDevice = (rule: any, value: any, callback: (arg0: Error | undefined) => void) => {
   callback(undefined)
 }
-let validatorSite = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
+let validatorSite = (rule: any, value: number, callback: (arg0: Error | undefined) => void) => {
   if (value) {
-    if (value === '1') {
+    if (value === 1) {
       callback(undefined)
     } else {
       if (data.ruleForm.hour) {
@@ -395,7 +397,7 @@ let data: any = reactive({
     offer_id: undefined,
     operation_type: '',
     channel: '',
-    copy_offer: '',
+    copy_offer: 'bz600856',
     attribute_provider: 'AppsFlyer',
     title: '',
     // 过滤空格，制表符
@@ -507,16 +509,16 @@ const submitFormFun = async () => {
   ajaxData['device'] = JSON.stringify(ajaxData['device'])
   console.log(ajaxData)
   // return ajaxData
-  if (name.value === 'create') {
+  if (data.ruleForm.type === '1') {
     delete ajaxData['id']
     delete ajaxData['offer_id']
     res = await ApiOperationOfferCreate(ajaxData)
   }
-  if (name.value === 'edit') {
+  if (data.ruleForm.type === '2') {
     res = await ApiOperationOfferEdit(ajaxData)
   }
   if (messageFun(res)) {
-    proxy.$router.push({ path: '/adnetwork/buzz' })
+    proxy.$router.push({ path: '/buzz/old-buzz/list' })
   }
 }
 
@@ -560,7 +562,9 @@ const getConfig = async () => {
     const { data: configData } = res
     data.options.channel = Object.values(configData.channel)
     data.options.country = Object.values(configData.country)
+    data.options.category = Object.values(configData.category)
     return '获取配置成功'
+    
   }
   return '获取配置失败'
 }
@@ -576,8 +580,8 @@ const handleDeviceCount = async (): Promise<void> => {
   }
   if (pkgName && country && platform) {
     console.log('获取设备数')
-    const num = await getDeviceCount(ajaxData)
-    deviceNum.value = num
+    // const num = await getDeviceCount(ajaxData)
+    // deviceNum.value = num
   }
 }
 const handleDeviceNum = computed(() => {
@@ -608,6 +612,7 @@ const handleCopyOffer = (result: any, options: any) => {
   // console.log(Object.getOwnPropertyDescriptors(result))
   // 处理复制到的offer
   let resData: any = {}
+  console.log(options.type)
   if (options.type === '2') {
     resData.id = result['id']
     resData.offer_id = result['offer_id']
@@ -616,27 +621,56 @@ const handleCopyOffer = (result: any, options: any) => {
     ...result,
     ...options
   }
+  if (options.type === '1') {
+    delete resData.id
+    delete resData.offer_id
+  }
   let diy_siteid = result['diy_siteid'] === null || result['diy_siteid'] === '' ? [] : result['diy_siteid']
   data.siteData = diy_siteid
   return resData
 }
+// copy offer
+const getCopyOfferData = async (offer_id) => {
+  const res = await ApiGetCopyOfferData({
+    offer_id
+  })
+  const { data: result } = res
+  const final_offer = handleCopyOffer(result, {
+    type: data.ruleForm.type,
+    isCopy: true
+  })
+  data.ruleForm = {
+    ...data.ruleForm,
+    ...final_offer
+  }
+}
 
-const getOfferData = async () => {
-  const id = router.currentRoute.value.params.id
-  const res = await ApiGetOfferData(id.toString())
+// edit页面获取offer
+const getOfferData = async (id) => {
+  const res = await ApiGetOfferData(id)
   const { data: result } = res
   data.ruleForm = handleCopyOffer(result, {
     type: data.ruleForm.type,
     isCopy: false
   })
-  const device = {"select":[{"id":"627909","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"by","slot_id":"37641287","device_count":"3092161"},{"id":"628270","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"bz","slot_id":"19760998","device_count":"894270"},{"id":"627595","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cy","slot_id":"78317974","device_count":"5650213"},{"id":"627755","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cz","slot_id":"35082647","device_count":"2579008"},{"id":"627664","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dy","slot_id":"46634509","device_count":"17162151"},{"id":"628339","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dz","slot_id":"33488006","device_count":"20869879"}],"all":[{"id":"627657","day":"2022-01-11","platform":"1","country":"RU","source":"adx","label":"aw","slot_id":"57351627","device_count":"3094129"},{"id":"628012","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"ax","slot_id":"35653768","device_count":"2276277"},{"id":"627689","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"ay","slot_id":"44225907","device_count":"1219696"},{"id":"627706","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"az","slot_id":"33347536","device_count":"182883"},{"id":"627434","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"bw","slot_id":"66660203","device_count":"3313520"},{"id":"628046","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"cw","slot_id":"14372948","device_count":"2841368"},{"id":"627753","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"bx","slot_id":"59188090","device_count":"3168514"},{"id":"627909","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"by","slot_id":"37641287","device_count":"3092161"},{"id":"628270","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"bz","slot_id":"19760998","device_count":"894270"},{"id":"627732","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cx","slot_id":"99431779","device_count":"4906792"},{"id":"627595","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cy","slot_id":"78317974","device_count":"5650213"},{"id":"627755","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cz","slot_id":"35082647","device_count":"2579008"},{"id":"628057","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dw","slot_id":"66196474","device_count":"4170112"},{"id":"627426","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dx","slot_id":"43347563","device_count":"7879852"},{"id":"627664","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dy","slot_id":"46634509","device_count":"17162151"},{"id":"628339","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dz","slot_id":"33488006","device_count":"20869879"}]}
-  bus.cacheDevice = device
-  bus.offer = result[0]
+  bus.offer = result
+  // const deviceRes = await ApiGetOfferDevice({
+  //   id
+  // })
+  // console.log(deviceRes)
+  // bus.cacheDevice = deviceRes
   // ! 给滑动条赋值
-  cutoff.value = [Number(data.ruleForm.cutoff_start) * 100, Number(data.ruleForm.cutoff_end) * 100]
+  // ! cutoff.value = [Number(data.ruleForm.cutoff_start) * 100, Number(data.ruleForm.cutoff_end) * 100]
 }
-const handleEditDeviceFun = () => {
+const handleEditDeviceFun = async () => {
   console.log('get device')
+  const ajaxData = {
+    id: data.ruleForm.id,
+    platform: data.ruleForm.platform,
+    country: data.ruleForm.country
+  }
+  const res = await ApiGetOfferDevice(ajaxData)
+  bus.cacheDevice = res
 }
 const editDeviceFun = () => {
   // 先判断平台和国家
@@ -651,6 +685,8 @@ const editDeviceFun = () => {
 }
 const copyFun = () => {
   console.log('copy offer')
+  const offer_id = data.ruleForm.copy_offer
+  getCopyOfferData(offer_id)
 }
 const handlePid = computed(() => {
   const url = data.ruleForm.tracking_link
@@ -705,15 +741,16 @@ onMounted(() => {
   getConfig()
   name.value = router.currentRoute.value.name
   console.log(name.value)
-  if (name.value === 'buzz-old-create') {
+  if (name.value === 'old-buzz-create') {
     data.ruleForm.operation_type = '1'
     data.ruleForm.type = '1'
   }
   // 如果是修改，获取当前id的值
-  if (name.value === 'buzz-old-edit') {
+  if (name.value === 'old-buzz-edit') {
     data.ruleForm.operation_type = '2'
     data.ruleForm.type = '2'
-    getOfferData()
+    const id = router.currentRoute.value.params.id
+    getOfferData(id)
   }
 })
 </script>

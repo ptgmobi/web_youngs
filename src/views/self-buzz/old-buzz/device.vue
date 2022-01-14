@@ -64,7 +64,7 @@ watch(props.json, (oldValue, newValue) => {
   // handleJsonAll()
 })
 const handleJsonAll = () => {
-  if (props.json.all.length !== 0) {
+  if (props.json.all && props.json.all.length !== 0) {
     state.set = new Set()
     let arr = props.json.all
     state.select = props.json.select

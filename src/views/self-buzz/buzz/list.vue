@@ -95,20 +95,20 @@
     </div>
     <!-- table -->
     <el-table center v-loading="data.loading" :data="data.list" class="w100" height="60vh" border>
-      <el-table-column fixed prop="offer_id" label="ID"></el-table-column>
-      <el-table-column fixed prop="channel" label="Channel"></el-table-column>
-      <el-table-column prop="pkg_name" label="Package Name"></el-table-column>
-      <el-table-column prop="title" label="Offer Title" width="120"></el-table-column>
-      <el-table-column prop="attribute_provider" label="Attribute Provider"></el-table-column>
-      <el-table-column prop="pid" label="Pid"></el-table-column>
-      <el-table-column prop="platform" label="Platform">
+      <el-table-column fixed prop="offer_id" label="ID" align="center"></el-table-column>
+      <el-table-column fixed prop="channel" label="Channel" align="center"></el-table-column>
+      <el-table-column prop="pkg_name" label="Package Name" align="center"></el-table-column>
+      <el-table-column prop="title" label="Offer Title" width="120" align="center"></el-table-column>
+      <el-table-column prop="attribute_provider" label="Attribute Provider" align="center"></el-table-column>
+      <el-table-column prop="pid" label="Pid" align="center"></el-table-column>
+      <el-table-column prop="platform" label="Platform" align="center">
         <template #default="scope">
           {{ Number(scope.row.platform) === 1 ? 'Android' : 'iOS' }}
         </template>
       </el-table-column>
-      <el-table-column prop="country" label="Country"></el-table-column>
-      <el-table-column prop="payout" label="Payout"></el-table-column>
-      <el-table-column label="Click Limitation(w)" width="150">
+      <el-table-column prop="country" label="Country" align="center"></el-table-column>
+      <el-table-column prop="payout" label="Payout" align="center"></el-table-column>
+      <el-table-column label="Click Limitation(w)" width="150" align="center">
         <template #default="scope">
           <div class="flex jc-around">
             <el-input v-model="scope.row.max_clk_num" placeholder="" type="number"></el-input>
@@ -116,7 +116,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="Device Cutoff" width="250">
+      <el-table-column label="Device Cutoff" width="250" align="center">
         <template #default="scope">
           <div class="flex jc-around">
             <div>
@@ -147,7 +147,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column width="100" label="Operation">
+      <el-table-column width="100" label="Operation" align="center">
         <template #default="scope">
           <div class="flex jc-around">
             <router-link :to="getEditUrl(scope.row)">
