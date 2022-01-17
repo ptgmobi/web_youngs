@@ -184,7 +184,7 @@ export function handleRouteTree(data, getInfo) {
   return result
 }
 
-// 处理数组变为tree结构，关系为子pid = 父id
+// ! 处理数组变为tree结构，关系为子pid = 父id(现在使用的)
 export function handleIdTree(data) {
   const filterArray = (data, parent) => {
     const tree = []
