@@ -133,7 +133,7 @@
         <el-form-item label="Select Device:" prop="device">
           <div class='flex jc-start form-one'>
             <el-button class="cp ml-10" type="primary" icon="Setting" circle @click="editDeviceFun"></el-button>
-            <span class="ml-10" v-text='countDevice'></span>
+            <!-- <span class="ml-10" v-text='countDevice'></span> -->
           </div>
         </el-form-item>
         <!-- Device Cutoff -->
@@ -232,21 +232,21 @@
     <!-- footer -->
     <!-- dialog -->
     <!-- device -->
-    <el-dialog title="Device" v-model="data.dialogVisibleDevice">
-      <Device :json="bus.cacheDevice" @kk="saveDevice"></Device>
+    <el-dialog title="Device" v-model="data.dialogVisibleDevice" width="90%">
+      <Device v-model:all="bus.cacheDevice.all" v-model:select="bus.cacheDevice.select" v-if="data.dialogVisibleDevice" @kk="saveDevice"></Device>
       <span slot="footer" class="dialog-footer">
         <!-- <el-button @click="cancleDevice">取 消</el-button> -->
         <el-button type="primary" @click="setDevice">确 定</el-button>
       </span>
     </el-dialog>
     <!-- site -->
-    <el-dialog title="diy_siteid" v-model="data.dialogVisibleSite">
+    <el-dialog title="diy_siteid" v-model="data.dialogVisibleSite" width="90%">
       <site :msg="data.siteData" @kk="saveSite"></site>
     </el-dialog>
   </div>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, reactive, watch, watchEffect, onMounted, ref, computed } from 'vue'
+import { getCurrentInstance, reactive, watch, watchEffect, onMounted, ref, computed, nextTick } from 'vue'
 import {
   ApiOperationOfferCreate,
   ApiOperationOfferEdit,
@@ -397,7 +397,7 @@ let data: any = reactive({
     offer_id: undefined,
     operation_type: '',
     channel: '',
-    copy_offer: 'bz600856',
+    copy_offer: '',
     attribute_provider: 'AppsFlyer',
     title: '',
     // 过滤空格，制表符
@@ -466,7 +466,7 @@ let data: any = reactive({
 // methods
 const editDiySiteFun = () => {
   data.dialogVisibleSite = true
-  const siteData = data.ruleForm['diy_siteid'] ? JSON.parse(data.ruleForm['diy_siteid']) : []
+  const siteData = data.ruleForm['diy_siteid']
   data.siteData = siteData
 }
 const saveFun = () => {
@@ -508,6 +508,7 @@ const submitFormFun = async () => {
   ajaxData['diy_siteid'] = JSON.stringify(ajaxData['diy_siteid'])
   ajaxData['device'] = JSON.stringify(ajaxData['device'])
   console.log(ajaxData)
+  // return false
   // return ajaxData
   if (data.ruleForm.type === '1') {
     delete ajaxData['id']
@@ -538,11 +539,8 @@ const saveDevice = (data) => {
 }
 // 保存提交device数据
 const setDevice = () => {
-  const ajaxData = {
-    id: bus.offer.id,
-    device: bus.cacheDevice.select
-  }
-  console.log(ajaxData)
+  data.ruleForm.device = bus.cacheDevice.select
+  data.dialogVisibleDevice = false
 }
 const setCutoff = (newVal: Array<number>) => {
   data.ruleForm.cutoff_start = newVal[0] / 100
@@ -613,6 +611,12 @@ const handleCopyOffer = (result: any, options: any) => {
   // 处理复制到的offer
   let resData: any = {}
   console.log(options.type)
+  if (result['device']) {
+    result.device = JSON.parse(result['device'])
+  }
+  if (result['diy_siteid']) {
+    result.diy_siteid = JSON.parse(result['diy_siteid'])
+  }
   if (options.type === '2') {
     resData.id = result['id']
     resData.offer_id = result['offer_id']
@@ -625,8 +629,6 @@ const handleCopyOffer = (result: any, options: any) => {
     delete resData.id
     delete resData.offer_id
   }
-  let diy_siteid = result['diy_siteid'] === null || result['diy_siteid'] === '' ? [] : result['diy_siteid']
-  data.siteData = diy_siteid
   return resData
 }
 // copy offer
@@ -654,11 +656,6 @@ const getOfferData = async (id) => {
     isCopy: false
   })
   bus.offer = result
-  // const deviceRes = await ApiGetOfferDevice({
-  //   id
-  // })
-  // console.log(deviceRes)
-  // bus.cacheDevice = deviceRes
   // ! 给滑动条赋值
   // ! cutoff.value = [Number(data.ruleForm.cutoff_start) * 100, Number(data.ruleForm.cutoff_end) * 100]
 }
@@ -669,14 +666,16 @@ const handleEditDeviceFun = async () => {
     platform: data.ruleForm.platform,
     country: data.ruleForm.country
   }
-  const res = await ApiGetOfferDevice(ajaxData)
-  bus.cacheDevice = res
+  const { data: deviceData } = await ApiGetOfferDevice(ajaxData)
+  bus.cacheDevice.all = deviceData.all
 }
 const editDeviceFun = () => {
   // 先判断平台和国家
   if (data.ruleForm.platform && data.ruleForm.country) {
     // 模态框
+    
     data.dialogVisibleDevice = true
+    bus.cacheDevice.select = data.ruleForm.device
     handleEditDeviceFun()
   } else {
     // 给用户提示应该先选择平台和国家
@@ -696,7 +695,6 @@ const handlePid = computed(() => {
     const reg = /pid=([\s\S]*)_int/g
     // return reg.exec(url)
     const arr = [...url.matchAll(reg)]
-    console.log(arr)
     if (arr.length !== 0) {
       pid = arr[0][1]
       data.ruleForm.pid = pid
@@ -720,11 +718,12 @@ const handlePid = computed(() => {
 const countDevice = computed(() => {
   // data.search.deviceData.count
   let count = 0
+  console.log(bus.cacheDevice)
   if (bus.cacheDevice.hasOwnProperty('all') && bus.cacheDevice.hasOwnProperty('select')) {
-    let arr = bus.cacheDevice.all
+    let all = bus.cacheDevice.all
     let select = bus.cacheDevice.select
-    if (arr.length !== 0 && select.length !== 0) {
-      arr.forEach((ele) => {
+    if (all.length !== 0 && select.length !== 0) {
+      all.forEach((ele) => {
         select.forEach((o) => {
           if (ele.source === o.source && ele.label === o.label) {
             count += parseInt(ele.device_count)

@@ -2,7 +2,7 @@
   <div>
     <div class="full">
       <el-table
-        :data="state.arr"
+        :data="state.all"
         :span-method="objectSpanMethod"
         border
         style="width: 100%; margin-top: 20px"
@@ -36,10 +36,18 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { reactive, watch, onMounted } from 'vue'
+import { ref, reactive, toRef, toRefs, toRaw, watch, onMounted, nextTick } from 'vue'
 import { thousandSeparator } from '@/utils/format'
+import _ from 'lodash'
 const props = defineProps({
-  json: {
+  all: {
+    require: true,
+    default: () => {
+      return {}
+    },
+    type: Object
+  },
+  select: {
     require: true,
     default: () => {
       return {}
@@ -48,29 +56,29 @@ const props = defineProps({
   }
 })
 let arr: Array<any> = []
+type objType = {
+  all: any,
+  select: any
+}
 const state = reactive({
   search: {
     id: ''
   },
+  test: '',
   set: new Set(),
   setObj: {},
   spanArr: arr,
-  arr: arr,
+  all: arr,
   select: arr,
   statisticsCount: 0
 })
-watch(props.json, (oldValue, newValue) => {
-  console.log(newValue)
-  // handleJsonAll()
-})
+
 const handleJsonAll = () => {
-  if (props.json.all && props.json.all.length !== 0) {
+  if (props.all && props.all.length > 0) {
+    state.all = _.cloneDeep(props.all)
+    state.select = _.cloneDeep(props.select)
     state.set = new Set()
-    let arr = props.json.all
-    state.select = props.json.select
-    // console.log(arr)
-    // console.log(select)
-    arr.map((ele) => {
+    state.all.map((ele) => {
       ele.select_status = false
       state.set.add(ele.source)
       state.select.map((o: any) => {
@@ -79,9 +87,10 @@ const handleJsonAll = () => {
         }
         return ele
       })
+      return ele
     })
     // 先按label排序
-    arr.sort((a, b) => {
+    state.all.sort((a, b) => {
       if (a.label > b.label) {
         return 1
       } else if (a.label < b.label) {
@@ -91,7 +100,7 @@ const handleJsonAll = () => {
       }
     })
     // 再按source排序
-    arr.sort((a, b) => {
+    state.all.sort((a, b) => {
       if (a.source > b.source) {
         return 1
       } else if (a.source < b.source) {
@@ -100,12 +109,9 @@ const handleJsonAll = () => {
         return 1
       }
     })
-    getSpanArr(arr, 'source')
-    state.arr = arr
+    getSpanArr(state.all, 'source')
     handleSet()
-    return arr
   }
-  return JSON.parse(JSON.stringify(state.arr))
 }
 const handleSet = () => {
   let arr = [...state.set]
@@ -120,7 +126,7 @@ const changeAllSource = (key, value) => {
   console.log('change all')
   // console.log(key, value)
   // 批量修改props.arr
-  state.arr.map((ele: any) => {
+  state.all.map((ele: any) => {
     if (ele.source === key) {
       ele.select_status = value
     }
@@ -142,7 +148,7 @@ const judgeSource = () => {
   let setarr = Object.keys(state.setObj)
   setarr.forEach((ele) => {
     let arr: Array<any> = []
-    state.arr.forEach((o: any) => {
+    state.all.forEach((o: any) => {
       if (o.source === ele) {
         arr.push(o.select_status)
       }
@@ -156,7 +162,7 @@ const judgeSource = () => {
 }
 // 计算选择的总数
 const statisticsCountfun = () => {
-  let count = state.arr.reduce((total: number, ele: any) => {
+  let count = state.all.reduce((total: number, ele: any) => {
     if (ele.select_status) {
       return total + parseInt(ele.device_count)
     } else {
@@ -170,23 +176,21 @@ const changeFun = () => {
   // 处理所有的all。取出select
   let arr: Array<any> = []
   let count = 0
-  state.arr.forEach((ele: any) => {
+  state.all.forEach((ele: any) => {
     if (ele.select_status) {
       arr.push({
-        ...ele,
+        // ...ele,
         source: ele.source,
         label: ele.label
       })
       count += parseInt(ele.device_count)
     }
   })
-  let data = {
-    select: arr,
-    count: count
-  }
+  console.log(arr)
   emit('kk', arr)
   // this.$emit('update:changeselect', arr)
 }
+// 合并行
 const getSpanArr = (data, key) => {
   state.spanArr = []
   let pos: any = 0;
@@ -218,7 +222,14 @@ const objectSpanMethod = ({ row, column, rowIndex, columnIndex }) => {
     };
   }
 }
-onMounted(() => {
+watch(() => props.all, (oldValue, newValue) => {
   handleJsonAll()
+}, {
+  immediate: true,
+  // deep: true
+})
+
+onMounted(() => {
+  // handleJsonAll()
 })
 </script>

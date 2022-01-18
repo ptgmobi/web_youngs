@@ -15,7 +15,7 @@ export function ApiGetBuzzList(data: ObjTy) {
 
 export function ApichangeClk(data: ObjTy) {
   return request({
-    url: '/obuzz/edit-offer-max-clk',
+    url: '/obuzz/offer-max-clk',
     data,
     method: 'patch',
     bfLoading: false,
@@ -26,7 +26,7 @@ export function ApichangeClk(data: ObjTy) {
 
 export function ApichangeSiteClkLimit(data: ObjTy) {
   return request({
-    url: '/obuzz/edit-offer-max-clk',
+    url: '/obuzz/edit-clk-limit',
     data,
     method: 'patch',
     bfLoading: false,
@@ -129,6 +129,17 @@ export function ApiGetOfferDevice(data: ObjTy) {
     method: 'get',
     bfLoading: false,
     isParams: true,
+    isAlertErrorMsg: false
+  })
+}
+
+export function ApiChangeToOfferDevice(data: ObjTy) {
+  return request({
+    url: '/obuzz/device',
+    data,
+    method: 'patch',
+    bfLoading: false,
+    isParams: false,
     isAlertErrorMsg: false
   })
 }

@@ -119,15 +119,15 @@
       <el-table-column label="Site Click Limitation" width="150" align="center">
         <template #default="scope">
           <div class='flex jc-around'>
-            <el-input v-model="scope.row.site_clk_limit" placeholder=""></el-input>
+            <el-input v-model="scope.row.site_clk_limit" placeholder="" type="number"></el-input>
             <el-button class="cp ml-10" type="primary" icon="Edit" circle @click="changeSiteClkLimit(scope.row)"></el-button>
           </div>
         </template>
       </el-table-column>
       <el-table-column label="Select Device" width="150" align="center">
         <template #default="scope">
-          <div class="flex">
-            <span v-text='scope.row.device_count'></span>
+          <div class="flex jc-between">
+            <span v-text='thousandSeparator(scope.row.device_count)'></span>
             <el-button class="cp ml-10" type="primary" icon="Edit" circle @click="editDeviceFun(scope.$index, scope.row)"></el-button>
           </div>
         </template>
@@ -162,7 +162,7 @@
     </div>
     <!-- device -->
     <el-dialog title="Device" v-model="data.dialogVisibleDevice">
-      <Device :json="bus.cacheDevice" @kk="saveDevice"></Device>
+      <Device v-model:all="bus.cacheDevice.all" v-model:select="bus.cacheDevice.select" v-if="data.dialogVisibleDevice" @kk="saveDevice"></Device>
       <span class="dialog-footer">
         <!-- <el-button @click="cancleDevice">取 消</el-button> -->
         <el-button type="primary" @click="setDevice">确 定</el-button>
@@ -173,11 +173,12 @@
 <script lang="ts" setup>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { getCurrentInstance, reactive, ref, shallowRef, onMounted, computed } from 'vue'
-import { ApiGetBuzzList, ApichangeClk, ApichangeSiteClkLimit, ApichangeCutoff, ApiChangeBuzzStatus } from '@/api/oldbuzz'
+import { ApiGetBuzzList, ApichangeClk, ApichangeSiteClkLimit, ApichangeCutoff, ApiChangeBuzzStatus, ApiGetOfferDevice, ApiChangeToOfferDevice } from '@/api/oldbuzz'
 import { ElMessage } from 'element-plus'
 import { messageFun } from '@/utils/message'
 import _ from 'lodash'
 import { handleAjaxDataObjectFn } from '@/utils/new-format'
+import { thousandSeparator } from '@/utils/format'
 import Device from './device.vue'
 let { proxy }: any = getCurrentInstance()
 const searchData = shallowRef({
@@ -262,19 +263,17 @@ const searchFn = () => {
 const changeClk = async (row: any) => {
   let ajaxData = {
     id: row.id,
-    max_clk_num: row.max_clk_num
+    max_clk_num: parseFloat(row.max_clk_num)
   }
   let res = await ApichangeClk(ajaxData)
-  console.log(res)
   messageFun(res)
 }
 const changeSiteClkLimit = async (row: any) => {
   let ajaxData = {
     id: row.id,
-    site_clk_limit: row.site_clk_limit
+    site_clk_limit: parseFloat(row.site_clk_limit)
   }
   let res = await ApichangeSiteClkLimit(ajaxData)
-  console.log(res)
   messageFun(res)
 }
 const changeCutoff = async (row: any) => {
@@ -373,26 +372,33 @@ const init = async () => {
   data.pagination.total = Number(result.count)
   data.loading = false
 }
-const editDeviceFun = (i, row) => {
+const editDeviceFun = async (i, row) => {
   console.log('get device')
   data.dialogVisibleDevice = true
   bus.offer = row
   bus.index = i
-  const res = {"select":[{"id":"627909","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"by","slot_id":"37641287","device_count":"3092161"},{"id":"628270","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"bz","slot_id":"19760998","device_count":"894270"},{"id":"627595","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cy","slot_id":"78317974","device_count":"5650213"},{"id":"627755","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cz","slot_id":"35082647","device_count":"2579008"},{"id":"627664","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dy","slot_id":"46634509","device_count":"17162151"},{"id":"628339","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dz","slot_id":"33488006","device_count":"20869879"}],"all":[{"id":"627657","day":"2022-01-11","platform":"1","country":"RU","source":"adx","label":"aw","slot_id":"57351627","device_count":"3094129"},{"id":"628012","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"ax","slot_id":"35653768","device_count":"2276277"},{"id":"627689","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"ay","slot_id":"44225907","device_count":"1219696"},{"id":"627706","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"az","slot_id":"33347536","device_count":"182883"},{"id":"627434","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"bw","slot_id":"66660203","device_count":"3313520"},{"id":"628046","day":"2022-01-11","platform":"1","country":"RU","source":"direct","label":"cw","slot_id":"14372948","device_count":"2841368"},{"id":"627753","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"bx","slot_id":"59188090","device_count":"3168514"},{"id":"627909","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"by","slot_id":"37641287","device_count":"3092161"},{"id":"628270","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"bz","slot_id":"19760998","device_count":"894270"},{"id":"627732","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cx","slot_id":"99431779","device_count":"4906792"},{"id":"627595","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cy","slot_id":"78317974","device_count":"5650213"},{"id":"627755","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"cz","slot_id":"35082647","device_count":"2579008"},{"id":"628057","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dw","slot_id":"66196474","device_count":"4170112"},{"id":"627426","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dx","slot_id":"43347563","device_count":"7879852"},{"id":"627664","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dy","slot_id":"46634509","device_count":"17162151"},{"id":"628339","day":"2022-01-11","platform":"1","country":"RU","source":"wm","label":"dz","slot_id":"33488006","device_count":"20869879"}]}
-  bus.cacheDevice = res
-  console.log(bus)
+  const ajaxData = {
+    id: row.id,
+    platform: row.platform,
+    country: row.country 
+  }
+  const { data: deviceData } = await ApiGetOfferDevice(ajaxData)
+  bus.cacheDevice.all = deviceData.all
+  bus.cacheDevice.select = JSON.parse(row.device)
 }
 // 修改device数据
 const saveDevice = (data) => {
   bus.cacheDevice.select = data
 }
 // 保存提交device数据
-const setDevice = () => {
+const setDevice = async () => {
   const ajaxData = {
     id: bus.offer.id,
-    device: bus.cacheDevice.select
+    device: JSON.stringify(bus.cacheDevice.select)
   }
-  console.log(ajaxData)
+  const res = await ApiChangeToOfferDevice(ajaxData)
+  messageFun(res)
+  data.dialogVisibleDevice = false
 }
 onMounted(() => {
   searchFn()
