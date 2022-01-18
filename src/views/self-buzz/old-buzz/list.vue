@@ -368,8 +368,9 @@ const init = async () => {
 
   const res = await ApiGetBuzzList(ajaxData)
   const { data: result } = res
+  const { page } = result
   data.list = result?.data
-  data.pagination.total = Number(result.count)
+  data.pagination.total = Number(page.count)
   data.loading = false
 }
 const editDeviceFun = async (i, row) => {
