@@ -243,7 +243,7 @@ let data = reactive({
   },
   list: [],
   pagination: {
-    pageSizes: ['50', '100', '500', '1000'],
+    pageSizes: ['20', '50', '100', '500', '1000'],
     total: 1,
     listQuery: {
       page: 1,
