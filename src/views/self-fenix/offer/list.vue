@@ -557,11 +557,3 @@ const showRecord = (row) => {
   dialogRecordVisible.value = true
 }
 </script>
-<style scoped lang="scss">
-.scale-button {
-  transform: scale(0.7);
-}
-.input-with-select {
-  width: 60px;
-}
-</style>
