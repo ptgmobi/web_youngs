@@ -100,7 +100,7 @@
       <el-table-column prop="pkg_name" label="Package Name" align="center"></el-table-column>
       <el-table-column prop="title" label="Offer Title" width="120" align="center"></el-table-column>
       <el-table-column prop="attribute_provider" label="Attribute Provider" align="center"></el-table-column>
-      <el-table-column prop="pid" label="Pid" align="center"></el-table-column>
+      <el-table-column prop="pid" label="Pid" align="center" width="90"></el-table-column>
       <el-table-column prop="platform" label="Platform" align="center" width="70">
         <template #default="scope">
           {{ Number(scope.row.platform) === 1 ? 'Android' : 'iOS' }}
@@ -108,18 +108,18 @@
       </el-table-column>
       <el-table-column prop="country" label="Country" align="center" width="70"></el-table-column>
       <el-table-column prop="payout" label="Payout" align="center" width="70"></el-table-column>
-      <el-table-column label="Click Limitation(w)" width="120" align="center">
+      <el-table-column label="Click Limitation(w)" width="150" align="center">
         <template #default="scope">
           <div class="flex jc-around">
-            <el-input class="input-with-select" v-model="scope.row.max_clk_num" placeholder="" type="number"></el-input>
+            <el-input v-model="scope.row.max_clk_num" placeholder=""></el-input>
             <el-button class="cp ml-10 scale-button" type="primary" icon="Edit" circle @click="changeClk(scope.row)"></el-button>
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="Site Click Limitation" width="120" align="center">
+      <el-table-column label="Site Click Limitation" width="150" align="center">
         <template #default="scope">
           <div class='flex jc-around'>
-            <el-input class="input-with-select" v-model="scope.row.site_clk_limit" placeholder="" type="number"></el-input>
+            <el-input v-model="scope.row.site_clk_limit" placeholder=""></el-input>
             <el-button class="cp ml-10 scale-button" type="primary" icon="Edit" circle @click="changeSiteClkLimit(scope.row)"></el-button>
           </div>
         </template>
@@ -247,7 +247,7 @@ let data = reactive({
     total: 1,
     listQuery: {
       page: 1,
-      limit: 50,
+      limit: 20,
       importance: undefined,
       title: undefined,
       type: undefined,
