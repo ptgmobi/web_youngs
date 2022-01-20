@@ -4,12 +4,12 @@
       <el-form :inline="true" :model="searchForm.data" class="flex jc-between w100">
         <div class="flex jc-start flex-wrap">
           <el-form-item label="广告主类型">
-            <el-select v-model="searchForm.data.type" class="search-con" multiple collapse-tags placeholder="搜索" @change="changeSelectType">
+            <el-select v-model="searchForm.data.type" class="search-con" multiple placeholder="搜索" @change="changeSelectType">
               <el-option
                 v-for="item in searchForm.options.type"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
               />
             </el-select>
           </el-form-item>
@@ -81,8 +81,16 @@ const searchForm = reactive({
   options: {
     type: [
       {
-        id: '',
-        name: ''
+        value: 1,
+        label: '直客'
+      },
+      {
+        value: 2,
+        label: 'API'
+      },
+      {
+        value: 6,
+        label: 'Yohoads'
       }
     ],
     platform: [
@@ -140,3 +148,9 @@ onMounted(() => {
   handleSubmitSearch()
 })
 </script>
+<style lang="scss">
+.search-con{
+  width: 120px;
+}
+
+</style>

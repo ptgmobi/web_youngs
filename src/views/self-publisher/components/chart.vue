@@ -33,15 +33,66 @@ const props = defineProps({
   }
 })
 const searchData = reactive({
+  // 1转化
+  // 2单价
+  // 3收入
+  // 4支出
+  // 5毛利
+  // 6毛利率
+  // 7展示
+  // 8点击
+  // 9安装
+  // 10CR
+  // 11eCPC
   data: {
-    target: 'test'
+    target: 5
   },
   options: {
     target: [
       {
-        value: 'test',
-        label: 'test 123'
-      }
+        value: 1,
+        label: '转化'
+      },
+      {
+        value: 2,
+        label: '单价'
+      },
+      {
+        value: 3,
+        label: '收入'
+      },
+      {
+        value: 4,
+        label: '支出'
+      },
+      {
+        value: 5,
+        label: '毛利'
+      },
+      {
+        value: 6,
+        label: '毛利率'
+      },
+      {
+        value: 7,
+        label: '展示'
+      },
+      {
+        value: 8,
+        label: '点击'
+      },
+      {
+        value: 9,
+        label: '安装'
+      },
+      {
+        value: 10,
+        label: 'CR'
+      },
+      {
+        value: 11,
+        label: 'eCPC'
+      },
     ]
   }
 })
