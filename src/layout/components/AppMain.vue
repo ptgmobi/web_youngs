@@ -58,7 +58,7 @@ const cachedViews = computed(() => {
   padding: $appMainPadding;
   /*50 = navbar  */
   position: relative;
-  overflow: auto;
+  overflow: hidden;
 }
 .show-tag-view {
   height: calc(100vh - #{$navBarHeight} - #{$tagViewHeight}) !important;
