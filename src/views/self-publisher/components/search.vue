@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="white-bg control-box flex jc-between ai-start p0-0">
-      <el-form :inline="true" :model="searchForm.data" class="flex jc-between w100">
+      <el-form :inline="true" :model="searchForm.data" class="flex jc-between ai-start w100">
         <div class="flex jc-start flex-wrap">
           <el-form-item label="广告主类型">
             <el-select v-model="searchForm.data.channel_type" class="search-con" multiple placeholder="搜索" @change="changeSelectChannelType">
@@ -149,8 +149,5 @@ onMounted(() => {
 })
 </script>
 <style lang="scss">
-.search-con{
-  width: 120px;
-}
 
 </style>
