@@ -4,9 +4,9 @@
       <el-form :inline="true" :model="searchForm.data" class="flex jc-between w100">
         <div class="flex jc-start flex-wrap">
           <el-form-item label="广告主类型">
-            <el-select v-model="searchForm.data.type" class="search-con" multiple placeholder="搜索" @change="changeSelectType">
+            <el-select v-model="searchForm.data.channel_type" class="search-con" multiple placeholder="搜索" @change="changeSelectChannelType">
               <el-option
-                v-for="item in searchForm.options.type"
+                v-for="item in searchForm.options.channel_type"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -71,7 +71,7 @@
 import { reactive, toRefs, toRaw, onMounted } from 'vue'
 import _ from 'lodash'
 const baseData: any = {
-  type: [],
+  channel_type: [],
   platform: [],
   channel: [],
   country: [],
@@ -79,7 +79,7 @@ const baseData: any = {
 }
 const searchForm = reactive({
   options: {
-    type: [
+    channel_type: [
       {
         value: 1,
         label: '直客'
@@ -124,7 +124,7 @@ const searchForm = reactive({
   },
   data: baseData
 })
-const changeSelectType = () => {
+const changeSelectChannelType = () => {
   
 }
 const changeSelectPlatform = () => {

@@ -59,7 +59,8 @@
         <!-- pid -->
         <el-form-item label="Pid:" prop="pid">
           <div class="form-one flex jc-start">
-              <span>{{handlePid}}</span><span class="dn">{{data.ruleForm.pid}}</span>
+              <span>{{handlePid}}</span>
+              <!-- <span>{{data.ruleForm.pid}}</span> -->
             </div>
         </el-form-item>
         <!-- pkg_name -->
@@ -119,7 +120,7 @@
           </el-select>
         </el-form-item>
         <!-- site_install_limitation-->
-        <el-form-item label="Site Install Limitation:" prop="site_install_limitation">
+        <!-- <el-form-item label="Site Install Limitation:" prop="site_install_limitation">
           <el-select filterable class='form-one' v-model="data.ruleForm.site_install_limitation" clearable placeholder="">
             <el-option
               v-for="item in 6"
@@ -128,7 +129,7 @@
               :value="item - 1">
             </el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <!-- Select Device -->
         <el-form-item label="Select Device:" prop="device">
           <div class='flex jc-start form-one'>
@@ -167,7 +168,7 @@
         <!-- diy_siteid -->
         <el-form-item label="Diy SiteID:" prop="site">
           <div class="flex jc-start form-one">
-            <el-button class="cp ml-10" type="primary" icon="Setting" circle @click="editDiySiteFun"></el-button>
+            <el-button class="cp ml-10" icon="Tools" circle @click="editDiySiteFun"></el-button>
           </div>
         </el-form-item>
         <!-- site_id -->
