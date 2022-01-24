@@ -105,7 +105,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, watch } from 'vue'
+import { getOverviewCard } from '@/api/overview'
 const props = defineProps({
   json: {
     require: true,
@@ -124,50 +125,51 @@ const titleMap = {
 }
 const baseData: any = {
   // 昨日收入
-  yesterday_revenue: {
-    date: '2021-01-13',
-    revenue: 81234.88,
-    dod: -0.1423,
-    wow: 1.4231,
-    d7: 80000,
-    d30: 70000,
-  },
-  // 昨日毛利
-  yesterday_gross_profit: {
-    date: '2021-01-13',
-    revenue: 81234.88,
-    dod: -0.1423,
-    wow: 1.4231,
-    d7: 80000,
-    d30: 70000,
-  },
-  // 昨日毛利率
-  yesterday_gross_margin: {
-    date: '2021-01-13',
-    rate: 0.8613,
-    dod: -0.1423,
-    wow: 1.4231,
-    d7: 80000,
-    d30: 70000,
-  },
-  // 本月累计
-  accumulated_month: {
-    date: '2021-01-13',
-    revenue: 240000,
-    cost: 32000,
-    profit: 208000,
-    profit_d: 70000
-  },
-  // 本季度累计
-  accumulated_quarter: {
-    date: '2021-01-13',
-    revenue: 240000,
-    cost: 32000,
-    profit: 208000,
-    profit_d: 70000
-  }
+  // yesterday_revenue: {
+  //   date: '2021-01-13',
+  //   revenue: 81234.88,
+  //   dod: -0.1423,
+  //   wow: 1.4231,
+  //   d7: 80000,
+  //   d30: 70000,
+  // },
+  // // 昨日毛利
+  // yesterday_gross_profit: {
+  //   date: '2021-01-13',
+  //   revenue: 81234.88,
+  //   dod: -0.1423,
+  //   wow: 1.4231,
+  //   d7: 80000,
+  //   d30: 70000,
+  // },
+  // // 昨日毛利率
+  // yesterday_gross_margin: {
+  //   date: '2021-01-13',
+  //   rate: 0.8613,
+  //   dod: -0.1423,
+  //   wow: 1.4231,
+  //   d7: 80000,
+  //   d30: 70000,
+  // },
+  // // 本月累计
+  // accumulated_month: {
+  //   date: '2021-01-13',
+  //   revenue: 240000,
+  //   cost: 32000,
+  //   profit: 208000,
+  //   profit_d: 70000
+  // },
+  // // 本季度累计
+  // accumulated_quarter: {
+  //   date: '2021-01-13',
+  //   revenue: 240000,
+  //   cost: 32000,
+  //   profit: 208000,
+  //   profit_d: 70000
+  // }
 }
 const state = reactive({
+  baseData: props.json,
   data: baseData,
   titleMap,
   titleGroup,
@@ -176,8 +178,25 @@ const state = reactive({
 const handleValFn = (val) => {
   return `${Math.abs(val) * 100}%`
 }
+const init = async () => {
+  const ajaxData = {
+    ...state.baseData.data
+  }
+  delete ajaxData.date
+  const { data: cardData } = await getOverviewCard(ajaxData)
+  state.data = cardData
+}
+watch(() => state.baseData, (newVal, oldVal) => {
+  // console.log(newVal)
+  console.warn('get card data')
+  init()
+}, {
+  // ! 此处如果加上会多执行一次
+  // immediate: true,
+  deep: true
+})
 onMounted(() => {
-  console.log(props.json)
+  // console.log(props.json)
 })
 </script>
 <style lang="scss">

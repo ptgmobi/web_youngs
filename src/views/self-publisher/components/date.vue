@@ -58,6 +58,7 @@ let searchForm: any = reactive({
 const emit = defineEmits(['emitParent'])
 // 搜索
 const handleSubmitSearch = () => {
+  console.warn('set search date')
   emit('emitParent', [...searchForm.data.search.date])
 }
 watch(() => searchForm.data.search.date, (newVal, oldVal) => {

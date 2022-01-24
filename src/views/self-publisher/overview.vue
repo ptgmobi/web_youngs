@@ -1,10 +1,10 @@
 <template>
   <div>
     <searchC @emitParent="changeSearchData" />
-    <cardC :json="searchData.data" />
+    <cardC :json="searchData" />
     <dateC @emitParent="changeSearchDate" />
-    <chartC :json="searchData" />
-    <tableC :json="searchData" />
+    <chartC :json="searchMode" />
+    <tableC :json="searchMode" />
   </div>
 </template>
 
@@ -14,24 +14,60 @@ import cardC from './components/card'
 import chartC from './components/chart'
 import dateC from './components/date'
 import tableC from './components/table'
-import { reactive } from 'vue'
-let baseSearchData: any = {
-  date: []
-}
-let searchData = reactive({
-  data: baseSearchData,
-  date: []
+import { ref, reactive, computed } from 'vue'
+let searchMode = reactive({
+  data: {
+    channel_type: [],
+    platform: [],
+    channel: [],
+    country: [],
+    pkg: [],
+    st: '',
+    et: ''
+  }
 })
+let searchData = reactive({
+  data: {
+    channel_type: [],
+    platform: [],
+    channel: [],
+    country: [],
+    pkg: []
+  }
+})
+let searchDate = reactive({
+  data: {
+    st: '',
+    et: ''
+  }
+})
+// let searchMode = computed(() => {
+//   const result = {
+//     ...searchData,
+//     ...searchDate
+//   }
+//   return result
+// })
 const changeSearchData = (data) => {
-  // console.log(data)
+  console.log(data)
   searchData.data = {
-    ...searchData.data,
     ...data
+  }
+  searchMode.data = {
+    ...searchData.data,
+    ...searchDate.data
   }
 }
 const changeSearchDate = (date) => {
-  // console.log(date)
-  searchData.data.date = date
+  console.log(date)
+  searchDate.data = {
+    st: date[0],
+    et: date[1]
+  }
+  searchMode.data = {
+    ...searchData.data,
+    ...searchDate.data
+  }
 }
 </script>
 

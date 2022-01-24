@@ -72,7 +72,7 @@ import { reactive, toRefs, toRaw, onMounted } from 'vue'
 import _ from 'lodash'
 const baseData: any = {
   channel_type: [],
-  platform: [],
+  platform: [1],
   channel: [],
   country: [],
   pkg: []
@@ -142,6 +142,7 @@ const changeSelectPkg = () => {
 const emit = defineEmits(['emitParent'])
 // 搜索
 const handleSubmitSearch = () => {
+  console.warn('set search data')
   emit('emitParent', _.cloneDeep(toRaw(searchForm.data)))
 }
 onMounted(() => {

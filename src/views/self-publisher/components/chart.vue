@@ -3,7 +3,7 @@
     <div>
       <el-form :inline="true" :model="searchData.data" class="flex jc-between w100">
         <el-form-item label="指标">
-          <el-select v-model="searchData.data.target" placeholder="Select">
+          <el-select v-model="searchData.data.target" @change="init" placeholder="Select">
             <el-option
               v-for="item in searchData.options.target"
               :key="item.value"
@@ -25,6 +25,7 @@
 <script lang="ts" setup>
 import { reactive, watch, toRaw } from 'vue'
 import WwChartData from '@/components/Self/WwChart/WwChartData'
+import { getOverviewChart } from '@/api/overview'
 const props = defineProps({
   json: {
     require: true,
@@ -123,7 +124,7 @@ const state = reactive({
       {
         type: 'category',
         boundaryGap: false,
-        data: ['1', '2', '3', '4', '5', '6']
+        data: []
       }
     ],
     yAxis: [
@@ -138,26 +139,29 @@ const state = reactive({
         emphasis: {
           focus: 'series'
         },
-        data: [10, 20, 30, 40, 50, 60]
+        data: []
       }
     ]
   }
 })
 watch(() => state.data, (newVal, oldVal) => {
   // console.log(newVal)
-  console.log('get chart data')
+  console.warn('get chart data')
   init()
 }, {
   // ! 此处如果加上会多执行一次
   // immediate: true,
   deep: true
 })
-const init = () => {
+const init = async () => {
   const ajaxData = {
     ...state.data.data,
-    ...searchData.data
+    type: searchData.data.target
   }
   console.log(ajaxData)
+  const { data: charData } = await getOverviewChart(ajaxData)
+  state.chartData.xAxis[0].data = charData.date
+  state.chartData.series[0].data = charData.data
 }
 </script>
 
