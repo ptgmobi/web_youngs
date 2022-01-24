@@ -48,3 +48,35 @@ export function getOverviewTable(data: ObjTy) {
     isAlertErrorMsg: false
   })
 }
+
+// 搜索条件
+export function getOverviewSearchForCountry(data: ObjTy) {
+  return request({
+    url: '/overview/country',
+    data,
+    method: 'get',
+    bfLoading: false,
+    isParams: true,
+    isAlertErrorMsg: false
+  })
+}
+export function getOverviewSearchForChannel(data: ObjTy) {
+  return request({
+    url: '/overview/channel',
+    data,
+    method: 'get',
+    bfLoading: false,
+    isParams: true,
+    isAlertErrorMsg: false
+  })
+}
+export function getOverviewSearchForPkg(data: ObjTy) {
+  return request({
+    url: '/overview/pkg',
+    data,
+    method: 'get',
+    bfLoading: false,
+    isParams: true,
+    isAlertErrorMsg: false
+  })
+}

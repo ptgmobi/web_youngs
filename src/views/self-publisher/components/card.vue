@@ -95,7 +95,7 @@
             <div class="value-box">
               <span>日均毛利:</span>
               <span class="value-right">
-                <span class="value-val">{{item.profit_d}}</span>
+                <span class="value-val">{{item.avg_profit}}</span>
               </span>
             </div>
           </div>
@@ -123,51 +123,7 @@ const titleMap = {
   accumulated_month: '本月累计',
   accumulated_quarter: '本季度累计'
 }
-const baseData: any = {
-  // 昨日收入
-  // yesterday_revenue: {
-  //   date: '2021-01-13',
-  //   revenue: 81234.88,
-  //   dod: -0.1423,
-  //   wow: 1.4231,
-  //   d7: 80000,
-  //   d30: 70000,
-  // },
-  // // 昨日毛利
-  // yesterday_gross_profit: {
-  //   date: '2021-01-13',
-  //   revenue: 81234.88,
-  //   dod: -0.1423,
-  //   wow: 1.4231,
-  //   d7: 80000,
-  //   d30: 70000,
-  // },
-  // // 昨日毛利率
-  // yesterday_gross_margin: {
-  //   date: '2021-01-13',
-  //   rate: 0.8613,
-  //   dod: -0.1423,
-  //   wow: 1.4231,
-  //   d7: 80000,
-  //   d30: 70000,
-  // },
-  // // 本月累计
-  // accumulated_month: {
-  //   date: '2021-01-13',
-  //   revenue: 240000,
-  //   cost: 32000,
-  //   profit: 208000,
-  //   profit_d: 70000
-  // },
-  // // 本季度累计
-  // accumulated_quarter: {
-  //   date: '2021-01-13',
-  //   revenue: 240000,
-  //   cost: 32000,
-  //   profit: 208000,
-  //   profit_d: 70000
-  // }
-}
+const baseData: any = {}
 const state = reactive({
   baseData: props.json,
   data: baseData,
@@ -201,7 +157,7 @@ onMounted(() => {
 </script>
 <style lang="scss">
 .box-card{
-  width: 200px;
+  width: 240px;
   height: 280px;
   .valueBox{
     overflow: hidden;
@@ -210,7 +166,7 @@ onMounted(() => {
       display: flex;
       justify-content: space-between;
       .value-right{
-        width: 80px;
+        width: 100px;
         display: flex;
         justify-content: space-between;
         .value-val{

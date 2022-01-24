@@ -31,9 +31,9 @@
             <el-select v-model="searchForm.data.country" class="search-con" placeholder="搜索" multiple filterable @change="changeSelectCountry">
               <el-option
                 v-for="(item, index) in searchForm.options.country"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                :key="item"
+                :label="item"
+                :value="item"
               />
             </el-select>
           </el-form-item>
@@ -41,9 +41,9 @@
             <el-select v-model="searchForm.data.channel" class="search-con" placeholder="搜索" collapse-tags multiple filterable @change="changeSelectChannel">
               <el-option
                 v-for="(item, index) in searchForm.options.channel"
-                :key="index"
-                :label="item.label"
-                :value="item.value"
+                :key="item"
+                :label="item"
+                :value="item"
               />
             </el-select>
           </el-form-item>
@@ -51,9 +51,9 @@
             <el-select v-model="searchForm.data.pkg" class="search-con" placeholder="搜索" collapse-tags multiple filterable @change="changeSelectPkg">
               <el-option
                 v-for="(item, index) in searchForm.options.pkg"
-                :key="index"
-                :label="item.label"
-                :value="item.value"
+                :key="item"
+                :label="item"
+                :value="item"
               />
             </el-select>
           </el-form-item>
@@ -69,6 +69,7 @@
 </template>
 <script lang="ts" setup>
 import { reactive, toRefs, toRaw, onMounted } from 'vue'
+import { getOverviewSearchForCountry, getOverviewSearchForChannel, getOverviewSearchForPkg } from '@/api/overview'
 import _ from 'lodash'
 const baseData: any = {
   channel_type: [],
@@ -124,18 +125,30 @@ const searchForm = reactive({
   },
   data: baseData
 })
+const getConfig = async () => {
+  const res = await Promise.all([await getOverviewSearchForCountry(), getOverviewSearchForChannel(), getOverviewSearchForPkg()])
+  const [country, channel, pkg] = res
+  searchForm.options.country = country.data
+  searchForm.options.channel = channel.data
+  searchForm.options.pkg = pkg.data
+}
+// 广告主类型
 const changeSelectChannelType = () => {
-  
+  // changeSelectPlatform()
 }
+// 平台
 const changeSelectPlatform = () => {
-  
+  // changeSelectCountry()
 }
+// 国家
 const changeSelectCountry = () => {
-  
+  // changeSelectChannel()
 }
+// channel
 const changeSelectChannel = () => {
-
+  // changeSelectPkg()
 }
+// pkg
 const changeSelectPkg = () => {
   
 }
@@ -146,6 +159,7 @@ const handleSubmitSearch = () => {
   emit('emitParent', _.cloneDeep(toRaw(searchForm.data)))
 }
 onMounted(() => {
+  getConfig()
   handleSubmitSearch()
 })
 </script>

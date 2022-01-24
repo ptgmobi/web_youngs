@@ -61,7 +61,7 @@ let handleList = computed(() => {
       if (Object.prototype.hasOwnProperty.call(object, key)) {
         const element = object[key]
         if (key.includes('rate')) {
-          obj[key] = toFixedFn(element * 100, 2)
+          obj[key] = `%${toFixedFn(element * 100, 2)}`
         } else {
           obj[key] = toFixedFn(element, 2)
         }
