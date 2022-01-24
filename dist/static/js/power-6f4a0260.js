@@ -1,1 +1,0 @@
-import{k as e}from"./index-4eec30de.js";function r(){return e({url:"/permission",method:"get",isParams:!0})}function t(r){return e({url:`/permission/view/${r}`,method:"get",isParams:!0})}function s(r){return e({url:"/permission",method:"post",data:r})}function i(r,t){return e({url:"/permission/update",method:"patch",data:t})}export{t as a,i as b,r as g,s};
