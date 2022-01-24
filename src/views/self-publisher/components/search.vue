@@ -72,7 +72,7 @@ import { reactive, toRefs, toRaw, onMounted } from 'vue'
 import _ from 'lodash'
 const baseData: any = {
   channel_type: [],
-  platform: [1],
+  platform: [],
   channel: [],
   country: [],
   pkg: []

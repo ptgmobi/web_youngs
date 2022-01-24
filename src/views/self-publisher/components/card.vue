@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex flex-wrap">
+    <div class="flex flex-wrap jc-between">
       <el-card class="box-card m10" v-for="(item, key) in state.data">
         <template #header>
           <div class="card-header">
