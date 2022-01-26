@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, createWebHashHistory, Router } from 'vu
 import Layout from '@/layout'
 import { RouterTy } from '@/types/router'
 // import test from './modules/test'
+import dashboard from './modules/dashboard'
 import publisher from './modules/publisher'
 import administer from './modules/administer'
 import buzz from './modules/buzz'
@@ -91,6 +92,7 @@ export const constantRoutes: RouterTy = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes: RouterTy = [
+  ...dashboard,
   ...publisher,
   ...buzz,
   ...fenix,
