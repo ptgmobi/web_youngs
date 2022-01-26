@@ -53,10 +53,10 @@ export default ({ command, mode }: any) => {
     plugins: [
       vue(),
       vueJsx(),
-      legacy({
-        targets: ['ie >= 11'],
-        additionalLegacyPolyfills: ['regenerator-runtime/runtime']
-      }),
+      // legacy({
+      //   targets: ['ie >= 11'],
+      //   additionalLegacyPolyfills: ['regenerator-runtime/runtime']
+      // }),
       viteSvgIcons({
         // config svg dir that can config multi
         iconDirs: [path.resolve(process.cwd(), 'src/icons/common'), path.resolve(process.cwd(), 'src/icons/nav-bar')],
@@ -77,7 +77,7 @@ export default ({ command, mode }: any) => {
       })
     ],
     build: {
-      minify: 'terser',
+      // minify: 'terser',
       brotliSize: false,
       // 消除打包大小超过500kb警告
       chunkSizeWarningLimit: 2000,
@@ -102,7 +102,6 @@ export default ({ command, mode }: any) => {
     },
     resolve: {
       alias: {
-        '~': resolve(__dirname, './'),
         '@': resolve(__dirname, 'src')
       },
       //why remove it , look for https://github.com/vitejs/vite/issues/6026
@@ -115,9 +114,9 @@ export default ({ command, mode }: any) => {
           additionalData: `@use "sass:math";@import "@/styles/variables.scss";`
         }
       }
-    },
-    optimizeDeps: {
-      include: ['element-plus/lib/locale/lang/zh-cn', 'element-plus/lib/locale/lang/en']
-    },
+    }
+    // optimizeDeps: {
+    //   include: ['element-plus/lib/locale/lang/zh-cn', 'element-plus/lib/locale/lang/en']
+    // }
   }
 }
