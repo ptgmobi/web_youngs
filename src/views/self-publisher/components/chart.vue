@@ -156,7 +156,7 @@ watch(() => state.data, (newVal, oldVal) => {
 const init = async () => {
   const ajaxData = {
     ...state.data.data,
-    type: searchData.data.target
+    target: searchData.data.target
   }
   console.log(ajaxData)
   const { data: charData } = await getOverviewChart(ajaxData)
