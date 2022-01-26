@@ -23,9 +23,10 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, watch, toRaw } from 'vue'
+import { reactive, watch, toRaw, computed } from 'vue'
 import WwChartData from '@/components/Self/WwChart/WwChartData'
 import { getOverviewChart } from '@/api/overview'
+import { toFixedFn } from '@/utils/format'
 const props = defineProps({
   json: {
     require: true,
@@ -72,28 +73,28 @@ const searchData = reactive({
       },
       {
         value: 6,
-        label: '毛利率'
+        label: '毛利率(单位为%)'
       },
-      {
-        value: 7,
-        label: '展示'
-      },
-      {
-        value: 8,
-        label: '点击'
-      },
-      {
-        value: 9,
-        label: '安装'
-      },
-      {
-        value: 10,
-        label: 'CR'
-      },
-      {
-        value: 11,
-        label: 'eCPC'
-      },
+      // {
+      //   value: 7,
+      //   label: '展示'
+      // },
+      // {
+      //   value: 8,
+      //   label: '点击'
+      // },
+      // {
+      //   value: 9,
+      //   label: '安装'
+      // },
+      // {
+      //   value: 10,
+      //   label: 'CR'
+      // },
+      // {
+      //   value: 11,
+      //   label: 'eCPC'
+      // },
     ]
   }
 })
@@ -111,7 +112,7 @@ const state = reactive({
       }
     },
     legend: {
-      show: false,
+      show: true,
       data: ['all']
     },
     grid: {
@@ -136,6 +137,7 @@ const state = reactive({
       {
         name: '',
         type: 'line',
+        stack: 'Total',
         emphasis: {
           focus: 'series'
         },
@@ -153,6 +155,14 @@ watch(() => state.data, (newVal, oldVal) => {
   // immediate: true,
   deep: true
 })
+const getChartTitle = computed(() => {
+  let obj = searchData.options.target.find(ele => {
+    return ele.value === searchData.data.target
+  })
+  console.log(obj)
+  return obj?.label
+})
+const rateArr = ['6']
 const init = async () => {
   const ajaxData = {
     ...state.data.data,
@@ -161,7 +171,19 @@ const init = async () => {
   console.log(ajaxData)
   const { data: charData } = await getOverviewChart(ajaxData)
   state.chartData.xAxis[0].data = charData.date
-  state.chartData.series[0].data = charData.data
+  state.chartData.series[0].name = getChartTitle
+  if (rateArr.includes(searchData.data.target.toString())) {
+    let finallArr = charData.data.map(ele => {
+      return toFixedFn(ele * 100, 2)
+    })
+    state.chartData.series[0].data = finallArr
+  } else {
+    let finallArr = charData.data.map(ele => {
+      return toFixedFn(ele, 2)
+    })
+    console.log(finallArr)
+    state.chartData.series[0].data = finallArr
+  }
 }
 </script>
 
