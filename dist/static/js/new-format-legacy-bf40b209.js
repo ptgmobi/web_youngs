@@ -1,1 +1,0 @@
-System.register([],(function(r){"use strict";return{execute:function(){r("h",(function(r){var e={};for(var t in r)if(Object.prototype.hasOwnProperty.call(r,t)){var n=r[t];n&&""!==n&&n==Number(n)?e[t]=Number(n):e[t]=n}return e}))}}}));

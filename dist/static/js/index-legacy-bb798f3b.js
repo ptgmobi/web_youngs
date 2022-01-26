@@ -1,1 +1,0 @@
-System.register(["./vendor-legacy-2c896af1.js"],(function(e){"use strict";var t,r,n,u,a,c;return{setters:[function(e){t=e.d,r=e.L,n=e.N,u=e.e,a=e.v,c=e.x}],execute:function(){e("default",t({setup:function(){var e=r(),t=n();return u((function(){var r=e.params,n=e.query,u=r.path;t.replace({path:"/"+u,query:n})})),function(){return a("div",null,[c(" ")])}}}))}}}));
