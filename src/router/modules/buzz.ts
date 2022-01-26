@@ -28,8 +28,8 @@ export default [
         component: () => import('@/views/self-buzz/buzz/list'),
         default: true,
         meta: {
-          title: 'Buzz List',
-          icon: 'dashboard',
+          title: 'Buzz',
+          elSvgIcon: 'Edit',
           code: 30
         }
       },
@@ -39,7 +39,6 @@ export default [
         component: () => import('@/views/self-buzz/buzz/details'),
         meta: {
           title: 'Buzz Create',
-          icon: 'dashboard',
           code: 31
         },
         hidden: true
@@ -50,7 +49,6 @@ export default [
         component: () => import('@/views/self-buzz/buzz/details'),
         meta: {
           title: 'Buzz Edit',
-          icon: 'dashboard',
           code: 32
         },
         hidden: true
@@ -61,8 +59,8 @@ export default [
         redirect: '/buzz/old-buzz/list',
         component: () => import('@/views/self-buzz/old-buzz/index'),
         meta: {
-          title: 'Old Buzz Index',
-          icon: 'dashboard',
+          title: 'Old Buzz',
+          elSvgIcon: 'Edit',
           code: 33
         },
         children: [
@@ -72,6 +70,7 @@ export default [
             component: () => import('@/views/self-buzz/old-buzz/list'),
             meta: {
               title: 'Old Buzz List',
+              elSvgIcon: 'Edit',
               code: 330
             },
             hidden: true

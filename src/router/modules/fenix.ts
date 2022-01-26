@@ -18,6 +18,7 @@ export default [
         redirect: '/fenix/fenix/list',
         meta: {
           title: 'Fenix Publisher',
+          elSvgIcon: 'Edit',
           code: 40
         },
         children: [
@@ -60,6 +61,7 @@ export default [
         redirect: '/fenix/offer/list',
         meta: {
           title: 'Fenix Offer',
+          elSvgIcon: 'Edit',
           code: 41
         },
         children: [
