@@ -160,7 +160,6 @@ const getChartTitle = computed(() => {
   let obj = searchData.options.target.find(ele => {
     return ele.value === searchData.data.target
   })
-  console.log(obj)
   return obj?.label
 })
 const rateArr = ['6']
@@ -182,7 +181,6 @@ const init = async () => {
     let finallArr = charData.data.map(ele => {
       return toFixedFn(ele, 2)
     })
-    console.log(finallArr)
     state.chartData.series[0].data = finallArr
   }
 }

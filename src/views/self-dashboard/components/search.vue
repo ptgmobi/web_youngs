@@ -4,7 +4,7 @@
       <el-form :inline="true" :model="searchForm.data" class="flex jc-between ai-start w100">
         <div class="flex jc-start flex-wrap">
           <el-form-item label="广告主类型">
-            <el-select v-model="searchForm.data.channel_type" class="search-con" placeholder="搜索" @change="changeSelectChannelType">
+            <el-select v-model="searchForm.data.channel_type" class="search-con" clearable placeholder="搜索" @change="changeSelectChannelType">
               <el-option
                 v-for="item in searchForm.options.channel_type"
                 :key="item.value"
@@ -14,7 +14,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="平台">
-            <el-select v-model="searchForm.data.platform" class="search-con" placeholder="搜索" filterable @change="changeSelectPlatform">
+            <el-select v-model="searchForm.data.platform" class="search-con" clearable placeholder="搜索" filterable @change="changeSelectPlatform">
               <!-- <div class="flex jc-between p10 pt-0">
                 <el-button type="primary" plain size="mini" @click="selectAllProduct()">全选</el-button>
                 <el-button size="mini" type="danger" plain @click="unSelectedAllProduct()">清空</el-button>
@@ -28,7 +28,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="国家">
-            <el-select v-model="searchForm.data.country" class="search-con" placeholder="搜索" filterable @change="changeSelectCountry">
+            <el-select v-model="searchForm.data.country" class="search-con" clearable placeholder="搜索" filterable @change="changeSelectCountry">
               <el-option
                 v-for="(item, index) in searchForm.options.country"
                 :key="item"
@@ -38,7 +38,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="Channel">
-            <el-select v-model="searchForm.data.channel" class="search-con" placeholder="搜索" collapse-tags filterable @change="changeSelectChannel">
+            <el-select v-model="searchForm.data.channel" class="search-con" clearable placeholder="搜索" collapse-tags filterable @change="changeSelectChannel">
               <el-option
                 v-for="(item, index) in searchForm.options.channel"
                 :key="item"
@@ -48,7 +48,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="Pkg">
-            <el-select v-model="searchForm.data.pkg" class="search-con" placeholder="搜索" collapse-tags filterable @change="changeSelectPkg">
+            <el-select v-model="searchForm.data.pkg" class="search-con" clearable placeholder="搜索" collapse-tags filterable @change="changeSelectPkg">
               <el-option
                 v-for="(item, index) in searchForm.options.pkg"
                 :key="item"
