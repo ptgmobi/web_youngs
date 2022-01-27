@@ -39,7 +39,7 @@ export const constantRoutes: RouterTy = [
   {
     path: '/',
     component: Layout,
-    redirect: '/index',
+    redirect: '/dashboard/overview',
     children: [
       {
         path: 'index',
@@ -48,9 +48,9 @@ export const constantRoutes: RouterTy = [
         //using el svg icon, the elSvgIcon first when at the same time using elSvgIcon and icon
         meta: {
           title: 'index',
-          elSvgIcon: 'HomeFilled',
-          code: 1
-        }
+          elSvgIcon: 'HomeFilled'
+        },
+        hidden: true
       }
     ]
   },
