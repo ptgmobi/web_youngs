@@ -27,6 +27,7 @@ import { reactive, watch, toRaw, computed } from 'vue'
 import WwChartData from '@/components/Self/WwChart/WwChartData'
 import { getOverviewChart } from '@/api/overview'
 import { toFixedFn } from '@/utils/format'
+import { handleAjaxDataDelNoKeyFn } from '@/utils/new-format'
 const props = defineProps({
   json: {
     require: true,
@@ -164,11 +165,11 @@ const getChartTitle = computed(() => {
 })
 const rateArr = ['6']
 const init = async () => {
-  const ajaxData = {
+  let ajaxData = {
     ...state.data.data,
     target: searchData.data.target
   }
-  console.log(ajaxData)
+  ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
   const { data: charData } = await getOverviewChart(ajaxData)
   state.chartData.xAxis[0].data = charData.date
   state.chartData.series[0].name = getChartTitle

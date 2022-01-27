@@ -29,7 +29,8 @@
                     <caret-top />
                   </el-icon>
                 </span>
-                <span class="value-val">{{handleValFn(item.dod)}}</span>
+                <span v-else></span>
+                <span class="value-val">{{handleValToRateFn(item.dod)}}</span>
               </span>
             </div>
           </div>
@@ -47,20 +48,23 @@
                     <caret-top />
                   </el-icon>
                 </span>
-                <span class="value-val">{{handleValFn(item.wow)}}</span>
+                <span v-else></span>
+                <span class="value-val">{{handleValToRateFn(item.wow)}}</span>
               </span>
             </div>
           </div>
           <div class="valueBox">
             <div class="value-box">
               <span>7日均:</span>
-              <span>{{item.d7}}</span>
+              <span v-if="key.toString() !== 'yesterday_gross_margin'">{{item.d7}}</span>
+              <span v-if="key.toString() === 'yesterday_gross_margin'">{{handleValToRateFn(item.d7)}}</span>
             </div>
           </div>
           <div class="valueBox">
             <div class="value-box">
               <span>30日均:</span>
-              <span>{{item.d30}}</span>
+              <span v-if="key.toString() !== 'yesterday_gross_margin'">{{item.d30}}</span>
+              <span v-if="key.toString() === 'yesterday_gross_margin'">{{handleValToRateFn(item.d30)}}</span>
             </div>
           </div>
         </div>
@@ -109,6 +113,8 @@
 <script lang="ts" setup>
 import { reactive, onMounted, watch } from 'vue'
 import { getOverviewCard } from '@/api/overview'
+import { toFixedFn } from '@/utils/format'
+import { handleAjaxDataDelNoKeyFn } from '@/utils/new-format'
 const props = defineProps({
   json: {
     require: true,
@@ -133,14 +139,17 @@ const state = reactive({
   titleGroup,
   titleGroup1
 })
-const handleValFn = (val) => {
-  return `${Math.abs(val) * 100}%`
+const handleValToRateFn = (val) => {
+  let absN = Math.abs(val) * 100
+  return `${toFixedFn(absN, 2)}%`
 }
 const init = async () => {
-  const ajaxData = {
+  let ajaxData = {
     ...state.baseData.data
   }
   delete ajaxData.date
+
+  ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
   const { data: cardData } = await getOverviewCard(ajaxData)
   state.data = cardData
 }
@@ -171,6 +180,7 @@ onMounted(() => {
         width: 100px;
         display: flex;
         justify-content: space-between;
+        align-items: flex-end;
         .value-val{
           margin-left: 10px;
         }

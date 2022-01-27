@@ -21,6 +21,7 @@ import { reactive, getCurrentInstance, computed, onMounted, watch, ref, toRaw } 
 import { getSectionTime, getSectionAnyTime, choiceDefaultProduct } from '@/utils/format'
 import { getOverviewTable } from '@/api/overview'
 import { toFixedFn } from '@/utils/format'
+import { handleAjaxDataDelNoKeyFn } from '@/utils/new-format'
 const props = defineProps({
   json: {
     require: true,
@@ -42,10 +43,10 @@ watch(() => state.data, (newVal, oldVal) => {
   deep: true
 })
 const init = async () => {
-  const ajaxData = {
+  let ajaxData = {
     ...state.data.data
   }
-  console.log(ajaxData)
+  ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
   const { data:tableData } = await getOverviewTable(ajaxData)
   state.list = tableData
 }

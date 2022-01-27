@@ -5,7 +5,7 @@
         <h3 class="title text-center">{{ settings.title }}</h3>
       </div>
       <el-form-item prop="username" :rules="formRulesMixin.isNotNull">
-        <div class="rowSC">
+        <div class="rowSC flex-1">
           <span class="svg-container">
             <svg-icon icon-class="user" />
           </span>
@@ -16,7 +16,7 @@
       </el-form-item>
       <!--<el-form-item prop="password" :rules="formRulesMixin.passwordValid">-->
       <el-form-item prop="password" :rules="formRulesMixin.isNotNull">
-        <div class="rowSC">
+        <div class="rowSC flex-1">
           <span class="svg-container">
             <svg-icon icon-class="password" />
           </span>
