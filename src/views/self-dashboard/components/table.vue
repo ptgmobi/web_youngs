@@ -47,6 +47,7 @@ const init = async () => {
     ...state.data.data
   }
   ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
+  state.list = []
   const { data:tableData } = await getOverviewTable(ajaxData)
   state.list = tableData
 }

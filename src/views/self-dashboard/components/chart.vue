@@ -169,16 +169,19 @@ const init = async () => {
     target: searchData.data.target
   }
   ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
+  state.chartData.xAxis[0].data = []
+  state.chartData.series[0].data = []
   const { data: charData } = await getOverviewChart(ajaxData)
-  state.chartData.xAxis[0].data = charData.date
+  state.chartData.xAxis[0].data = charData?.date ?? []
   state.chartData.series[0].name = getChartTitle
+  let dataArr = charData?.data ?? []
   if (rateArr.includes(searchData.data.target.toString())) {
-    let finallArr = charData.data.map(ele => {
+    let finallArr = dataArr.map(ele => {
       return toFixedFn(ele * 100, 2)
     })
     state.chartData.series[0].data = finallArr
   } else {
-    let finallArr = charData.data.map(ele => {
+    let finallArr = dataArr.map(ele => {
       return toFixedFn(ele, 2)
     })
     state.chartData.series[0].data = finallArr
