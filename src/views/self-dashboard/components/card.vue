@@ -177,12 +177,15 @@ onMounted(() => {
       display: flex;
       justify-content: space-between;
       .value-right{
-        width: 100px;
+        width: 120px;
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
         .value-val{
+          width: 100%;
           margin-left: 10px;
+          text-align: right;
+          overflow: hidden;
         }
       }
     }
