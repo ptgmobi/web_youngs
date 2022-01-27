@@ -1,7 +1,7 @@
 <template>
   <div class="mt-20">
     <!-- table -->
-    <el-table center :data="handleList" class="w100" max-height="89vh" border>
+    <el-table center :data="handleList" class="w100" height="87vh" border>
       <el-table-column fixed prop="date" label="日期" align="center"></el-table-column>
       <!-- <el-table-column fixed prop="type" label="广告主类型" align="center"></el-table-column>
       <el-table-column prop="channel" label="Channel" align="center"></el-table-column>
