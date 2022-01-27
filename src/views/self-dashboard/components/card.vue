@@ -13,7 +13,7 @@
             <!-- <h2 v-if="item.hasOwnProperty('revenue')">$ {{item.revenue}}</h2>
             <h2 v-if="item.hasOwnProperty('rate')">{{item.rate * 100}} %</h2> -->
             <h2 v-if="key.toString() !== 'yesterday_gross_margin'">$ {{item.revenue}}</h2>
-            <h2 v-if="key.toString() === 'yesterday_gross_margin'">{{item.revenue * 100}} %</h2>
+            <h2 v-if="key.toString() === 'yesterday_gross_margin'">{{toFixedFn(item.revenue * 100, 2)}} %</h2>
           </div>
           <div class="valueBox">
             <div class="value-box">
