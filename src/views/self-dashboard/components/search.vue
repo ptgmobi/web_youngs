@@ -32,7 +32,7 @@
               <el-option
                 v-for="(item, index) in searchForm.options.country"
                 :key="item"
-                :label="item"
+                :label="item.toString()"
                 :value="item"
               />
             </el-select>
@@ -42,7 +42,7 @@
               <el-option
                 v-for="(item, index) in searchForm.options.channel"
                 :key="item"
-                :label="item"
+                :label="item.toString()"
                 :value="item"
               />
             </el-select>
@@ -52,7 +52,7 @@
               <el-option
                 v-for="(item, index) in searchForm.options.pkg"
                 :key="item"
-                :label="item"
+                :label="item.toString()"
                 :value="item"
               />
             </el-select>
