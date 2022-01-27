@@ -1,1 +1,0 @@
-import{k as s}from"./index-297582bc.js";function i(){return s({url:"/permission",method:"get",isParams:!0})}function n(e){return s({url:`/permission/view/${e}`,method:"get",isParams:!0})}function o(e){return s({url:"/permission",method:"post",data:e})}function m(e,r){return s({url:"/permission/update",method:"patch",data:r})}export{n as a,m as b,i as g,o as s};
