@@ -157,6 +157,7 @@ const handleValToRateFn = (val) => {
   return `${toFixedFn(absN, 2)}%`
 }
 const init = async () => {
+  state.data = []
   let ajaxData = {
     ...state.baseData.data
   }
@@ -179,7 +180,7 @@ onMounted(() => {
   // console.log(props.json)
 })
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .box-card{
   width: 240px;
   height: 280px;

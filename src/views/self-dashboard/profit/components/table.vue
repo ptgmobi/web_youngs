@@ -5,23 +5,26 @@
       center
       :data="handleList"
       class="w100"
-      height="87vh"
       border
     >
       <el-table-column
-        fixed
-        prop="date"
-        label="日期"
+        prop="user_id"
+        label="User ID"
         align="center"
       ></el-table-column>
-      <!-- <el-table-column fixed prop="type" label="广告主类型" align="center"></el-table-column>
-      <el-table-column prop="channel" label="Channel" align="center"></el-table-column>
-      <el-table-column prop="platform" label="平台" align="center"></el-table-column>
-      <el-table-column prop="country" label="国家" align="center"></el-table-column>
-      <el-table-column prop="pkg" label="Pkg" align="center"></el-table-column> -->
       <el-table-column
-        prop="conversion"
-        label="转化数"
+        prop="account_email"
+        label="Account Email"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        prop="user_name"
+        label="User Name"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        prop="profit"
+        label="毛利"
         align="center"
       ></el-table-column>
       <el-table-column
@@ -35,11 +38,6 @@
         align="center"
       ></el-table-column>
       <el-table-column
-        prop="profit"
-        label="毛利"
-        align="center"
-      ></el-table-column>
-      <el-table-column
         prop="profit_rate"
         label="毛利率"
         align="center"
@@ -50,7 +48,7 @@
 <script lang="ts" setup>
 import { reactive, getCurrentInstance, computed, onMounted, watch, ref, toRaw } from 'vue'
 import { getSectionTime, getSectionAnyTime, choiceDefaultProduct } from '@/utils/format'
-import { getOverviewTable } from '@/api/overview'
+import { getProfitTable } from '@/api/overview'
 import { toFixedFn } from '@/utils/format'
 import { handleAjaxDataDelNoKeyFn } from '@/utils/new-format'
 const props = defineProps({
@@ -79,7 +77,7 @@ const init = async () => {
   }
   ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
   state.list = []
-  const { data:tableData } = await getOverviewTable(ajaxData)
+  const { data:tableData } = await getProfitTable(ajaxData)
   state.list = tableData
 }
 let rateArr = ['profit_rate']

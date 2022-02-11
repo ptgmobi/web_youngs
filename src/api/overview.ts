@@ -80,3 +80,47 @@ export function getOverviewSearchForPkg(data: ObjTy) {
     isAlertErrorMsg: false
   })
 }
+
+// profit
+export function getProfitSearch() {
+  return request({
+    url: '/profit/search',
+    method: 'get',
+    bfLoading: false,
+    isParams: true,
+    isAlertErrorMsg: false
+  })
+}
+
+export function getProfitCard(data: ObjTy) {
+  return request({
+    url: '/profit/card',
+    data,
+    method: 'get',
+    bfLoading: false,
+    isParams: true,
+    isAlertErrorMsg: false
+  })
+}
+
+export function getProfitChart(data: ObjTy) {
+  return request({
+    url: '/profit/chart',
+    data,
+    method: 'get',
+    bfLoading: false,
+    isParams: true,
+    isAlertErrorMsg: false
+  })
+}
+
+export function getProfitTable(data: ObjTy) {
+  return request({
+    url: '/profit/table',
+    data,
+    method: 'get',
+    bfLoading: false,
+    isParams: true,
+    isAlertErrorMsg: false
+  })
+}

@@ -5,8 +5,10 @@
         v-for="(item, key) in state.titleMap"
         class="box-card m10"
       >
-        <div class="flex jc-start">
+        <div class="flex jc-between">
           <h3>{{ state.titleMap[key] }}</h3>
+          <h2 class="color_primary" v-if="state.groupVal.includes(key)">$ {{ state.data[key] }}</h2>
+          <h2 class="color_primary" v-if="state.groupRate.includes(key)">{{ toFixedFn(state.data[key] * 100) }} %</h2>
         </div>
       </el-card>
     </div>
@@ -14,7 +16,7 @@
 </template>
 <script lang="ts" setup>
 import { reactive, onMounted, watch } from 'vue'
-import { getOverviewCard } from '@/api/overview'
+import { getProfitCard } from '@/api/overview'
 import { toFixedFn } from '@/utils/format'
 import { handleAjaxDataDelNoKeyFn } from '@/utils/new-format'
 const props = defineProps({
@@ -28,13 +30,15 @@ const titleMap = {
   profit: '毛利合计',
   revenue: '收入合计',
   cost: '支出合计',
-  rate: '毛利率',
+  profit_rate: '毛利率',
 }
 const baseData: any = {}
 const state = reactive({
   baseData: props.json,
   data: baseData,
-  titleMap
+  titleMap,
+  groupVal: ['profit', 'revenue', 'cost'],
+  groupRate: ['profit_rate']
 })
 const handleValToRateFn = (val) => {
   let absN = Math.abs(val) * 100
@@ -44,11 +48,18 @@ const init = async () => {
   let ajaxData = {
     ...state.baseData.data
   }
-  delete ajaxData.date
 
   ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
-  const { data: cardData } = await getOverviewCard(ajaxData)
-  state.data = cardData
+  const { data: cardData } = await getProfitCard(ajaxData)
+  if (Array.isArray(cardData) && cardData.length !== 0) {
+    state.data = cardData[0]
+  } else {
+    for (const key in state.data) {
+      if (Object.prototype.hasOwnProperty.call(state.data, key)) {
+        state.data[key] = 0
+      }
+    }
+  }
 }
 watch(() => state.baseData, (newVal, oldVal) => {
   // console.log(newVal)
@@ -63,7 +74,7 @@ onMounted(() => {
   // console.log(props.json)
 })
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .box-card{
   width: 240px;
   height: 60px;

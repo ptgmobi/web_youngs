@@ -6,7 +6,7 @@ export default [
     name: 'Dashboard',
     meta: {
       title: 'Dashboard',
-      icon: 'dashboard',
+      elSvgIcon: 'DataLine',
       code: 5
     },
     children: [

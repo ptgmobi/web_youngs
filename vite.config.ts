@@ -18,7 +18,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 
 import setting from './src/settings'
 const prodMock = setting.openProdMock
-import packageJson from './package.json'
+// import packageJson from './package.json'
 // import { loadEnv } from 'vite'
 export default ({ command, mode }: any) => {
   return {
@@ -32,7 +32,11 @@ export default ({ command, mode }: any) => {
     base: setting.viteBasePath,
     define: {
       'process.platform': null,
-      'process.version': null
+      'process.version': null,
+      GLOBAL_STRING: JSON.stringify('i am global var from vite.config.js define'),
+      GLOBAL_VAR: {
+        test: 'i am global var from vite.config.js define'
+      }
     },
     clearScreen: false,
     server: {
@@ -52,9 +56,9 @@ export default ({ command, mode }: any) => {
       proxy: {
         '/dev-api': {
           // 本地测试
-          // target: 'http://172.31.20.63:8888',
+          target: 'http://172.31.13.103:8888',
           // 线上地址
-          target: 'http://52.221.190.245:8888',
+          // target: 'http://52.221.190.245:8888',
           ws: false,
           changeOrigin: true,
           rewrite: path => path.replace(/^\/dev-api/, '')

@@ -2,7 +2,7 @@
   <div
     class="app-main"
     :class="{ 'show-tag-view': settings.showTagsView }"
-  >{{cachedViews}}
+  >
     <router-view v-slot="{ Component }">
       <!--has transition  Judging by settings.mainNeedAnimation-->
       <transition

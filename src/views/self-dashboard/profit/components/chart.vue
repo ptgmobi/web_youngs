@@ -10,7 +10,7 @@
           <el-select
             v-model="searchData.data.target"
             placeholder="Select"
-            @change="init"
+            @change="changeTarget"
           >
             <el-option
               v-for="item in searchData.options.target"
@@ -32,7 +32,7 @@
 <script lang="ts" setup>
 import { reactive, watch, toRaw, computed } from 'vue'
 import WwChartData from '@/components/Self/WwChart/WwChartData'
-import { getOverviewChart } from '@/api/overview'
+import { getProfitChart } from '@/api/overview'
 import { toFixedFn } from '@/utils/format'
 import { handleAjaxDataDelNoKeyFn } from '@/utils/new-format'
 const props = defineProps({
@@ -55,59 +55,32 @@ const searchData = reactive({
   // 10CR
   // 11eCPC
   data: {
-    target: 5
+    target: 'profit'
   },
   options: {
     target: [
       {
-        value: 1,
-        label: '转化'
-      },
-      {
-        value: 2,
-        label: '单价'
-      },
-      {
-        value: 3,
-        label: '收入'
-      },
-      {
-        value: 4,
-        label: '支出'
-      },
-      {
-        value: 5,
+        value: 'profit',
         label: '毛利'
       },
       {
-        value: 6,
-        label: '毛利率(单位为%)'
+        value: 'revenue',
+        label: '收入'
       },
-      // {
-      //   value: 7,
-      //   label: '展示'
-      // },
-      // {
-      //   value: 8,
-      //   label: '点击'
-      // },
-      // {
-      //   value: 9,
-      //   label: '安装'
-      // },
-      // {
-      //   value: 10,
-      //   label: 'CR'
-      // },
-      // {
-      //   value: 11,
-      //   label: 'eCPC'
-      // },
+      {
+        value: 'cost',
+        label: '支出'
+      },
+      {
+        value: 'profit_rate',
+        label: '毛利率'
+      },
     ]
   }
 })
 const state = reactive({
   data: props.json,
+  baseCharData: {},
   chartData: {
     tooltip: {
       trigger: 'axis',
@@ -170,18 +143,13 @@ const getChartTitle = () => {
   return obj?.label ?? ''
 }
 const rateArr = ['6']
-const init = async () => {
-  let ajaxData = {
-    ...state.data.data,
-    target: searchData.data.target
-  }
-  ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
-  state.chartData.xAxis[0].data = []
-  state.chartData.series[0].data = []
-  const { data: charData } = await getOverviewChart(ajaxData)
-  state.chartData.xAxis[0].data = charData?.date ?? []
-  state.chartData.series[0].name = getChartTitle()
-  let dataArr = charData?.data ?? []
+const changeTarget = () => {
+  handleSeriesData()
+}
+const handleSeriesData = () => {
+  let target = searchData.data.target
+  console.log(target)
+  let dataArr = state.baseCharData[target] ?? []
   if (rateArr.includes(searchData.data.target.toString())) {
     let finallArr = dataArr.map(ele => {
       return toFixedFn(ele * 100, 2)
@@ -193,6 +161,21 @@ const init = async () => {
     })
     state.chartData.series[0].data = finallArr
   }
+}
+const init = async () => {
+  let ajaxData = {
+    ...state.data.data
+  }
+  ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
+  state.chartData.xAxis[0].data = []
+  state.chartData.series[0].data = []
+  const { data: charData } = await getProfitChart(ajaxData)
+  console.log(charData)
+  state.baseCharData = charData
+  state.chartData.xAxis[0].data = charData?.date ?? []
+  state.chartData.series[0].name = getChartTitle()
+  handleSeriesData()
+  
 }
 </script>
 

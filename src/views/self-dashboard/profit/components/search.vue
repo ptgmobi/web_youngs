@@ -128,8 +128,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { reactive, toRefs, toRaw, onMounted } from 'vue'
-import { getOverviewSearchForCountry, getOverviewSearchForChannel, getOverviewSearchForPkg } from '@/api/overview'
+import { getProfitSearch } from '@/api/overview'
 import { getSectionTime, getSectionAnyTime, choiceDefaultProduct } from '@/utils/format'
 import _ from 'lodash'
 const baseData: any = {
@@ -138,7 +137,7 @@ const baseData: any = {
   use_name: '',
   slot: '',
   country: '',
-  date: []
+  date: getSectionTime(6, 'day')
 }
 const searchForm = reactive({
   shortcuts: [
@@ -203,8 +202,10 @@ const searchForm = reactive({
   data: baseData
 })
 const getConfig = async () => {
-  const res = await Promise.all([await getOverviewSearchForCountry(), getOverviewSearchForChannel(), getOverviewSearchForPkg()])
-  console.log(res)
+  const { data } = await getProfitSearch()
+  searchForm.options.user_name = data?.user_name
+  searchForm.options.slot = data?.slot
+  searchForm.options.country = data?.country
 }
 
 const changeSelectFn = () => {

@@ -11,36 +11,27 @@
 import searchC from './components/search'
 import cardC from './components/card'
 import chartC from './components/chart'
-import dateC from './components/date'
 import tableC from './components/table'
-import { ref, reactive, computed } from 'vue'
 let searchData = reactive({
   data: {
-    channel_type: [],
-    platform: [],
-    channel: [],
-    country: [],
-    pkg: []
-  }
-})
-let searchDate = reactive({
-  data: {
+    adtype: '',
+    channel_type: '',
+    use_name: '',
+    slot: '',
+    country: '',
     st: '',
     et: ''
   }
 })
-// let searchMode = computed(() => {
-//   const result = {
-//     ...searchData,
-//     ...searchDate
-//   }
-//   return result
-// })
 const changeSearchData = (data) => {
   console.log(data)
-  searchData.data = {
-    ...data
-  }
+  searchData.data.adtype = data.adtype
+  searchData.data.channel_type = data.channel_type
+  searchData.data.use_name = data.use_name
+  searchData.data.slot = data.slot
+  searchData.data.country = data.country
+  searchData.data.st = data.date[0]
+  searchData.data.et = data.date[1]
 }
 </script>
 
