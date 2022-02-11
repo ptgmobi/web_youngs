@@ -1,26 +1,74 @@
 <template>
   <div class="app-container">
     <!-- dialog -->
-    <el-dialog v-model="dialogVisible" :title="dialogType === 'edit' ? 'Edit User' : 'New User'" width="80%">
-      <el-form ref="ruleForm" :model="busData.data" :rules="busData.rules" label-width="150px" label-position="left">
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="busData.data.email" placeholder="邮箱" :disabled="dialogType === 'edit'" />
+    <el-dialog
+      v-model="dialogVisible"
+      :title="dialogType === 'edit' ? 'Edit User' : 'New User'"
+      width="80%"
+    >
+      <el-form
+        ref="ruleForm"
+        :model="busData.data"
+        :rules="busData.rules"
+        label-width="150px"
+        label-position="left"
+      >
+        <el-form-item
+          label="邮箱"
+          prop="email"
+        >
+          <el-input
+            v-model="busData.data.email"
+            placeholder="邮箱"
+            :disabled="dialogType === 'edit'"
+          />
         </el-form-item>
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="busData.data.username" placeholder="用户名必须大于6位" />
+        <el-form-item
+          label="用户名"
+          prop="username"
+        >
+          <el-input
+            v-model="busData.data.username"
+            placeholder="用户名必须大于6位"
+          />
         </el-form-item>
         <template v-if="dialogType === 'new'">
-          <el-form-item label="密码" prop="password" autocomplete="off">
-            <el-input v-model="busData.data.password" type="password" placeholder="" />
+          <el-form-item
+            label="密码"
+            prop="password"
+            autocomplete="off"
+          >
+            <el-input
+              v-model="busData.data.password"
+              type="password"
+              placeholder=""
+            />
           </el-form-item>
-          <el-form-item label="再次输入密码" prop="password_re" autocomplete="off">
-            <el-input v-model="busData.data.password_re" type="password" placeholder="" />
+          <el-form-item
+            label="再次输入密码"
+            prop="password_re"
+            autocomplete="off"
+          >
+            <el-input
+              v-model="busData.data.password_re"
+              type="password"
+              placeholder=""
+            />
           </el-form-item>
         </template>
-        <el-form-item label="描述" prop="comment">
-          <el-input v-model="busData.data.comment" placeholder="描述" />
+        <el-form-item
+          label="描述"
+          prop="comment"
+        >
+          <el-input
+            v-model="busData.data.comment"
+            placeholder="描述"
+          />
         </el-form-item>
-        <el-form-item label="岗位权限" prop="position_id">
+        <el-form-item
+          label="岗位权限"
+          prop="position_id"
+        >
           <el-select
             v-model="busData.data.position_id"
             filterable
@@ -30,10 +78,18 @@
             :disabled="!judgePermissionElementFn('A-AU-USER-FORM-POSITION-C')"
             @change="selectChangeFn('position')"
           >
-            <el-option v-for="item in busData.options.position" :key="item.id" :label="item.name" :value="item.id" />
+            <el-option
+              v-for="item in busData.options.position"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
-        <el-form-item label="角色权限" prop="role_id">
+        <el-form-item
+          label="角色权限"
+          prop="role_id"
+        >
           <el-select
             v-model="busData.data.role_id"
             filterable
@@ -43,10 +99,18 @@
             :disabled="!judgePermissionElementFn('A-AU-USER-FORM-ROLE-C')"
             @change="selectChangeFn('role')"
           >
-            <el-option v-for="item in busData.options.role" :key="item.id" :label="item.name" :value="item.id" />
+            <el-option
+              v-for="item in busData.options.role"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
-        <el-form-item label="所属项目组" prop="project_id">
+        <el-form-item
+          label="所属项目组"
+          prop="project_id"
+        >
           <el-select
             v-model="busData.data.project_id"
             filterable
@@ -56,10 +120,18 @@
             :disabled="!judgePermissionElementFn('A-AU-USER-FORM-PROJECT-C')"
             @change="selectChangeFn('project'), choiceProject()"
           >
-            <el-option v-for="item in busData.options.project" :key="item.id" :label="item.name" :value="item.id" />
+            <el-option
+              v-for="item in busData.options.project"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
-        <el-form-item label="可查看产品" prop="product_id">
+        <el-form-item
+          label="可查看产品"
+          prop="product_id"
+        >
           <el-select
             v-model="busData.data.product_id"
             filterable
@@ -69,7 +141,12 @@
             :disabled="!judgePermissionElementFn('A-AU-USER-FORM-PRODUCT-C')"
             @change="selectChangeFn('product')"
           >
-            <el-button style="float: left; margin-left: 20px; z-index: 1" type="primary" plain @click="selectAll()">
+            <el-button
+              style="float: left; margin-left: 20px; z-index: 1"
+              type="primary"
+              plain
+              @click="selectAll()"
+            >
               全选
             </el-button>
             <el-button
@@ -91,13 +168,27 @@
         </el-form-item>
       </el-form>
       <div style="text-align: right">
-        <el-button type="danger" @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="confirmFun('ruleForm')">确定</el-button>
+        <el-button
+          type="danger"
+          @click="dialogVisible = false"
+        >
+          取消
+        </el-button>
+        <el-button
+          type="primary"
+          @click="confirmFun('ruleForm')"
+        >
+          确定
+        </el-button>
       </div>
     </el-dialog>
     <!-- dialog -->
     <!-- dialog -->
-    <el-dialog v-model="dialogVisiblePass" title="修改密码" width="80%">
+    <el-dialog
+      v-model="dialogVisiblePass"
+      title="修改密码"
+      width="80%"
+    >
       <ww-change-pass
         v-if="dialogVisiblePass"
         :is_change="false"
@@ -112,50 +203,91 @@
         <!-- <el-input placeholder="请输入内容" v-model="control.search" class="input-with-select">
           <el-button type="primary" slot="append">搜索</el-button>
         </el-input> -->
-        <el-input v-model="control.search" class="mr-10" placeholder="请输入用户名" />
-        <el-button type="primary" @click="handleSearch">搜索</el-button>
-        <el-button v-if="judgePermissionElementFn('A-AU-USER-ADD-V')" type="primary" @click="handleCreate">
+        <el-input
+          v-model="control.search"
+          class="mr-10"
+          placeholder="请输入用户名"
+        />
+        <el-button
+          type="primary"
+          @click="handleSearch"
+        >
+          搜索
+        </el-button>
+        <el-button
+          v-if="judgePermissionElementFn('A-AU-USER-ADD-V')"
+          type="primary"
+          @click="handleCreate"
+        >
           添加用户
         </el-button>
       </div>
     </div>
-    <el-table :data="list" style="width: 100%; margin-top: 30px" border>
-      <el-table-column align="center" label="邮箱">
+    <el-table
+      :data="list"
+      style="width: 100%; margin-top: 30px"
+      border
+    >
+      <el-table-column
+        align="center"
+        label="邮箱"
+      >
         <template #default="scope">
           {{ scope.row.email }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="用户名">
+      <el-table-column
+        align="center"
+        label="用户名"
+      >
         <template #default="scope">
           {{ scope.row.username }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="所属项目组">
+      <el-table-column
+        align="center"
+        label="所属项目组"
+      >
         <template #default="scope">
           {{ getUserProject(scope.row.project_id) }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="用户权限">
+      <el-table-column
+        align="center"
+        label="用户权限"
+      >
         <template #default="scope">
           {{ getUserPosition(scope.row.position_id) }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="可查看产品">
+      <el-table-column
+        align="center"
+        label="可查看产品"
+      >
         <template #default="scope">
           {{ scope.row.product_id }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="创建日期">
+      <el-table-column
+        align="center"
+        label="创建日期"
+      >
         <template #default="scope">
           {{ scope.row.create_date }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="最后访问日期">
+      <el-table-column
+        align="center"
+        label="最后访问日期"
+      >
         <template #default="scope">
           {{ scope.row.update_date }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="用户状态">
+      <el-table-column
+        align="center"
+        label="用户状态"
+      >
         <template #default="scope">
           <el-switch
             v-if="judgePermissionElementFn('A-AU-USER-STATUS-V')"
@@ -166,7 +298,11 @@
           />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" width="250">
+      <el-table-column
+        align="center"
+        label="操作"
+        width="250"
+      >
         <template #default="scope">
           <div class="flex">
             <el-button
@@ -201,10 +337,10 @@
     <div class="w100 flex">
       <pagination
         v-show="pagination.total"
-        :total="pagination.total"
-        :page-sizes="pagination.pageSizes"
         v-model:page="pagination.listQuery.page"
         v-model:limit="pagination.listQuery.limit"
+        :total="pagination.total"
+        :page-sizes="pagination.pageSizes"
         @pagination="init"
       />
     </div>
@@ -251,7 +387,6 @@ const defaultData = {
   status: 1
 }
 export default {
-  mixins: [selfMixins],
   components: { Pagination, WwChangePass },
   directives: { waves },
   filters: {
@@ -262,6 +397,7 @@ export default {
       // })
     }
   },
+  mixins: [selfMixins],
   data() {
     // 验证邮箱
     const validateUserEmail = (rule, value, callback) => {

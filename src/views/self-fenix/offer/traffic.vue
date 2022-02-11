@@ -1,12 +1,31 @@
 <template>
   <div>
     <div class="flex jc-end">
-      <el-button type="primary" @click="addTrafficFn">Add</el-button>
+      <el-button
+        type="primary"
+        @click="addTrafficFn"
+      >
+        Add
+      </el-button>
     </div>
-    <el-table class="mt-10" :data="state.manage_traffic" style="width: 100%" border>
-      <el-table-column label="Pub Name" align="center">
+    <el-table
+      class="mt-10"
+      :data="state.manage_traffic"
+      style="width: 100%"
+      border
+    >
+      <el-table-column
+        label="Pub Name"
+        align="center"
+      >
         <template #default="scope">
-          <el-select filterable v-model="scope.row.pub" @change="selectPub(scope)" clearable placeholder="">
+          <el-select
+            v-model="scope.row.pub"
+            filterable
+            clearable
+            placeholder=""
+            @change="selectPub(scope)"
+          >
             <el-option
               v-for="item in options.pub"
               :key="item.id"
@@ -16,7 +35,10 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column label="Payout" align="center">
+      <el-table-column
+        label="Payout"
+        align="center"
+      >
         <template #default="scope">
           <el-input
             v-model="scope.row.payout"
@@ -28,7 +50,10 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="Cap Daily" align="center">
+      <el-table-column
+        label="Cap Daily"
+        align="center"
+      >
         <template #default="scope">
           <el-input
             v-model="scope.row.cap_daily"
@@ -40,10 +65,20 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="Operation" align="center" width="180px">
+      <el-table-column
+        label="Operation"
+        align="center"
+        width="180px"
+      >
         <template #default="scope">
           <div class="flex">
-            <el-button class="mr-10" type="danger" icon="Delete" circle @click="deleteFn(scope)"></el-button>
+            <el-button
+              class="mr-10"
+              type="danger"
+              icon="Delete"
+              circle
+              @click="deleteFn(scope)"
+            ></el-button>
             <el-switch
               v-model="scope.row.pub_status"
               :active-value="1"
@@ -51,7 +86,12 @@
               class="mr-10"
               @change="changeStatusFn(scope)"
             />
-            <el-button v-if="scope.row.pub_tracking_link" class="cp" type="primary" @click="copyFn(scope)">
+            <el-button
+              v-if="scope.row.pub_tracking_link"
+              class="cp"
+              type="primary"
+              @click="copyFn(scope)"
+            >
               Copy
             </el-button>
           </div>

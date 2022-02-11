@@ -7,7 +7,12 @@
       :disabled="disabled"
       @change="changeRole"
     >
-      <el-option v-for="item in rolesList" :key="item.id" :label="item.name" :value="item.id" />
+      <el-option
+        v-for="item in rolesList"
+        :key="item.id"
+        :label="item.name"
+        :value="item.id"
+      />
     </el-select>
   </div>
 </template>

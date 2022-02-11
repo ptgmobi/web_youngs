@@ -1,19 +1,41 @@
 <template>
   <div v-if="errorLogs.length > 0">
-    <el-badge :is-dot="true" style="line-height: 25px; margin-top: -5px" @click.native="dialogTableVisible = true">
-      <el-button style="padding: 8px 10px" size="small" type="danger">
+    <el-badge
+      :is-dot="true"
+      style="line-height: 25px; margin-top: -5px"
+      @click.native="dialogTableVisible = true"
+    >
+      <el-button
+        style="padding: 8px 10px"
+        size="small"
+        type="danger"
+      >
         <svg-icon icon-class="bug" />
       </el-button>
     </el-badge>
 
-    <el-dialog v-model:visible="dialogTableVisible" width="80%" append-to-body>
+    <el-dialog
+      v-model:visible="dialogTableVisible"
+      width="80%"
+      append-to-body
+    >
       <div slot="title">
         <span style="padding-right: 10px">Error Log</span>
-        <el-button size="mini" type="primary" icon="Delete" @click="clearAll">Clear All</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          icon="Delete"
+          @click="clearAll"
+        >
+          Clear All
+        </el-button>
       </div>
-      <el-table :data="errorLogs" border>
+      <el-table
+        :data="errorLogs"
+        border
+      >
         <el-table-column label="Message">
-          <template v-slot="{ row }">
+          <template #default="{ row }">
             <div>
               <span class="message-title">Msg:</span>
               <el-tag type="danger">
@@ -22,12 +44,20 @@
             </div>
             <br />
             <div>
-              <span class="message-title" style="padding-right: 10px">Info:</span>
-              <el-tag type="warning">{{ row.vm.$vnode.tag }} error in {{ row.info }}</el-tag>
+              <span
+                class="message-title"
+                style="padding-right: 10px"
+              >Info:</span>
+              <el-tag type="warning">
+                {{ row.vm.$vnode.tag }} error in {{ row.info }}
+              </el-tag>
             </div>
             <br />
             <div>
-              <span class="message-title" style="padding-right: 16px">Url:</span>
+              <span
+                class="message-title"
+                style="padding-right: 16px"
+              >Url:</span>
               <el-tag type="success">
                 {{ row.url }}
               </el-tag>
@@ -35,7 +65,7 @@
           </template>
         </el-table-column>
         <el-table-column label="Stack">
-          <template v-slot="scope">
+          <template #default="scope">
             {{ scope.row.err.stack }}
           </template>
         </el-table-column>

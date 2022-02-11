@@ -4,10 +4,16 @@
       <div class="mb-10">
         <!-- <el-button type="primary" @click='createFun'>Offer Create</el-button> -->
         <router-link to="/buzz/old-buzz/create">
-          <el-button type="primary">Offer Create</el-button>
+          <el-button type="primary">
+            Offer Create
+          </el-button>
         </router-link>
       </div>
-      <el-form :inline="true" v-model="data.searchForm" class="flex jc-between w100 ai-end">
+      <el-form
+        v-model="data.searchForm"
+        :inline="true"
+        class="flex jc-between w100 ai-end"
+      >
         <div class="flex jc-start flex-wrap w100">
           <el-form-item label="">
             <el-select
@@ -43,47 +49,63 @@
           </el-form-item>
           <el-form-item label="">
             <el-input
-              placeholder="Package Name"
               v-model="data.searchForm.package_name"
+              placeholder="Package Name"
               class="search-con"
               style="min-width: 120px"
             />
           </el-form-item>
           <el-form-item label="">
             <el-input
-              placeholder="Channel"
               v-model="data.searchForm.channel"
+              placeholder="Channel"
               class="search-con"
               style="min-width: 80px"
             />
           </el-form-item>
           <el-form-item label="">
-            <el-input placeholder="ID" v-model="data.searchForm.id" class="search-con" />
+            <el-input
+              v-model="data.searchForm.id"
+              placeholder="ID"
+              class="search-con"
+            />
           </el-form-item>
           <el-form-item label="">
             <el-input
-              placeholder="Offer Title"
               v-model="data.searchForm.offer_title"
+              placeholder="Offer Title"
               class="search-con"
               style="min-width: 90px"
             />
           </el-form-item>
           <el-form-item label="">
             <el-input
-              placeholder="Country"
               v-model="data.searchForm.country"
+              placeholder="Country"
               class="search-con"
               style="min-width: 80px"
             />
           </el-form-item>
           <el-form-item label="">
-            <el-input placeholder="Pid" v-model="data.searchForm.pid" class="search-con" />
+            <el-input
+              v-model="data.searchForm.pid"
+              placeholder="Pid"
+              class="search-con"
+            />
           </el-form-item>
         </div>
         <div class="flex">
-          <el-form-item class="mr-0" style="margin-right: 0px">
+          <el-form-item
+            class="mr-0"
+            style="margin-right: 0px"
+          >
             <div class="flex">
-              <el-button type="primary" @click="searchFn">查询</el-button>
+              <el-button
+                type="primary"
+                @click="searchFn"
+              >
+                查询
+              </el-button>
               <!-- <el-button type="primary" @click="handleExportSearch">导出</el-button> -->
             </div>
           </el-form-item>
@@ -94,49 +116,146 @@
       </el-input> -->
     </div>
     <!-- table -->
-    <el-table center v-loading="data.loading" :data="data.list" class="w100" height="60vh" border>
-      <el-table-column fixed prop="offer_id" label="Offer ID" align="center" width="70"></el-table-column>
-      <el-table-column fixed prop="channel" label="Channel" align="center" width="60"></el-table-column>
-      <el-table-column prop="pkg_name" label="Package Name" align="center" width="110"></el-table-column>
-      <el-table-column prop="title" label="Offer Title" align="center"></el-table-column>
-      <el-table-column prop="attribute_provider" label="Attribute Provider" align="center" width="80"></el-table-column>
-      <el-table-column prop="pid" label="Pid" align="center" width="90"></el-table-column>
-      <el-table-column prop="platform" label="Platform" align="center" width="65">
+    <el-table
+      v-loading="data.loading"
+      center
+      :data="data.list"
+      class="w100"
+      height="60vh"
+      border
+    >
+      <el-table-column
+        fixed
+        prop="offer_id"
+        label="Offer ID"
+        align="center"
+        width="70"
+      ></el-table-column>
+      <el-table-column
+        fixed
+        prop="channel"
+        label="Channel"
+        align="center"
+        width="60"
+      ></el-table-column>
+      <el-table-column
+        prop="pkg_name"
+        label="Package Name"
+        align="center"
+        width="110"
+      ></el-table-column>
+      <el-table-column
+        prop="title"
+        label="Offer Title"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        prop="attribute_provider"
+        label="Attribute Provider"
+        align="center"
+        width="80"
+      ></el-table-column>
+      <el-table-column
+        prop="pid"
+        label="Pid"
+        align="center"
+        width="90"
+      ></el-table-column>
+      <el-table-column
+        prop="platform"
+        label="Platform"
+        align="center"
+        width="65"
+      >
         <template #default="scope">
           {{ Number(scope.row.platform) === 1 ? 'Android' : 'iOS' }}
         </template>
       </el-table-column>
-      <el-table-column prop="country" label="Country" align="center" width="57"></el-table-column>
-      <el-table-column prop="payout" label="Payout" align="center" width="55"></el-table-column>
-      <el-table-column label="Click Limitation(w)" width="150" align="center">
+      <el-table-column
+        prop="country"
+        label="Country"
+        align="center"
+        width="57"
+      ></el-table-column>
+      <el-table-column
+        prop="payout"
+        label="Payout"
+        align="center"
+        width="55"
+      ></el-table-column>
+      <el-table-column
+        label="Click Limitation(w)"
+        width="150"
+        align="center"
+      >
         <template #default="scope">
           <div class="flex jc-around">
-            <el-input v-model="scope.row.max_clk_num" placeholder=""></el-input>
-            <el-button class="cp ml-10 scale-button" type="primary" icon="Edit" circle @click="changeClk(scope.row)"></el-button>
+            <el-input
+              v-model="scope.row.max_clk_num"
+              placeholder=""
+            ></el-input>
+            <el-button
+              class="cp ml-10 scale-button"
+              type="primary"
+              icon="Edit"
+              circle
+              @click="changeClk(scope.row)"
+            ></el-button>
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="Site Click Limitation" width="150" align="center">
+      <el-table-column
+        label="Site Click Limitation"
+        width="150"
+        align="center"
+      >
         <template #default="scope">
-          <div class='flex jc-around'>
-            <el-input v-model="scope.row.site_clk_limit" placeholder=""></el-input>
-            <el-button class="cp ml-10 scale-button" type="primary" icon="Edit" circle @click="changeSiteClkLimit(scope.row)"></el-button>
+          <div class="flex jc-around">
+            <el-input
+              v-model="scope.row.site_clk_limit"
+              placeholder=""
+            ></el-input>
+            <el-button
+              class="cp ml-10 scale-button"
+              type="primary"
+              icon="Edit"
+              circle
+              @click="changeSiteClkLimit(scope.row)"
+            ></el-button>
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="Select Device" width="120" align="center">
+      <el-table-column
+        label="Select Device"
+        width="120"
+        align="center"
+      >
         <template #default="scope">
           <div class="flex jc-between">
-            <span v-text='thousandSeparator(scope.row.device_count)'></span>
-            <el-button class="cp ml-10 scale-button" type="primary" icon="Edit" circle @click="editDeviceFun(scope.$index, scope.row)"></el-button>
+            <span v-text="thousandSeparator(scope.row.device_count)"></span>
+            <el-button
+              class="cp ml-10 scale-button"
+              type="primary"
+              icon="Edit"
+              circle
+              @click="editDeviceFun(scope.$index, scope.row)"
+            ></el-button>
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="Operation" align="center">
+      <el-table-column
+        label="Operation"
+        align="center"
+      >
         <template #default="scope">
           <div class="flex jc-around">
             <router-link :to="getEditUrl(scope.row)">
-              <el-button class="cp mr-10" type="primary" icon="Edit" circle></el-button>
+              <el-button
+                class="cp mr-10"
+                type="primary"
+                icon="Edit"
+                circle
+              ></el-button>
             </router-link>
             <!-- <el-button class='cp mr-10' type="primary" icon="Edit" circle @click='editFun(scope.row)'></el-button> -->
             <el-switch
@@ -153,19 +272,30 @@
     <div class="w100 flex">
       <Pagination
         v-show="data.pagination.total"
-        :total="data.pagination.total"
-        :page-sizes="data.pagination.pageSizes"
         v-model:page="data.pagination.listQuery.page"
         v-model:limit="data.pagination.listQuery.limit"
+        :total="data.pagination.total"
+        :page-sizes="data.pagination.pageSizes"
         @pagination="init"
       />
     </div>
     <!-- device -->
-    <el-dialog title="Device" v-model="data.dialogVisibleDevice">
-      <Device v-model:all="bus.cacheDevice.all" v-model:select="bus.cacheDevice.select" v-if="data.dialogVisibleDevice" @kk="saveDevice"></Device>
+    <el-dialog
+      v-model="data.dialogVisibleDevice"
+      title="Device"
+    >
+      <Device
+        v-if="data.dialogVisibleDevice"
+        v-model:all="bus.cacheDevice.all"
+        v-model:select="bus.cacheDevice.select"
+        @kk="saveDevice"
+      ></Device>
       <span class="dialog-footer">
         <!-- <el-button @click="cancleDevice">取 消</el-button> -->
-        <el-button type="primary" @click="setDevice">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="setDevice"
+        >确 定</el-button>
       </span>
     </el-dialog>
   </div>

@@ -3,13 +3,24 @@
     <div class="control-box w100 mb-10">
       <div class="mb-10">
         <router-link to="/fenix/offer/create">
-          <el-button type="primary">Offer Create</el-button>
+          <el-button type="primary">
+            Offer Create
+          </el-button>
         </router-link>
       </div>
-      <el-form :inline="true" v-model="state.searchData" class="flex jc-between w100 ai-end">
+      <el-form
+        v-model="state.searchData"
+        :inline="true"
+        class="flex jc-between w100 ai-end"
+      >
         <div class="flex jc-start flex-wrap w100">
           <el-form-item label="">
-            <el-select v-model="state.searchData.adv_status" clearable class="search-con" placeholder="Adv Status">
+            <el-select
+              v-model="state.searchData.adv_status"
+              clearable
+              class="search-con"
+              placeholder="Adv Status"
+            >
               <el-option
                 v-for="item in state.options.status"
                 :key="item.value"
@@ -19,7 +30,12 @@
             </el-select>
           </el-form-item>
           <el-form-item label="">
-            <el-select v-model="state.searchData.status" clearable class="search-con" placeholder="Status">
+            <el-select
+              v-model="state.searchData.status"
+              clearable
+              class="search-con"
+              placeholder="Status"
+            >
               <el-option
                 v-for="item in state.options.status"
                 :key="item.value"
@@ -39,7 +55,12 @@
             </el-select>
           </el-form-item> -->
           <el-form-item label="">
-            <el-select v-model="state.searchData.platform" clearable class="search-con" placeholder="Platform">
+            <el-select
+              v-model="state.searchData.platform"
+              clearable
+              class="search-con"
+              placeholder="Platform"
+            >
               <el-option
                 v-for="item in state.options.platform"
                 :key="item.value"
@@ -64,7 +85,12 @@
             </el-select>
           </el-form-item>
           <el-form-item label="">
-            <el-select v-model="state.searchData.pub_name" clearable class="search-con" placeholder="Pub Name">
+            <el-select
+              v-model="state.searchData.pub_name"
+              clearable
+              class="search-con"
+              placeholder="Pub Name"
+            >
               <el-option
                 v-for="item in state.options.pub"
                 :key="item.id"
@@ -74,25 +100,54 @@
             </el-select>
           </el-form-item>
           <el-form-item label="">
-            <el-input placeholder="Offer ID" v-model="state.searchData.offer_id" class="search-con" />
+            <el-input
+              v-model="state.searchData.offer_id"
+              placeholder="Offer ID"
+              class="search-con"
+            />
           </el-form-item>
           <el-form-item label="">
-            <el-input placeholder="Adv Offer" v-model="state.searchData.adv_offer" class="search-con" />
+            <el-input
+              v-model="state.searchData.adv_offer"
+              placeholder="Adv Offer"
+              class="search-con"
+            />
           </el-form-item>
           <el-form-item label="">
-            <el-input placeholder="Pachage Name" v-model="state.searchData.pkg" class="search-con" />
+            <el-input
+              v-model="state.searchData.pkg"
+              placeholder="Pachage Name"
+              class="search-con"
+            />
           </el-form-item>
           <el-form-item label="">
-            <el-input placeholder="Offer Title" v-model="state.searchData.title" class="search-con" />
+            <el-input
+              v-model="state.searchData.title"
+              placeholder="Offer Title"
+              class="search-con"
+            />
           </el-form-item>
           <el-form-item label="">
-            <el-input placeholder="Channel" v-model="state.searchData.channel" class="search-con" />
+            <el-input
+              v-model="state.searchData.channel"
+              placeholder="Channel"
+              class="search-con"
+            />
           </el-form-item>
           <el-form-item label="">
-            <el-input placeholder="Country" v-model="state.searchData.country" class="search-con" />
+            <el-input
+              v-model="state.searchData.country"
+              placeholder="Country"
+              class="search-con"
+            />
           </el-form-item>
           <el-form-item label="">
-            <el-select v-model="state.searchData.channel_type" clearable class="search-con" placeholder="Channel Type">
+            <el-select
+              v-model="state.searchData.channel_type"
+              clearable
+              class="search-con"
+              placeholder="Channel Type"
+            >
               <el-option
                 v-for="item in state.options.channel_type"
                 :key="item.value"
@@ -103,9 +158,17 @@
           </el-form-item>
         </div>
         <div class="flex">
-          <el-form-item class="mr-0" style="margin-right: 0px">
+          <el-form-item
+            class="mr-0"
+            style="margin-right: 0px"
+          >
             <div class="flex">
-              <el-button type="primary" @click="searchFn">查询</el-button>
+              <el-button
+                type="primary"
+                @click="searchFn"
+              >
+                查询
+              </el-button>
               <!-- <el-button type="primary" @click="handleExportSearch">导出</el-button> -->
             </div>
           </el-form-item>
@@ -117,50 +180,125 @@
     </div>
     <!-- table -->
     <div class="body-box mt-10">
-      <el-table :data="state.tableData" class="w100" height="60vh" border>
-        <el-table-column fixed prop="offer_id" label="Offer ID" align="center" width="60" />
-        <el-table-column fixed prop="adv_offer" label="Adv Offer" align="center" width="87" />
-        <el-table-column fixed prop="channel" label="Channel" align="center" width="42" />
-        <el-table-column prop="revenue" label="Revenue" align="center" width="45" />
+      <el-table
+        :data="state.tableData"
+        class="w100"
+        height="60vh"
+        border
+      >
+        <el-table-column
+          fixed
+          prop="offer_id"
+          label="Offer ID"
+          align="center"
+          width="60"
+        />
+        <el-table-column
+          fixed
+          prop="adv_offer"
+          label="Adv Offer"
+          align="center"
+          width="87"
+        />
+        <el-table-column
+          fixed
+          prop="channel"
+          label="Channel"
+          align="center"
+          width="42"
+        />
+        <el-table-column
+          prop="revenue"
+          label="Revenue"
+          align="center"
+          width="45"
+        />
 
-        <el-table-column prop="pkg" label="Package Name" align="center" width="100" />
-        <el-table-column prop="title" label="Offer Title" align="center" width="90" />
-        <el-table-column prop="pid" label="Pid" align="center" width="77" />
+        <el-table-column
+          prop="pkg"
+          label="Package Name"
+          align="center"
+          width="100"
+        />
+        <el-table-column
+          prop="title"
+          label="Offer Title"
+          align="center"
+          width="90"
+        />
+        <el-table-column
+          prop="pid"
+          label="Pid"
+          align="center"
+          width="77"
+        />
 
-        <el-table-column prop="country" label="Country" align="center" width="40" />
+        <el-table-column
+          prop="country"
+          label="Country"
+          align="center"
+          width="40"
+        />
 
-        <el-table-column label="Adv Status" align="center" width="47">
+        <el-table-column
+          label="Adv Status"
+          align="center"
+          width="47"
+        >
           <template #default="scope">
             <div>
               <span>{{ scope.row.adv_status === 1 ? '开' : '关' }}</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="offer_id" label="Click*w" align="center" width="55" >
+        <el-table-column
+          prop="offer_id"
+          label="Click*w"
+          align="center"
+          width="55"
+        >
           <template #default="scope">
             <div>
               <span>{{ state.options.cvr[scope.row.offer_id]?.click_w }}</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="offer_id" label="Installs" align="center" width="50" >
+        <el-table-column
+          prop="offer_id"
+          label="Installs"
+          align="center"
+          width="50"
+        >
           <template #default="scope">
             <div>
               <span>{{ state.options.cvr[scope.row.offer_id]?.installs }}</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="offer_id" label="Cvr*w" align="center" width="48" >
+        <el-table-column
+          prop="offer_id"
+          label="Cvr*w"
+          align="center"
+          width="48"
+        >
           <template #default="scope">
             <div>
               <span>{{ state.options.cvr[scope.row.offer_id]?.cvr_w }}</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="Target Cvr*w" align="center" width="150">
+        <el-table-column
+          label="Target Cvr*w"
+          align="center"
+          width="150"
+        >
           <template #default="scope">
             <div class="flex">
-              <el-input v-model="scope.row.target_cvr" placeholder="Please input" class="input-with-select mr-5" />
+              <el-input
+                v-model="scope.row.target_cvr"
+                placeholder="Please input"
+                class="input-with-select mr-5"
+              />
               <el-button
                 class="mr-5 scale-button"
                 type="default"
@@ -169,8 +307,8 @@
                 @click="changeTargetCvr(scope)"
               ></el-button>
               <el-switch
-                class="scale-button"
                 v-model="scope.row.cvr_status"
+                class="scale-button"
                 :active-value="1"
                 :inactive-value="2"
                 @change="changeTargetCvrStatusFn(scope)"
@@ -178,10 +316,17 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="Traffic Data" align="left" width="200">
+        <el-table-column
+          label="Traffic Data"
+          align="left"
+          width="200"
+        >
           <template #default="scope">
             <div v-if="scope.row.traffic">
-              <div v-for="o in JSON.parse(scope.row.traffic)" :key="o">
+              <div
+                v-for="o in JSON.parse(scope.row.traffic)"
+                :key="o"
+              >
                 <div>
                   <span>{{ o.pub_status === 1 ? '开' : '关' }}</span>
                   .
@@ -196,10 +341,19 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="Operation" align="center" width="130">
+        <el-table-column
+          label="Operation"
+          align="center"
+          width="130"
+        >
           <template #default="scope">
             <router-link :to="getEditUrl(scope)">
-              <el-button class="cp mr-5" type="primary" icon="Edit" circle></el-button>
+              <el-button
+                class="cp mr-5"
+                type="primary"
+                icon="Edit"
+                circle
+              ></el-button>
             </router-link>
             <el-switch
               v-model="scope.row.status"
@@ -208,31 +362,69 @@
               class="mr-5"
               @change="changeStatusFn(scope)"
             />
-            <el-popconfirm title="删除后无法再生成该Offer ID，请谨慎操作！" @confirm="deleteFn(scope)">
+            <el-popconfirm
+              title="删除后无法再生成该Offer ID，请谨慎操作！"
+              @confirm="deleteFn(scope)"
+            >
               <template #reference>
-                <el-button type="danger" icon="Delete" circle></el-button>
+                <el-button
+                  type="danger"
+                  icon="Delete"
+                  circle
+                ></el-button>
               </template>
             </el-popconfirm>
           </template>
         </el-table-column>
-        <el-table-column label="Platform" align="center" width="55">
+        <el-table-column
+          label="Platform"
+          align="center"
+          width="55"
+        >
           <template #default="scope">
             <div>
               <span>{{ scope.row.platform === 1 ? 'Android' : 'iOS' }}</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="attribute_provider" label="Attribute Provider" align="center" width="80" />
-        <el-table-column label="Record" align="center" width="52">
+        <el-table-column
+          prop="attribute_provider"
+          label="Attribute Provider"
+          align="center"
+          width="80"
+        />
+        <el-table-column
+          label="Record"
+          align="center"
+          width="52"
+        >
           <template #default="{ row }">
-            <el-button class="scale-button" icon="View" @click="showRecord(row)" circle></el-button>
+            <el-button
+              class="scale-button"
+              icon="View"
+              circle
+              @click="showRecord(row)"
+            ></el-button>
           </template>
         </el-table-column>
-        <el-table-column label="Comment" align="center" width="150">
+        <el-table-column
+          label="Comment"
+          align="center"
+          width="150"
+        >
           <template #default="scope">
             <div class="flex">
-              <el-input v-model="scope.row.description" placeholder="Please input" class="input-with-select mr-5" />
-              <el-button class="scale-button" type="default" icon="Edit" circle></el-button>
+              <el-input
+                v-model="scope.row.description"
+                placeholder="Please input"
+                class="input-with-select mr-5"
+              />
+              <el-button
+                class="scale-button"
+                type="default"
+                icon="Edit"
+                circle
+              ></el-button>
             </div>
           </template>
         </el-table-column>
@@ -242,18 +434,25 @@
     <div class="w100 flex">
       <Pagination
         v-show="state.pagination.total"
-        :total="state.pagination.total"
-        :page-sizes="state.pagination.pageSizes"
         v-model:page="state.pagination.listQuery.page"
         v-model:limit="state.pagination.listQuery.limit"
+        :total="state.pagination.total"
+        :page-sizes="state.pagination.pageSizes"
         @pagination="init"
       />
     </div>
     <!-- record -->
-    <el-dialog title="日志" width="80%" v-model="dialogRecordVisible" destroy-on-close>
-      <Record v-model="dialogRecordVisible" :busData="busData"></Record>
+    <el-dialog
+      v-model="dialogRecordVisible"
+      title="日志"
+      width="80%"
+      destroy-on-close
+    >
+      <Record
+        v-model="dialogRecordVisible"
+        :bus-data="busData"
+      ></Record>
     </el-dialog>
-    
   </div>
 </template>
 <script lang="ts" setup>
@@ -506,7 +705,7 @@ const deleteFn = async (scope: any) => {
 }
 const handleGetDailyCapCount = (offer: any, slot: any) => {
   // egp_1245040_IN_95108831
-  let key: string = ''
+  let key = ''
   key = `${offer.offer_id}_${slot.slotid}`
   const value = state.options.dailyCapCount[key]
   if (value) {

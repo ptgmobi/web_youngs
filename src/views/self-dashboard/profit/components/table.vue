@@ -1,18 +1,49 @@
 <template>
   <div class="mt-20">
     <!-- table -->
-    <el-table center :data="handleList" class="w100" height="87vh" border>
-      <el-table-column fixed prop="date" label="日期" align="center"></el-table-column>
+    <el-table
+      center
+      :data="handleList"
+      class="w100"
+      height="87vh"
+      border
+    >
+      <el-table-column
+        fixed
+        prop="date"
+        label="日期"
+        align="center"
+      ></el-table-column>
       <!-- <el-table-column fixed prop="type" label="广告主类型" align="center"></el-table-column>
       <el-table-column prop="channel" label="Channel" align="center"></el-table-column>
       <el-table-column prop="platform" label="平台" align="center"></el-table-column>
       <el-table-column prop="country" label="国家" align="center"></el-table-column>
       <el-table-column prop="pkg" label="Pkg" align="center"></el-table-column> -->
-      <el-table-column prop="conversion" label="转化数" align="center"></el-table-column>
-      <el-table-column prop="revenue" label="收入" align="center"></el-table-column>
-      <el-table-column prop="cost" label="支出" align="center"></el-table-column>
-      <el-table-column prop="profit" label="毛利" align="center"></el-table-column>
-      <el-table-column prop="profit_rate" label="毛利率" align="center"></el-table-column>
+      <el-table-column
+        prop="conversion"
+        label="转化数"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        prop="revenue"
+        label="收入"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        prop="cost"
+        label="支出"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        prop="profit"
+        label="毛利"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        prop="profit_rate"
+        label="毛利率"
+        align="center"
+      ></el-table-column>
     </el-table>
   </div>
 </template>

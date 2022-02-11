@@ -2,8 +2,8 @@
   <div>
     <!-- form -->
     <el-form
-      enctype="multipart/form-data"
       ref="ruleForm"
+      enctype="multipart/form-data"
       :rules="data.rules"
       :model="data.ruleForm"
       label-width="240px"
@@ -11,28 +11,66 @@
     >
       <div class="content-con flex column">
         <!-- offer_id -->
-        <el-form-item label="Offer ID:" prop="offer_id">
+        <el-form-item
+          label="Offer ID:"
+          prop="offer_id"
+        >
           <div class="flex jc-start form-one radio-box">
             <span v-text="data.ruleForm.offer_id"></span>
           </div>
         </el-form-item>
         <!-- channel -->
-        <el-form-item label="Channel:" prop="channel">
-          <el-select filterable class="form-one" v-model="data.ruleForm.channel" clearable placeholder="">
-            <el-option v-for="item in data.options.channel" :key="item" :label="item" :value="item"></el-option>
+        <el-form-item
+          label="Channel:"
+          prop="channel"
+        >
+          <el-select
+            v-model="data.ruleForm.channel"
+            filterable
+            class="form-one"
+            clearable
+            placeholder=""
+          >
+            <el-option
+              v-for="item in data.options.channel"
+              :key="item"
+              :label="item"
+              :value="item"
+            ></el-option>
           </el-select>
         </el-form-item>
         <!-- copy_offer -->
-        <el-form-item label="Copy Offer:" prop="copy_offer">
-          <el-input class='form-one copy-btn search-input' placeholder="" v-model.trim="data.ruleForm.copy_offer">
-            <template  #append>
-              <el-button type="primary" slot="append" icon="Search" @click='copyFun'></el-button>
+        <el-form-item
+          label="Copy Offer:"
+          prop="copy_offer"
+        >
+          <el-input
+            v-model.trim="data.ruleForm.copy_offer"
+            class="form-one copy-btn search-input"
+            placeholder=""
+          >
+            <template #append>
+              <el-button
+                slot="append"
+                type="primary"
+                icon="Search"
+                @click="copyFun"
+              ></el-button>
             </template>
           </el-input>
         </el-form-item>
         <!-- attribute_provider -->
-        <el-form-item label="Attribute Provider:" prop="attribute_provider">
-          <el-select filterable class="form-one" v-model="data.ruleForm.attribute_provider" clearable placeholder="">
+        <el-form-item
+          label="Attribute Provider:"
+          prop="attribute_provider"
+        >
+          <el-select
+            v-model="data.ruleForm.attribute_provider"
+            filterable
+            class="form-one"
+            clearable
+            placeholder=""
+          >
             <el-option
               v-for="item in data.options.attribute_provider"
               :key="item"
@@ -42,49 +80,111 @@
           </el-select>
         </el-form-item>
         <!-- title -->
-        <el-form-item label="Offer Title:" prop="title">
-          <el-input class="form-one" type="text" v-model.trim="data.ruleForm.title" placeholder=""></el-input>
+        <el-form-item
+          label="Offer Title:"
+          prop="title"
+        >
+          <el-input
+            v-model.trim="data.ruleForm.title"
+            class="form-one"
+            type="text"
+            placeholder=""
+          ></el-input>
         </el-form-item>
         <!-- tracking_link -->
         <!-- 此处需要去除空格和制表符 -->
-        <el-form-item class="mb-30" label="Traking Link:" prop="tracking_link">
+        <el-form-item
+          class="mb-30"
+          label="Traking Link:"
+          prop="tracking_link"
+        >
           <el-input
+            v-model.trim="data.ruleForm.tracking_link"
             class="form-one"
             type="textarea"
-            v-model.trim="data.ruleForm.tracking_link"
             :autosize="{ minRows: 8, maxRows: 80 }"
             placeholder=""
           ></el-input>
         </el-form-item>
         <!-- pid -->
-        <el-form-item label="Pid:" prop="pid">
+        <el-form-item
+          label="Pid:"
+          prop="pid"
+        >
           <div class="form-one flex jc-start">
-              <span>{{handlePid}}</span>
-              <!-- <span>{{data.ruleForm.pid}}</span> -->
-            </div>
+            <span>{{ handlePid }}</span>
+            <!-- <span>{{data.ruleForm.pid}}</span> -->
+          </div>
         </el-form-item>
         <!-- pkg_name -->
-        <el-form-item label="Package Name:" prop="pkg_name">
-          <el-input class="form-one" type="text" v-model.trim="data.ruleForm.pkg_name" placeholder=""></el-input>
+        <el-form-item
+          label="Package Name:"
+          prop="pkg_name"
+        >
+          <el-input
+            v-model.trim="data.ruleForm.pkg_name"
+            class="form-one"
+            type="text"
+            placeholder=""
+          ></el-input>
         </el-form-item>
         <!-- conversion_flow_type -->
-        <el-form-item label="Conversion Flow:" prop="conversion_flow">
+        <el-form-item
+          label="Conversion Flow:"
+          prop="conversion_flow"
+        >
           <div class="form-one flex jc-start">
-            <el-radio v-model="data.ruleForm.conversion_flow" :label="1">CPI</el-radio>
-            <el-radio v-model="data.ruleForm.conversion_flow" :label="2">CPA</el-radio>
+            <el-radio
+              v-model="data.ruleForm.conversion_flow"
+              :label="1"
+            >
+              CPI
+            </el-radio>
+            <el-radio
+              v-model="data.ruleForm.conversion_flow"
+              :label="2"
+            >
+              CPA
+            </el-radio>
           </div>
         </el-form-item>
         <!-- conversion_flow -->
-        <el-form-item label="Event Name:" prop="event_name" v-if="data.ruleForm.conversion_flow === 2">
-          <el-input class="form-one" type="text" v-model.trim="data.ruleForm.event_name" placeholder=""></el-input>
+        <el-form-item
+          v-if="data.ruleForm.conversion_flow === 2"
+          label="Event Name:"
+          prop="event_name"
+        >
+          <el-input
+            v-model.trim="data.ruleForm.event_name"
+            class="form-one"
+            type="text"
+            placeholder=""
+          ></el-input>
         </el-form-item>
         <!-- payout -->
-        <el-form-item label="Payout($):" prop="payout">
-          <el-input class="form-one" type="number" v-model.trim="data.ruleForm.payout" placeholder=""></el-input>
+        <el-form-item
+          label="Payout($):"
+          prop="payout"
+        >
+          <el-input
+            v-model.trim="data.ruleForm.payout"
+            class="form-one"
+            type="number"
+            placeholder=""
+          ></el-input>
         </el-form-item>
         <!-- platform -->
-        <el-form-item label="Select Platform:" prop="platform">
-          <el-select filterable class="form-one" v-model="data.ruleForm.platform" clearable placeholder="">
+        <el-form-item
+          label="Select Platform:"
+          prop="platform"
+        >
+          <el-select
+            v-model="data.ruleForm.platform"
+            filterable
+            class="form-one"
+            clearable
+            placeholder=""
+          >
             <el-option
               v-for="item in data.options.platform"
               :key="item.value"
@@ -94,29 +194,85 @@
           </el-select>
         </el-form-item>
         <!-- country -->
-        <el-form-item label="Targeting Countries:" prop="country">
-          <el-select filterable class="form-one" v-model="data.ruleForm.country" clearable placeholder="">
-            <el-option v-for="item in data.options.country" :key="item" :label="item" :value="item"></el-option>
+        <el-form-item
+          label="Targeting Countries:"
+          prop="country"
+        >
+          <el-select
+            v-model="data.ruleForm.country"
+            filterable
+            class="form-one"
+            clearable
+            placeholder=""
+          >
+            <el-option
+              v-for="item in data.options.country"
+              :key="item"
+              :label="item"
+              :value="item"
+            ></el-option>
           </el-select>
         </el-form-item>
         <!-- max_clk_num -->
-        <el-form-item label="Click Limitation(w):" prop="max_clk_num">
-          <el-input class="form-one" type="number" v-model.trim="data.ruleForm.max_clk_num" placeholder=""></el-input>
+        <el-form-item
+          label="Click Limitation(w):"
+          prop="max_clk_num"
+        >
+          <el-input
+            v-model.trim="data.ruleForm.max_clk_num"
+            class="form-one"
+            type="number"
+            placeholder=""
+          ></el-input>
         </el-form-item>
         <!-- Site Click Limitation -->
-        <el-form-item label="Site Click Limitation:" prop="site_clk_limit">
-          <el-input class="form-one" type="number" v-model.trim="data.ruleForm.site_clk_limit" placeholder=""></el-input>
+        <el-form-item
+          label="Site Click Limitation:"
+          prop="site_clk_limit"
+        >
+          <el-input
+            v-model.trim="data.ruleForm.site_clk_limit"
+            class="form-one"
+            type="number"
+            placeholder=""
+          ></el-input>
         </el-form-item>
         <!-- start_hour -->
-        <el-form-item label="Start Hour:" prop="start_hour">
-          <el-select filterable class="form-one" v-model="data.ruleForm.start_hour" placeholder="">
-            <el-option v-for="item in data.options.time" :key="item" :label="item" :value="item"></el-option>
+        <el-form-item
+          label="Start Hour:"
+          prop="start_hour"
+        >
+          <el-select
+            v-model="data.ruleForm.start_hour"
+            filterable
+            class="form-one"
+            placeholder=""
+          >
+            <el-option
+              v-for="item in data.options.time"
+              :key="item"
+              :label="item"
+              :value="item"
+            ></el-option>
           </el-select>
         </el-form-item>
         <!-- end_hour -->
-        <el-form-item label="End Hour:" prop="end_hour">
-          <el-select filterable class="form-one" v-model="data.ruleForm.end_hour" placeholder="">
-            <el-option v-for="item in data.options.time" :key="item" :label="item" :value="item"></el-option>
+        <el-form-item
+          label="End Hour:"
+          prop="end_hour"
+        >
+          <el-select
+            v-model="data.ruleForm.end_hour"
+            filterable
+            class="form-one"
+            placeholder=""
+          >
+            <el-option
+              v-for="item in data.options.time"
+              :key="item"
+              :label="item"
+              :value="item"
+            ></el-option>
           </el-select>
         </el-form-item>
         <!-- site_install_limitation-->
@@ -131,9 +287,18 @@
           </el-select>
         </el-form-item> -->
         <!-- Select Device -->
-        <el-form-item label="Select Device:" prop="device">
-          <div class='flex jc-start form-one'>
-            <el-button class="cp ml-10" type="primary" icon="Setting" circle @click="editDeviceFun"></el-button>
+        <el-form-item
+          label="Select Device:"
+          prop="device"
+        >
+          <div class="flex jc-start form-one">
+            <el-button
+              class="cp ml-10"
+              type="primary"
+              icon="Setting"
+              circle
+              @click="editDeviceFun"
+            ></el-button>
             <!-- <span class="ml-10" v-text='countDevice'></span> -->
           </div>
         </el-form-item>
@@ -166,33 +331,72 @@
           </div>
         </el-form-item> -->
         <!-- diy_siteid -->
-        <el-form-item label="Diy SiteID:" prop="site">
+        <el-form-item
+          label="Diy SiteID:"
+          prop="site"
+        >
           <div class="flex jc-start form-one">
-            <el-button class="cp ml-10" icon="Tools" circle @click="editDiySiteFun"></el-button>
+            <el-button
+              class="cp ml-10"
+              icon="Tools"
+              circle
+              @click="editDiySiteFun"
+            ></el-button>
           </div>
         </el-form-item>
         <!-- site_id -->
-        <el-form-item label="Site ID:" prop="site_id">
+        <el-form-item
+          label="Site ID:"
+          prop="site_id"
+        >
           <div class="flex form-one jc-start radio-box">
-            <el-radio v-model="data.ruleForm.site_id" :label="1">Slot_ID</el-radio>
-            <el-radio v-model="data.ruleForm.site_id" :label="2">Update(Hours)</el-radio>
+            <el-radio
+              v-model="data.ruleForm.site_id"
+              :label="1"
+            >
+              Slot_ID
+            </el-radio>
+            <el-radio
+              v-model="data.ruleForm.site_id"
+              :label="2"
+            >
+              Update(Hours)
+            </el-radio>
             <el-select
+              v-model="data.ruleForm.hour"
               filterable
               class="form-one ml-10"
-              v-model="data.ruleForm.hour"
               clearable
               placeholder=""
               :disabled="data.ruleForm.site_id !== 2"
             >
-              <el-option v-for="item in data.options.site_id" :key="item" :label="item" :value="item"></el-option>
+              <el-option
+                v-for="item in data.options.site_id"
+                :key="item"
+                :label="item"
+                :value="item"
+              ></el-option>
             </el-select>
           </div>
         </el-form-item>
         <!-- clk_id -->
-        <el-form-item label="Click ID:" prop="clk_id">
+        <el-form-item
+          label="Click ID:"
+          prop="clk_id"
+        >
           <div class="flex jc-start form-one jc-start radio-box">
-            <el-radio v-model="data.ruleForm.clk_id" :label="1">Real</el-radio>
-            <el-radio v-model="data.ruleForm.clk_id" :label="2">Virtual</el-radio>
+            <el-radio
+              v-model="data.ruleForm.clk_id"
+              :label="1"
+            >
+              Real
+            </el-radio>
+            <el-radio
+              v-model="data.ruleForm.clk_id"
+              :label="2"
+            >
+              Virtual
+            </el-radio>
           </div>
         </el-form-item>
         <!-- site_clk_id -->
@@ -214,11 +418,14 @@
           </el-select>
         </el-form-item> -->
         <!-- note -->
-        <el-form-item label="Note:" prop="note">
+        <el-form-item
+          label="Note:"
+          prop="note"
+        >
           <el-input
+            v-model.trim="data.ruleForm.note"
             class="form-one"
             type="textarea"
-            v-model.trim="data.ruleForm.note"
             :autosize="{ minRows: 8, maxRows: 80 }"
             placeholder=""
           ></el-input>
@@ -228,21 +435,48 @@
     <!-- form -->
     <!-- footer -->
     <div class="w100 flex">
-      <el-button type="primary" @click="saveFun">Save</el-button>
+      <el-button
+        type="primary"
+        @click="saveFun"
+      >
+        Save
+      </el-button>
     </div>
     <!-- footer -->
     <!-- dialog -->
     <!-- device -->
-    <el-dialog title="Device" v-model="data.dialogVisibleDevice" width="90%">
-      <Device v-model:all="bus.cacheDevice.all" v-model:select="bus.cacheDevice.select" v-if="data.dialogVisibleDevice" @kk="saveDevice"></Device>
-      <span slot="footer" class="dialog-footer">
+    <el-dialog
+      v-model="data.dialogVisibleDevice"
+      title="Device"
+      width="90%"
+    >
+      <Device
+        v-if="data.dialogVisibleDevice"
+        v-model:all="bus.cacheDevice.all"
+        v-model:select="bus.cacheDevice.select"
+        @kk="saveDevice"
+      ></Device>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <!-- <el-button @click="cancleDevice">取 消</el-button> -->
-        <el-button type="primary" @click="setDevice">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="setDevice"
+        >确 定</el-button>
       </span>
     </el-dialog>
     <!-- site -->
-    <el-dialog title="diy_siteid" v-model="data.dialogVisibleSite" width="90%">
-      <site :msg="data.siteData" @kk="saveSite"></site>
+    <el-dialog
+      v-model="data.dialogVisibleSite"
+      title="diy_siteid"
+      width="90%"
+    >
+      <site
+        :msg="data.siteData"
+        @kk="saveSite"
+      ></site>
     </el-dialog>
   </div>
 </template>

@@ -1,108 +1,119 @@
 <template>
   <div>
     <div class="flex flex-wrap jc-between">
-      <el-card class="box-card m10" v-for="(item, key) in state.data">
+      <el-card
+        v-for="(item, key) in state.data"
+        class="box-card m10"
+      >
         <template #header>
           <div class="card-header">
-            <h3>{{state.titleMap[key]}}</h3>
+            <h3>{{ state.titleMap[key] }}</h3>
           </div>
         </template>
-        <div v-if="state.titleGroup.includes(key.toString())">
-          <h4>{{item.date}}</h4>
-          <div class="mt-10 mb-10">
-            <!-- <h2 v-if="item.hasOwnProperty('revenue')">$ {{item.revenue}}</h2>
-            <h2 v-if="item.hasOwnProperty('rate')">{{item.rate * 100}} %</h2> -->
-            <h2 v-if="key.toString() !== 'yesterday_gross_margin'">$ {{item.revenue}}</h2>
-            <h2 v-if="key.toString() === 'yesterday_gross_margin'">{{toFixedFn(item.revenue * 100, 2)}} %</h2>
-          </div>
-          <div class="valueBox">
-            <div class="value-box">
-              <span>日环比:</span>
-              <span class="value-right">
-                <span v-if="item.dod < 0">
-                  <el-icon class="el-svg-icon color_down">
-                    <caret-bottom />
-                  </el-icon>
+        <div>
+          <div v-if="state.titleGroup.includes(key.toString())">
+            <h4>{{ item.date }}</h4>
+            <div class="mt-10 mb-10">
+              <!-- <h2 v-if="item.hasOwnProperty('revenue')">$ {{item.revenue}}</h2>
+              <h2 v-if="item.hasOwnProperty('rate')">{{item.rate * 100}} %</h2> -->
+              <h2 v-if="key.toString() !== 'yesterday_gross_margin'">
+                $ {{ item.revenue }}
+              </h2>
+              <h2 v-if="key.toString() === 'yesterday_gross_margin'">
+                {{ toFixedFn(item.revenue * 100, 2) }} %
+              </h2>
+            </div>
+            <div class="valueBox">
+              <div class="value-box">
+                <span>日环比:</span>
+                <span class="value-right">
+                  <span v-if="item.dod < 0">
+                    <el-icon class="el-svg-icon color_down">
+                      <caret-bottom />
+                    </el-icon>
+                  </span>
+                  <span v-if="item.dod > 0">
+                    <el-icon class="el-svg-icon color_up">
+                      <caret-top />
+                    </el-icon>
+                  </span>
+                  <span v-else></span>
+                  <span class="value-val">{{ handleValToRateFn(item.dod) }}</span>
                 </span>
-                <span v-if="item.dod > 0">
-                  <el-icon class="el-svg-icon color_up">
-                    <caret-top />
-                  </el-icon>
+              </div>
+            </div>
+            <div class="valueBox">
+              <div class="value-box">
+                <span>周同比:</span>
+                <span class="value-right">
+                  <span v-if="item.wow < 0">
+                    <el-icon class="el-svg-icon color_down">
+                      <caret-bottom />
+                    </el-icon>
+                  </span>
+                  <span v-if="item.wow > 0">
+                    <el-icon class="el-svg-icon color_up">
+                      <caret-top />
+                    </el-icon>
+                  </span>
+                  <span v-else></span>
+                  <span class="value-val">{{ handleValToRateFn(item.wow) }}</span>
                 </span>
-                <span v-else></span>
-                <span class="value-val">{{handleValToRateFn(item.dod)}}</span>
-              </span>
+              </div>
+            </div>
+            <div class="valueBox">
+              <div class="value-box">
+                <span>7日均:</span>
+                <span v-if="key.toString() !== 'yesterday_gross_margin'">{{ item.d7 }}</span>
+                <span v-if="key.toString() === 'yesterday_gross_margin'">{{ handleValToRateFn(item.d7) }}</span>
+              </div>
+            </div>
+            <div class="valueBox">
+              <div class="value-box">
+                <span>30日均:</span>
+                <span v-if="key.toString() !== 'yesterday_gross_margin'">{{ item.d30 }}</span>
+                <span v-if="key.toString() === 'yesterday_gross_margin'">{{ handleValToRateFn(item.d30) }}</span>
+              </div>
             </div>
           </div>
-          <div class="valueBox">
-            <div class="value-box">
-              <span>周同比:</span>
-              <span class="value-right">
-                <span v-if="item.wow < 0">
-                  <el-icon class="el-svg-icon color_down">
-                    <caret-bottom />
-                  </el-icon>
+          <div v-if="state.titleGroup1.includes(key.toString())">
+            <h4>{{ item.date }}</h4>
+            <div
+              class="mt-10 mb-10"
+              style="height: 21px;"
+            >
+            </div>
+            <div class="valueBox">
+              <div class="value-box">
+                <span>收入:</span>
+                <span class="value-right">
+                  <span class="value-val">{{ item.revenue }}</span>
                 </span>
-                <span v-if="item.wow > 0">
-                  <el-icon class="el-svg-icon color_up">
-                    <caret-top />
-                  </el-icon>
+              </div>
+            </div>
+            <div class="valueBox">
+              <div class="value-box">
+                <span>支出:</span>
+                <span class="value-right">
+                  <span class="value-val">{{ item.cost }}</span>
                 </span>
-                <span v-else></span>
-                <span class="value-val">{{handleValToRateFn(item.wow)}}</span>
-              </span>
+              </div>
             </div>
-          </div>
-          <div class="valueBox">
-            <div class="value-box">
-              <span>7日均:</span>
-              <span v-if="key.toString() !== 'yesterday_gross_margin'">{{item.d7}}</span>
-              <span v-if="key.toString() === 'yesterday_gross_margin'">{{handleValToRateFn(item.d7)}}</span>
+            <div class="valueBox">
+              <div class="value-box">
+                <span>毛利:</span>
+                <span class="value-right">
+                  <span class="value-val">{{ item.profit }}</span>
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="valueBox">
-            <div class="value-box">
-              <span>30日均:</span>
-              <span v-if="key.toString() !== 'yesterday_gross_margin'">{{item.d30}}</span>
-              <span v-if="key.toString() === 'yesterday_gross_margin'">{{handleValToRateFn(item.d30)}}</span>
-            </div>
-          </div>
-        </div>
-        <div v-if="state.titleGroup1.includes(key.toString())">
-          <h4>{{item.date}}</h4>
-          <div class="mt-10 mb-10" style="height: 21px;">
-            
-          </div>
-          <div class="valueBox">
-            <div class="value-box">
-              <span>收入:</span>
-              <span class="value-right">
-                <span class="value-val">{{item.revenue}}</span>
-              </span>
-            </div>
-          </div>
-          <div class="valueBox">
-            <div class="value-box">
-              <span>支出:</span>
-              <span class="value-right">
-                <span class="value-val">{{item.cost}}</span>
-              </span>
-            </div>
-          </div>
-          <div class="valueBox">
-            <div class="value-box">
-              <span>毛利:</span>
-              <span class="value-right">
-                <span class="value-val">{{item.profit}}</span>
-              </span>
-            </div>
-          </div>
-          <div class="valueBox">
-            <div class="value-box">
-              <span>日均毛利:</span>
-              <span class="value-right">
-                <span class="value-val">{{item.avg_profit}}</span>
-              </span>
+            <div class="valueBox">
+              <div class="value-box">
+                <span>日均毛利:</span>
+                <span class="value-right">
+                  <span class="value-val">{{ item.avg_profit }}</span>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -118,7 +129,9 @@ import { handleAjaxDataDelNoKeyFn } from '@/utils/new-format'
 const props = defineProps({
   json: {
     require: true,
-    default: {},
+    default: () => {
+      return {}
+    },
     type: Object
   }
 })
@@ -163,8 +176,7 @@ watch(() => state.baseData, (newVal, oldVal) => {
   deep: true
 })
 onMounted(() => {
-  console.log(props.json)
-  init()
+  // console.log(props.json)
 })
 </script>
 <style lang="scss">

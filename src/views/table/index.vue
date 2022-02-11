@@ -1,7 +1,17 @@
 <template>
   <div class="app-container scroll-y">
-    <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border highlight-current-row>
-      <el-table-column align="center" label="ID" width="95">
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      element-loading-text="Loading"
+      border
+      highlight-current-row
+    >
+      <el-table-column
+        align="center"
+        label="ID"
+        width="95"
+      >
         <template #default="scope">
           {{ scope.$index }}
         </template>
@@ -12,22 +22,41 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Author" width="110" align="center">
+      <el-table-column
+        label="Author"
+        width="110"
+        align="center"
+      >
         <template #default="scope">
           <span>{{ scope.row.author }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Pageviews" width="110" align="center">
+      <el-table-column
+        label="Pageviews"
+        width="110"
+        align="center"
+      >
         <template #default="scope">
           {{ scope.row.pageviews }}
         </template>
       </el-table-column>
-      <el-table-column label="Status" width="110" align="center">
+      <el-table-column
+        label="Status"
+        width="110"
+        align="center"
+      >
         <template #default="scope">
-          <el-tag :type="statusFilter(scope.row.status)">{{ statusFilter(scope.row.status) }}</el-tag>
+          <el-tag :type="statusFilter(scope.row.status)">
+            {{ statusFilter(scope.row.status) }}
+          </el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
+      <el-table-column
+        align="center"
+        prop="created_at"
+        label="Display_time"
+        width="200"
+      >
         <template #default="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.display_time }}</span>

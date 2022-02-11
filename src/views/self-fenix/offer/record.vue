@@ -1,10 +1,29 @@
 <template>
   <div>
-    <el-table :data="state.tableData" style="width: 100%" border>
-        <el-table-column fixed prop="date" label="Date" align="center" />
-        <el-table-column fixed prop="record" label="Record" align="center" />
-        <el-table-column fixed prop="email" label="User" align="center" />
-      </el-table>
+    <el-table
+      :data="state.tableData"
+      style="width: 100%"
+      border
+    >
+      <el-table-column
+        fixed
+        prop="date"
+        label="Date"
+        align="center"
+      />
+      <el-table-column
+        fixed
+        prop="record"
+        label="Record"
+        align="center"
+      />
+      <el-table-column
+        fixed
+        prop="email"
+        label="User"
+        align="center"
+      />
+    </el-table>
   </div>
 </template>
 <script lang="ts" setup>

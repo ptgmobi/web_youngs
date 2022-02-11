@@ -1,9 +1,12 @@
 <template>
   <div>
     <div class="flex flex-wrap jc-between">
-      <el-card class="box-card m10" v-for="(item, key) in state.titleMap">
+      <el-card
+        v-for="(item, key) in state.titleMap"
+        class="box-card m10"
+      >
         <div class="flex jc-start">
-          <h3>{{state.titleMap[key]}}</h3>
+          <h3>{{ state.titleMap[key] }}</h3>
         </div>
       </el-card>
     </div>

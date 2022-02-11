@@ -1,18 +1,37 @@
 <template>
   <div class="app-container">
-    <el-button v-if="judgePermissionElementFn('A-AR-ADD-V')" type="primary" @click="handleCreate">新建</el-button>
-    <el-table :data="list" style="width: 100%; margin-top: 30px" border>
-      <el-table-column align="center" label="ID">
+    <el-button
+      v-if="judgePermissionElementFn('A-AR-ADD-V')"
+      type="primary"
+      @click="handleCreate"
+    >
+      新建
+    </el-button>
+    <el-table
+      :data="list"
+      style="width: 100%; margin-top: 30px"
+      border
+    >
+      <el-table-column
+        align="center"
+        label="ID"
+      >
         <template #default="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Name">
+      <el-table-column
+        align="center"
+        label="Name"
+      >
         <template #default="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Operations">
+      <el-table-column
+        align="center"
+        label="Operations"
+      >
         <template #default="scope">
           <el-button
             v-if="judgePermissionElementFn('A-AR-EDIT-V')"
@@ -34,10 +53,21 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog v-model="dialogVisible" :title="dialogType === 'edit' ? 'Edit Role' : 'New Role'" width="90%">
-      <el-form label-width="150px" label-position="left">
+    <el-dialog
+      v-model="dialogVisible"
+      :title="dialogType === 'edit' ? 'Edit Role' : 'New Role'"
+      width="90%"
+    >
+      <el-form
+        label-width="150px"
+        label-position="left"
+      >
         <el-form-item label="Name">
-          <el-input v-model="busData.item.name" placeholder="" :disabled="dialogType === 'edit'" />
+          <el-input
+            v-model="busData.item.name"
+            placeholder=""
+            :disabled="dialogType === 'edit'"
+          />
         </el-form-item>
         <el-form-item label="Permissions">
           <el-select
@@ -48,13 +78,28 @@
             class="w100"
             placeholder="支持多选"
           >
-            <el-option v-for="item in options.permissions" :key="item.id" :label="item.type" :value="item.id" />
+            <el-option
+              v-for="item in options.permissions"
+              :key="item.id"
+              :label="item.type"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitFn">确 定</el-button>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="dialogVisible = false">
+          取 消
+        </el-button>
+        <el-button
+          type="primary"
+          @click="submitFn"
+        >
+          确 定
+        </el-button>
       </div>
     </el-dialog>
   </div>
@@ -68,8 +113,8 @@ import { messageFun } from '@/utils/message'
 import self from '@/mixins/self'
 import _ from 'lodash'
 export default {
-  mixins: [self],
   components: {},
+  mixins: [self],
   data() {
     return {
       options: {

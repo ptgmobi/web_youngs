@@ -1,21 +1,38 @@
 <template>
   <div class="login-container columnCC">
-    <el-form ref="refloginForm" size="medium" class="login-form" :model="formInline" :rules="formRulesMixin">
+    <el-form
+      ref="refloginForm"
+      size="medium"
+      class="login-form"
+      :model="formInline"
+      :rules="formRulesMixin"
+    >
       <div class="title-container">
-        <h3 class="title text-center">{{ settings.title }}</h3>
+        <h3 class="title text-center">
+          {{ settings.title }}
+        </h3>
       </div>
-      <el-form-item prop="username" :rules="formRulesMixin.isNotNull">
+      <el-form-item
+        prop="username"
+        :rules="formRulesMixin.isNotNull"
+      >
         <div class="rowSC flex-1">
           <span class="svg-container">
             <svg-icon icon-class="user" />
           </span>
-          <el-input v-model="formInline.username" placeholder="用户名" />
+          <el-input
+            v-model="formInline.username"
+            placeholder="用户名"
+          />
           <!--占位-->
           <div class="show-pwd" />
         </div>
       </el-form-item>
       <!--<el-form-item prop="password" :rules="formRulesMixin.passwordValid">-->
-      <el-form-item prop="password" :rules="formRulesMixin.isNotNull">
+      <el-form-item
+        prop="password"
+        :rules="formRulesMixin.isNotNull"
+      >
         <div class="rowSC flex-1">
           <span class="svg-container">
             <svg-icon icon-class="password" />
@@ -26,16 +43,27 @@
             v-model="formInline.password"
             :type="passwordType"
             name="password"
-            @keyup.enter="handleLogin"
             placeholder="password"
+            @keyup.enter="handleLogin"
           />
-          <span class="show-pwd" @click="showPwd">
+          <span
+            class="show-pwd"
+            @click="showPwd"
+          >
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
           </span>
         </div>
       </el-form-item>
-      <div class="tip-message">{{ tipMessage }}</div>
-      <el-button :loading="loading" type="primary" class="login-btn" size="medium" @click.prevent="handleLogin">
+      <div class="tip-message">
+        {{ tipMessage }}
+      </div>
+      <el-button
+        :loading="loading"
+        type="primary"
+        class="login-btn"
+        size="medium"
+        @click.prevent="handleLogin"
+      >
         Login
       </el-button>
     </el-form>

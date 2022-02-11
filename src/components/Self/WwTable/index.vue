@@ -27,7 +27,11 @@
       >
         <template #header>
           <span>{{ item.label }}</span>
-          <el-tooltip effect="dark" :content="item.tip" placement="top">
+          <el-tooltip
+            effect="dark"
+            :content="item.tip"
+            placement="top"
+          >
             <i class="el-icon-info" />
           </el-tooltip>
         </template>

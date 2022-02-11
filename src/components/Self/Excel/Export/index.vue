@@ -30,7 +30,13 @@
       <el-button @click="handleDownload">导出</el-button>
     </el-form-item>
   </el-form> -->
-  <el-button icon="Download" type="primary" @click="handleDownload">{{ buttonName }}</el-button>
+  <el-button
+    icon="Download"
+    type="primary"
+    @click="handleDownload"
+  >
+    {{ buttonName }}
+  </el-button>
 </template>
 <script>
 // import { parseTime } from '@/utils'

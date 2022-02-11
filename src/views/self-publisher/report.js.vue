@@ -2,8 +2,16 @@
   <div>
     <div class="search-box">
       <div class="mb-10">
-        <el-checkbox-group v-model="search.checkList" @change="changeCheckList">
-          <el-checkbox v-for="item in clumon.choice" :key="item.value" :label="item.value" :disabled="item.require">
+        <el-checkbox-group
+          v-model="search.checkList"
+          @change="changeCheckList"
+        >
+          <el-checkbox
+            v-for="item in clumon.choice"
+            :key="item.value"
+            :label="item.value"
+            :disabled="item.require"
+          >
             {{ item.label }}
           </el-checkbox>
         </el-checkbox-group>
@@ -11,8 +19,8 @@
       <div class="flex jc-between ai-start">
         <div class="flex jc-start ai-start flex-wrap">
           <el-date-picker
-            class="mr-10 mb-10"
             v-model="search.date"
+            class="mr-10 mb-10"
             type="daterange"
             unlink-panels
             format="YYYY-MM-DD"
@@ -22,7 +30,11 @@
             end-placeholder="结束日期"
             :shortcuts="shortcuts"
           ></el-date-picker>
-          <el-input v-model="search.filter.country" placeholder="Country" class="mr-10 mb-10 search-con" />
+          <el-input
+            v-model="search.filter.country"
+            placeholder="Country"
+            class="mr-10 mb-10 search-con"
+          />
           <el-select
             v-model="search.filter.platform"
             clearable
@@ -37,10 +49,23 @@
               :value="item.value"
             ></el-option>
           </el-select>
-          <el-input v-model="search.filter.pkg" placeholder="Pkg" class="mr-10 mb-10 search-con" />
-          <el-input v-model="search.filter.offer" placeholder="Offer" class="mr-10 mb-10 search-con" />
+          <el-input
+            v-model="search.filter.pkg"
+            placeholder="Pkg"
+            class="mr-10 mb-10 search-con"
+          />
+          <el-input
+            v-model="search.filter.offer"
+            placeholder="Offer"
+            class="mr-10 mb-10 search-con"
+          />
         </div>
-        <el-button type="primary" @click="searchFun">Run</el-button>
+        <el-button
+          type="primary"
+          @click="searchFun"
+        >
+          Run
+        </el-button>
       </div>
     </div>
     <!-- all -->
@@ -60,12 +85,16 @@
       ></ww-export-excel>
     </div>
     <!-- arr -->
-    <el-table :data="tableData.arr" border style="width: 100%">
+    <el-table
+      :data="tableData.arr"
+      border
+      style="width: 100%"
+    >
       <el-table-column
-        align="center"
-        sortable
         v-for="item in handleClumon"
         :key="item.value"
+        align="center"
+        sortable
         :prop="item.value"
         :label="item.label"
         :width="item.width"
@@ -79,10 +108,10 @@
     <div class="w100 flex">
       <pagination
         v-show="pagination.total"
-        :total="pagination.total"
-        :page-sizes="pagination.pageSizes"
         v-model:page="pagination.listQuery.page"
         v-model:limit="pagination.listQuery.limit"
+        :total="pagination.total"
+        :page-sizes="pagination.pageSizes"
         @pagination="init"
       />
     </div>
@@ -226,11 +255,6 @@ export default {
       busHandleClumon: []
     }
   },
-  created() {
-    this.init()
-    this.changeCheckList(this.search.checkList)
-    this.handleClumon = this.busHandleClumon
-  },
   computed: {
     // handleClumon() {
     //   const arr = this.search.checkList
@@ -252,6 +276,11 @@ export default {
         return ele.value
       })
     }
+  },
+  created() {
+    this.init()
+    this.changeCheckList(this.search.checkList)
+    this.handleClumon = this.busHandleClumon
   },
   methods: {
     async init() {

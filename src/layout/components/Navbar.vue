@@ -10,8 +10,16 @@
       <breadcrumb class="breadcrumb-container" />
     </div>
     <!--nav title-->
-    <div class="heardCenterTitle" v-if="settings.showTitle">{{ settings.showTitle }}</div>
-    <div class="right-menu" v-if="settings.ShowDropDown">
+    <div
+      v-if="settings.showTitle"
+      class="heardCenterTitle"
+    >
+      {{ settings.showTitle }}
+    </div>
+    <div
+      v-if="settings.ShowDropDown"
+      class="right-menu"
+    >
       <div class="w100 flex">
         <div class="p10">
           <router-link to="/password">
@@ -19,7 +27,14 @@
           </router-link>
         </div>
         <div class="p10">
-          <el-button type="warning" plain round @click="loginOut">Login Out</el-button>
+          <el-button
+            type="warning"
+            plain
+            round
+            @click="loginOut"
+          >
+            Login Out
+          </el-button>
         </div>
       </div>
       <!-- <el-dropdown class="dn" trigger="click" size="medium">

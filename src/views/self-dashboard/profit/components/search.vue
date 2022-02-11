@@ -1,12 +1,16 @@
 <template>
   <div>
     <div class="white-bg control-box flex jc-between ai-start p0-0">
-      <el-form :inline="true" :model="searchForm.data" class="flex jc-between ai-start w100">
+      <el-form
+        :inline="true"
+        :model="searchForm.data"
+        class="flex jc-between ai-start w100"
+      >
         <div class="flex jc-start flex-wrap ai-start">
           <el-form-item label="日期选择">
             <el-date-picker
-              class="search-con"
               v-model="searchForm.data.date"
+              class="search-con"
               type="daterange"
               unlink-panels
               format="YYYY-MM-DD"
@@ -19,7 +23,13 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item label="分成方法">
-            <el-select v-model="searchForm.data.adtype" class="search-con" clearable placeholder="搜索" @change="changeSelectFn">
+            <el-select
+              v-model="searchForm.data.adtype"
+              class="search-con"
+              clearable
+              placeholder="搜索"
+              @change="changeSelectFn"
+            >
               <el-option
                 v-for="item in searchForm.options.adtype"
                 :key="item"
@@ -29,7 +39,14 @@
             </el-select>
           </el-form-item>
           <el-form-item label="业务类型">
-            <el-select v-model="searchForm.data.channel_type" class="search-con" clearable placeholder="搜索" filterable @change="changeSelectFn">
+            <el-select
+              v-model="searchForm.data.channel_type"
+              class="search-con"
+              clearable
+              placeholder="搜索"
+              filterable
+              @change="changeSelectFn"
+            >
               <!-- <div class="flex jc-between p10 pt-0">
                 <el-button type="primary" plain size="mini" @click="selectAllProduct()">全选</el-button>
                 <el-button size="mini" type="danger" plain @click="unSelectedAllProduct()">清空</el-button>
@@ -43,7 +60,14 @@
             </el-select>
           </el-form-item>
           <el-form-item label="User Name">
-            <el-select v-model="searchForm.data.user_name" class="search-con" clearable placeholder="搜索" filterable @change="changeSelectFn">
+            <el-select
+              v-model="searchForm.data.user_name"
+              class="search-con"
+              clearable
+              placeholder="搜索"
+              filterable
+              @change="changeSelectFn"
+            >
               <el-option
                 v-for="(item, index) in searchForm.options.user_name"
                 :key="item"
@@ -53,7 +77,15 @@
             </el-select>
           </el-form-item>
           <el-form-item label="Slot">
-            <el-select v-model="searchForm.data.slot" class="search-con" clearable placeholder="搜索" collapse-tags filterable @change="changeSelectFn">
+            <el-select
+              v-model="searchForm.data.slot"
+              class="search-con"
+              clearable
+              placeholder="搜索"
+              collapse-tags
+              filterable
+              @change="changeSelectFn"
+            >
               <el-option
                 v-for="(item, index) in searchForm.options.slot"
                 :key="item"
@@ -63,7 +95,15 @@
             </el-select>
           </el-form-item>
           <el-form-item label="国家">
-            <el-select v-model="searchForm.data.country" class="search-con" clearable placeholder="搜索" collapse-tags filterable @change="changeSelectFn">
+            <el-select
+              v-model="searchForm.data.country"
+              class="search-con"
+              clearable
+              placeholder="搜索"
+              collapse-tags
+              filterable
+              @change="changeSelectFn"
+            >
               <el-option
                 v-for="(item, index) in searchForm.options.country"
                 :key="item"
@@ -75,7 +115,12 @@
         </div>
         <div>
           <div class="flex">
-            <el-button type="primary" @click="handleSubmitSearch">查询</el-button>
+            <el-button
+              type="primary"
+              @click="handleSubmitSearch"
+            >
+              查询
+            </el-button>
           </div>
         </div>
       </el-form>

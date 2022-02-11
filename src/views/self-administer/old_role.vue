@@ -1,14 +1,29 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="handleAdd">New Role</el-button>
-    <el-table :data="list" style="width: 100%; margin-top: 30px" border>
-      <el-table-column align="center" label="Role ID">
-        <template v-slot="scope">
+    <el-button
+      type="primary"
+      @click="handleAdd"
+    >
+      New Role
+    </el-button>
+    <el-table
+      :data="list"
+      style="width: 100%; margin-top: 30px"
+      border
+    >
+      <el-table-column
+        align="center"
+        label="Role ID"
+      >
+        <template #default="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Group Name">
-        <template v-slot="scope">
+      <el-table-column
+        align="center"
+        label="Group Name"
+      >
+        <template #default="scope">
           {{ scope.row.groupname }}
         </template>
       </el-table-column>
@@ -22,23 +37,60 @@
           />
         </template>
       </el-table-column> -->
-      <el-table-column align="center" label="Operations">
-        <template v-slot="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">Role</el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope)">Delete</el-button>
+      <el-table-column
+        align="center"
+        label="Operations"
+      >
+        <template #default="scope">
+          <el-button
+            type="primary"
+            size="small"
+            @click="handleEdit(scope)"
+          >
+            Role
+          </el-button>
+          <el-button
+            type="danger"
+            size="small"
+            @click="handleDelete(scope)"
+          >
+            Delete
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <el-dialog v-model:visible="dialogVisible" :title="dialogType === 'edit' ? 'Edit Role' : 'New Role'" width="80%">
-      <el-form :model="dialogData.data" label-width="150px" label-position="left">
+    <el-dialog
+      v-model:visible="dialogVisible"
+      :title="dialogType === 'edit' ? 'Edit Role' : 'New Role'"
+      width="80%"
+    >
+      <el-form
+        :model="dialogData.data"
+        label-width="150px"
+        label-position="left"
+      >
         <el-form-item label="Name">
-          <el-input v-model="dialogData.data.name" placeholder="Role Name" :disabled="dialogType === 'edit'" />
+          <el-input
+            v-model="dialogData.data.name"
+            placeholder="Role Name"
+            :disabled="dialogType === 'edit'"
+          />
         </el-form-item>
       </el-form>
       <div style="text-align: right">
-        <el-button type="danger" @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="confirmFun">Confirm</el-button>
+        <el-button
+          type="danger"
+          @click="dialogVisible = false"
+        >
+          Cancel
+        </el-button>
+        <el-button
+          type="primary"
+          @click="confirmFun"
+        >
+          Confirm
+        </el-button>
       </div>
     </el-dialog>
   </div>

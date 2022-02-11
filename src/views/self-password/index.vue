@@ -1,6 +1,10 @@
 <template>
   <div class="app-container">
-    <password :is-change="true" :is-dialog="false" @wwpass-confirm="submitFn" />
+    <password
+      :is-change="true"
+      :is-dialog="false"
+      @wwpass-confirm="submitFn"
+    />
   </div>
 </template>
 <script lang="ts">

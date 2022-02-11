@@ -1,5 +1,8 @@
 <template>
-  <div id="tags-view-container" class="tags-view-container">
+  <div
+    id="tags-view-container"
+    class="tags-view-container"
+  >
     <div class="tags-view-wrapper">
       <router-link
         v-for="tag in visitedViews"
@@ -13,14 +16,33 @@
         @contextmenu.prevent="openMenu(tag, $event)"
       >
         {{ tag.title }}
-        <Close v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"></Close>
+        <Close
+          v-if="!isAffix(tag)"
+          class="el-icon-close"
+          @click.prevent.stop="closeSelectedTag(tag)"
+        ></Close>
       </router-link>
     </div>
-    <ul v-show="visible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)">Refresh</li>
-      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">Close</li>
-      <li @click="closeOthersTags">Close Others</li>
-      <li @click="closeAllTags(selectedTag)">Close All</li>
+    <ul
+      v-show="visible"
+      :style="{ left: left + 'px', top: top + 'px' }"
+      class="contextmenu"
+    >
+      <li @click="refreshSelectedTag(selectedTag)">
+        Refresh
+      </li>
+      <li
+        v-if="!isAffix(selectedTag)"
+        @click="closeSelectedTag(selectedTag)"
+      >
+        Close
+      </li>
+      <li @click="closeOthersTags">
+        Close Others
+      </li>
+      <li @click="closeAllTags(selectedTag)">
+        Close All
+      </li>
     </ul>
   </div>
 </template>

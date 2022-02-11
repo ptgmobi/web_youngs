@@ -1,7 +1,13 @@
 <template>
-  <div id="Sidebar" class="reset-menu-style">
+  <div
+    id="Sidebar"
+    class="reset-menu-style"
+  >
     <!--logo-->
-    <Logo v-if="settings.sidebarLogo" :collapse="!isCollapse" />
+    <Logo
+      v-if="settings.sidebarLogo"
+      :collapse="!isCollapse"
+    />
     <!--router nav-->
     <el-scrollbar>
       <el-menu
@@ -15,7 +21,12 @@
         :active-text-color="scssJson.menuActiveText"
         mode="vertical"
       >
-        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
+        <sidebar-item
+          v-for="route in routes"
+          :key="route.path"
+          :item="route"
+          :base-path="route.path"
+        />
       </el-menu>
     </el-scrollbar>
   </div>

@@ -1,7 +1,9 @@
 <template>
   <div class="scroll-y">
     <div class="dashboard-container">
-      <div class="dashboard-text">name: {{ username }}</div>
+      <div class="dashboard-text">
+        name: {{ username }}
+      </div>
     </div>
     <div>update element-plus to 1.2.+, add svg icon, icon-font is abandoned</div>
     <i class="el-icon-add-location">abandoned</i>
@@ -11,14 +13,24 @@
         <Svg.Edit></Svg.Edit>
       </el-icon>
     </div>
-    <div class="mt-2">this is var from vite.config.js define</div>
+    <div class="mt-2">
+      this is var from vite.config.js define
+    </div>
     <div>{{ showObj }},{{ showObjString }}</div>
 
     <div class="mt-3 mb-1">
-      <div class="mb-1">### How to migrate</div>
-      <div class="mb-1">See how to migrate from **ElementUI** to **Element Plus** in our dedicated discussion:</div>
-      <div class="mb-1">- For English: [#5658](https://github.com/element-plus/element-plus/discussions/5658)</div>
-      <div class="mb-1">- 简体中文: [#5657](https://github.com/element-plus/element-plus/discussions/5657)</div>
+      <div class="mb-1">
+        ### How to migrate
+      </div>
+      <div class="mb-1">
+        See how to migrate from **ElementUI** to **Element Plus** in our dedicated discussion:
+      </div>
+      <div class="mb-1">
+        - For English: [#5658](https://github.com/element-plus/element-plus/discussions/5658)
+      </div>
+      <div class="mb-1">
+        - 简体中文: [#5657](https://github.com/element-plus/element-plus/discussions/5657)
+      </div>
     </div>
   </div>
 </template>

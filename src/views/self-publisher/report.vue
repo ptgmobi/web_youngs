@@ -2,7 +2,10 @@
   <div>
     <div class="search-box">
       <div class="mb-10">
-        <el-checkbox-group v-model="data.search.checkList" @change="changeCheckList">
+        <el-checkbox-group
+          v-model="data.search.checkList"
+          @change="changeCheckList"
+        >
           <el-checkbox
             v-for="item in data.clumon.choice"
             :key="item.value"
@@ -16,8 +19,8 @@
       <div class="flex jc-between ai-start">
         <div class="flex jc-start ai-start flex-wrap">
           <el-date-picker
-            class="mr-10 mb-10"
             v-model="data.search.date"
+            class="mr-10 mb-10"
             type="daterange"
             unlink-panels
             format="YYYY-MM-DD"
@@ -27,7 +30,11 @@
             end-placeholder="结束日期"
             :shortcuts="data.shortcuts"
           ></el-date-picker>
-          <el-input v-model="data.search.filter.country" placeholder="Country" class="mr-10 mb-10 search-con" />
+          <el-input
+            v-model="data.search.filter.country"
+            placeholder="Country"
+            class="mr-10 mb-10 search-con"
+          />
           <el-select
             v-model="data.search.filter.platform"
             clearable
@@ -42,10 +49,23 @@
               :value="item.value"
             ></el-option>
           </el-select>
-          <el-input v-model="data.search.filter.pkg" placeholder="Pkg" class="mr-10 mb-10 search-con" />
-          <el-input v-model="data.search.filter.offer" placeholder="Offer" class="mr-10 mb-10 search-con" />
+          <el-input
+            v-model="data.search.filter.pkg"
+            placeholder="Pkg"
+            class="mr-10 mb-10 search-con"
+          />
+          <el-input
+            v-model="data.search.filter.offer"
+            placeholder="Offer"
+            class="mr-10 mb-10 search-con"
+          />
         </div>
-        <el-button type="primary" @click="searchFun">Run</el-button>
+        <el-button
+          type="primary"
+          @click="searchFun"
+        >
+          Run
+        </el-button>
       </div>
     </div>
     <!-- all -->
@@ -65,12 +85,16 @@
       ></WwExportExcel>
     </div>
     <!-- arr -->
-    <el-table :data="data.tableData.arr" :border="true" style="width: 100%">
+    <el-table
+      :data="data.tableData.arr"
+      :border="true"
+      style="width: 100%"
+    >
       <el-table-column
-        align="center"
-        sortable
         v-for="item in data.handleClumon"
         :key="item.value"
+        align="center"
+        sortable
         :prop="item.value"
         :label="item.label"
         :width="item.width"
@@ -84,10 +108,10 @@
     <div class="w100 flex">
       <Pagination
         v-show="data.pagination.total"
-        :total="data.pagination.total"
-        :page-sizes="data.pagination.pageSizes"
         v-model:page="data.pagination.listQuery.page"
         v-model:limit="data.pagination.listQuery.limit"
+        :total="data.pagination.total"
+        :page-sizes="data.pagination.pageSizes"
         @pagination="init"
       />
     </div>

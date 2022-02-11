@@ -1,9 +1,17 @@
 <template>
   <div>
     <div>
-      <el-form :inline="true" :model="searchData.data" class="flex jc-between w100">
+      <el-form
+        :inline="true"
+        :model="searchData.data"
+        class="flex jc-between w100"
+      >
         <el-form-item label="指标">
-          <el-select v-model="searchData.data.target" @change="init" placeholder="Select">
+          <el-select
+            v-model="searchData.data.target"
+            placeholder="Select"
+            @change="init"
+          >
             <el-option
               v-for="item in searchData.options.target"
               :key="item.value"
@@ -14,7 +22,6 @@
           </el-select>
         </el-form-item>
       </el-form>
-      
     </div>
     <div>
       <ww-chart-data :chart-data="state.chartData" />

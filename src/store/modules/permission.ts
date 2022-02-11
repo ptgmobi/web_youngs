@@ -95,7 +95,7 @@ const actions = {
         //filter by codeArr
         //req code arr
         // let codeArr: any = localStorage.getItem('codeArr')
-        let codeArr: any = [...roles]
+        const codeArr: any = [...roles]
         // if (codeArr) {
         //   codeArr = JSON.parse(codeArr)
         // } else {

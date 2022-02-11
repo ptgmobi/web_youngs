@@ -7,24 +7,45 @@
         border
         style="width: 100%; margin-top: 20px"
       >
-        <el-table-column prop="source" label="Source" width="180">
+        <el-table-column
+          prop="source"
+          label="Source"
+          width="180"
+        >
           <template #default="scope">
             <el-checkbox
               v-model="state.setObj[scope.row.source]"
               @change="changeAllSource(scope.row.source, state.setObj[scope.row.source])"
-            >{{ scope.row.source }}</el-checkbox>
+            >
+              {{ scope.row.source }}
+            </el-checkbox>
           </template>
         </el-table-column>
-        <el-table-column prop="label" label="Label"></el-table-column>
-        <el-table-column prop="slot_id" label="Slot ID"></el-table-column>
-        <el-table-column prop="device_count" label="Count">
+        <el-table-column
+          prop="label"
+          label="Label"
+        ></el-table-column>
+        <el-table-column
+          prop="slot_id"
+          label="Slot ID"
+        ></el-table-column>
+        <el-table-column
+          prop="device_count"
+          label="Count"
+        >
           <template #default="scope">
             <span>{{ thousandSeparator(scope.row.device_count) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="select" label="Select">
+        <el-table-column
+          prop="select"
+          label="Select"
+        >
           <template #default="scope">
-            <el-checkbox v-model="scope.row.select_status" @change="changeOneSource(scope.row)"></el-checkbox>
+            <el-checkbox
+              v-model="scope.row.select_status"
+              @change="changeOneSource(scope.row)"
+            ></el-checkbox>
           </template>
         </el-table-column>
       </el-table>

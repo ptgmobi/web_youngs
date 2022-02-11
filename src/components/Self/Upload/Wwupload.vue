@@ -23,7 +23,10 @@
         将文件拖到此处，或
         <em>点击上传</em>
       </div>
-      <div slot="tip" class="el-upload__tip">
+      <div
+        slot="tip"
+        class="el-upload__tip"
+      >
         <slot name="content" />
       </div>
     </el-upload>

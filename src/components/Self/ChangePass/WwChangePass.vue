@@ -1,19 +1,61 @@
 <template>
   <div class="pass-container">
-    <el-form ref="ruleFormPass" :model="formData" :rules="rules" label-width="150px" label-position="left">
-      <el-form-item v-if="isChange" label="旧密码" prop="oldPass" autocomplete="off">
-        <el-input v-model="formData.oldPass" placeholder="" type="password" />
+    <el-form
+      ref="ruleFormPass"
+      :model="formData"
+      :rules="rules"
+      label-width="150px"
+      label-position="left"
+    >
+      <el-form-item
+        v-if="isChange"
+        label="旧密码"
+        prop="oldPass"
+        autocomplete="off"
+      >
+        <el-input
+          v-model="formData.oldPass"
+          placeholder=""
+          type="password"
+        />
       </el-form-item>
-      <el-form-item label="新密码" prop="pass" autocomplete="off">
-        <el-input v-model="formData.pass" placeholder="" type="password" />
+      <el-form-item
+        label="新密码"
+        prop="pass"
+        autocomplete="off"
+      >
+        <el-input
+          v-model="formData.pass"
+          placeholder=""
+          type="password"
+        />
       </el-form-item>
-      <el-form-item label="再次输入" prop="checkPass" autocomplete="off">
-        <el-input v-model="formData.checkPass" placeholder="" type="password" />
+      <el-form-item
+        label="再次输入"
+        prop="checkPass"
+        autocomplete="off"
+      >
+        <el-input
+          v-model="formData.checkPass"
+          placeholder=""
+          type="password"
+        />
       </el-form-item>
     </el-form>
     <div style="text-align: right">
-      <el-button v-if="isDialog" type="danger" @click="cancelFun">退出</el-button>
-      <el-button type="primary" @click="confirmFun('ruleFormPass')">提交</el-button>
+      <el-button
+        v-if="isDialog"
+        type="danger"
+        @click="cancelFun"
+      >
+        退出
+      </el-button>
+      <el-button
+        type="primary"
+        @click="confirmFun('ruleFormPass')"
+      >
+        提交
+      </el-button>
     </div>
   </div>
 </template>

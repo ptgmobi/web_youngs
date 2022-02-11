@@ -47,7 +47,8 @@
     },
     //指定默认读取的目录
     //"typeRoots": ["./node_modules/@types/", "./types"],
-    "lib": ["ES2018", "DOM"]
+    "lib": ["ES2018", "DOM"],
+    "types": ["element-plus/global"]
   },
   //"files": [],
   //include包含文件夹会被ts进行读取

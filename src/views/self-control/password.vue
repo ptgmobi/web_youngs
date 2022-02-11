@@ -1,16 +1,38 @@
 <template>
-  <el-form ref="ruleForm" :model="dialogData.data" :rules="dialogData.rules" label-width="150px" label-position="left">
+  <el-form
+    ref="ruleForm"
+    :model="dialogData.data"
+    :rules="dialogData.rules"
+    label-width="150px"
+    label-position="left"
+  >
     <!-- <el-form-item label="原密码" prop="oldPass">
       <el-input v-model="ruleForm.oldPass" type="password" autocomplete="off" />
     </el-form-item> -->
-    <el-form-item label="新密码" prop="pass">
-      <el-input ref="password" v-model="dialogData.data.pass" type="password" autocomplete="off" />
+    <el-form-item
+      label="新密码"
+      prop="pass"
+    >
+      <el-input
+        ref="password"
+        v-model="dialogData.data.pass"
+        type="password"
+        autocomplete="off"
+      />
       <!-- <span class="show-pwd" @click="showPwd">
         <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
       </span> -->
     </el-form-item>
-    <el-form-item label="确认密码" prop="checkPass">
-      <el-input ref="checkpassword" v-model="dialogData.data.checkPass" type="password" autocomplete="off" />
+    <el-form-item
+      label="确认密码"
+      prop="checkPass"
+    >
+      <el-input
+        ref="checkpassword"
+        v-model="dialogData.data.checkPass"
+        type="password"
+        autocomplete="off"
+      />
       <!-- <span class="show-pwd" @click="showPwd">
         <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
       </span> -->

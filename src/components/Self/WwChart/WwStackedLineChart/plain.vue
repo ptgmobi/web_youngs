@@ -1,7 +1,11 @@
 <template>
   <div class="ww-chart-box">
     <!-- chart -->
-    <ww-chart-data class="mt-40" :chart-data="chartData" :color="color" />
+    <ww-chart-data
+      class="mt-40"
+      :chart-data="chartData"
+      :color="color"
+    />
   </div>
 </template>
 <script>

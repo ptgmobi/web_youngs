@@ -1,7 +1,9 @@
 <template>
   <div>
     <div>ref1:{{ ref1 }},ref2:{{ ref2 }}</div>
-    <el-button @click="hookExample">执行hook方法</el-button>
+    <el-button @click="hookExample">
+      执行hook方法
+    </el-button>
   </div>
 </template>
 

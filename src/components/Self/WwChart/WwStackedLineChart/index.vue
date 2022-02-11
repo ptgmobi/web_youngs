@@ -22,13 +22,24 @@
           </el-button-group>
         </div>
         <div>
-          <el-popover placement="right" trigger="click">
-            <el-button slot="reference" type="primary" icon="Setting" circle />
+          <el-popover
+            placement="right"
+            trigger="click"
+          >
+            <el-button
+              slot="reference"
+              type="primary"
+              icon="Setting"
+              circle
+            />
             <!-- 内容 -->
             <!-- 搜索 -->
             <div class="serach-box mb-10">
               <h3>自定义列</h3>
-              <el-input v-model="search.input" placeholder="请输入需要搜索的指标" />
+              <el-input
+                v-model="search.input"
+                placeholder="请输入需要搜索的指标"
+              />
             </div>
             <div class="flex ai-start jc-between">
               <!-- left -->
@@ -36,15 +47,30 @@
                 <div class="title-box">
                   <h3>勾选需要显示的指标</h3>
                 </div>
-                <div v-if="!search.input" class="flex jc-start control-box">
-                  <a class="choice-btn" @click="selectAll">全选</a>
+                <div
+                  v-if="!search.input"
+                  class="flex jc-start control-box"
+                >
+                  <a
+                    class="choice-btn"
+                    @click="selectAll"
+                  >全选</a>
                   /
-                  <a class="choice-btn" @click="selectZero">清空</a>
+                  <a
+                    class="choice-btn"
+                    @click="selectZero"
+                  >清空</a>
                   /
-                  <a class="choice-btn" @click="selectDefault">默认</a>
+                  <a
+                    class="choice-btn"
+                    @click="selectDefault"
+                  >默认</a>
                 </div>
                 <div class="con-box">
-                  <div v-for="group in handleGroupArr" :key="group.level">
+                  <div
+                    v-for="group in handleGroupArr"
+                    :key="group.level"
+                  >
                     <h3>{{ group.label }}</h3>
                     <el-checkbox-group
                       v-model="select.data.checkList"
@@ -71,17 +97,32 @@
                   <h3>已选{{ draggableListLength }}列</h3>
                 </div>
                 <div class="flex jc-start control-box">
-                  <a class="choice-btn" @click="selectDefaultDraggableList">默认</a>
+                  <a
+                    class="choice-btn"
+                    @click="selectDefaultDraggableList"
+                  >默认</a>
                 </div>
                 <div class="con-box draggable-box">
-                  <draggable :list="draggableList" group="article" class="dragArea" @change="changeDraggableList">
-                    <div v-for="element in draggableList" :key="element.value" class="list-complete-item">
+                  <draggable
+                    :list="draggableList"
+                    group="article"
+                    class="dragArea"
+                    @change="changeDraggableList"
+                  >
+                    <div
+                      v-for="element in draggableList"
+                      :key="element.value"
+                      class="list-complete-item"
+                    >
                       <el-button class="draggable-one">
                         <div class="flex jc-between">
                           <span>≡</span>
                           <span>{{ element.label }}</span>
                           <span>
-                            <i class="el-icon-close cp" @click="delToDraggableList(element)" />
+                            <i
+                              class="el-icon-close cp"
+                              @click="delToDraggableList(element)"
+                            />
                           </span>
                         </div>
                       </el-button>
@@ -95,7 +136,10 @@
       </div>
     </div>
     <!-- chart -->
-    <ww-chart-data class="mt-40" :chart-data="chartData" />
+    <ww-chart-data
+      class="mt-40"
+      :chart-data="chartData"
+    />
   </div>
 </template>
 <script>

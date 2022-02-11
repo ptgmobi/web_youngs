@@ -1,8 +1,15 @@
 <template>
-  <el-form label-width="150px" label-position="top">
+  <el-form
+    label-width="150px"
+    label-position="top"
+  >
     <el-form-item :label="title">
       <div class="">
-        <el-input v-model="filterApiText" class="w100" placeholder="输入关键字进行过滤" />
+        <el-input
+          v-model="filterApiText"
+          class="w100"
+          placeholder="输入关键字进行过滤"
+        />
         <el-tree
           :ref="handleRef"
           :data="handleTree"

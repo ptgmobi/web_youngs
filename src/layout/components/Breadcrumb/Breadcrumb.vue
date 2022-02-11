@@ -1,21 +1,45 @@
 <template>
-  <el-breadcrumb class="app-breadcrumb" separator="/">
+  <el-breadcrumb
+    class="app-breadcrumb"
+    separator="/"
+  >
     <!--has transition  Judging by settings.mainNeedAnimation-->
-    <transition-group v-if="settings.mainNeedAnimation" name="breadcrumb">
-      <el-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
-        <span v-if="item.redirect === 'noRedirect' || index === levelList.length - 1" class="no-redirect">
+    <transition-group
+      v-if="settings.mainNeedAnimation"
+      name="breadcrumb"
+    >
+      <el-breadcrumb-item
+        v-for="(item, index) in levelList"
+        :key="item.path"
+      >
+        <span
+          v-if="item.redirect === 'noRedirect' || index === levelList.length - 1"
+          class="no-redirect"
+        >
           {{ item.meta?.title }}
         </span>
-        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
+        <a
+          v-else
+          @click.prevent="handleLink(item)"
+        >{{ item.meta.title }}</a>
       </el-breadcrumb-item>
     </transition-group>
     <!--no transition-->
     <template v-else>
-      <el-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
-        <span v-if="item.redirect === 'noRedirect' || index === levelList.length - 1" class="no-redirect">
+      <el-breadcrumb-item
+        v-for="(item, index) in levelList"
+        :key="item.path"
+      >
+        <span
+          v-if="item.redirect === 'noRedirect' || index === levelList.length - 1"
+          class="no-redirect"
+        >
           {{ item.meta?.title }}
         </span>
-        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
+        <a
+          v-else
+          @click.prevent="handleLink(item)"
+        >{{ item.meta.title }}</a>
       </el-breadcrumb-item>
     </template>
   </el-breadcrumb>
@@ -43,7 +67,7 @@ const getBreadcrumb = () => {
   if (!isDashboard(first)) {
     //it can replace the first page if not exits
     // matched = [{ path: '/dashboard', meta: { title: 'Dashboard' } }].concat(matched)
-    matched = [{ path: '/', meta: { title: '首页' } }].concat(matched)
+    // matched = [{ path: '/', meta: { title: '首页' } }].concat(matched)
   }
   levelList.value = matched.filter(
     (item: RouteItemTy) => item.meta && item.meta.title && item.meta.breadcrumb !== false

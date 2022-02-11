@@ -1,5 +1,8 @@
 <template>
-  <div :class="className" :style="{ height: height, width: width }" />
+  <div
+    :class="className"
+    :style="{ height: height, width: width }"
+  />
 </template>
 <script lang="ts" setup>
 import { getCurrentInstance, shallowRef, reactive, watch, onMounted, onActivated, onDeactivated, PropType } from 'vue'

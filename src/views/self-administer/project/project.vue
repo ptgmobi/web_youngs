@@ -1,13 +1,39 @@
 <template>
   <div class="app-container">
     <!-- dialog -->
-    <el-dialog v-model="dialogVisible" :title="dialogType === 'edit' ? '修改项目组' : '创建项目组'" width="80%">
-      <el-form ref="ruleForm" :model="busData.data" :rules="busData.rules" label-width="150px" label-position="left">
-        <el-form-item label="项目名称" prop="name">
-          <el-input v-model="busData.data.name" placeholder="" :disabled="dialogType === 'edit'" />
+    <el-dialog
+      v-model="dialogVisible"
+      :title="dialogType === 'edit' ? '修改项目组' : '创建项目组'"
+      width="80%"
+    >
+      <el-form
+        ref="ruleForm"
+        :model="busData.data"
+        :rules="busData.rules"
+        label-width="150px"
+        label-position="left"
+      >
+        <el-form-item
+          label="项目名称"
+          prop="name"
+        >
+          <el-input
+            v-model="busData.data.name"
+            placeholder=""
+            :disabled="dialogType === 'edit'"
+          />
         </el-form-item>
-        <el-form-item label="产品" prop="project">
-          <el-select v-model="busData.data.product" filterable multiple class="w100" placeholder="产品">
+        <el-form-item
+          label="产品"
+          prop="project"
+        >
+          <el-select
+            v-model="busData.data.product"
+            filterable
+            multiple
+            class="w100"
+            placeholder="产品"
+          >
             <el-option
               v-for="item in busData.options.product"
               :key="item.id"
@@ -19,8 +45,18 @@
         </el-form-item>
       </el-form>
       <div style="text-align: right">
-        <el-button type="danger" @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="submitFn">确定</el-button>
+        <el-button
+          type="danger"
+          @click="dialogVisible = false"
+        >
+          取消
+        </el-button>
+        <el-button
+          type="primary"
+          @click="submitFn"
+        >
+          确定
+        </el-button>
       </div>
     </el-dialog>
     <!-- dialog -->
@@ -29,40 +65,75 @@
         <!-- <el-input placeholder="请输入内容" v-model="control.search" class="input-with-select">
           <el-button type="primary" slot="append">搜索</el-button>
         </el-input> -->
-        <el-input v-model="control.search" class="mr-10" placeholder="请输入内容" />
-        <el-button type="primary" @click="handleSearch">搜索</el-button>
-        <el-button v-if="judgePermissionElementFn('A-AP-PROJECT-ADD-V')" type="primary" @click="handleCreate">
+        <el-input
+          v-model="control.search"
+          class="mr-10"
+          placeholder="请输入内容"
+        />
+        <el-button
+          type="primary"
+          @click="handleSearch"
+        >
+          搜索
+        </el-button>
+        <el-button
+          v-if="judgePermissionElementFn('A-AP-PROJECT-ADD-V')"
+          type="primary"
+          @click="handleCreate"
+        >
           创建项目组
         </el-button>
       </div>
     </div>
-    <el-table :data="list" style="width: 100%; margin-top: 30px" border>
-      <el-table-column align="center" label="项目组ID">
+    <el-table
+      :data="list"
+      style="width: 100%; margin-top: 30px"
+      border
+    >
+      <el-table-column
+        align="center"
+        label="项目组ID"
+      >
         <template #default="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="项目名称">
+      <el-table-column
+        align="center"
+        label="项目名称"
+      >
         <template #default="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="产品数">
+      <el-table-column
+        align="center"
+        label="产品数"
+      >
         <template #default="scope">
           {{ scope.row.product_count }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="创建时间">
+      <el-table-column
+        align="center"
+        label="创建时间"
+      >
         <template #default="scope">
           {{ scope.row.create_time }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="更新时间">
+      <el-table-column
+        align="center"
+        label="更新时间"
+      >
         <template #default="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作">
+      <el-table-column
+        align="center"
+        label="操作"
+      >
         <template #default="scope">
           <div class="flex">
             <el-button
@@ -89,10 +160,10 @@
     <div class="w100 flex">
       <pagination
         v-show="pagination.total"
-        :total="pagination.total"
-        :page-sizes="pagination.pageSizes"
         v-model:page="pagination.listQuery.page"
         v-model:limit="pagination.listQuery.limit"
+        :total="pagination.total"
+        :page-sizes="pagination.pageSizes"
         @pagination="init"
       />
     </div>
@@ -113,9 +184,9 @@ const defaultData = {
   product: []
 }
 export default {
-  mixins: [self],
   components: { Pagination },
   directives: { waves },
+  mixins: [self],
   data() {
     return {
       date: '',

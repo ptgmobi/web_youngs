@@ -3,7 +3,6 @@ export default [
   {
     path: '/dashboard',
     component: Layout,
-    redirect: 'overview',
     name: 'Dashboard',
     meta: {
       title: 'Dashboard',
@@ -18,9 +17,7 @@ export default [
         meta: {
           title: 'Overview',
           elSvgIcon: 'Histogram',
-          code: 50,
-          cachePage: false,
-          leaveRmCachePage: true
+          code: 50
         }
       },
       {
@@ -30,9 +27,7 @@ export default [
         meta: {
           title: 'Profit Report',
           elSvgIcon: 'Histogram',
-          code: 51,
-          cachePage: false,
-          leaveRmCachePage: true
+          code: 51
         }
       }
     ]

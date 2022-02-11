@@ -1,11 +1,15 @@
 <template>
   <div class="control-box mt-20">
-    <el-form :inline="true" :model="searchForm.data" class="flex jc-between">
+    <el-form
+      :inline="true"
+      :model="searchForm.data"
+      class="flex jc-between"
+    >
       <div class="flex jc-start">
         <el-form-item label="日期选择">
           <el-date-picker
-            class="mr-10 mb-10"
             v-model="searchForm.data.search.date"
+            class="mr-10 mb-10"
             type="daterange"
             unlink-panels
             format="YYYY-MM-DD"

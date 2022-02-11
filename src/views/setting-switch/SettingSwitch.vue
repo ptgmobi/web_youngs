@@ -1,6 +1,8 @@
 <template>
   <div class="scroll-y">
-    <h3 class="mb-2">props operate demo of settings.js</h3>
+    <h3 class="mb-2">
+      props operate demo of settings.js
+    </h3>
     <div class="rowSS">
       <div class="mb-1">
         page layout related
@@ -46,8 +48,15 @@
         </div>
       </div>
     </div>
-    <div class="mt-2 mb-1">store.commit to change</div>
-    <el-button type="primary" @click="testChangeSettings">testChangeSettings</el-button>
+    <div class="mt-2 mb-1">
+      store.commit to change
+    </div>
+    <el-button
+      type="primary"
+      @click="testChangeSettings"
+    >
+      testChangeSettings
+    </el-button>
   </div>
 </template>
 

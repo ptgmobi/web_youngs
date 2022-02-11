@@ -39,7 +39,7 @@ for (const iconName in ElIconModules) {
 //import svg-icon doc in  https://github.com/anncwb/vite-plugin-svg-icons/blob/main/README.zh_CN.md
 import 'virtual:svg-icons-register'
 import svgIcon from '@/icons/SvgIcon.vue'
-app.component('svg-icon', svgIcon)
+app.component('SvgIcon', svgIcon)
 
 //global mount moment-mini
 // import $momentMini from 'moment-mini'

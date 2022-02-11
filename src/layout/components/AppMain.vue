@@ -1,15 +1,31 @@
 <template>
-  <div class="app-main" :class="{ 'show-tag-view': settings.showTagsView }">{{cachedViews}}
+  <div
+    class="app-main"
+    :class="{ 'show-tag-view': settings.showTagsView }"
+  >{{cachedViews}}
     <router-view v-slot="{ Component }">
       <!--has transition  Judging by settings.mainNeedAnimation-->
-      <transition v-if="settings.mainNeedAnimation" name="fade-transform" mode="out-in">
+      <transition
+        v-if="settings.mainNeedAnimation"
+        name="fade-transform"
+        mode="out-in"
+      >
         <keep-alive :include="cachedViews">
-          <component :is="Component" :key="key" />
+          <component
+            :is="Component"
+            :key="key"
+          />
         </keep-alive>
       </transition>
       <!-- no transition -->
-      <keep-alive v-else :include="cachedViews">
-        <component :is="Component" :key="key" />
+      <keep-alive
+        v-else
+        :include="cachedViews"
+      >
+        <component
+          :is="Component"
+          :key="key"
+        />
       </keep-alive>
     </router-view>
   </div>
