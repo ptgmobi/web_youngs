@@ -1,0 +1,1 @@
+import{a9 as r}from"./vendor-bf64253d.js";function s(e){return r({title:e.code===200?"success":"error",dangerouslyUseHTMLString:!0,message:e.info,type:e.code===200?"success":"error"}),e.code===200}export{s as m};

@@ -1,0 +1,1 @@
+import{d as s,e as n,f as u,g as d,x as p,y as c}from"./vendor-bf64253d.js";var i=s({setup(){const e=n(),t=u();return d(()=>{const{params:o,query:r}=e,{path:a}=o;t.replace({path:"/"+a,query:r})}),()=>p("div",null,[c(" ")])}});export{i as default};
