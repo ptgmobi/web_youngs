@@ -1,5 +1,5 @@
 <template>
-  <div class="app-main" :class="{ 'show-tag-view': settings.showTagsView }">
+  <div class="app-main" :class="{ 'show-tag-view': settings.showTagsView }">{{cachedViews}}
     <router-view v-slot="{ Component }">
       <!--has transition  Judging by settings.mainNeedAnimation-->
       <transition v-if="settings.mainNeedAnimation" name="fade-transform" mode="out-in">

@@ -26,7 +26,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, getCurrentInstance, ref } from 'vue'
 import { useStore } from 'vuex'
 const store = useStore()
 let settings = computed(() => {
@@ -54,32 +53,27 @@ const consoleErrorFun = () => {
 const normalError = () => {
   throw new Error(' throw new Error("")\n')
 }
-
-let { proxy }: any = getCurrentInstance()
 let reqCrossOrigin = () => {
-  proxy
-    .$axiosReq({
-      baseURL: 'http://8.135.1.141/micro-service-test',
-      url: '/ty-user/brand/updateBy',
-      data: { id: 'fai' },
-      method: 'put',
-      isParams: true,
-      bfLoading: true
-    })
-    .then(() => {})
-}
-
-import axiosReq from '@/utils/axiosReq'
-import { ObjTy } from '@/types/common'
-let req404 = () => {
   axiosReq({
-    // baseURL: 'http://8.135.1.141/micro-service-test',
-    url: '/ty-user/brand/updateBy1',
+    baseURL: 'http://8.135.1.141/micro-service-test',
+    url: '/integration-front/brand/updateBy',
     data: { id: 'fai' },
     method: 'put',
     isParams: true,
     bfLoading: true
-  }).then((res: ObjTy) => {})
+  }).then(() => {})
+}
+
+import axiosReq from '@/utils/axiosReq'
+let req404 = () => {
+  axiosReq({
+    // baseURL: 'http://8.135.1.141/micro-service-test',
+    url: '/integration-front/brand/updateBy1',
+    data: { id: 'fai' },
+    method: 'put',
+    isParams: true,
+    bfLoading: true
+  }).then((res: any) => {})
   //the error will collection to unhandledrejection if you  no catch
   // .catch((err) => {})
 }

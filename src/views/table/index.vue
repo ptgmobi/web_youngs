@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { toRefs, reactive, onBeforeMount } from 'vue'
 import { getList } from '@/api/table'
-import { ObjTy } from '@/types/common'
+import { ObjTy } from '~/common'
 const statusFilter = (status: string) => {
   const statusMap: ObjTy = {
     published: 'success',
@@ -66,7 +66,7 @@ const fetchData = () => {
   })
 }
 //导出属性到页面中使用
-let { list, listLoading } = toRefs(state)
+const { list, listLoading } = toRefs(state)
 </script>
 
 <style scoped lang="scss"></style>

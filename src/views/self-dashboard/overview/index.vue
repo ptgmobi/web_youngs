@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<script lang="ts" setup name="Overview">
+<script lang="ts" setup>
 import searchC from './components/search'
 import cardC from './components/card'
 import chartC from './components/chart'

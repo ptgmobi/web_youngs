@@ -163,7 +163,8 @@ watch(() => state.baseData, (newVal, oldVal) => {
   deep: true
 })
 onMounted(() => {
-  // console.log(props.json)
+  console.log(props.json)
+  init()
 })
 </script>
 <style lang="scss">
