@@ -156,7 +156,7 @@ service.interceptors.response.use(
   }
 )
 
-export default function khReqMethod({
+export function axiosReq({
   url,
   data,
   method,
@@ -183,3 +183,5 @@ export default function khReqMethod({
     timeout: timeout ?? 15000
   })
 }
+
+export default axiosReq

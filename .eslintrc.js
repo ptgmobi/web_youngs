@@ -7,28 +7,38 @@ module.exports = {
     es6: true,
     node: true
   },
+
   globals: {
     defineEmits: true,
     document: true,
     localStorage: true,
+    GLOBAL_VAR: true,
     window: true,
     defineProps: true,
-    defineExpose: true
+    defineExpose: true,
+    $ref: true
   },
+  plugins: ['@typescript-eslint', 'prettier', 'import'],
   extends: [
-    'plugin:vue/vue3-essential',
     'eslint:recommended',
-    '@vue/typescript/recommended',
-    '@vue/prettier',
-    '@vue/prettier/@typescript-eslint'
+    'plugin:@typescript-eslint/recommended',
+    'plugin:vue/vue3-recommended',
+    'prettier',
+    './.eslintrc-auto-import.json'
   ],
   parserOptions: {
-    ecmaVersion: 2021
+    parser: '@typescript-eslint/parser',
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+      tsx: true
+    }
   },
   rules: {
     //close lf error
-    'linebreak-style': ['off'],
-    'import/no-unresolved': 'off',
+    'import/no-unresolved': [0],
+    'vue/multi-word-component-names': 'off',
+    'vue/no-deprecated-router-link-tag-prop': 'off',
     'import/extensions': 'off',
     'import/no-absolute-path': 'off',
     'no-async-promise-executor': 'off',

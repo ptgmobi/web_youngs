@@ -3,10 +3,10 @@ import request from '@/utils/axiosReq'
 import setting from '@/settings'
 import bus from '@/utils/bus'
 import pack from '../../package.json'
-import { ObjTy } from '@/types/common'
+import { ObjTy } from '~/common'
 const errorLogReq = (errLog: string) => {
   request({
-    url: '/ty-user/errorCollection/insert',
+    url: '/integration-front/errorCollection/insert',
     data: {
       pageUrl: window.location.href,
       errorLog: errLog,
@@ -50,7 +50,7 @@ export default function () {
           //console.log('errorString', errLog)
           errorLogReq(errLog)
         } else {
-          const errLog = `${error.stack?.substr(0, 300)}`
+          const errLog = `${error?.stack?.substr(0, 300)}`
           //console.log('errorString', errLog)
           errorLogReq(errLog)
         }
@@ -65,9 +65,16 @@ export default function () {
       if (typeof reason === 'string') {
         errLog = reason
       } else {
-        errLog = `${reason.stack?.substr(0, 300)}`
+        errLog = `${reason?.stack?.substr(0, 300)}`
       }
-      errorLogReq(errLog)
+      //未授权和取消不捕捉
+      //此处可添加不捕捉状态码
+      const unhandledCode = '403, 401'
+      //此处可添加不捕捉string
+      const unhandledString = 'cancel'
+      if (!unhandledCode.includes(reason?.code) && !unhandledString.includes(unhandledString)) {
+        errorLogReq(errLog)
+      }
     })
 
     //些特殊情况下，还需要捕获处理console.error，捕获方式就是重写window.console.error
