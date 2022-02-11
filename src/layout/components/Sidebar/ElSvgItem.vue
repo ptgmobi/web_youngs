@@ -5,7 +5,6 @@
 </template>
 
 <script setup lang="ts">
-// import * as ElSvg from '@element-plus/icons'
 import * as ElSvg from '@element-plus/icons-vue'
 const props = defineProps({
   elSvgName: {
@@ -14,7 +13,7 @@ const props = defineProps({
     type: String
   }
 })
-let { elSvgName } = props
+const { elSvgName } = props
 </script>
 
 <style scoped lang="scss">

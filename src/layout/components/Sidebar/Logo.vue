@@ -28,14 +28,14 @@ const state = reactive({
   logo: img
 })
 //export to page for
-let { title, logo } = toRefs(state)
+const { title, logo } = toRefs(state)
 </script>
 
 <style lang="scss">
 /*
-   vue3.0 过度效果
-   enter-> enter-from
-   leave-> leave-from
+  vue3.0 过度效果
+  enter-> enter-from
+  leave-> leave-from
   */
 .sidebarLogoFade-enter-active {
   transition: opacity 2s;

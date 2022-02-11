@@ -35,10 +35,10 @@
             <router-link to="/">
               <el-dropdown-item>Home</el-dropdown-item>
             </router-link>
-            <a target="_blank" href="https://github.com/jzfai/vue3-admin-template">
+            <a target="_blank" href="https://github.com/jzfai/vue3-admin-ts">
               <el-dropdown-item>Github</el-dropdown-item>
             </a>
-            <a target="_blank" href="https://github.com/jzfai/vue3-admin-template">
+            <a target="_blank" href="https://juejin.cn/post/7036302298435289095">
               <el-dropdown-item>Docs</el-dropdown-item>
             </a>
             <el-dropdown-item>修改密码</el-dropdown-item>
@@ -51,32 +51,33 @@
 </template>
 
 <script setup lang="ts">
-import { CaretBottom } from '@element-plus/icons'
+import { CaretBottom } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
 import Breadcrumb from './Breadcrumb'
 import Hamburger from './Hamburger'
 import { computed, getCurrentInstance } from 'vue'
-import settings from '@/settings'
 import { useStore } from 'vuex'
-import { ElMessage } from 'element-plus'
-let { proxy }: any = getCurrentInstance()
+const store = useStore()
 const email = computed(() => {
   return store.state.user.email
 })
+const settings = computed(() => {
+  return store.state.app.settings
+})
 const opened = computed(() => {
-  return proxy.$store.state.app.sidebar.opened
+  return store.state.app.sidebar.opened
 })
 const toggleSideBar = () => {
-  proxy.$store.commit('app/M_toggleSideBar')
+  store.commit('app/M_toggleSideBar')
 }
-
 /*
  * 退出登录
  * */
-const store = useStore()
+
 const loginOut = () => {
   store.dispatch('user/logout').then(() => {
-    ElMessage({ message: '退出登录成功', type: 'success' })
-    proxy.$router.push(`/login?redirect=${proxy.$route.fullPath}`)
+    // ElMessage({ message: '退出登录成功', type: 'success' })
+    // proxy.$router.push(`/login?redirect=${proxy.$route.fullPath}`)
     //此处reload清空路由和重置部分状态
     location.reload()
   })

@@ -9,7 +9,7 @@
       </Link>
     </template>
     <el-sub-menu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
-      <template #title v-if="item.meta">
+      <template v-if="item.meta" #title>
         <item :meta="item.meta" />
         <span>{{ item.meta.title }}</span>
       </template>
@@ -26,14 +26,12 @@
 
 <script setup lang="ts">
 /*初始化参数比如引入组件，proxy,state等*/
-import { getCurrentInstance, onMounted } from 'vue'
 import Link from './Link.vue'
 import Item from './Item'
 import { isExternal } from '@/utils/validate'
 import path from 'path'
-import { RouteItemTy } from '@/types/router'
-let { proxy }: any = getCurrentInstance()
-defineProps({
+import { RouteItemTy } from '~/router'
+const props = defineProps({
   //每一个router Item
   item: {
     type: Object,
@@ -55,14 +53,14 @@ onMounted(() => {
   // console.log(proxy.item);
 })
 //显示sidebarItem 的情况
-proxy.onlyOneChild = null
-let showSidebarItem = (children = [], parent: RouteItemTy) => {
+let onlyOneChild: any = ref(null)
+const showSidebarItem = (children = [], parent: RouteItemTy) => {
   const showingChildren = children.filter((item: RouteItemTy) => {
     if (item.hidden) {
       return false
     } else {
       // Temp set(will be used if only has one showing child)
-      proxy.onlyOneChild = item
+      onlyOneChild.value = item
       return true
     }
   })
@@ -70,19 +68,19 @@ let showSidebarItem = (children = [], parent: RouteItemTy) => {
     return true
   }
   if (showingChildren.length === 0) {
-    proxy.onlyOneChild = { ...parent, path: '', noChildren: true }
+    onlyOneChild.value = { ...parent, path: '', noChildren: true }
     return true
   }
   return false
 }
-let resolvePath = (routePath: string) => {
+const resolvePath = (routePath: string) => {
   if (isExternal(routePath)) {
     return routePath
   }
-  if (isExternal(proxy.basePath)) {
-    return proxy.basePath
+  if (isExternal(props.basePath)) {
+    return props.basePath
   }
-  return path.resolve(proxy.basePath, routePath)
+  return path.resolve(props.basePath, routePath)
 }
 </script>
 
