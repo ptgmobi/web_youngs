@@ -17,8 +17,22 @@ export default [
         component: () => import('@/views/self-dashboard/overview'),
         meta: {
           title: 'Overview',
-          icon: 'dashboard',
-          code: 50
+          elSvgIcon: 'Histogram',
+          code: 50,
+          cachePage: true,
+          leaveRmCachePage: false
+        }
+      },
+      {
+        path: 'profit',
+        name: 'Profit',
+        component: () => import('@/views/self-dashboard/profit'),
+        meta: {
+          title: 'Profit Report',
+          elSvgIcon: 'Histogram',
+          code: 51,
+          cachePage: true,
+          leaveRmCachePage: false
         }
       }
     ]

@@ -83,11 +83,15 @@ const searchForm = reactive({
     channel_type: [
       {
         value: 1,
-        label: '直客'
+        label: '代理'
       },
       {
         value: 2,
         label: 'API'
+      },
+      {
+        value: 3,
+        label: '直客'
       },
       {
         value: 6,
