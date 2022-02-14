@@ -5,7 +5,7 @@
         :button-name="state.exportExcel.buttonName"
         :list="handleList"
         :t-header="exportTHeader"
-        :filter-val="exportTHeader"
+        :filter-val="exportFilterVal"
         :filename="state.exportExcel.fileName"
       ></WwExportExcel>
     </div>
@@ -123,13 +123,13 @@ let handleList = computed(() => {
   return arr
 })
 const exportTHeader = computed(() => {
-  let arr = handleList.value
-  if (arr && Array.isArray(arr)) {
-    let obj = arr[0] ?? {}
-    return Object.keys(obj)
-  }
+  return headerTerm.map(ele => {
+    return ele.label
+  })
 })
-// const exportFilterVal = computed(() => {
-//   return Object.keys(handleList.value[0])
-// })
+const exportFilterVal = computed(() => {
+  return headerTerm.map(ele => {
+    return ele.value
+  })
+})
 </script>
