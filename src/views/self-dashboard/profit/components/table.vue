@@ -17,40 +17,13 @@
       border
     >
       <el-table-column
-        prop="user_id"
-        label="User ID"
+        v-for="item in headerTerm"
+        :key="item.value"
+        :prop="item.value"
+        :label="item.label"
+        :fixed="item?.fixed ?? false"
         align="center"
-      ></el-table-column>
-      <el-table-column
-        prop="account_email"
-        label="Account Email"
-        align="center"
-      ></el-table-column>
-      <el-table-column
-        prop="user_name"
-        label="User Name"
-        align="center"
-      ></el-table-column>
-      <el-table-column
-        prop="profit"
-        label="毛利"
-        align="center"
-      ></el-table-column>
-      <el-table-column
-        prop="revenue"
-        label="收入"
-        align="center"
-      ></el-table-column>
-      <el-table-column
-        prop="cost"
-        label="支出"
-        align="center"
-      ></el-table-column>
-      <el-table-column
-        prop="profit_rate"
-        label="毛利率"
-        align="center"
-      ></el-table-column>
+      />
     </el-table>
   </div>
 </template>
@@ -78,6 +51,36 @@ let state: any = reactive({
     fileName: 'profit'
   }
 })
+let headerTerm = reactive([
+  {
+    value: 'user_id',
+    label: 'User ID'
+  },
+  {
+    value: 'account_email',
+    label: 'Account Email'
+  },
+  {
+    value: 'user_name',
+    label: 'User Name'
+  },
+  {
+    value: 'profit',
+    label: '毛利'
+  },
+  {
+    value: 'revenue',
+    label: '收入'
+  },
+  {
+    value: 'cost',
+    label: '支出'
+  },
+  {
+    value: 'profit_rate',
+    label: '毛利率'
+  },
+])
 watch(() => state.data, (newVal, oldVal) => {
   // console.log(newVal)
   console.warn('get table data')
@@ -108,10 +111,10 @@ let handleList = computed(() => {
     for (const key in object) {
       if (Object.prototype.hasOwnProperty.call(object, key)) {
         const element = object[key]
-        if (key.includes('rate')) {
+        if (rateArr.includes(key)) {
           obj[key] = `${toFixedFn(element * 100, 2)}%`
         } else {
-          obj[key] = toFixedFn(element, 2)
+          obj[key] = element
         }
       }
     }
