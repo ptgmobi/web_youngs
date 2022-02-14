@@ -60,6 +60,7 @@
 import { ref, reactive, toRef, toRefs, toRaw, watch, onMounted, nextTick } from 'vue'
 import { thousandSeparator } from '@/utils/format'
 import _ from 'lodash'
+const emit = defineEmits(['kk', 'count', 'up'])
 const props = defineProps({
   all: {
     require: true,
@@ -181,6 +182,7 @@ const judgeSource = () => {
   })
   statisticsCountfun()
 }
+
 // 计算选择的总数
 const statisticsCountfun = () => {
   let count = state.all.reduce((total: number, ele: any) => {
@@ -191,8 +193,9 @@ const statisticsCountfun = () => {
     }
   }, 0)
   state.statisticsCount = thousandSeparator(count)
+  emit('count', count)
 }
-const emit = defineEmits(['kk', 'up'])
+
 const changeFun = () => {
   // 处理所有的all。取出select
   let arr: Array<any> = []

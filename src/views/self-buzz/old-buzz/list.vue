@@ -289,6 +289,7 @@
         v-model:all="bus.cacheDevice.all"
         v-model:select="bus.cacheDevice.select"
         @kk="saveDevice"
+        @count="handleOneDeviceCount"
       ></Device>
       <span class="dialog-footer">
         <!-- <el-button @click="cancleDevice">取 消</el-button> -->
@@ -344,7 +345,8 @@ const OptionsCutoffEnd = () => {
 let bus: any = reactive({
   offer: {},
   index: null,
-  cacheDevice: {}
+  cacheDevice: {},
+  cacheDeviceCount: 0
 })
 let data = reactive({
   dialogVisible: false,
@@ -521,6 +523,9 @@ const editDeviceFun = async (i, row) => {
 const saveDevice = (data) => {
   bus.cacheDevice.select = data
 }
+const handleOneDeviceCount = (data) => {
+  bus.cacheDeviceCount = data
+}
 // 保存提交device数据
 const setDevice = async () => {
   const ajaxData = {
@@ -530,6 +535,7 @@ const setDevice = async () => {
   const res = await ApiChangeToOfferDevice(ajaxData)
   messageFun(res)
   data.dialogVisibleDevice = false
+  bus.offer.device_count = bus.cacheDeviceCount
 }
 onMounted(() => {
   searchFn()
