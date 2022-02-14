@@ -16,7 +16,7 @@ let searchData = reactive({
   data: {
     adtype: '',
     channel_type: '',
-    use_name: '',
+    user_name: '',
     slot: '',
     country: '',
     st: '',
@@ -27,7 +27,7 @@ const changeSearchData = (data) => {
   console.log(data)
   searchData.data.adtype = data.adtype
   searchData.data.channel_type = data.channel_type
-  searchData.data.use_name = data.use_name
+  searchData.data.user_name = data.user_name
   searchData.data.slot = data.slot
   searchData.data.country = data.country
   searchData.data.st = data.date[0]

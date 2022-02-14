@@ -70,8 +70,8 @@
             >
               <el-option
                 v-for="(item, index) in searchForm.options.user_name"
-                :key="item"
-                :label="item"
+                :key="item.toString()"
+                :label="item.toString()"
                 :value="item"
               />
             </el-select>
@@ -88,7 +88,7 @@
             >
               <el-option
                 v-for="(item, index) in searchForm.options.slot"
-                :key="item"
+                :key="item.toString()"
                 :label="item.toString()"
                 :value="item"
               />
@@ -106,7 +106,7 @@
             >
               <el-option
                 v-for="(item, index) in searchForm.options.country"
-                :key="item"
+                :key="item.toString()"
                 :label="item.toString()"
                 :value="item"
               />
@@ -131,10 +131,11 @@
 import { getProfitSearch } from '@/api/overview'
 import { getSectionTime, getSectionAnyTime, choiceDefaultProduct } from '@/utils/format'
 import _ from 'lodash'
+const emit = defineEmits(['emitParent'])
 const baseData: any = {
   adtype: '',
   channel_type: '',
-  use_name: '',
+  user_name: '',
   slot: '',
   country: '',
   date: getSectionTime(6, 'day')
@@ -212,7 +213,6 @@ const changeSelectFn = () => {
 
 }
 
-const emit = defineEmits(['emitParent'])
 // 搜索
 const handleSubmitSearch = () => {
   console.warn('set search data')

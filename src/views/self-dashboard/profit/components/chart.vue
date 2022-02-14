@@ -55,7 +55,7 @@ const searchData = reactive({
   // 10CR
   // 11eCPC
   data: {
-    target: 'profit'
+    target: 'cost'
   },
   options: {
     target: [
