@@ -1,1 +1,0 @@
-import{a as t}from"./index-df839a74.js";function a(){return t({url:"/role",method:"get",isParams:!0})}function s(e){return t({url:`/role/view/${e}`,method:"get",bfLoading:!1,isParams:!0})}function n(e){return t({url:"/role",method:"post",data:e})}function u(e,r){return t({url:`/role/${e}`,method:"patch",data:r})}export{s as a,u as b,a as g,n as s};
