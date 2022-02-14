@@ -7,8 +7,8 @@
       >
         <div class="flex jc-between">
           <h3>{{ state.titleMap[key] }}</h3>
-          <h2 class="color_primary" v-if="state.groupVal.includes(key)">$ {{ state.data[key] }}</h2>
-          <h2 class="color_primary" v-if="state.groupRate.includes(key)">{{ toFixedFn(state.data[key] * 100) }} %</h2>
+          <h2 class="color_primary" v-if="state.groupVal.includes(key)"><span class="small_icon">$</span> {{ state.data[key] }}</h2>
+          <h2 class="color_primary" v-if="state.groupRate.includes(key)">{{ toFixedFn(state.data[key] * 100) }} <span class="small_icon">%</span></h2>
         </div>
       </el-card>
     </div>
@@ -99,5 +99,8 @@ onMounted(() => {
     }
   }
   
+}
+.small_icon{
+  font-size: 12px;
 }
 </style>

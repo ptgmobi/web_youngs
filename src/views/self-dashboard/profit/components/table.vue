@@ -1,5 +1,14 @@
 <template>
   <div class="mt-20">
+    <div class="flex jc-end mb-10">
+      <WwExportExcel
+        :button-name="state.exportExcel.buttonName"
+        :list="handleList"
+        :t-header="exportTHeader"
+        :filter-val="exportTHeader"
+        :filename="state.exportExcel.fileName"
+      ></WwExportExcel>
+    </div>
     <!-- table -->
     <el-table
       center
@@ -51,6 +60,7 @@ import { getSectionTime, getSectionAnyTime, choiceDefaultProduct } from '@/utils
 import { getProfitTable } from '@/api/overview'
 import { toFixedFn } from '@/utils/format'
 import { handleAjaxDataDelNoKeyFn } from '@/utils/new-format'
+import WwExportExcel from '@/components/Self/Excel/Export/index.vue'
 const props = defineProps({
   json: {
     require: true,
@@ -60,7 +70,13 @@ const props = defineProps({
 })
 let state: any = reactive({
   data: props.json,
-  list: [] 
+  list: [],
+  exportExcel: {
+    buttonName: '导出',
+    tHeader: ['日期'],
+    filterVal: ['date'],
+    fileName: 'profit'
+  }
 })
 watch(() => state.data, (newVal, oldVal) => {
   // console.log(newVal)
@@ -71,6 +87,7 @@ watch(() => state.data, (newVal, oldVal) => {
   // immediate: true,
   deep: true
 })
+
 const init = async () => {
   let ajaxData = {
     ...state.data.data
@@ -102,4 +119,14 @@ let handleList = computed(() => {
   })
   return arr
 })
+const exportTHeader = computed(() => {
+  let arr = handleList.value
+  if (arr && Array.isArray(arr)) {
+    let obj = arr[0] ?? {}
+    return Object.keys(obj)
+  }
+})
+// const exportFilterVal = computed(() => {
+//   return Object.keys(handleList.value[0])
+// })
 </script>
