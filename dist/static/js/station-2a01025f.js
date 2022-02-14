@@ -1,1 +1,0 @@
-import{a as o}from"./index-e71c7b30.js";function n(){return o({url:"/position",method:"get"})}function r(t){return o({url:`/position/view/${t}`,method:"get"})}function s(t){return o({url:"/position",method:"post",data:t})}function a(t,e){return o({url:`/position/${t}`,method:"patch",data:e})}export{r as a,a as b,n as g,s};
