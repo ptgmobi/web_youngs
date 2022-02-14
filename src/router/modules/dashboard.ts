@@ -17,7 +17,9 @@ export default [
         meta: {
           title: 'Overview',
           elSvgIcon: 'Histogram',
-          code: 50
+          code: 50,
+          cachePage: true,
+          leaveRmCachePage: false
         }
       },
       {
@@ -27,7 +29,9 @@ export default [
         meta: {
           title: 'Profit Report',
           elSvgIcon: 'Histogram',
-          code: 51
+          code: 51,
+          cachePage: true,
+          leaveRmCachePage: false
         }
       }
     ]

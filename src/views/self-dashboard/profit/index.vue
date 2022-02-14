@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="Profit">
 import searchC from './components/search'
 import cardC from './components/card'
 import chartC from './components/chart'

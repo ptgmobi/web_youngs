@@ -3,6 +3,8 @@
     class="app-main"
     :class="{ 'show-tag-view': settings.showTagsView }"
   >
+    <h1>{{cachedInclude}}</h1>
+    <h1>{{cachedExclude}}</h1>
     <router-view v-slot="{ Component }">
       <!--has transition  Judging by settings.mainNeedAnimation-->
       <transition
@@ -10,7 +12,10 @@
         name="fade-transform"
         mode="out-in"
       >
-        <keep-alive :include="cachedViews">
+        <keep-alive
+          :include="cachedInclude"
+          :exclude="cachedExclude"
+        >
           <component
             :is="Component"
             :key="key"
@@ -20,7 +25,8 @@
       <!-- no transition -->
       <keep-alive
         v-else
-        :include="cachedViews"
+        :include="cachedInclude"
+        :exclude="cachedExclude"
       >
         <component
           :is="Component"
@@ -48,17 +54,29 @@ const settings = computed(() => {
 let oldRoute: ObjTy = {}
 const key = computed({
   get() {
-    if (oldRoute?.name) {
-      if (oldRoute.meta?.leaveRmCachePage && oldRoute.meta?.cachePage) {
-        store.commit('app/M_DEL_CACHED_VIEW', oldRoute.name)
+    const routeMatched = route.matched
+    const routerLevel = routeMatched.length
+    console.log('routerLevel', routerLevel)
+    const routeArr = [...routeMatched]
+    routeArr.map(ele => {
+      if (ele.meta?.cachePage) {
+        store.commit('app/M_ADD_CACHED_INCLUDE', ele.name)
       }
-    }
-    if (route.name) {
-      if (route.meta?.cachePage) {
-        store.commit('app/M_ADD_CACHED_VIEW', route.name)
+      if (ele.meta?.leaveRmCachePage && ele.meta?.cachePage) {
+        store.commit('app/M_ADD_CACHED_EXCLUDE', ele.name)
       }
-    }
-    oldRoute = JSON.parse(JSON.stringify({ name: route.name, meta: route.meta }))
+    })
+    // if (oldRoute?.name) {
+    //   if (oldRoute.meta?.leaveRmCachePage && oldRoute.meta?.cachePage) {
+    //     store.commit('app/M_DEL_CACHED_VIEW', oldRoute.name)
+    //   }
+    // }
+    // if (route.name) {
+    //   if (route.meta?.cachePage) {
+    //     store.commit('app/M_ADD_CACHED_VIEW', route.name)
+    //   }
+    // }
+    // oldRoute = JSON.parse(JSON.stringify({ name: route.name, meta: route.meta }))
     return route.path
   },
   set() {}
@@ -66,6 +84,14 @@ const key = computed({
 
 const cachedViews = computed(() => {
   return store.state.app.cachedViews
+})
+
+const cachedInclude = computed(() => {
+  return store.state.app.cachedInclude
+})
+
+const cachedExclude = computed(() => {
+  return store.state.app.cachedExclude
 })
 </script>
 

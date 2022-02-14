@@ -9,7 +9,9 @@ const state: AppTy = {
   },
   device: 'desktop',
   settings: defaultSettings,
-  cachedViews: []
+  cachedViews: [],
+  cachedInclude: [],
+  cachedExclude: []
 }
 
 const mutations = {
@@ -33,7 +35,17 @@ const mutations = {
   },
   M_RESET_CACHED_VIEW: (state: AppTy) => {
     state.cachedViews = []
-  }
+  },
+
+  // ww
+  M_ADD_CACHED_INCLUDE: (state: AppTy, view: string) => {
+    if (state.cachedInclude.includes(view)) return
+    state.cachedInclude.push(view)
+  },
+  M_ADD_CACHED_EXCLUDE: (state: AppTy, view: string) => {
+    if (state.cachedExclude.includes(view)) return
+    state.cachedExclude.push(view)
+  },
 }
 const actions = {
   A_sidebar_opened({ commit }: ObjTy, data: boolean) {

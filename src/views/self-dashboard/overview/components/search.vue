@@ -208,6 +208,12 @@ const handleSubmitSearch = () => {
   emit('emitParent', _.cloneDeep(toRaw(searchForm.data)))
 }
 onMounted(() => {
+  console.log('onMounted')
+  getConfig()
+  handleSubmitSearch()
+})
+onActivated(() => {
+  console.log('onActivated')
   getConfig()
   handleSubmitSearch()
 })

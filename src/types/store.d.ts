@@ -29,6 +29,8 @@ interface AppTy {
   device: string
   settings: ObjTy
   cachedViews: Array<string>
+  cachedInclude: Array<string>
+  cachedExclude: Array<string>
 }
 interface PermissionTy {
   isGetUserInfo: boolean //是否已经设置了权限
