@@ -3,8 +3,8 @@
     class="app-main"
     :class="{ 'show-tag-view': settings.showTagsView }"
   >
-    <h1>{{cachedInclude}}</h1>
-    <h1>{{cachedExclude}}</h1>
+    <!-- <h1>{{cachedInclude}}</h1>
+    <h1>{{cachedExclude}}</h1> -->
     <router-view v-slot="{ Component }">
       <!--has transition  Judging by settings.mainNeedAnimation-->
       <transition
@@ -87,10 +87,12 @@ const cachedViews = computed(() => {
 })
 
 const cachedInclude = computed(() => {
+  // store.state.app.cachedInclude = []
   return store.state.app.cachedInclude
 })
 
 const cachedExclude = computed(() => {
+  // store.state.app.cachedExclude = []
   return store.state.app.cachedExclude
 })
 </script>
