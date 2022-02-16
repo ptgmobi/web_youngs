@@ -184,7 +184,7 @@
         width="55"
       ></el-table-column>
       <el-table-column
-        label="Click Limitation(w)"
+        label="Click Limitation"
         width="150"
         align="center"
       >

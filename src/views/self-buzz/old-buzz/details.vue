@@ -215,7 +215,7 @@
         </el-form-item>
         <!-- max_clk_num -->
         <el-form-item
-          label="Click Limitation(w):"
+          label="Click Limitation:"
           prop="max_clk_num"
         >
           <el-input
