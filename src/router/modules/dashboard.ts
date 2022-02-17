@@ -19,7 +19,7 @@ export default [
           elSvgIcon: 'Histogram',
           code: 50,
           cachePage: true,
-          leaveRmCachePage: false
+          leaveRmCachePage: true
         }
       },
       {
@@ -31,7 +31,7 @@ export default [
           elSvgIcon: 'Histogram',
           code: 51,
           cachePage: true,
-          leaveRmCachePage: false
+          leaveRmCachePage: true
         }
       }
     ]

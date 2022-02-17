@@ -64,7 +64,7 @@ export default [
           elSvgIcon: 'Edit',
           code: 41,
           cachePage: true,
-          leaveRmCachePage: false
+          leaveRmCachePage: true
         },
         children: [
           {
@@ -75,7 +75,7 @@ export default [
               title: 'Fenix Offer List',
               code: 410,
               cachePage: true,
-              leaveRmCachePage: false
+              leaveRmCachePage: true
             },
             hidden: true
           },

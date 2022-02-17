@@ -53,7 +53,7 @@ export default [
           elSvgIcon: 'Edit',
           code: 33,
           cachePage: true,
-          leaveRmCachePage: false
+          leaveRmCachePage: true
         }
       },
       {
