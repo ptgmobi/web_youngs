@@ -24,7 +24,7 @@ let searchData = reactive({
   }
 })
 const changeSearchData = (data) => {
-  console.log(data)
+  // console.log(data)
   searchData.data.adtype = data.adtype
   searchData.data.channel_type = data.channel_type
   searchData.data.user_name = data.user_name

@@ -178,7 +178,9 @@ const init = async () => {
   ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
   state.chartData.xAxis[0].data = []
   state.chartData.series[0].data = []
-  state.chartData.series[0].name = getChartTitle()
+  const title = getChartTitle()
+  state.chartData.legend.data = [title]
+  state.chartData.series[0].name = title
   const { data: charData } = await getOverviewChart(ajaxData)
   state.chartData.xAxis[0].data = charData?.date ?? []
   let dataArr = charData?.data ?? []

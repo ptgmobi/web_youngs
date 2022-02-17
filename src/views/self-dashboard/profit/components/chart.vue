@@ -161,6 +161,7 @@ const handleSeriesData = () => {
     })
     state.chartData.series[0].data = finallArr
   }
+  state.chartData.series[0].name = getChartTitle()
 }
 const init = async () => {
   let ajaxData = {
