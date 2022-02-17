@@ -167,7 +167,7 @@ const getChartTitle = () => {
   let obj = searchData.options.target.find(ele => {
     return ele.value === searchData.data.target
   })
-  return obj?.label ?? ''
+  return obj?.label ?? 'test'
 }
 const rateArr = ['6']
 const init = async () => {
@@ -178,9 +178,9 @@ const init = async () => {
   ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
   state.chartData.xAxis[0].data = []
   state.chartData.series[0].data = []
+  state.chartData.series[0].name = getChartTitle()
   const { data: charData } = await getOverviewChart(ajaxData)
   state.chartData.xAxis[0].data = charData?.date ?? []
-  state.chartData.series[0].name = getChartTitle()
   let dataArr = charData?.data ?? []
   if (rateArr.includes(searchData.data.target.toString())) {
     let finallArr = dataArr.map(ele => {
