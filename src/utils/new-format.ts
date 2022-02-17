@@ -32,3 +32,13 @@ export function handleAjaxDataDelNoKeyFn(data: any) {
   }
   return newObj
 }
+
+// 打开新的网站
+export function openNewUrl(str: string) {
+  let href = window.location.href
+  let reg = /(?<=#).+/g
+  let baseUrl = href.replaceAll(reg, '')
+  let finalUrl = `${baseUrl}${str}`
+  window.open(finalUrl)
+  return finalUrl
+}

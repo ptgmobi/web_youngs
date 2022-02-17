@@ -10,8 +10,7 @@ const state: AppTy = {
   device: 'desktop',
   settings: defaultSettings,
   cachedViews: [],
-  cachedInclude: [],
-  cachedExclude: []
+  cachedViewsDeep: [],
 }
 
 const mutations = {
@@ -36,16 +35,18 @@ const mutations = {
   M_RESET_CACHED_VIEW: (state: AppTy) => {
     state.cachedViews = []
   },
-
-  // ww
-  M_ADD_CACHED_INCLUDE: (state: AppTy, view: string) => {
-    if (state.cachedInclude.includes(view)) return
-    state.cachedInclude.push(view)
+  /*third  keepAlive*/
+  M_ADD_CACHED_VIEW_DEEP: (state, view) => {
+    if (state.cachedViewsDeep.includes(view)) return
+    state.cachedViewsDeep.push(view)
   },
-  M_ADD_CACHED_EXCLUDE: (state: AppTy, view: string) => {
-    if (state.cachedExclude.includes(view)) return
-    state.cachedExclude.push(view)
+  M_DEL_CACHED_VIEW_DEEP: (state, view) => {
+    const index = state.cachedViewsDeep.indexOf(view)
+    index > -1 && state.cachedViewsDeep.splice(index, 1)
   },
+  M_RESET_CACHED_VIEW_DEEP: (state) => {
+    state.cachedViewsDeep = []
+  }
 }
 const actions = {
   A_sidebar_opened({ commit }: ObjTy, data: boolean) {

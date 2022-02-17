@@ -2,12 +2,12 @@
   <div>
     <div class="controlBox w100 mb-10">
       <div class="mb-10">
-        <!-- <el-button type="primary" @click='createFun'>Offer Create</el-button> -->
-        <router-link to="/buzz/old-buzz-create">
+        <!-- <router-link to="/buzz/old-buzz-create">
           <el-button type="primary">
             Offer Create
           </el-button>
-        </router-link>
+        </router-link> -->
+        <el-button type="primary" @click='createFn'>Offer Create</el-button>
       </div>
       <el-form
         v-model="data.searchForm"
@@ -308,7 +308,7 @@ import { ApiGetBuzzList, ApichangeClk, ApichangeSiteClkLimit, ApichangeCutoff, A
 import { ElMessage } from 'element-plus'
 import { messageFun } from '@/utils/message'
 import _ from 'lodash'
-import { handleAjaxDataObjectFn } from '@/utils/new-format'
+import { handleAjaxDataObjectFn, openNewUrl } from '@/utils/new-format'
 import { thousandSeparator } from '@/utils/format'
 import Device from './device.vue'
 let { proxy }: any = getCurrentInstance()
@@ -447,18 +447,18 @@ const changeStatus = async (row: any) => {
   messageFun(res)
 }
 const editFun = (row: any) => {
-  const id = row.id
-  let baseUrl = window.location.href
-  baseUrl = baseUrl.split('#')[0]
   let url = getEditUrl(row)
+  openNewUrl(url)
   // proxy.$router.push({
   //   path: getEditUrl(row),
   //   query: {
   //     type: 'edit'
   //   }
   // })
-  let finalUrl = `${baseUrl}#${url}`
-  window.open(finalUrl)
+}
+const createFn = () => {
+  let url = '/fenix/offer/create'
+  openNewUrl(url)
 }
 const getEditUrl = (row: any) => {
   const id = row.id

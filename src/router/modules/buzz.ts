@@ -2,7 +2,7 @@ import Layout from '@/layout'
 export default [
   {
     path: '/buzz',
-    // redirect: '/buzz/list',
+    redirect: '/buzz/old-buzz',
     component: Layout,
     name: 'buzz',
     meta: {
@@ -11,17 +11,6 @@ export default [
       code: 3
     },
     children: [
-      // {
-      //   path: 'buzz',
-      //   redirect: '/buzz/buzz/list',
-      //   name: 'buzz-index',
-      //   component: () => import('@/views/self-buzz/buzz/index'),
-      //   meta: {
-      //     title: 'Buzz',
-      //     icon: 'dashboard',
-      //     roles: [],
-      //   }
-      // },
       {
         path: 'list',
         name: 'buzz-list',
@@ -88,59 +77,7 @@ export default [
           code: 35
         },
         hidden: true
-      },
-      // {
-      //   path: 'old-buzz',
-      //   name: 'old-buzz',
-      //   redirect: '/buzz/old-buzz/list',
-      //   component: () => import('@/views/self-buzz/old-buzz/routeindex'),
-      //   meta: {
-      //     title: 'Old Buzz',
-      //     elSvgIcon: 'Edit',
-      //     code: 33,
-      //     cachePage: true,
-      //     leaveRmCachePage: false
-      //   },
-      //   children: [
-      //     {
-      //       path: 'list',
-      //       name: 'old-buzz-list',
-      //       component: () => import('@/views/self-buzz/old-buzz/list'),
-      //       meta: {
-      //         title: 'Old Buzz List',
-      //         elSvgIcon: 'Edit',
-      //         code: 330,
-      //         cachePage: true,
-      //         leaveRmCachePage: false
-      //       },
-      //       hidden: true
-      //     },
-      //     {
-      //       path: 'create',
-      //       name: 'old-buzz-create',
-      //       // component: () => import('@/views/self-buzz/old-buzz/details'),
-      //       component: () => import('@/views/self-buzz/old-buzz/test'),
-      //       meta: {
-      //         title: 'Old Buzz Create',
-      //         icon: 'dashboard',
-      //         code: 331
-      //       },
-      //       hidden: true
-      //     },
-      //     {
-      //       path: 'edit/:id',
-      //       name: 'old-buzz-edit',
-      //       // component: () => import('@/views/self-buzz/old-buzz/details'),
-      //       component: () => import('@/views/self-buzz/old-buzz/test'),
-      //       meta: {
-      //         title: 'Old Buzz Edit',
-      //         icon: 'dashboard',
-      //         code: 332
-      //       },
-      //       hidden: true
-      //     },
-      //   ]
-      // },
+      }
     ]
   }
 ]

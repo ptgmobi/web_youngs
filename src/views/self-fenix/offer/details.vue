@@ -401,7 +401,7 @@
     </div>
   </div>
 </template>
-<script lang="ts" setup>
+<script lang="ts" setup :name="name.value">
 import { getCurrentInstance, reactive, toRef, toRefs, watch, watchEffect, onMounted, ref, computed } from 'vue'
 import _ from 'lodash'
 import { useRouter } from 'vue-router'
@@ -687,7 +687,8 @@ const submitFn = async () => {
   loading.value = false
   if (messageFun(res)) {
     // 回到list页面
-    proxy.$router.push({ path: '/fenix/offer/list' })
+    // proxy.$router.push({ path: '/fenix/offer/list' })
+    window.close()
   }
 }
 const getConversionFlowValueToLabel = (n: any) => {

@@ -2,11 +2,14 @@
   <div>
     <div class="control-box w100 mb-10">
       <div class="mb-10">
-        <router-link to="/fenix/offer/create">
+        <!-- <router-link to="/fenix/offer/create">
           <el-button type="primary">
             Offer Create
           </el-button>
-        </router-link>
+        </router-link> -->
+        <el-button type="primary" @click="createFn()">
+          Offer Create
+        </el-button>
       </div>
       <el-form
         v-model="state.searchData"
@@ -92,7 +95,7 @@
               placeholder="Pub Name"
             >
               <el-option
-                v-for="item in state.options.pub"
+                v-for="(item, index) in state.options.pub"
                 :key="item.id"
                 :label="item.pub_name"
                 :value="item.pub_name"
@@ -347,14 +350,21 @@
           width="130"
         >
           <template #default="scope">
-            <router-link :to="getEditUrl(scope)">
+            <!-- <router-link :to="getEditUrl(scope)">
               <el-button
                 class="cp mr-5"
                 type="primary"
                 icon="Edit"
                 circle
               ></el-button>
-            </router-link>
+            </router-link> -->
+            <el-button
+                class="cp mr-5"
+                type="primary"
+                icon="Edit"
+                @click="editFun(scope.row)"
+                circle
+              ></el-button>
             <el-switch
               v-model="scope.row.status"
               :active-value="1"
@@ -471,7 +481,7 @@ import {
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import Record from './record.vue'
 import { messageFun } from '@/utils/message'
-import { handleAjaxDataObjectFn } from '@/utils/new-format'
+import { handleAjaxDataObjectFn, openNewUrl } from '@/utils/new-format'
 import { ElMessageBox } from 'element-plus'
 import _ from 'lodash'
 let { proxy }: any = getCurrentInstance()
@@ -531,21 +541,21 @@ const state = reactive({
   options: {
     status: [
       {
-        value: 1,
+        value: '1',
         label: '开'
       },
       {
-        value: 2,
+        value: '2',
         label: '关'
       }
     ],
     platform: [
       {
-        value: 1,
+        value: '1',
         label: 'Android'
       },
       {
-        value: 2,
+        value: '2',
         label: 'iOS'
       }
     ],
@@ -573,7 +583,7 @@ const state = reactive({
     ],
     pub: [
       {
-        id: '',
+        id: 0,
         pub_name: ''
       }
     ],
@@ -610,10 +620,7 @@ const emitParent = (row: tableDataType) => {
   tableData.push(row)
   dialogTableVisible.value = false
 }
-const getEditUrl = ({ row }: any) => {
-  const id = row.id
-  return `/fenix/offer/edit/${id}`
-}
+
 const changeStatusFn = async ({ row }: any) => {
   console.log(row)
   const ajaxData = {
@@ -741,6 +748,26 @@ const backChange = () => {
   // window.history.pushState({}, '', window.location.href)
   // window.history.forward()
 }
+
+const getEditUrl = (row : any) => {
+  const id = row.id
+  return `/fenix/offer/edit/${id}`
+}
+const editFun = (row: any) => {
+  let url = getEditUrl(row)
+  openNewUrl(url)
+  // proxy.$router.push({
+  //   path: getEditUrl(row),
+  //   query: {
+  //     type: 'edit'
+  //   }
+  // })
+}
+
+const createFn = () => {
+  let url = '/fenix/offer/create'
+  openNewUrl(url)
+}
 onBeforeMount(() => {})
 onMounted(() => {
   getConfig()
@@ -749,6 +776,9 @@ onMounted(() => {
     console.log('onpopstate')
     backChange()
   }
+})
+onActivated(() => {
+  console.log('onActivated')
 })
 onUnmounted(() => {})
 const showRecord = (row) => {
