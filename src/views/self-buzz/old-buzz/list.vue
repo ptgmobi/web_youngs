@@ -249,15 +249,15 @@
       >
         <template #default="scope">
           <div class="flex jc-around">
-            <router-link :to="getEditUrl(scope.row)">
+            <!-- <router-link :to="getEditUrl(scope.row)">
               <el-button
                 class="cp mr-10"
                 type="primary"
                 icon="Edit"
                 circle
               ></el-button>
-            </router-link>
-            <!-- <el-button class='cp mr-10' type="primary" icon="Edit" circle @click='editFun(scope.row)'></el-button> -->
+            </router-link> -->
+            <el-button class='cp mr-10' type="primary" icon="Edit" circle @click='editFun(scope.row)'></el-button>
             <el-switch
               v-model="scope.row.status"
               :active-value="1"
@@ -448,12 +448,17 @@ const changeStatus = async (row: any) => {
 }
 const editFun = (row: any) => {
   const id = row.id
-  proxy.$router.push({
-    path: getEditUrl(row),
-    query: {
-      type: 'edit'
-    }
-  })
+  let baseUrl = window.location.href
+  baseUrl = baseUrl.split('#')[0]
+  let url = getEditUrl(row)
+  // proxy.$router.push({
+  //   path: getEditUrl(row),
+  //   query: {
+  //     type: 'edit'
+  //   }
+  // })
+  let finalUrl = `${baseUrl}#${url}`
+  window.open(finalUrl)
 }
 const getEditUrl = (row: any) => {
   const id = row.id

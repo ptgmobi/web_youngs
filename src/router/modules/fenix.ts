@@ -71,9 +71,7 @@ export default [
             component: () => import('@/views/self-fenix/offer/list'),
             meta: {
               title: 'Fenix Offer List',
-              code: 410,
-              cachePage: true,
-              leaveRmCachePage: false
+              code: 410
             },
             hidden: true
           },
