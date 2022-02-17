@@ -480,7 +480,7 @@
     </el-dialog>
   </div>
 </template>
-<script lang="ts" setup>
+<script lang="ts" setup :name="name.value">
 import { getCurrentInstance, reactive, watch, watchEffect, onMounted, ref, computed, nextTick } from 'vue'
 import {
   ApiOperationOfferCreate,
@@ -496,10 +496,9 @@ import site from './site'
 import { handleAjaxDataObjectFn } from '@/utils/new-format'
 import { messageFun } from '@/utils/message'
 import { ElMessage } from 'element-plus'
-let { proxy }: any = getCurrentInstance()
-import { useRouter } from 'vue-router'
-import { DataAnalysis } from '@element-plus/icons'
+// import { useRouter } from 'vue-router'
 import Device from './device.vue'
+let { proxy }: any = getCurrentInstance()
 const router = useRouter()
 const message = {
   required: '此项必填'
@@ -754,7 +753,7 @@ const submitFormFun = async () => {
     res = await ApiOperationOfferEdit(ajaxData)
   }
   if (messageFun(res)) {
-    proxy.$router.push({ path: '/buzz/old-buzz/list' })
+    proxy.$router.push({ path: '/buzz/old-buzz' })
   }
 }
 

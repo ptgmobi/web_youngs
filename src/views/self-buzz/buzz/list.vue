@@ -121,7 +121,7 @@
       center
       :data="data.list"
       class="w100"
-      height="60vh"
+      height="70vh"
       border
     >
       <el-table-column
@@ -288,7 +288,7 @@
     </div>
   </div>
 </template>
-<script lang="ts" setup>
+<script lang="ts" setup name="buzz-list">
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { getCurrentInstance, reactive, ref, shallowRef, onMounted, computed } from 'vue'
 import { ApiGetBuzzList, ApichangeClk, ApichangeCutoff, ApiChangeBuzzStatus } from '@/api/buzz'

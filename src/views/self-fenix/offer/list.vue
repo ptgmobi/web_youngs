@@ -455,7 +455,7 @@
     </el-dialog>
   </div>
 </template>
-<script lang="ts" setup>
+<script lang="ts" setup name="fenix-offer-list">
 import { getCurrentInstance, ref, reactive, toRefs, toRef, onBeforeMount, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, onBeforeRouteLeave } from 'vue-router'
 import {

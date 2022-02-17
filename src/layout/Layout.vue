@@ -26,13 +26,15 @@ export default {
 
 <script setup lang="ts">
 import { Sidebar, Navbar, AppMain, TagsView } from './components'
+import { useStore } from 'vuex'
+import defaultSettings from '@/settings'
 const store = useStore()
 const opened = computed(() => {
   return store.state.app.sidebar.opened
 })
-import { useStore } from 'vuex'
 const settings = computed(() => {
-  return store.state.app.settings
+  return defaultSettings
+  // return store.state.app.settings
 })
 const classObj = computed(() => {
   return {

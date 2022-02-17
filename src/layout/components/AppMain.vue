@@ -3,8 +3,6 @@
     class="app-main"
     :class="{ 'show-tag-view': settings.showTagsView }"
   >
-    <!-- <h1>{{cachedInclude}}</h1>
-    <h1>{{cachedExclude}}</h1> -->
     <router-view v-slot="{ Component }">
       <!--has transition  Judging by settings.mainNeedAnimation-->
       <transition
@@ -55,15 +53,12 @@ let oldRoute: ObjTy = {}
 const key = computed({
   get() {
     const routeMatched = route.matched
-    const routerLevel = routeMatched.length
-    console.log('routerLevel', routerLevel)
+    // const routerLevel = routeMatched.length
     const routeArr = [...routeMatched]
+    // console.log(routeArr)
     routeArr.map(ele => {
       if (ele.meta?.cachePage) {
         store.commit('app/M_ADD_CACHED_INCLUDE', ele.name)
-      }
-      if (ele.meta?.leaveRmCachePage && ele.meta?.cachePage) {
-        store.commit('app/M_ADD_CACHED_EXCLUDE', ele.name)
       }
     })
     // if (oldRoute?.name) {

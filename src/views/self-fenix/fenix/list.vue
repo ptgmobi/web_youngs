@@ -60,7 +60,7 @@
     </div>
   </div>
 </template>
-<script lang="ts" setup>
+<script lang="ts" setup name="fenix-fenix-list">
 import { ref, reactive, toRefs, toRef, onMounted } from 'vue'
 import Search from './search.vue'
 import { ApiFenixFenixList } from '@/api/fenix'

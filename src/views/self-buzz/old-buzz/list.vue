@@ -3,7 +3,7 @@
     <div class="controlBox w100 mb-10">
       <div class="mb-10">
         <!-- <el-button type="primary" @click='createFun'>Offer Create</el-button> -->
-        <router-link to="/buzz/old-buzz/create">
+        <router-link to="/buzz/old-buzz-create">
           <el-button type="primary">
             Offer Create
           </el-button>
@@ -121,7 +121,7 @@
       center
       :data="data.list"
       class="w100"
-      height="60vh"
+      height="70vh"
       border
     >
       <el-table-column
@@ -301,7 +301,7 @@
     </el-dialog>
   </div>
 </template>
-<script lang="ts" setup>
+<script lang="ts" setup name="old-buzz">
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { getCurrentInstance, reactive, ref, shallowRef, onMounted, computed } from 'vue'
 import { ApiGetBuzzList, ApichangeClk, ApichangeSiteClkLimit, ApichangeCutoff, ApiChangeBuzzStatus, ApiGetOfferDevice, ApiChangeToOfferDevice } from '@/api/oldbuzz'
@@ -449,7 +449,7 @@ const changeStatus = async (row: any) => {
 const editFun = (row: any) => {
   const id = row.id
   proxy.$router.push({
-    path: `/old-buzz/edit/${id}`,
+    path: getEditUrl(row),
     query: {
       type: 'edit'
     }
@@ -457,7 +457,7 @@ const editFun = (row: any) => {
 }
 const getEditUrl = (row: any) => {
   const id = row.id
-  return `/buzz/old-buzz/edit/${id}`
+  return `/buzz/old-buzz-edit/${id}`
 }
 const init = async () => {
   data.loading = true
@@ -538,7 +538,11 @@ const setDevice = async () => {
   bus.offer.device_count = bus.cacheDeviceCount
 }
 onMounted(() => {
+  console.log('onMounted')
   searchFn()
+})
+onActivated(() => {
+  console.log('onActivated')
 })
 </script>
 <style lang="scss" scoped>
