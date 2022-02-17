@@ -30,7 +30,7 @@
               v-for="item in options.pub"
               :key="item.id"
               :label="item.pub_name"
-              :value="item.pub_name"
+              :value="item.pub_name ?? item.id"
             ></el-option>
           </el-select>
         </template>

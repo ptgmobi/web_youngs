@@ -65,7 +65,7 @@ const setting: SettingTy = {
    * @type {boolean} true | false
    * @description Whether need animation of main area
    */
-  mainNeedAnimation: true,
+  mainNeedAnimation: false,
   /**
    * @type {boolean} true | false
    * @description Whether need nprogress

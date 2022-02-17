@@ -2,14 +2,14 @@
   <div>
     <div class="control-box w100 mb-10">
       <div class="mb-10">
-        <!-- <router-link to="/fenix/offer/create">
+        <router-link to="/fenix/offer/create">
           <el-button type="primary">
             Offer Create
           </el-button>
-        </router-link> -->
-        <el-button type="primary" @click="createFn()">
+        </router-link>
+        <!-- <el-button type="primary" @click="createFn()">
           Offer Create
-        </el-button>
+        </el-button> -->
       </div>
       <el-form
         v-model="state.searchData"
@@ -95,10 +95,10 @@
               placeholder="Pub Name"
             >
               <el-option
-                v-for="(item, index) in state.options.pub"
+                v-for="item in state.options.pub"
                 :key="item.id"
                 :label="item.pub_name"
-                :value="item.pub_name"
+                :value="item.pub_name ?? item.id"
               />
             </el-select>
           </el-form-item>
@@ -186,7 +186,7 @@
       <el-table
         :data="state.tableData"
         class="w100"
-        height="60vh"
+        height="70vh"
         border
       >
         <el-table-column

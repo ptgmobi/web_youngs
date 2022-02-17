@@ -5,7 +5,7 @@
     </keep-alive>
   </router-view>
 </template>
-<script setup name="fenix-offer" lang="ts">
+<script setup lang="ts" name="fenix-offer">
 const $store = useStore()
 const cachedViewsDeep = computed(() => {
   return $store.state.app.cachedViewsDeep

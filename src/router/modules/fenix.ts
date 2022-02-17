@@ -62,7 +62,9 @@ export default [
         meta: {
           title: 'Fenix Offer',
           elSvgIcon: 'Edit',
-          code: 41
+          code: 41,
+          cachePage: true,
+          leaveRmCachePage: false
         },
         children: [
           {
@@ -72,9 +74,8 @@ export default [
             meta: {
               title: 'Fenix Offer List',
               code: 410,
-              // ! 此处使用keepalive会陷入死循环
-              // cachePage: true,
-              // leaveRmCachePage: false
+              cachePage: true,
+              leaveRmCachePage: false
             },
             hidden: true
           },
