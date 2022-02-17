@@ -75,7 +75,7 @@ export default [
               title: 'Fenix Offer List',
               code: 410,
               cachePage: true,
-              leaveRmCachePage: true
+              leaveRmCachePage: false
             },
             hidden: true
           },
