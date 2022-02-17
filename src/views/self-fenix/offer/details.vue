@@ -401,7 +401,7 @@
     </div>
   </div>
 </template>
-<script lang="ts" setup :name="name.value">
+<script lang="ts" setup>
 import { getCurrentInstance, reactive, toRef, toRefs, watch, watchEffect, onMounted, ref, computed } from 'vue'
 import _ from 'lodash'
 import { useRouter } from 'vue-router'

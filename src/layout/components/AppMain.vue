@@ -33,6 +33,8 @@ const settings = computed(() => {
 // leaveRmCachePage: is true, keep-alive remote when page leave
 let oldRoute: ObjTy = {}
 let deepOldRouter: ObjTy | null = null
+// store.commit('app/M_RESET_CACHED_VIEW')
+// store.commit('app/M_RESET_CACHED_VIEW_DEEP')
 const key = computed({
   get() {
     const routerLevel = route.matched.length

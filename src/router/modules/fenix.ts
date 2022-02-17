@@ -73,8 +73,8 @@ export default [
               title: 'Fenix Offer List',
               code: 410,
               // ! 此处使用keepalive会陷入死循环
-              cachePage: true,
-              leaveRmCachePage: false
+              // cachePage: true,
+              // leaveRmCachePage: false
             },
             hidden: true
           },

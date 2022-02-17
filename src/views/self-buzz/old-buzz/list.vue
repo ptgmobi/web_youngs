@@ -457,7 +457,7 @@ const editFun = (row: any) => {
   // })
 }
 const createFn = () => {
-  let url = '/fenix/offer/create'
+  let url = '/buzz/old-buzz-create'
   openNewUrl(url)
 }
 const getEditUrl = (row: any) => {
