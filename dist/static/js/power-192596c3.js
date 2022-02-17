@@ -1,0 +1,1 @@
+import{a as s}from"./index-ee9f9318.js";function t(){return s({url:"/permission",method:"get",isParams:!0})}function n(e){return s({url:`/permission/view/${e}`,method:"get",isParams:!0})}function o(e){return s({url:"/permission",method:"post",data:e})}function a(e,r){return s({url:"/permission/update",method:"patch",data:r})}export{n as a,a as b,t as g,o as s};
