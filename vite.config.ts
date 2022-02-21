@@ -148,6 +148,20 @@ export default ({ command, mode }: any) => {
       extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.mjs']
     },
     css: {
+      postcss: {
+        plugins: [
+          {
+            postcssPlugin: 'internal:charset-removal',
+            AtRule: {
+              charset: (atRule) => {
+                if (atRule.name === 'charset') {
+                  atRule.remove()
+                }
+              }
+            }
+          }
+        ]
+      },
       preprocessorOptions: {
         //define global scss variable
         scss: {
