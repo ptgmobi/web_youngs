@@ -2,14 +2,14 @@
   <div>
     <div class="control-box w100 mb-10">
       <div class="mb-10">
-        <router-link to="/fenix/offer/create">
+        <!-- <router-link to="/fenix/offer/create">
           <el-button type="primary">
             Offer Create
           </el-button>
-        </router-link>
-        <!-- <el-button type="primary" @click="createFn()">
+        </router-link> -->
+        <el-button type="primary" @click="createFn()">
           Offer Create
-        </el-button> -->
+        </el-button>
       </div>
       <el-form
         v-model="state.searchData"
