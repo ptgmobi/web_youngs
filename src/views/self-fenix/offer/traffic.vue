@@ -130,8 +130,8 @@ const options = reactive({
 const slot_obj: any = {
   '55527824': 0.1,
   '95108831': 0.1,
-  '95846929': 0.01,
-  '59845210': 0.01
+  '95846929': 0.005,
+  '59845210': 0.005
 }
 interface trafficObjType {
   pub: string
