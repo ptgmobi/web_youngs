@@ -467,12 +467,14 @@ let validatorHttp = (rule, value, callback) => {
   callback(undefined)
 }
 let validatorStr = (rule, value, callback) => {
-  const arr = ['af_sub_siteid', 'af_installpostback']
-  arr.map(ele => {
-    if (value.includes(ele)) {
-      callback(new Error(`链接有错误，不能包含${ele}`))
-    }
-  })
+  if (data.ruleForm.attribute_provider === 'AppsFlyer') {
+    const arr = ['af_sub_siteid', 'af_installpostback']
+    arr.map(ele => {
+      if (value.includes(ele)) {
+        callback(new Error(`链接有错误，不能包含${ele}`))
+      }
+    })
+  }
   callback(undefined)
 }
 

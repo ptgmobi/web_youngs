@@ -145,6 +145,13 @@
             />
           </el-form-item>
           <el-form-item label="">
+            <el-input
+              v-model="state.searchData.pid"
+              placeholder="Pid"
+              class="search-con"
+            />
+          </el-form-item>
+          <el-form-item label="">
             <el-select
               v-model="state.searchData.channel_type"
               clearable
@@ -515,6 +522,7 @@ interface sarchDataType {
   pkg: string
   title: string
   channel: string
+  pid: string
   country: string
   channel_type: number | undefined
 }
@@ -530,6 +538,7 @@ const sarchDataDefault: sarchDataType = {
   pkg: '',
   title: '',
   channel: '',
+  pid: '',
   country: '',
   channel_type: undefined
 }
