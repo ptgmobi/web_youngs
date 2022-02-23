@@ -12,15 +12,15 @@ console.log(process.env.NODE_ENV)
  * @param routeItem
  */
 function hasCodePermission(codeArr: Array<number>, routeItem: RouteItemTy) {
-  // if (type === 'serve-dev') {
-  //   return true
-  // } else {
+  if (type === 'serve-dev') {
+    return true
+  } else {
     if (routeItem.meta && routeItem.meta.code) {
       return codeArr.includes(routeItem.meta.code) || routeItem.hidden
     } else {
       return false
     }
-  // }
+  }
 }
 /**
  * Use meta.code to determine if the current user has permission
