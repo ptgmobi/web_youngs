@@ -433,8 +433,6 @@ import site from './site'
 import { handleAjaxDataObjectFn } from '@/utils/new-format'
 import { messageFun } from '@/utils/message'
 let { proxy }: any = getCurrentInstance()
-import { useRouter } from 'vue-router'
-import { DataAnalysis } from '@element-plus/icons'
 const router = useRouter()
 const message = {
   required: '此项必填'
@@ -450,32 +448,34 @@ let validatorPkgName = (rule: any, value: any, callback: (arg0: Error | undefine
     callback(undefined)
   }
 }
-let validatorTrackingLink = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
+let validatorSpace = (rule, value, callback) => {
   let reg = new RegExp('\\s+', 'g')
-  let reg1 = /^http/
   if (reg.test(value)) {
     callback(new Error('链接中有空格'))
   } else {
-    if (reg1.test(value)) {
-      // ! 2022年01月14日16:13:33 宋哥让添加
-      if (value.includes('af_installpostback')) {
-        callback(new Error('Traking Link中不允许出现af_installpostback关键字'))
-      }
-      if (data.ruleForm.attribute_provider === 'AppsFlyer') {
-        if (value.includes(data.ruleForm.pkg_name)) {
-          callback(undefined)
-        } else {
-          callback(new Error('Attribute Provider:为Appsflyer时Package Name的值必须包含在Traking Link中'))
-        }
-      } else {
-        callback(undefined)
-      }
-    } else {
-      callback(new Error('请以http开头'))
-    }
+    callback(undefined)
   }
   callback(undefined)
 }
+let validatorHttp = (rule, value, callback) => {
+  let reg = /^http/
+  if (!reg.test(value)) {
+    callback(new Error('必须为有效链接'))
+  } else {
+    callback(undefined)
+  }
+  callback(undefined)
+}
+let validatorStr = (rule, value, callback) => {
+  const arr = ['af_sub_siteid', 'af_installpostback']
+  arr.map(ele => {
+    if (value.includes(ele)) {
+      callback(new Error(`链接有错误，不能包含${ele}`))
+    }
+  })
+  callback(undefined)
+}
+
 let validatorDevice = (rule: any, value: any, callback: (arg0: Error | undefined) => void) => {
   callback(undefined)
 }
@@ -595,7 +595,10 @@ let data: any = reactive({
     title: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
     tracking_link: [
       { required: true, message: message.required, trigger: ['blur', 'change'] },
-      { validator: validatorTrackingLink }
+      { validator: validatorSpace },
+      { validator: validatorHttp },
+      { validator: validatorStr },
+      { validator: validatorPkgName}
     ],
     pkg_name: [
       { required: true, message: message.required, trigger: ['blur', 'change'] },
