@@ -318,12 +318,22 @@
           prop="site_value"
           :rules="judgeSiteType ? state.rules.site_value : state.rules.no_required"
         >
-          <div class="flex jc-start ai-center form-one">
-            <el-input
-              v-model="state.ruleForm.site_value"
-              placeholder="Please input"
-              class="input-with-select"
-            />
+          <div class="form-one">
+            <div>
+              <el-button
+                class="cp mb-10"
+                icon="Tools"
+                circle
+                @click="editDiySiteFun"
+              ></el-button>
+            </div>
+            <div>
+              <el-input
+                v-model="state.ruleForm.site_value"
+                placeholder="Please input"
+                class="input-with-select"
+              />
+            </div>
           </div>
         </el-form-item>
         <!-- S2S Async -->
@@ -399,10 +409,19 @@
         Save
       </el-button>
     </div>
+    <!-- dialog -->
+    <el-dialog
+      v-model="dialogVisibleSite"
+      title="site"
+      width="90%"
+    >
+      <site
+        :msg="state.ruleForm"
+      ></site>
+    </el-dialog>
   </div>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, reactive, toRef, toRefs, watch, watchEffect, onMounted, ref, computed } from 'vue'
 import _ from 'lodash'
 import { useRouter } from 'vue-router'
 import {
@@ -419,6 +438,7 @@ import {
 import Traffic from './traffic'
 import { ElMessage } from 'element-plus'
 import { messageFun } from '@/utils/message'
+import site from './site.vue'
 
 let { proxy }: any = getCurrentInstance()
 const router = useRouter()
@@ -641,6 +661,7 @@ const state = reactive({
 let name: any = ref('')
 let id: any = ref('')
 let type: any = ref('')
+let dialogVisibleSite: any = ref(false)
 const handleTraffic = (arr: Array<any>) => {
   const finalArr: Array<any> = []
   arr.map((ele: any) => {
@@ -690,6 +711,9 @@ const submitFn = async () => {
     // proxy.$router.push({ path: '/fenix/offer/list' })
     window.close()
   }
+}
+const editDiySiteFun = () => {
+  dialogVisibleSite.value = true
 }
 const getConversionFlowValueToLabel = (n: any) => {
   if (n) {

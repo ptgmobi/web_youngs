@@ -65,7 +65,6 @@
   </span>
 </template>
 <script lang="ts" setup>
-import { getCurrentInstance, reactive, watch, onMounted, defineEmits } from 'vue'
 const props = defineProps({
   msg: {
     require: true,
