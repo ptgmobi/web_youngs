@@ -42,3 +42,37 @@ export function openNewUrl(str: string) {
   window.open(finalUrl)
   return finalUrl
 }
+
+// 
+export function analysisExcelFn (str: string, num: number, regStr: RegExp){
+  // 此处解析复制的excel数据
+  let reg = new RegExp(/\n+/)
+  let reg1 = new RegExp(/\s+/)
+  let reg2 = new RegExp(/[\S]+/)
+  let arr = str.split(reg)
+  let flag = true
+  let newArr: any = []
+  arr.forEach((ele: string, index: any) => {
+    if (ele && reg2.test(ele)) {
+      let arr = ele.trim().split(/\s+/)
+      if (arr.length === num) {
+        arr.map(o => {
+          console.log(regStr)
+          if (!regStr.test(o)) {
+            flag = false
+          }
+        })
+        newArr.push(arr)
+      } else {
+        flag = false
+      }
+    } else {
+      flag = false
+    }
+  })
+  if (flag) {
+    return newArr
+  } else {
+    return flag
+  }
+}

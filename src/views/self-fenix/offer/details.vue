@@ -416,7 +416,7 @@
       width="90%"
     >
       <site
-        :msg="state.ruleForm"
+        v-model:msg="state.ruleForm"
       ></site>
     </el-dialog>
   </div>
@@ -766,6 +766,9 @@ const getCountryList = async () => {
   state.options.country = countryList
   return countryList
 }
+let busOffer: any = reactive({
+  ruleForm: defaultRuleForm,
+})
 onMounted(async () => {
   name.value = router.currentRoute.value.name
   id.value = router.currentRoute.value.params.id
@@ -789,6 +792,9 @@ const getOfferForOne = async () => {
   state.ruleForm.country = [offerData.country]
   state.search.adv_offer = offerData.adv_offer
   state.ruleForm.traffic = offerData.traffic ? JSON.parse(offerData.traffic) : []
+  console.log(state.ruleForm)
+  busOffer = toRaw(state.ruleForm)
+  console.log(busOffer)
 }
 const judgeSiteType = computed(() => {
   if (state.ruleForm.site_type === 'rule_value') {

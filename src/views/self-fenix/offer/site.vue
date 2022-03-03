@@ -5,14 +5,14 @@
       enctype="multipart/form-data"
       :rules="state.rules"
       :model="state.ruleForm"
-      label-width="240px"
+      label-width="140px"
       label-position="right"
     >
       <div class="content-con flex column">
         <!-- Offer -->
         <el-form-item
           label="Offer:"
-          prop="offer"
+          prop="offer_id"
         >
           <div class="flex jc-start ai-center form-one">
             <span v-text="state.ruleForm.offer_id"></span>
@@ -20,11 +20,11 @@
         </el-form-item>
         <!-- Offer -->
         <el-form-item
-          label="Offer:"
-          prop="offer"
+          label="Adv Offer:"
+          prop="adv_offer"
         >
           <div class="flex jc-start ai-center form-one">
-            <span v-text="state.ruleForm.offer_id"></span>
+            <span v-text="state.ruleForm.adv_offer"></span>
           </div>
         </el-form-item>
         <!-- Offer -->
@@ -33,7 +33,11 @@
           prop="offer"
         >
           <div class="flex jc-start ai-center form-one">
-            <span v-text="state.ruleForm.offer_id"></span>
+            <el-switch
+              v-model="state.ruleForm.status_day"
+              :active-value="1"
+              :inactive-value="2"
+            />
           </div>
         </el-form-item>
         <el-form-item
@@ -41,7 +45,11 @@
           prop="offer"
         >
           <div class="flex jc-start ai-center form-one">
-            <span v-text="state.ruleForm.offer_id"></span>
+            <el-input
+              v-model="state.ruleForm.day_limit"
+              placeholder="默认值为15"
+              class="input-with-select"
+            />
           </div>
         </el-form-item>
         <el-form-item
@@ -49,7 +57,15 @@
           prop="offer"
         >
           <div class="flex jc-start ai-center form-one">
-            <span v-text="state.ruleForm.offer_id"></span>
+            <el-radio-group class="flex" v-model="state.ruleForm.day_limit_type">
+              <el-radio :label="1">默认</el-radio>
+              <el-radio :label="2">自定义</el-radio>
+            </el-radio-group>
+            <el-input
+              v-model="state.ruleForm.day_limit_value"
+              placeholder=""
+              class="input-with-select ml-10"
+            />
           </div>
         </el-form-item>
         <el-form-item
@@ -57,7 +73,11 @@
           prop="offer"
         >
           <div class="flex jc-start ai-center form-one">
-            <span v-text="state.ruleForm.offer_id"></span>
+            <el-switch
+              v-model="state.ruleForm.status_hour"
+              :active-value="1"
+              :inactive-value="2"
+            />
           </div>
         </el-form-item>
         <el-form-item
@@ -98,14 +118,18 @@ const props = defineProps({
 })
 console.log(props.msg)
 let state = reactive({
-  rules: {},
   ruleForm: {
-    offer_id: 0
-  }
+    ...toRaw(props.msg),
+    status_day: 1,
+    day_limit: 15,
+    day_limit_type: 1,
+    day_limit_value: '',
+    status_hour: 1,
+  },
+  rules: {}
 })
 const saveFun = () => {
 
 }
-let dialogVisibleSite = ref(false)
 
 </script>

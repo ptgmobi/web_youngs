@@ -522,7 +522,9 @@ const editDeviceFun = async (i, row) => {
   }
   const { data: deviceData } = await ApiGetOfferDevice(ajaxData)
   bus.cacheDevice.all = deviceData.all
-  bus.cacheDevice.select = JSON.parse(row.device)
+  // ! error 
+  // bus.cacheDevice.select = JSON.parse(row.device)
+  bus.cacheDevice.select = deviceData.select
 }
 // 修改device数据
 const saveDevice = (data) => {
@@ -541,6 +543,7 @@ const setDevice = async () => {
   messageFun(res)
   data.dialogVisibleDevice = false
   bus.offer.device_count = bus.cacheDeviceCount
+  // searchFn()
 }
 onMounted(() => {
   console.log('onMounted')

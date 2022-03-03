@@ -211,7 +211,14 @@ export function handleIdTree(data) {
 }
 // 千位分隔符
 export function thousandSeparator(num) {
-  return (num + '').replace(/(?!^)(?=(\d{3})+$)/g, ',')
+  const reg = /(?!^)(?=(\d{3})+$)/g
+  if (num < 0) {
+    num = 0 - num
+    num = (num + '').replace(reg, ',')
+    return `-${num}`
+  } else {
+    return (num + '').replace(reg, ',')
+  }
   // let count = 0
   // let ans = ''
   // do {
