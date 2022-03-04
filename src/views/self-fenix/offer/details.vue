@@ -330,8 +330,11 @@
             <div>
               <el-input
                 v-model="state.ruleForm.site_value"
+                type="textarea"
+                autosize
+                :rows="4"
                 placeholder="Please input"
-                class="input-with-select"
+                class="input-with-select siteValue"
               />
             </div>
           </div>
@@ -917,7 +920,12 @@ const setCountry = (data: any) => {
 }
 const updateData = (data) => {
   console.log(data)
-  // const site_value = data.site_value
-  // state.ruleForm.site_value = site_value
+  const site_value = data.site_value
+  state.ruleForm.site_value = site_value
 }
 </script>
+<style scoped lang="scss">
+.siteValue{
+  height: auto;
+}
+</style>

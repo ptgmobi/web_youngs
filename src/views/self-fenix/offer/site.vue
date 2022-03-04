@@ -1,11 +1,11 @@
 <template>
   <div>
     <el-form
-      ref="ruleForm"
+      ref="ruleFormRef"
       enctype="multipart/form-data"
-      :rules="state.rules"
+      :rules="rules"
       :model="state.ruleForm"
-      label-width="140px"
+      label-width="150px"
       label-position="right"
     >
       <div class="content-con flex column">
@@ -30,7 +30,7 @@
         <!-- Offer -->
         <el-form-item
           label="分天优选:"
-          prop="offer"
+          prop="status_day"
         >
           <div class="flex jc-start ai-center form-one">
             <el-switch
@@ -43,7 +43,7 @@
         </el-form-item>
         <el-form-item
           label="分天优选启动条件:"
-          prop="offer"
+          prop="day_limit"
         >
           <div class="flex jc-start ai-center form-one">
             <el-input
@@ -55,24 +55,37 @@
         </el-form-item>
         <el-form-item
           label="分天优选install限制:"
-          prop="offer"
+          prop="day_limit_type"
         >
           <div class="flex jc-start ai-center form-one">
             <el-radio-group class="flex" v-model="state.ruleForm.day_limit_type">
               <el-radio :label="1">默认</el-radio>
               <el-radio :label="2">自定义</el-radio>
             </el-radio-group>
-            <el-input
+            <!-- <el-input
               v-if="state.ruleForm.day_limit_type === 2"
               v-model="state.ruleForm.day_limit_value"
               placeholder=""
               class="input-with-select ml-10"
+            /> -->
+          </div>
+        </el-form-item>
+        <el-form-item
+          v-if="state.ruleForm.day_limit_type === 2"
+          label="分天优选install限制值:"
+          prop="day_limit_value"
+        >
+          <div class="flex jc-start ai-center form-one">
+            <el-input
+              v-model="state.ruleForm.day_limit_value"
+              placeholder=""
+              class="input-with-select"
             />
           </div>
         </el-form-item>
         <el-form-item
           label="分时优选:"
-          prop="offer"
+          prop="status_hour"
         >
           <div class="flex jc-start ai-center form-one">
             <el-switch
@@ -85,10 +98,9 @@
         </el-form-item>
         <el-form-item
           label="当前渠道数:"
-          prop="offer"
+          prop="site_value"
         >
           <div class="flex jc-start ai-center form-one">
-            {{state.ruleForm.site_value}}
             <site-list
               v-model:msg="state.ruleForm.site_value"
             ></site-list>
@@ -102,7 +114,7 @@
     <div class="w100 flex">
       <el-button
         type="primary"
-        @click.prevent="saveFun"
+        @click.prevent="saveFun(ruleFormRef)"
       >
         Save
       </el-button>
@@ -111,7 +123,10 @@
 </template>
 <script setup lang="ts">
 import siteList from './siteList.vue'
+import type { ElForm } from 'element-plus'
 const emit = defineEmits(['update:visible', 'updateData'])
+type FormInstance = InstanceType<typeof ElForm>
+const ruleFormRef = ref<FormInstance>()
 const props = defineProps({
   msg: {
     require: true,
@@ -121,23 +136,49 @@ const props = defineProps({
     type: Object
   }
 })
+let message = {
+  required: '必填项'
+}
+const rules = reactive({
+  offer_id: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  adv_offer: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  status_day: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  day_limit: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  day_limit_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  day_limit_value: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  status_hour: [{ required: true, message: message.required, trigger: ['blur', 'change'] }]
+})
 let state = reactive({
   ruleForm: {
     offer_id: '',
     adv_offer: '',
     channel_type: 2,
-    status_day: undefined,
+    status_day: 2,
     day_limit: 15,
     day_limit_type: 1,
     day_limit_value: '',
     status_hour: 2,
     site_value: '',
     ...props.msg
-  },
-  rules: {}
+  }
 })
-console.log(state.ruleForm.site_value)
-const saveFun = () => {
+
+const saveFun = (formEl: FormInstance | undefined) => {
+  console.log(formEl)
+  if (!formEl) return
+  formEl.validate((valid) => {
+    if (valid) {
+      console.log('submit!')
+      submitFn()
+    } else {
+      console.log('error submit!')
+      return false
+    }
+  })
+  
+}
+
+const submitFn = () => {
   emit('updateData', state.ruleForm)
   emit('update:visible', false)
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="w100">
     <el-form
-      ref="ruleForm"
+      ref="ruleFormRef"
       enctype="multipart/form-data"
       :rules="state.rules"
       :model="state.ruleForm"
@@ -28,13 +28,16 @@
       </div>
     </el-form>
     <div class="w100 flex mt-10">
-      <el-button type="primary" @click="saveSiteStr">Save</el-button>
+      <el-button type="primary" @click="saveSiteStr(ruleFormRef)">Save</el-button>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
 import { analysisExcelFn } from '@/utils/new-format'
+import type { ElForm } from 'element-plus'
 const emit = defineEmits(['update:visible', 'uploadData'])
+type FormInstance = InstanceType<typeof ElForm>
+const ruleFormRef = ref<FormInstance>()
 const reg = /^[0-9a-z]{8,8}$/
 let validateSiteExcel = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
   if (value !== '') {
@@ -62,7 +65,20 @@ let state = reactive({
     ]
   }
 })
-const saveSiteStr = () => {
+const saveSiteStr = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.validate((valid) => {
+    if (valid) {
+      console.log('submit!')
+      submitFn()
+    } else {
+      console.log('error submit!')
+      return false
+    }
+  })
+  
+}
+const submitFn = () => {
   // 关闭当前模态框
   emit('uploadData', handleData.value)
   state.ruleForm.site_list = ''

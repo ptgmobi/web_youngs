@@ -9,6 +9,7 @@
         v-model="state.ruleForm.site_num"
         placeholder="Please input"
         type="number"
+        max="10000"
         class="input-with-select search-con"
       >
         <template #append>
