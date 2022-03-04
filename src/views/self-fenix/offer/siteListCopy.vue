@@ -34,11 +34,11 @@
 </template>
 <script lang="ts" setup>
 import { analysisExcelFn } from '@/utils/new-format'
-const emit = defineEmits(['update:visible'])
+const emit = defineEmits(['update:visible', 'uploadData'])
+const reg = /^[0-9a-z]{8,8}$/
 let validateSiteExcel = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
   if (value !== '') {
-    const flag = analysisExcelFn(value, 1, /[0-9a-z]{8,8}/)
-    console.log(flag)
+    const flag = analysisExcelFn(value, 1, reg).type
     if (flag) {
       callback(undefined)
     } else {
@@ -48,9 +48,12 @@ let validateSiteExcel = (rule: any, value: string, callback: (arg0: Error | unde
     callback(new Error('必填项'))
   }
 }
+const handleData = computed(() => {
+  return analysisExcelFn(state.ruleForm.site_list, 1, reg).data
+})
 let state = reactive({
   ruleForm: {
-    site_list: undefined
+    site_list: ''
   },
   rules: {
     site_list: [
@@ -61,6 +64,8 @@ let state = reactive({
 })
 const saveSiteStr = () => {
   // 关闭当前模态框
+  emit('uploadData', handleData.value)
+  state.ruleForm.site_list = ''
   emit('update:visible', false)
 }
 </script>

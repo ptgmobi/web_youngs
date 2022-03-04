@@ -416,7 +416,9 @@
       width="90%"
     >
       <site
-        v-model:msg="state.ruleForm"
+        :msg="state.ruleForm"
+        @updateData="updateData"
+        v-model:visible="dialogVisibleSite"
       ></site>
     </el-dialog>
   </div>
@@ -912,5 +914,10 @@ const setCountry = (data: any) => {
   } else {
     state.ruleForm.country = [data]
   }
+}
+const updateData = (data) => {
+  console.log(data)
+  // const site_value = data.site_value
+  // state.ruleForm.site_value = site_value
 }
 </script>

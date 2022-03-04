@@ -8,6 +8,7 @@
       <el-input
         v-model="state.ruleForm.site_num"
         placeholder="Please input"
+        type="number"
         class="input-with-select search-con"
       >
         <template #append>
@@ -61,27 +62,29 @@
       </el-table>
     </div>
     <!-- dialog -->
-      <el-dialog
-        v-model="dialogVisibleSiteListCopy"
-        title="site"
-        width="80%"
-      >
-        <site-list-copy
-          v-model:visible="dialogVisibleSiteListCopy"
-        ></site-list-copy>
-      </el-dialog>
+    <el-dialog
+      v-model="dialogVisibleSiteListCopy"
+      title="site"
+      width="80%"
+    >
+      <site-list-copy
+        v-model:visible="dialogVisibleSiteListCopy"
+        @uploadData = 'uploadData'
+      ></site-list-copy>
+    </el-dialog>
   </div>
 </template>
 <script lang="ts" setup>
-import { handleAjaxDataObjectFn } from '@/utils/new-format';
+import { handleAjaxDataObjectFn, randomStr } from '@/utils/new-format';
 import siteListCopy from './siteListCopy.vue'
+const emit = defineEmits(['update:msg'])
 const props = defineProps({
   msg: {
     require: true,
     default: () => {
-      return {}
+      return ''
     },
-    type: Object
+    type: String
   }
 })
 let dialogVisibleSiteListCopy = ref(false)
@@ -91,8 +94,8 @@ const handleFn = (data) => {
 }
 let state = reactive({
   ruleForm: {
-    site_num: undefined,
-    site_value: handleFn(props.msg.site_value)
+    site_num: 0,
+    site_value: handleFn(props.msg)
   },
   rules: {}
 })
@@ -105,18 +108,36 @@ const siteLen = computed(() => {
 })
 const addRandomFn = () => {
   // 随机生成8位字符串
+  if (state.ruleForm.site_num > 0) {
+    let num = Math.floor(state.ruleForm.site_num)
+    for (let index = 0; index < num; index++) {
+      const element = randomStr(8)
+      state.ruleForm.site_value.push(element)
+    }
+  }
+  state.ruleForm.site_num = 0
 }
 const editDiySiteListCopyFun = () => {
   dialogVisibleSiteListCopy.value = true
 }
 const clearSiteList = () => {
-
+  state.ruleForm.site_value = []
 }
 const deleteFn = (scope) => {
   const { $index: i, row } = scope
   console.log(i, row)
   state.ruleForm.site_value.splice(i, 1)
 }
+// excel复制新增
+const uploadData = (data) => {
+  data.map(ele => {
+    state.ruleForm.site_value.push(ele[0])
+  })
+}
+watchEffect(() => {
+  const site_value = state.ruleForm.site_value.join(',')
+  emit('update:msg', site_value)
+})
 </script>
 <style scoped lang="scss">
 .search-con{

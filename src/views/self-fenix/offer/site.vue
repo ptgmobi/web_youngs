@@ -34,6 +34,7 @@
         >
           <div class="flex jc-start ai-center form-one">
             <el-switch
+              :disabled="props.msg.channel_type == 2"
               v-model="state.ruleForm.status_day"
               :active-value="1"
               :inactive-value="2"
@@ -62,6 +63,7 @@
               <el-radio :label="2">自定义</el-radio>
             </el-radio-group>
             <el-input
+              v-if="state.ruleForm.day_limit_type === 2"
               v-model="state.ruleForm.day_limit_value"
               placeholder=""
               class="input-with-select ml-10"
@@ -74,6 +76,7 @@
         >
           <div class="flex jc-start ai-center form-one">
             <el-switch
+              :disabled="props.msg.channel_type == 2"
               v-model="state.ruleForm.status_hour"
               :active-value="1"
               :inactive-value="2"
@@ -85,8 +88,9 @@
           prop="offer"
         >
           <div class="flex jc-start ai-center form-one">
+            {{state.ruleForm.site_value}}
             <site-list
-              :msg="state.ruleForm"
+              v-model:msg="state.ruleForm.site_value"
             ></site-list>
           </div>
         </el-form-item>
@@ -107,6 +111,7 @@
 </template>
 <script setup lang="ts">
 import siteList from './siteList.vue'
+const emit = defineEmits(['update:visible', 'updateData'])
 const props = defineProps({
   msg: {
     require: true,
@@ -116,20 +121,25 @@ const props = defineProps({
     type: Object
   }
 })
-console.log(props.msg)
 let state = reactive({
   ruleForm: {
-    ...toRaw(props.msg),
-    status_day: 1,
+    offer_id: '',
+    adv_offer: '',
+    channel_type: 2,
+    status_day: undefined,
     day_limit: 15,
     day_limit_type: 1,
     day_limit_value: '',
-    status_hour: 1,
+    status_hour: 2,
+    site_value: '',
+    ...props.msg
   },
   rules: {}
 })
+console.log(state.ruleForm.site_value)
 const saveFun = () => {
-
+  emit('updateData', state.ruleForm)
+  emit('update:visible', false)
 }
 
 </script>

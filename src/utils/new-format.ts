@@ -43,7 +43,13 @@ export function openNewUrl(str: string) {
   return finalUrl
 }
 
-// 
+
+/*
+获取并验证excel字符串
+str: excel字符串
+num: 横向几列
+regstr: 每个字符串的正则
+**/
 export function analysisExcelFn (str: string, num: number, regStr: RegExp){
   // 此处解析复制的excel数据
   let reg = new RegExp(/\n+/)
@@ -57,7 +63,6 @@ export function analysisExcelFn (str: string, num: number, regStr: RegExp){
       let arr = ele.trim().split(/\s+/)
       if (arr.length === num) {
         arr.map(o => {
-          console.log(regStr)
           if (!regStr.test(o)) {
             flag = false
           }
@@ -71,8 +76,20 @@ export function analysisExcelFn (str: string, num: number, regStr: RegExp){
     }
   })
   if (flag) {
-    return newArr
+    return {
+      type: flag,
+      data: newArr
+    }
   } else {
-    return flag
+    return {
+      type: flag,
+      data: newArr
+    }
   }
 }
+
+// 随机生成特定长度的字符串
+export function randomStr (num: number = 0) {
+  return Math.random().toString(16).substring(2, num + 2)
+}
+
