@@ -39,6 +39,14 @@
               :active-value="1"
               :inactive-value="2"
             />
+            <span class="ml-10">
+              <el-tooltip
+                content="根据昨天数据筛选符合条件的site_id使用"
+                placement="right-start"
+              >
+                <el-icon><info-filled /></el-icon>
+              </el-tooltip>
+            </span>
           </div>
         </el-form-item>
         <el-form-item
@@ -54,6 +62,14 @@
               class="input-with-select"
               type="number"
             />
+            <span class="ml-10">
+              <el-tooltip
+                content="当昨天site_id的平均install数大于等于设定值时才启动自动优选，默认设置为15"
+                placement="bottom"
+              >
+                <el-icon><info-filled /></el-icon>
+              </el-tooltip>
+            </span>
           </div>
         </el-form-item>
         <el-form-item
@@ -65,12 +81,14 @@
               <el-radio :label="1">默认</el-radio>
               <el-radio :label="2">自定义</el-radio>
             </el-radio-group>
-            <!-- <el-input
-              v-if="state.ruleForm.day_limit_type === 2"
-              v-model="state.ruleForm.day_limit_value"
-              placeholder=""
-              class="input-with-select ml-10"
-            /> -->
+            <span class="ml-10">
+              <el-tooltip
+                content="根据site_id的install数筛选，仅使用大于等于设定值的site_id，默认值为昨天均值除以5"
+                placement="right-start"
+              >
+                <el-icon><info-filled /></el-icon>
+              </el-tooltip>
+            </span>
           </div>
         </el-form-item>
         <el-form-item
@@ -98,6 +116,14 @@
               :active-value="1"
               :inactive-value="2"
             />
+            <span class="ml-10">
+              <el-tooltip
+                content="根据前6小时和前2小时数据筛选符合条件的site_id使用，暂不支持自定义"
+                placement="right-start"
+              >
+                <el-icon><info-filled /></el-icon>
+              </el-tooltip>
+            </span>
           </div>
         </el-form-item>
         <el-form-item

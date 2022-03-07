@@ -420,7 +420,7 @@
     <el-dialog
       v-model="dialogVisibleSite"
       title="site"
-      width="90%"
+      width="70%"
     >
       <site
         :msg="state.ruleForm"

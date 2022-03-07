@@ -32,7 +32,7 @@
       <el-table
         :data="siteList"
         class="w100"
-        height="300px"
+        height="400px"
         border
       >
         <el-table-column
@@ -66,7 +66,7 @@
     <el-dialog
       v-model="dialogVisibleSiteListCopy"
       title="site"
-      width="80%"
+      width="60%"
     >
       <site-list-copy
         v-model:visible="dialogVisibleSiteListCopy"
