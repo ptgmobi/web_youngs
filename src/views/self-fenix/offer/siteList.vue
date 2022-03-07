@@ -1,7 +1,7 @@
 <template>
   <div class="w100">
     <div class="mb-10">
-      {{siteLen}}
+      
     </div>
     <!-- 操作 -->
     <div class="control-box flex jc-between ai-start w100">
@@ -9,7 +9,7 @@
         v-model="state.ruleForm.site_num"
         placeholder="Please input"
         type="number"
-        max="10000"
+        max="1000"
         class="input-with-select search-con"
       >
         <template #append>

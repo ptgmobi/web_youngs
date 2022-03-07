@@ -50,6 +50,7 @@
               v-model="state.ruleForm.day_limit"
               placeholder="默认值为15"
               class="input-with-select"
+              type="number"
             />
           </div>
         </el-form-item>
@@ -77,6 +78,7 @@
         >
           <div class="flex jc-start ai-center form-one">
             <el-input
+              type="number"
               v-model="state.ruleForm.day_limit_value"
               placeholder=""
               class="input-with-select"
@@ -101,6 +103,14 @@
           prop="site_value"
         >
           <div class="flex jc-start ai-center form-one">
+            <el-input type="hidden" v-model="siteLen" disabled></el-input>
+            {{siteLen}}
+          </div>
+        </el-form-item>
+        <el-form-item
+          label=""
+        >
+          <div class="flex jc-start ai-center form-one">
             <site-list
               v-model:msg="state.ruleForm.site_value"
             ></site-list>
@@ -116,7 +126,7 @@
         type="primary"
         @click.prevent="saveFun(ruleFormRef)"
       >
-        Save
+        提交
       </el-button>
     </div>
   </div>
@@ -139,6 +149,19 @@ const props = defineProps({
 let message = {
   required: '必填项'
 }
+const validatorSiteValue = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
+  if (value) {
+    let len = value.split(',').length
+    
+    if (len > 1000) {
+      callback(new Error('site value 的值不可大于1000个'))
+    } else {
+      callback(undefined)
+    }
+  } else {
+    callback(undefined)
+  }
+}
 const rules = reactive({
   offer_id: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
   adv_offer: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
@@ -146,7 +169,11 @@ const rules = reactive({
   day_limit: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
   day_limit_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
   day_limit_value: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-  status_hour: [{ required: true, message: message.required, trigger: ['blur', 'change'] }]
+  status_hour: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  site_value: [
+    { required: true, message: message.required, trigger: ['blur', 'change'] },
+    { validator: validatorSiteValue, trigger: ['blur', 'change'] },
+  ],
 })
 let state = reactive({
   ruleForm: {
@@ -159,12 +186,35 @@ let state = reactive({
     day_limit_value: '',
     status_hour: 2,
     site_value: '',
-    ...props.msg
   }
 })
 
+const siteLen = computed(() => {
+  return state.ruleForm.site_value ? state.ruleForm.site_value.split(',').length : 0
+})
+
+watch(() => {
+  return props.msg
+}, (newVal, oldVal) => {
+  // console.log(newVal)
+  let fenixSiteData = props.msg.fenix_site
+  state.ruleForm = {
+    offer_id: fenixSiteData.offer_id || props.msg.offer_id,
+    adv_offer: fenixSiteData.adv_offer || props.msg.adv_offer,
+    channel_type: props.msg.channel_type,
+    status_day: fenixSiteData.status_day || 2,
+    day_limit: fenixSiteData.day_limit || 15,
+    day_limit_type: fenixSiteData.day_limit_type || 1,
+    day_limit_value: fenixSiteData.day_limit_value || '',
+    status_hour: fenixSiteData.status_hour || 2,
+    site_value: props.msg.site_value,
+  }
+}, {
+  deep: true,
+  immediate: true
+})
+
 const saveFun = (formEl: FormInstance | undefined) => {
-  console.log(formEl)
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {

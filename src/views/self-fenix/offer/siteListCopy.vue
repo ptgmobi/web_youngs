@@ -60,8 +60,8 @@ let state = reactive({
   },
   rules: {
     site_list: [
-      { required: true, message: '必填项', trigger: ['blur', 'change'] },
-      { validator: validateSiteExcel, trigger: ['blur', 'change'] }
+      { required: true, message: '必填项', trigger: ['blur'] },
+      { validator: validateSiteExcel, trigger: ['blur'] }
     ]
   }
 })

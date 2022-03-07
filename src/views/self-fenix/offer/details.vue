@@ -319,13 +319,16 @@
           :rules="judgeSiteType ? state.rules.site_value : state.rules.no_required"
         >
           <div class="form-one">
-            <div>
+            <div class="flex ai-center jc-start mb-10">
               <el-button
-                class="cp mb-10"
+                class="cp mr-10"
                 icon="Tools"
                 circle
                 @click="editDiySiteFun"
               ></el-button>
+              <span>
+                {{state.ruleForm.site_value.split(',').length}}
+              </span>
             </div>
             <div>
               <el-input
@@ -472,6 +475,19 @@ const judgeTraffic = (data: Array<any>) => {
   })
   return flag
 }
+const validatorSiteValue = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
+  if (value) {
+    let len = value.split(',').length
+    
+    if (len > 1000) {
+      callback(new Error('site value 的值不可大于1000个'))
+    } else {
+      callback(undefined)
+    }
+  } else {
+    callback(undefined)
+  }
+}
 let validatorTraffic = (rule: any, value: Array<trafficType>, callback: (arg0: Error | undefined) => void) => {
   if (value.length !== 0) {
     if (!judgeTraffic(value)) {
@@ -524,6 +540,7 @@ interface dataType {
   site_type: string
   site_value: string
   description: string
+  fenix_site: any
 }
 const defaultRuleForm: dataType = {
   id: undefined,
@@ -553,7 +570,8 @@ const defaultRuleForm: dataType = {
   app_url: '',
   site_type: 'rule_value',
   site_value: '',
-  description: ''
+  description: '',
+  fenix_site: {}
 }
 let loading = ref(false)
 const state = reactive({
@@ -652,7 +670,10 @@ const state = reactive({
     traffic: [{ required: false, validator: validatorTraffic, trigger: ['blur', 'change'] }],
     adv_tracking_link: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
     site_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    site_value: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    site_value: [
+      { required: true, message: message.required, trigger: ['blur', 'change'] },
+      { validator: validatorSiteValue, trigger: ['blur', 'change'] },
+      ],
     is_s2s: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
     s2s_tracking_link: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
     app_url: [{ required: true, message: message.required, trigger: ['blur', 'change'] }]
@@ -695,12 +716,22 @@ const submitFn = async () => {
   ajaxData.country = baseAjax.country[0]
   ajaxData.revenue = parseFloat(ajaxData.revenue)
   ajaxData.target_cvr = parseFloat(ajaxData.target_cvr)
+  if (ajaxData.fenix_site.day_limit) {
+    ajaxData.fenix_site.day_limit = parseFloat(ajaxData.fenix_site.day_limit)
+  }
+  if (ajaxData.fenix_site.day_limit_value) {
+    ajaxData.fenix_site.day_limit_value = parseFloat(ajaxData.fenix_site.day_limit_value)
+  } else {
+    delete ajaxData.fenix_site.day_limit_value
+  }
   if (baseAjax.traffic.length !== 0) {
     const finalTraffic = handleTraffic(baseAjax.traffic)
     ajaxData.traffic = JSON.stringify(finalTraffic)
   } else {
     delete ajaxData.traffic
   }
+  // console.log(ajaxData)
+  // return ajaxData
   let res: any
   // 创建
   if (type.value === 'create') {
@@ -775,6 +806,9 @@ let busOffer: any = reactive({
   ruleForm: defaultRuleForm,
 })
 onMounted(async () => {
+  init()
+})
+const init = async () => {
   name.value = router.currentRoute.value.name
   id.value = router.currentRoute.value.params.id
   if (name.value === 'fenix-offer-create') {
@@ -788,7 +822,7 @@ onMounted(async () => {
     getOfferForOne()
   }
   await getConfig()
-})
+}
 const getOfferForOne = async () => {
   const { data: offerData } = await ApietOfferForOne(id.value)
   state.ruleForm = {
@@ -919,9 +953,9 @@ const setCountry = (data: any) => {
   }
 }
 const updateData = (data) => {
-  console.log(data)
-  const site_value = data.site_value
-  state.ruleForm.site_value = site_value
+  console.log('site_value', data.site_value.length)
+  state.ruleForm.site_value = data.site_value
+  state.ruleForm.fenix_site = toRaw(data)
 }
 </script>
 <style scoped lang="scss">
