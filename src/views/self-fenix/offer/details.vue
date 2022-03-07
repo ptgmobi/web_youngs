@@ -328,7 +328,7 @@
                 @click="editDiySiteFun"
               ></el-button>
               <span>
-                {{state.ruleForm.site_value.split(',').length}}
+                {{siteLen}}
               </span>
             </div>
             <div>
@@ -793,6 +793,9 @@ const getConfig = async () => {
   const res = await Promise.all([getChannelList(), getCountryList()])
   return res
 }
+const siteLen = computed(() => {
+  return state.ruleForm.site_value ? state.ruleForm.site_value.split(',').length : 0
+})
 const getChannelList = async () => {
   const { data: channelList } = await ApiGetChannelList()
   state.options.channel = channelList
