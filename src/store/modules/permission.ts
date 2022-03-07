@@ -5,7 +5,7 @@ import { RouteItemTy, RouterRowTy, RouterTy } from '@/types/router'
 import { ObjTy } from '@/types/common'
 
 const type = process.env.NODE_ENV
-console.log(process.env.NODE_ENV)
+// console.log(process.env.NODE_ENV)
 /**
  * Use meta.code to determine if the current user has permission
  * @param codeArr

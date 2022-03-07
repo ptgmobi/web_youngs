@@ -38,7 +38,7 @@ let deepOldRouter: ObjTy | null = null
 const key = computed({
   get() {
     const routerLevel = route.matched.length
-    console.log('routerLevel', routerLevel)
+    // console.log('routerLevel', routerLevel)
     if (routerLevel === 2) {
       if (deepOldRouter?.name) {
         if (deepOldRouter.meta?.leaveRmCachePage && deepOldRouter.meta?.cachePage) {

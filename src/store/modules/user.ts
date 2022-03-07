@@ -82,7 +82,6 @@ const actions = {
   async getInfo({ commit, state }: ObjTy) {
     const token = getToken()
     const decodeToken: any = jwtDecode(token)
-    console.log(decodeToken)
     const {
       User: { Email: email, Id: id, Username: name }
     } = decodeToken

@@ -831,9 +831,7 @@ const getOfferForOne = async () => {
   state.ruleForm.country = [offerData.country]
   state.search.adv_offer = offerData.adv_offer
   state.ruleForm.traffic = offerData.traffic ? JSON.parse(offerData.traffic) : []
-  console.log(state.ruleForm)
   busOffer = toRaw(state.ruleForm)
-  console.log(busOffer)
 }
 const judgeSiteType = computed(() => {
   if (state.ruleForm.site_type === 'rule_value') {
