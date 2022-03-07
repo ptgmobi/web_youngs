@@ -258,7 +258,8 @@
           <div class="flex jc-start ai-center form-one">
             <el-input
               v-model="state.ruleForm.adv_tracking_link"
-              :rows="3"
+              :rows="4"
+              autosize
               type="textarea"
               placeholder="Please input"
               class="input-with-select"
