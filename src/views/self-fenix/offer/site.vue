@@ -198,15 +198,22 @@ watch(() => {
 }, (newVal, oldVal) => {
   // console.log(newVal)
   let fenixSiteData = props.msg.fenix_site
+  let status_day = fenixSiteData.status_day || 2
+  let status_hour = fenixSiteData.status_hour || 2
+  // !
+  if (props.msg.channel_type === 2) {
+    status_day = 2
+    status_hour = 2
+  }
   state.ruleForm = {
     offer_id: fenixSiteData.offer_id || props.msg.offer_id,
     adv_offer: fenixSiteData.adv_offer || props.msg.adv_offer,
     channel_type: props.msg.channel_type,
-    status_day: fenixSiteData.status_day || 2,
+    status_day: status_day,
     day_limit: fenixSiteData.day_limit || 15,
     day_limit_type: fenixSiteData.day_limit_type || 1,
     day_limit_value: fenixSiteData.day_limit_value || '',
-    status_hour: fenixSiteData.status_hour || 2,
+    status_hour: status_hour,
     site_value: props.msg.site_value,
   }
 }, {
