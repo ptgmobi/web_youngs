@@ -49,6 +49,8 @@
             <el-input
               v-model="state.ruleForm.day_limit"
               placeholder="默认值为15"
+              min="5"
+              step="1"
               class="input-with-select"
               type="number"
             />
@@ -162,11 +164,29 @@ const validatorSiteValue = (rule: any, value: string, callback: (arg0: Error | u
     callback(undefined)
   }
 }
+const validatorDayLimit = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
+  if (value) {
+    if (parseInt(value) === parseFloat(value)) {
+      if (Number(value) > 5) {
+        callback(undefined)
+      } else {
+        callback(new Error('必须为大于5的整数'))
+      }
+    } else {
+      callback(new Error('必须为整数'))
+    }
+  } else {
+    callback(undefined)
+  }
+}
 const rules = reactive({
   offer_id: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
   adv_offer: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
   status_day: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-  day_limit: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  day_limit: [
+    { required: true, message: message.required, trigger: ['blur', 'change'] },
+    { validator: validatorDayLimit, trigger: ['blur', 'change'] }
+  ],
   day_limit_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
   day_limit_value: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
   status_hour: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
