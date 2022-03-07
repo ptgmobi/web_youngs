@@ -332,14 +332,15 @@
               </span>
             </div>
             <div>
-              <el-input
+              <!-- <el-input
                 v-model="state.ruleForm.site_value"
                 type="textarea"
                 autosize
                 :rows="4"
                 placeholder="Please input"
                 class="input-with-select siteValue"
-              />
+              /> -->
+              <p class="text-wrap">{{state.ruleForm.site_value}}</p>
             </div>
           </div>
         </el-form-item>
