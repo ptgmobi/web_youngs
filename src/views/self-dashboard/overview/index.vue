@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" icon="Edit" circle></el-button>
     <searchC @emitParent="changeSearchData" />
     <cardC :json="searchData" />
     <dateC @emitParent="changeSearchDate" />

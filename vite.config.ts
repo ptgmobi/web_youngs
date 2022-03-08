@@ -117,7 +117,7 @@ export default ({ command, mode }: any) => {
       // })
     ],
     build: {
-      // minify: 'terser',
+      minify: 'terser',
       brotliSize: false,
       // 消除打包大小超过500kb警告
       chunkSizeWarningLimit: 2000,
