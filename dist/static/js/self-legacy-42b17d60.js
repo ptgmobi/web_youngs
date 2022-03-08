@@ -1,1 +1,0 @@
-System.register(["./vendor-legacy-b450b3b1.js"],(function(e){"use strict";var t;return{setters:[function(e){t=e.u}],execute:function(){e("m",{data:function(){return{}},created:function(){},methods:{judgePermissionElementFn:function(e){return t().getters.element.filter((function(t){return t.Code===e}))}}})}}}));

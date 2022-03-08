@@ -1,0 +1,1 @@
+System.register(["./vendor-legacy-9b72e15f.js"],(function(e){"use strict";var t;return{setters:[function(e){t=e.u}],execute:function(){e("m",{data:function(){return{}},created:function(){},methods:{judgePermissionElementFn:function(e){return t().getters.element.filter((function(t){return t.Code===e}))}}})}}}));

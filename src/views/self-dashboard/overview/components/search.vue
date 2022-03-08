@@ -113,9 +113,9 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { reactive, toRefs, toRaw, onMounted } from 'vue'
 import { getOverviewSearchForCountry, getOverviewSearchForChannel, getOverviewSearchForPkg } from '@/api/overview'
 import _ from 'lodash'
+const emit = defineEmits(['emitParent'])
 const baseData: any = {
   channel_type: '',
   platform: '',
@@ -201,7 +201,6 @@ const changeSelectChannel = () => {
 const changeSelectPkg = () => {
   
 }
-const emit = defineEmits(['emitParent'])
 // 搜索
 const handleSubmitSearch = () => {
   console.warn('set search data')
