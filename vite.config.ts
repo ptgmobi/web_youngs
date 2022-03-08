@@ -68,10 +68,11 @@ export default ({ command, mode }: any) => {
     plugins: [
       vue(),
       vueJsx(),
-      legacy({
-        targets: ['chrome 52', 'ie >= 11'],
-        additionalLegacyPolyfills: ['regenerator-runtime/runtime']
-      }),
+      // ! 兼容性处理
+      // legacy({
+      //   targets: ['chrome 52', 'ie >= 11'],
+      //   additionalLegacyPolyfills: ['regenerator-runtime/runtime']
+      // }),
       viteSvgIcons({
         // config svg dir that can config multi
         iconDirs: [path.resolve(process.cwd(), 'src/icons/common'), path.resolve(process.cwd(), 'src/icons/nav-bar')],
