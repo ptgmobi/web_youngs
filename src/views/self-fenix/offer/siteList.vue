@@ -90,7 +90,7 @@ const props = defineProps({
 })
 let dialogVisibleSiteListCopy = ref(false)
 const handleFn = (data) => {
-  const arr = data.split(',')
+  const arr = data ? data.split(',') : []
   return arr
 }
 let state = reactive({
