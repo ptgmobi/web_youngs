@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <el-button type="primary" icon="Edit" circle></el-button>
     <searchC @emitParent="changeSearchData" />
     <cardC :json="searchData" />
     <dateC @emitParent="changeSearchDate" />
@@ -14,7 +15,7 @@ import cardC from './components/card'
 import chartC from './components/chart'
 import dateC from './components/date'
 import tableC from './components/table'
-import { ref, reactive, computed } from 'vue'
+
 let searchMode = reactive({
   data: {
     channel_type: [],

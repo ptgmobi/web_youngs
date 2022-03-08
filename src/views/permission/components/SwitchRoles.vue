@@ -1,9 +1,7 @@
 <template>
   <div class="switchRoles">
     <div>
-      <div style="margin-bottom: 15px">
-        Your roles: {{ roles }}
-      </div>
+      <div style="margin-bottom: 15px">Your roles: {{ roles }}</div>
       Switch roles:
     </div>
     <el-radio-group v-model="switchRoles">
@@ -14,7 +12,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 //获取store和router
 import { useStore } from 'vuex'
 const store = useStore()

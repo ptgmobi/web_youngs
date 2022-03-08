@@ -1,7 +1,5 @@
 <template>
   <div class="app-main" :class="{ 'show-tag-view': settings.showTagsView }">
-    <!-- <h1>{{cachedViews}}</h1>
-    <h2>{{cachedViewsDeep}}</h2> -->
     <router-view v-slot="{ Component }">
       <!--has transition  Judging by settings.mainNeedAnimation-->
       <transition v-if="settings.mainNeedAnimation" name="fade-transform" mode="out-in">
@@ -19,8 +17,6 @@
 
 <script setup lang="ts">
 import setting from '@/settings'
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { ObjTy } from '~/common'
 const store = useStore()
@@ -29,20 +25,37 @@ const settings = computed(() => {
   return store.state.app.settings
 })
 
+
+const key = computed(()=>route.path)
+
+const cachedViews = computed(() => {
+  return store.state.app.cachedViews
+})
+
+/*listen the component name changing, then to keep-alive the page*/
 // cachePage: is true, keep-alive this Page
 // leaveRmCachePage: is true, keep-alive remote when page leave
 let oldRoute: ObjTy = {}
 let deepOldRouter: ObjTy | null = null
-// store.commit('app/M_RESET_CACHED_VIEW')
-// store.commit('app/M_RESET_CACHED_VIEW_DEEP')
-const key = computed({
-  get() {
+
+const removeDeepChildren = (deepOldRouter) => {
+  deepOldRouter.children?.forEach((fItem) => {
+    store.commit('app/M_DEL_CACHED_VIEW_DEEP', fItem.name)
+  })
+}
+
+watch(
+  () => route.name,
+  () => {
     const routerLevel = route.matched.length
-    // console.log('routerLevel', routerLevel)
+
+    //二级路由处理
     if (routerLevel === 2) {
       if (deepOldRouter?.name) {
         if (deepOldRouter.meta?.leaveRmCachePage && deepOldRouter.meta?.cachePage) {
           store.commit('app/M_DEL_CACHED_VIEW', deepOldRouter.name)
+          //remove the deepOldRouter‘s children component
+          removeDeepChildren(deepOldRouter)
         }
       } else {
         if (oldRoute?.name) {
@@ -58,8 +71,10 @@ const key = computed({
         }
       }
       deepOldRouter = null
-    } else if (routerLevel === 3) {
-      //如果路由等级为3级处理流程
+    }
+
+    //三级路由处理
+    if (routerLevel === 3) {
       //三级时存储当前路由对象的上一级
       const parentRoute = route.matched[1]
       //deepOldRouter不为空，且deepOldRouter不是当前路由的父对象，则需要清除deepOldRouter缓存
@@ -67,6 +82,8 @@ const key = computed({
       if (deepOldRouter?.name && deepOldRouter.name !== parentRoute.name) {
         if (deepOldRouter.meta?.leaveRmCachePage && deepOldRouter.meta?.cachePage) {
           store.commit('app/M_DEL_CACHED_VIEW', deepOldRouter.name)
+          //remove the deepOldRouter‘s children component
+          removeDeepChildren(deepOldRouter)
         }
       } else {
         //否则走正常两级路由处理流程
@@ -77,7 +94,6 @@ const key = computed({
         }
       }
 
-      //缓存移除逻辑
       if (route.name) {
         if (route.meta?.cachePage) {
           deepOldRouter = parentRoute
@@ -88,17 +104,9 @@ const key = computed({
       }
     }
     oldRoute = JSON.parse(JSON.stringify({ name: route.name, meta: route.meta }))
-    return route.path
   },
-  set() {}
-})
-
-const cachedViews = computed(() => {
-  return store.state.app.cachedViews
-})
-const cachedViewsDeep = computed(() => {
-  return store.state.app.cachedViewsDeep
-})
+  { immediate: true }
+)
 </script>
 
 <style scoped lang="scss">

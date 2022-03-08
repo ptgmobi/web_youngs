@@ -1,10 +1,6 @@
 <template>
   <div className="app-container">
-    <el-input
-      v-model="filterText"
-      placeholder="Filter keyword"
-      style="margin-bottom: 30px"
-    />
+    <el-input v-model="filterText" placeholder="Filter keyword" style="margin-bottom: 30px" />
     <el-tree
       ref="tree2"
       :data="data2"
@@ -17,7 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import { watch, toRefs, reactive, ref } from 'vue'
 import { ObjTy } from '~/common'
 const state = reactive({
   filterText: '',

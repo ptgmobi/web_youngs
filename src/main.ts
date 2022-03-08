@@ -12,13 +12,12 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 app.use(ElementPlus, { size: 'small', locale: zhCn })
+
 // element-plus/icons
 // 统一导入el-icon图标
-import * as ElIconModules from '@element-plus/icons'
-// import { transElIconName } from './utils/icon'
+import * as ElIconModules from '@element-plus/icons-vue'
 // 统一注册el-icon图标
 for (const iconName in ElIconModules) {
-  // app.component(transElIconName(iconName), ElIconModules[iconName])
   app.component(iconName, ElIconModules[iconName])
 }
 
@@ -29,8 +28,6 @@ for (const iconName in ElIconModules) {
 // app.mixin(commonMixin)
 // import routerMixin from '@/mixins/routerMixin'
 // app.mixin(routerMixin)
-// // import selfMixin from '@/mixins/self'
-// // app.mixin(selfMixin)
 // //import axios req
 // import axiosReq from '@/utils/axiosReq'
 // app.config.globalProperties.$axiosReq = axiosReq
@@ -50,6 +47,10 @@ directive(app)
 //import router  intercept
 import './permission'
 
+//element svg icon
+import ElSvgIcon from "@/components/ElSvgIcon.vue"
+app.component("ElSvgIcon",ElSvgIcon)
+
 // 全局样式
 import '@/styles/common.scss'
 // ! lodash这样用并不奏效
@@ -59,4 +60,5 @@ import '@/styles/common.scss'
 //error log  collection
 // import errorLog from '@/hooks/useErrorLog'
 // errorLog()
+
 app.use(router).mount('#app')

@@ -6,11 +6,11 @@
         <h3 class="title text-center">{{ settings.title }}</h3>
       </div>
       <el-form-item prop="username" :rules="formRules.isNotNull">
-        <div class="rowSC">
+        <div class="rowSC flex-1">
           <span class="svg-container">
             <svg-icon icon-class="user" />
           </span>
-          <el-input v-model="formInline.username" placeholder="用户名(admin)" />
+          <el-input v-model="formInline.username" placeholder="用户名" />
           <!--占位-->
           <div class="show-pwd" />
         </div>
@@ -27,7 +27,7 @@
             v-model="formInline.password"
             :type="passwordType"
             name="password"
-            placeholder="password(123456)"
+            placeholder="password"
             @keyup.enter="handleLogin"
           />
           <span class="show-pwd" @click="showPwd">
@@ -45,15 +45,16 @@
 
 <script setup lang="ts">
 import settings from '@/settings'
-
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { ElMessage } from 'element-plus'
 import { ObjTy } from '~/common'
 //element valid
 const formRules = useElement().formRules
 //form
 let formInline = reactive({
-  username: 'admin',
-  password: '123456'
+  username: '',
+  password: ''
 })
 let state: ObjTy = reactive({
   otherQuery: {},
@@ -103,8 +104,12 @@ let handleLogin = () => {
 const router = useRouter()
 let loginReq = () => {
   loading.value = true
+  const ajaxData = {
+    email: formInline.username,
+    password: formInline.password
+  }
   store
-    .dispatch('user/login', formInline)
+    .dispatch('user/login', ajaxData)
     .then(() => {
       ElMessage({ message: '登录成功', type: 'success' })
       router.push({ path: state.redirect || '/', query: state.otherQuery })
@@ -205,10 +210,6 @@ $light_gray: #eee;
     color: #fff;
     height: 42px; //此处调整item的高度
     caret-color: #fff;
-  }
-  //hiden the input border
-  .el-input__inner {
-    box-shadow: none !important;
   }
 }
 </style>

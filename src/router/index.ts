@@ -23,7 +23,7 @@ export const constantRoutes: RouterTy = [
   },
   {
     path: '/login',
-    component: () => import('@/views/login/Login.vue'),
+    component: () => import('@/views/self-login/Login.vue'),
     hidden: true
   },
   {
@@ -97,10 +97,10 @@ export const asyncRoutes: RouterTy = [
   ...buzz,
   ...fenix,
   ...administer,
-  ...password
+  ...password,
   // 404 page must be placed at the end !!!
   // using pathMatch install of "*" in vue-router 4.0
-  // { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }
+  { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }
 ]
 const router: Router = createRouter({
   history: createWebHashHistory(),

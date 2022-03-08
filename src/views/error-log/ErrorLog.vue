@@ -2,16 +2,8 @@
   <div class="errorLogContainer">
     <!--操作-->
     <div class="mr-3 rowSS">
-      <el-button
-        type="primary"
-        @click="errorLogProd"
-      >
-        错误日志测试
-      </el-button>
-      <el-button
-        type="primary"
-        @click="multiDelBtnClick"
-      >
+      <el-button type="primary" @click="errorLogProd">错误日志测试</el-button>
+      <el-button type="primary" @click="multiDelBtnClick">
         <!-- 感觉写法复杂了-->
         <el-icon style="vertical-align: middle">
           <Delete />
@@ -19,41 +11,14 @@
         <span style="vertical-align: middle">删除</span>
       </el-button>
       <!--条件搜索-->
-      <el-form
-        ref="refsearchForm"
-        :inline="true"
-        class="demo-searchForm ml-2"
-      >
-        <el-form-item
-          label-width="0px"
-          label=""
-          prop="errorLog"
-          label-position="left"
-        >
-          <el-input
-            v-model="searchForm.errorLog"
-            class="widthPx-150"
-            placeholder="错误日志"
-          />
+      <el-form ref="refsearchForm" :inline="true" class="demo-searchForm ml-2">
+        <el-form-item label-width="0px" label="" prop="errorLog" label-position="left">
+          <el-input v-model="searchForm.errorLog" class="widthPx-150" placeholder="错误日志" />
         </el-form-item>
-        <el-form-item
-          label-width="0px"
-          label=""
-          prop="pageUrl"
-          label-position="left"
-        >
-          <el-input
-            v-model="searchForm.pageUrl"
-            class="widthPx-150"
-            placeholder="页面路径"
-          />
+        <el-form-item label-width="0px" label="" prop="pageUrl" label-position="left">
+          <el-input v-model="searchForm.pageUrl" class="widthPx-200" placeholder="页面路径" />
         </el-form-item>
-        <el-form-item
-          label-width="0px"
-          label=""
-          prop="createTime"
-          label-position="left"
-        >
+        <el-form-item label-width="0px" label="" prop="createTime" label-position="left">
           <el-date-picker
             v-model="startEndArr"
             type="datetimerange"
@@ -68,9 +33,7 @@
         </el-form-item>
       </el-form>
       <!--查询按钮-->
-      <el-button @click="searchBtnClick">
-        查询
-      </el-button>
+      <el-button @click="searchBtnClick">查询</el-button>
     </div>
     <!--表格和分页-->
     <el-table
@@ -81,67 +44,23 @@
       :data="usertableData"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column
-        type="selection"
-        align="center"
-        width="50"
-      />
-      <el-table-column
-        align="center"
-        prop="errorLog"
-        label="错误日志"
-        width="450"
-      >
+      <el-table-column type="selection" align="center" width="50" />
+      <el-table-column align="center" prop="errorLog" label="错误日志" width="450">
         <template #default="{ row }">
           <div>{{ row.errorLog }}</div>
-          <el-button
-            type="text"
-            size="small"
-            @click="consoleToPlatform(row.errorLog)"
-          >
+          <el-button type="text" size="small" @click="consoleToPlatform(row.errorLog)">
             click it console to platform to track
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column
-        align="center"
-        prop="pageUrl"
-        label="页面路径"
-        min-width="180"
-      />
-      <el-table-column
-        align="center"
-        prop="version"
-        label="版本号"
-        width="60"
-      />
-      <el-table-column
-        align="center"
-        prop="browserType"
-        label="浏览器类型"
-        min-width="180"
-      />
-      <el-table-column
-        align="center"
-        prop="createTime"
-        label="创建时间"
-        width="140"
-      />
+      <el-table-column align="center" prop="pageUrl" label="页面路径" min-width="180" />
+      <el-table-column align="center" prop="version" label="版本号" width="60" />
+      <el-table-column align="center" prop="browserType" label="浏览器类型" min-width="180" />
+      <el-table-column align="center" prop="createTime" label="创建时间" width="140" />
       <!--点击操作-->
-      <el-table-column
-        fixed="right"
-        align="center"
-        label="操作"
-        width="80"
-      >
+      <el-table-column fixed="right" align="center" label="操作" width="80">
         <template #default="{ row }">
-          <el-button
-            type="text"
-            size="small"
-            @click="tableDelClick(row)"
-          >
-            删除
-          </el-button>
+          <el-button type="text" size="small" @click="tableDelClick(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -166,44 +85,23 @@
       :close-on-click-modal="false"
     >
       <div class="detail-container rowBC elODialogModalBodyH60vh">
-        <div class="detail-container-item">
-          DBC文件名：{{ detailData.username }}
-        </div>
+        <div class="detail-container-item">DBC文件名：{{ detailData.username }}</div>
       </div>
       <div class="detail-container rowBC elODialogModalBodyH60vh">
-        <div
-          v-if="detailData.status === 1"
-          class="detail-container-item"
-          style="color: green"
-        >
-          状态： 启用
-        </div>
-        <div
-          v-else
-          class="detail-container-item"
-        >
-          状态： 停用
-        </div>
+        <div v-if="detailData.status === 1" class="detail-container-item" style="color: green">状态： 启用</div>
+        <div v-else class="detail-container-item">状态： 停用</div>
       </div>
       <div class="detail-container rowBC elODialogModalBodyH60vh">
-        <div class="detail-container-item">
-          说明：{{ detailData.remark }}
-        </div>
+        <div class="detail-container-item">说明：{{ detailData.remark }}</div>
       </div>
       <template #footer>
         <span class="dialog-footer">
-          <el-button
-            type="primary"
-            @click="detailDialog = false"
-          >确 定</el-button>
+          <el-button type="primary" @click="detailDialog = false">确 定</el-button>
         </span>
       </template>
     </el-dialog>
     <!--图片错误demo-->
-    <img
-      v-if="imgShow"
-      src="http://img.png"
-    />
+    <img v-if="imgShow" src="http://img.png" />
   </div>
 </template>
 
@@ -236,9 +134,10 @@ const errorLogImg = () => {
 
 /*表格查询和筛选*/
 let usertableData = ref([])
+import packages from  "/package.json"
 let searchForm: ObjTy = reactive({
   errorLog: '',
-  pageUrl: '8.135.1.141',
+  pageUrl: `8.135.1.141/${packages.name}`,
   createTime: '',
   id: ''
 })
