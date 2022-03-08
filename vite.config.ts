@@ -69,7 +69,7 @@ export default ({ command, mode }: any) => {
       vue(),
       vueJsx(),
       legacy({
-        targets: ['ie >= 11'],
+        targets: ['chrome 52', 'ie >= 11'],
         additionalLegacyPolyfills: ['regenerator-runtime/runtime']
       }),
       viteSvgIcons({
