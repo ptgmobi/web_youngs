@@ -1,0 +1,1 @@
+System.register(["./vendor-legacy-b450b3b1.js"],(function(e){"use strict";var t,r,n,u,a,c;return{setters:[function(e){t=e.d,r=e.e,n=e.f,u=e.g,a=e.x,c=e.y}],execute:function(){e("default",t({setup:function(){var e=r(),t=n();return u((function(){var r=e.params,n=e.query,u=r.path;t.replace({path:"/"+u,query:n})})),function(){return a("div",null,[c(" ")])}}}))}}}));

@@ -1,0 +1,1 @@
+System.register(["./vendor-legacy-b450b3b1.js","./index-legacy-a4b15707.js"],(function(e){"use strict";var n,t,r;return{setters:[function(e){n=e.k,t=e.o},function(e){r=e._}],execute:function(){e("default",r({},[["render",function(e,r){return t(),n("div",null,"我是首页")}]]))}}}));
