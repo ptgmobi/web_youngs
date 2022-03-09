@@ -1,3 +1,13 @@
 <template>
-  <div>我是首页</div>
+  <div></div>
 </template>
+<script lang="ts" setup>
+let { proxy }: any = getCurrentInstance()
+const index = '/dashboard/overview'
+proxy.$router.push({
+  path: index,
+  query: {
+    type: 'index'
+  }
+})
+</script>

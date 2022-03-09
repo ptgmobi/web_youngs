@@ -40,6 +40,7 @@ export const constantRoutes: RouterTy = [
     path: '/',
     component: Layout,
     redirect: '/dashboard/overview',
+    // redirect: '/index',
     children: [
       {
         path: 'index',

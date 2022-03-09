@@ -12,6 +12,7 @@ import _ from 'lodash'
 
 const whiteList = ['/login', '/404', '/401'] // no redirect whitelist
 router.beforeEach(async (to: any, from, next: any) => {
+  // console.log(to.matched.length)
   // start progress bar
   if (settings.isNeedNprogress) NProgress.start()
   // set page title
@@ -27,7 +28,7 @@ router.beforeEach(async (to: any, from, next: any) => {
   if (hasToken) {
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
-      next({ path: '/' })
+      next({ path: '/', replace: true })
     } else {
       //是否获取过用户信息
       const isGetUserInfo: boolean = store.state.permission.isGetUserInfo
@@ -50,8 +51,9 @@ router.beforeEach(async (to: any, from, next: any) => {
             // console.log(accessRoutes)
           } else {
             accessRoutes = asyncRoutes
-            store.commit('permission/M_routes', accessRoutes)
           }
+          // setting constRouters and accessRoutes to vuex , in order to sideBar for using
+          store.commit('permission/M_routes', accessRoutes)
           // dynamically add accessible routes
           //router4 addRoutes destroyed
           accessRoutes.forEach((route: RouterRowTy) => {
