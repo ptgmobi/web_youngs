@@ -193,8 +193,9 @@ const validatorSiteValue = (rule: any, value: string, callback: (arg0: Error | u
 }
 const validatorDayLimit = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
   if (value) {
-    if (parseInt(value) === parseFloat(value)) {
-      if (Number(value) > 5) {
+    let num = Number(value)
+    if (Number.isInteger(num) && Number.isSafeInteger(num)) {
+      if (num > 5) {
         callback(undefined)
       } else {
         callback(new Error('必须为大于5的整数'))
