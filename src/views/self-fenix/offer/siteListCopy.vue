@@ -38,7 +38,7 @@ import type { ElForm } from 'element-plus'
 const emit = defineEmits(['update:visible', 'uploadData'])
 type FormInstance = InstanceType<typeof ElForm>
 const ruleFormRef = ref<FormInstance>()
-const reg = /^[0-9a-z]{1,30}$/
+const reg = /\S/
 let validateSiteExcel = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
   if (value !== '') {
     const flag = analysisExcelFn(value, 1, reg).type
