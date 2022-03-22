@@ -112,6 +112,7 @@ let loginReq = () => {
     .dispatch('user/login', ajaxData)
     .then(() => {
       ElMessage({ message: '登录成功', type: 'success' })
+      console.log(state.redirect)
       router.push({ path: state.redirect || '/', query: state.otherQuery })
     })
     .catch((res) => {

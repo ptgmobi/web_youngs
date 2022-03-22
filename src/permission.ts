@@ -12,6 +12,7 @@ import _ from 'lodash'
 
 const whiteList = ['/login', '/404', '/401'] // no redirect whitelist
 router.beforeEach(async (to: any, from, next: any) => {
+  console.log('route', from.path, to.path)
   // console.log(to.matched.length)
   // start progress bar
   if (settings.isNeedNprogress) NProgress.start()
@@ -32,8 +33,8 @@ router.beforeEach(async (to: any, from, next: any) => {
     } else {
       //是否获取过用户信息
       const isGetUserInfo: boolean = store.state.permission.isGetUserInfo
+      console.log(isGetUserInfo)
       if (isGetUserInfo) {
-        store.commit('permission/M_isGetUserInfo', false)
         next()
       } else {
         try {

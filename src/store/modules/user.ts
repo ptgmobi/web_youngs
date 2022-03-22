@@ -1,6 +1,5 @@
 import { loginReq, logoutReq, getInfoReq } from '@/api/login'
 import { setToken, getToken, removeToken } from '@/utils/auth'
-// import { resetRouter } from '@/router'
 import { ObjTy } from '@/types/common'
 import { UserTy } from '@/types/store'
 import jwtDecode from 'jwt-decode'
@@ -152,7 +151,6 @@ const actions = {
       removeToken() // must remove  token  first
       resetRouter() // reset the router
       commit('permission/M_isGetUserInfo', false, { root: true })
-
       // reset visited views and cached views
       dispatch('tagsView/delAllViews', null, { root: true })
       resolve(null)
