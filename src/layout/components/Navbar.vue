@@ -72,6 +72,8 @@ import Breadcrumb from './Breadcrumb'
 import Hamburger from './Hamburger'
 import { computed, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
+const router = useRouter()
+const route = useRoute()
 const store = useStore()
 const email = computed(() => {
   return store.state.user.email
@@ -94,7 +96,9 @@ const loginOut = () => {
     // ElMessage({ message: '退出登录成功', type: 'success' })
     // proxy.$router.push(`/login?redirect=${proxy.$route.fullPath}`)
     //此处reload清空路由和重置部分状态
-    location.reload()
+    // location.reload()
+    ElMessage({ message: '退出登录成功', type: 'success' })
+    router.push(`/login?redirect=/`)
   })
 }
 </script>

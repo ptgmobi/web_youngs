@@ -3,6 +3,7 @@ import axios from 'axios'
 import { ElLoading, ElMessage, ElMessageBox } from 'element-plus'
 import { getToken, setToken } from '@/utils/auth'
 import { AxiosConfigTy, AxiosReqTy, ObjTy } from '@/types/common'
+import router from '@/router'
 let reqConfig: any
 // import qs from 'qs'
 let loadingE: any
@@ -79,11 +80,9 @@ service.interceptors.response.use(
     //       cancelButtonText: '取消',
     //       type: 'warning'
     //     }).then(() => {
-    //       store.dispatch('user/resetToken').then(() => {
-    //         location.reload()
-    //         //direct return
-    //         return Promise.reject(res.data)
-    //       })
+    // store.dispatch('user/resetState').then(() => {
+    //   router.push({ path: '/login' })
+    // })
     //     })
     //   }
     //   if (reqConfig.isAlertErrorMsg) {

@@ -5,8 +5,21 @@ import { ObjTy } from '@/types/common'
 import { UserTy } from '@/types/store'
 import jwtDecode from 'jwt-decode'
 import { addAbortSignal } from 'stream'
+import router, { constantRoutes, asyncRoutes } from '@/router'
+
 
 //token: getToken(),
+
+//当路由被删除时，所有的别名和子路由也会被同时删除
+//https://router.vuejs.org/zh/guide/advanced/dynamic-routing.html#%E5%88%A0%E9%99%A4%E8%B7%AF%E7%94%B1
+const resetRouter = () => {
+  const asyncRouterNameArr: Array<any> = asyncRoutes.map((mItem) => mItem.name)
+  asyncRouterNameArr.forEach((name) => {
+    if (router.hasRoute(name)) {
+      router.removeRoute(name)
+    }
+  })
+}
 
 type defaultState = {
   token: string
@@ -109,27 +122,39 @@ const actions = {
     // }
   },
   // user logout
-  logout({ commit, state }: ObjTy) {
+  logout({ commit, dispatch, state }: ObjTy) {
     console.log('logout')
-    // return new Promise((resolve, reject) => {
-    //   logoutReq()
-    //     .then(() => {
-    //       removeToken() // must remove  token  first
-    //       // resetRouter()
-    //       resolve(null)
-    //     })
-    //     .catch((error: any) => {
-    //       reject(error)
-    //     })
-    // })
-    commit('SET_TOKEN', undefined)
-    removeToken()
+    return new Promise((resolve, reject) => {
+      // logoutReq()
+      //   .then(() => {
+      //     removeToken() // must remove  token  first
+      //     // resetRouter()
+      //     resolve(null)
+      //   })
+      //   .catch((error: any) => {
+      //     reject(error)
+      //   })
+      commit('SET_TOKEN', undefined)
+      dispatch('resetState')
+      resolve(null)
+    })
   },
   // remove token
   resetToken() {
     console.log('resetToken')
     return new Promise((resolve) => {
       removeToken() // must remove  token  first
+      resolve(null)
+    })
+  },
+  resetState({ commit, dispatch }) {
+    return new Promise((resolve) => {
+      removeToken() // must remove  token  first
+      resetRouter() // reset the router
+      commit('permission/M_isGetUserInfo', false, { root: true })
+
+      // reset visited views and cached views
+      dispatch('tagsView/delAllViews', null, { root: true })
       resolve(null)
     })
   }
