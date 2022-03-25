@@ -84,7 +84,6 @@ export function analysisExcelFn (str: string, num: number, regStr: RegExp){
     return {
       type: flag,
       data: newArr
-    }
   }
 }
 
@@ -93,6 +92,9 @@ export function randomStr (num: number = 0) {
   let str = 'abcdefghijklmnopqrstuvwxyz'
   let strLen = str.length
   let n = Math.floor(Math.random() * strLen)
+  if (n = strLen) {
+    n = strLen - 1
+  }
   let str1 = str[n]
   // 生成7位长随机字符串
   let str2 = Math.random().toString(16).substring(2, num + 1)
