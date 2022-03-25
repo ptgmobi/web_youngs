@@ -90,6 +90,12 @@ export function analysisExcelFn (str: string, num: number, regStr: RegExp){
 
 // 随机生成特定长度的字符串
 export function randomStr (num: number = 0) {
-  return Math.random().toString(16).substring(2, num + 2)
+  let str = 'abcdefghijklmnopqrstuvwxyz'
+  let strLen = str.length
+  let n = Math.floor(Math.random() * strLen)
+  let str1 = str[n]
+  // 生成7位长随机字符串
+  let str2 = Math.random().toString(16).substring(2, num + 1)
+  return `${str1}${str2}`
 }
 

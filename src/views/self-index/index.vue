@@ -6,8 +6,8 @@ let { proxy }: any = getCurrentInstance()
 const index = '/dashboard/overview'
 proxy.$router.push({
   path: index,
-  query: {
-    type: 'index'
-  }
+  // query: {
+  //   type: 'index'
+  // }
 })
 </script>
