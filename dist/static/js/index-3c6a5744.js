@@ -1,1 +1,0 @@
-import{d as e,k as r,R as o,o as s}from"./vendor-577b9c97.js";const t=e({setup(e){let{proxy:t}=o();return t.$router.push({path:"/dashboard/overview",query:{type:"index"}}),(e,o)=>(s(),r("div"))}});export{t as default};
