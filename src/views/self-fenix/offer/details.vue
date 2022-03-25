@@ -354,7 +354,7 @@
               v-model="state.ruleForm.is_s2s"
               :active-value="1"
               :inactive-value="2"
-            />{{state.ruleForm.is_s2s === 1}}
+            />
           </div>
         </el-form-item>
         <!-- S2S Tracking Link -->
@@ -675,7 +675,7 @@ const state = reactive({
     site_value: [
       { required: true, message: message.required, trigger: ['blur', 'change'] },
       { validator: validatorSiteValue, trigger: ['blur', 'change'] },
-      ],
+    ],
     is_s2s: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
     s2s_tracking_link: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
     app_url: [{ required: true, message: message.required, trigger: ['blur', 'change'] }]
