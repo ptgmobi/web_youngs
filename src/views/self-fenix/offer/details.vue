@@ -354,7 +354,7 @@
               v-model="state.ruleForm.is_s2s"
               :active-value="1"
               :inactive-value="2"
-            />
+            />{{state.ruleForm.is_s2s === 1}}
           </div>
         </el-form-item>
         <!-- S2S Tracking Link -->
