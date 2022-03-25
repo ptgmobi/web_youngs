@@ -84,6 +84,7 @@ export function analysisExcelFn (str: string, num: number, regStr: RegExp){
     return {
       type: flag,
       data: newArr
+    }
   }
 }
 
