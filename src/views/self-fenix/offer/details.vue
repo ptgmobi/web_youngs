@@ -317,7 +317,7 @@
         <el-form-item
           label="Site Value:"
           prop="site_value"
-          :rules="judgeSiteType ? state.rules.site_value : state.rules.no_required"
+          :rules="judgeSiteType ? state.choiceRules.site_value : state.choiceRules.no_required"
         >
           <div class="form-one">
             <div class="flex ai-center jc-start mb-10">
@@ -361,7 +361,7 @@
         <el-form-item
           label="S2S Tracking Link:"
           prop="s2s_tracking_link"
-          :rules="state.ruleForm.is_s2s === 1 ? state.rules.s2s_tracking_link : state.rules.no_required"
+          :rules="state.ruleForm.is_s2s === 1 ? state.choiceRules.s2s_tracking_link : state.choiceRules.no_required"
         >
           <div class="flex jc-start ai-center form-one">
             <el-input
@@ -377,7 +377,7 @@
         <el-form-item
           label="Preview URL:"
           prop="app_url"
-          :rules="state.ruleForm.is_s2s === 1 ? state.rules.app_url : state.rules.no_required"
+          :rules="state.ruleForm.is_s2s === 1 ? state.choiceRules.app_url : state.choiceRules.no_required"
         >
           <div class="flex jc-start ai-center form-one">
             <el-input
@@ -657,7 +657,6 @@ const state = reactive({
     ]
   },
   rules: {
-    no_required: [{ required: false }],
     channel: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
     channel_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
     status: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
@@ -672,13 +671,16 @@ const state = reactive({
     traffic: [{ required: false, validator: validatorTraffic, trigger: ['blur', 'change'] }],
     adv_tracking_link: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
     site_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    is_s2s: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  },
+  choiceRules: {
+    no_required: [{ required: false }],
+    s2s_tracking_link: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    app_url: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
     site_value: [
       { required: true, message: message.required, trigger: ['blur', 'change'] },
       { validator: validatorSiteValue, trigger: ['blur', 'change'] },
     ],
-    is_s2s: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    s2s_tracking_link: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    app_url: [{ required: true, message: message.required, trigger: ['blur', 'change'] }]
   },
   ruleForm: defaultRuleForm,
   search: {

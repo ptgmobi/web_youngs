@@ -129,7 +129,7 @@
         <el-form-item
           label="当前渠道数:"
           prop="site_value"
-          :rules="judgeSiteType ? rules.site_value_required : rules.site_value_no_required"
+          :rules="judgeSiteType ? choiceRules.site_value_required : choiceRules.site_value_no_required"
         >
           <div class="flex jc-start ai-center form-one">
             <el-input type="hidden" v-model="siteLen" disabled></el-input>
@@ -218,6 +218,9 @@ const rules = reactive({
   day_limit_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
   day_limit_value: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
   status_hour: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+})
+
+const choiceRules = reactive({
   site_value_required: [
     { required: true, message: message.required, trigger: ['blur', 'change'] },
     { validator: validatorSiteValue, trigger: ['blur', 'change'] },
