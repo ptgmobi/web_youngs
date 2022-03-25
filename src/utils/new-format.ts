@@ -93,7 +93,7 @@ export function randomStr (num: number = 0) {
   let str = 'abcdefghijklmnopqrstuvwxyz'
   let strLen = str.length
   let n = Math.floor(Math.random() * strLen)
-  if (n = strLen) {
+  if (n === strLen) {
     n = strLen - 1
   }
   let str1 = str[n]
