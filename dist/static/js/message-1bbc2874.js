@@ -1,1 +1,0 @@
-import{a7 as e}from"./vendor-9471357d.js";function r(r){return e({title:200===r.code?"success":"error",dangerouslyUseHTMLString:!0,message:r.info,type:200===r.code?"success":"error"}),200===r.code}export{r as m};
