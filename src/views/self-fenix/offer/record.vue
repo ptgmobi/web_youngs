@@ -60,7 +60,7 @@ const init = async () => {
     // const str = 'YYYY-MM-DD HH:mm:ss'
     const aa = Number(moment(a.date, moment.ISO_8601).format('X'))
     const bb = Number(moment(b.date, moment.ISO_8601).format('X'))
-    return aa - bb
+    return bb - aa
   })
   // console.log(arr)
   state.tableData = arr
