@@ -4,7 +4,7 @@
     <el-form
       ref="ruleForm"
       enctype="multipart/form-data"
-      :rules="state.rules"
+      :rules="rules"
       :model="state.ruleForm"
       label-width="240px"
       label-position="right"
@@ -293,6 +293,25 @@
             />
           </div>
         </el-form-item>
+        <!-- Auto CVR -->
+        <el-form-item
+          label="Auto CVR:"
+          prop="auto_cvr"
+        >
+          <div class="form-one">
+            <div class="w100 flex ai-center jc-start mb-10">
+              <el-button
+                class="cp mr-10"
+                icon="Tools"
+                circle
+                @click="editAutoCVR"
+              ></el-button>
+              <span>
+                {{handleAutoCVR}}
+              </span>
+            </div>
+          </div>
+        </el-form-item>
         <!-- Site Type -->
         <el-form-item
           label="Site Type:"
@@ -412,7 +431,7 @@
     <div class="w100 flex">
       <el-button
         type="primary"
-        @click.prevent="saveFun"
+        @click.prevent="saveFun(ruleForm)"
       >
         Save
       </el-button>
@@ -420,7 +439,7 @@
     <!-- dialog -->
     <el-dialog
       v-model="dialogVisibleSite"
-      title="site"
+      title="Site"
       width="70%"
     >
       <site
@@ -428,6 +447,18 @@
         @updateData="updateData"
         v-model:visible="dialogVisibleSite"
       ></site>
+    </el-dialog>
+    <!-- dialog -->
+    <el-dialog
+      v-model="dialogVisibleAutoCvr"
+      title="Auto CVR"
+      width="70%"
+    >
+      <auto-cvr
+        :msg="state.ruleForm"
+        @updateData="updateDataToAutoCvr"
+        v-model:visible="dialogVisibleAutoCvr"
+      ></auto-cvr>
     </el-dialog>
   </div>
 </template>
@@ -449,6 +480,8 @@ import Traffic from './traffic'
 import { ElMessage } from 'element-plus'
 import { messageFun } from '@/utils/message'
 import site from './site.vue'
+import autoCvr from './autocvr.vue'
+import type { FormInstance, FormRules } from 'element-plus'
 
 let { proxy }: any = getCurrentInstance()
 const router = useRouter()
@@ -543,7 +576,9 @@ interface dataType {
   site_value: string
   description: string
   fenix_site: any
+  auto_cvr: any
 }
+const ruleForm = ref<FormInstance>()
 const defaultRuleForm: dataType = {
   id: undefined,
   offer_id: '',
@@ -573,7 +608,8 @@ const defaultRuleForm: dataType = {
   site_type: 'rule_value',
   site_value: '',
   description: '',
-  fenix_site: {}
+  fenix_site: {},
+  auto_cvr: {}
 }
 let loading = ref(false)
 const state = reactive({
@@ -688,10 +724,28 @@ const state = reactive({
     adv_offer: ''
   }
 })
+const rules = reactive<FormRules>({
+  channel: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  channel_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  status: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  title: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  pkg: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  platform: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  country: [
+    { required: true, message: message.required, trigger: ['blur', 'change'] },
+    { validator: validatorCountry, trigger: ['blur', 'change'] }
+  ],
+  revenue: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  traffic: [{ required: false, validator: validatorTraffic, trigger: ['blur', 'change'] }],
+  adv_tracking_link: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  site_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  is_s2s: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+})
 let name: any = ref('')
 let id: any = ref('')
 let type: any = ref('')
 let dialogVisibleSite: any = ref(false)
+let dialogVisibleAutoCvr: any = ref(false)
 const handleTraffic = (arr: Array<any>) => {
   const finalArr: Array<any> = []
   arr.map((ele: any) => {
@@ -771,18 +825,33 @@ const getConversionFlowLabelToValue = (s: any) => {
     return obj?.value
   }
 }
-const saveFun = () => {
-  proxy.$refs['ruleForm'].validate((valid: boolean) => {
-    console.log(valid)
+// const saveFun = () => {
+//   proxy.$refs['ruleForm'].validate((valid: boolean) => {
+//     console.log(valid)
+//     if (valid) {
+//       console.log('submit!')
+//       submitFn()
+//     } else {
+//       console.log('error submit!!')
+//       return false
+//     }
+//   })
+// }
+
+// ! 使用新的写法 2022-04-20 09:35:09
+const saveFun = async (formEl: FormInstance | undefined) => {
+  console.log(formEl)
+  if (!formEl) return
+  await formEl.validate((valid, fields) => {
     if (valid) {
       console.log('submit!')
       submitFn()
     } else {
-      console.log('error submit!!')
-      return false
+      console.log('error submit!', fields)
     }
   })
 }
+
 const getOfferIdFn = async () => {
   const res = await ApiGetOfferCreateId()
   if (res.code === 200) {
@@ -962,6 +1031,27 @@ const updateData = (data) => {
   state.ruleForm.site_value = data.site_value
   state.ruleForm.fenix_site = toRaw(data)
 }
+
+const updateDataToAutoCvr = (data) => {
+  console.log('auto_cvr', data)
+  state.ruleForm.auto_cvr = toRaw(data)
+}
+
+const editAutoCVR = () => {
+  dialogVisibleAutoCvr.value = true
+}
+
+const handleAutoCVR = computed(() => {
+  // ${auto_cvr_status}_${auto_cvr_max}_${auto_cvr_min}_${target_buzz_rate}
+  let {
+    auto_cvr_status,
+    auto_cvr_max,
+    auto_cvr_min,
+    target_buzz_rate
+  } = state.ruleForm.auto_cvr
+  return `${auto_cvr_status === 1 ? '开' : '关'}_${auto_cvr_max}_${auto_cvr_min}_${target_buzz_rate}`
+})
+
 </script>
 <style scoped lang="scss">
 .siteValue{
