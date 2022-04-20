@@ -11,105 +11,101 @@
       <div class="content-con flex column">
         <!-- Offer -->
         <el-form-item
+          class="self-el-form-item"
           label="Offer:"
           prop="offer_id"
         >
-          <div class="flex jc-start ai-center form-one">
+          <div class="flex jc-start ai-center form-dialog">
             <span v-text="state.ruleForm.offer_id"></span>
           </div>
         </el-form-item>
         <!-- Offer -->
         <el-form-item
+          class="self-el-form-item"
           label="Adv Offer:"
           prop="adv_offer"
         >
-          <div class="flex jc-start ai-center form-one">
+          <div class="flex jc-start ai-center form-dialog">
             <span v-text="state.ruleForm.adv_offer"></span>
           </div>
         </el-form-item>
         <!-- Offer -->
         <el-form-item
+          class="self-el-form-item"
           label="Status:"
           prop="auto_cvr_status"
         >
-          <div class="flex jc-start ai-center form-one">
-            <el-switch
-              v-model="state.ruleForm.auto_cvr_status"
-              :active-value="1"
-              :inactive-value="2"
-            />
-          </div>
+          <el-switch
+            v-model="state.ruleForm.auto_cvr_status"
+            :active-value="1"
+            :inactive-value="2"
+          />
         </el-form-item>
         <el-form-item
+          class="self-el-form-item"
           label="Start Hour:"
           prop="start_hour"
         >
-          <div class="flex jc-start ai-center form-one">
-            <el-time-select
-              v-model="state.ruleForm.auto_start_hour"
-              placeholder="Start time"
-              start="00:00"
-              step="01:00"
-              end="23:00"
-              format='H'
-              class="w100"
-            />
-          </div>
+          <el-time-select
+            v-model="state.ruleForm.auto_start_hour"
+            placeholder="Start time"
+            start="00:00"
+            step="01:00"
+            end="23:00"
+            format='H'
+            class="form-dialog"
+          />
         </el-form-item>
         <el-form-item
+          class="self-el-form-item"
           label="End Hour:"
           prop="end_hour"
         >
-          <div class="flex jc-start ai-center form-one">
-            <el-time-select
-              v-model="state.ruleForm.auto_end_hour"
-              placeholder="End time"
-              start="00:00"
-              step="01:00"
-              end="23:00"
-              format='H'
-              class="w100"
-            />
-          </div>
+          <el-time-select
+            v-model="state.ruleForm.auto_end_hour"
+            placeholder="End time"
+            start="00:00"
+            step="01:00"
+            end="23:00"
+            format='H'
+            class="form-dialog"
+          />
         </el-form-item>
         <el-form-item
+          class="self-el-form-item"
           label="CVR Max:"
           prop="auto_cvr_max"
         >
-          <div class="flex jc-start ai-center form-one">
-            <el-input
-              v-model="state.ruleForm.auto_cvr_max"
-              type="number"
-              placeholder="Please input"
-              class="input-with-select"
-            />
-          </div>
+          <el-input
+            v-model="state.ruleForm.auto_cvr_max"
+            type="number"
+            placeholder="Please input"
+            class="input-with-select form-dialog"
+          />
         </el-form-item>
         <el-form-item
+          class="self-el-form-item"
           label="CVR Min:"
           prop="auto_cvr_min"
         >
-          <div class="flex jc-start ai-center form-one">
-            <el-input
-              v-model="state.ruleForm.auto_cvr_min"
-              type="number"
-              placeholder="Please input"
-              class="input-with-select"
-            />
-          </div>
+          <el-input
+            v-model="state.ruleForm.auto_cvr_min"
+            type="number"
+            placeholder="Please input"
+            class="input-with-select form-dialog"
+          />
         </el-form-item>
         <el-form-item
+          class="self-el-form-item"
           label="Target Buzz Rate:"
           prop="target_buzz_rate"
         >
-          <div class="flex jc-start ai-center form-one">
-            <el-input
-              v-model="state.ruleForm.target_buzz_rate"
-              type="number"
-              placeholder="Please input"
-              class="input-with-select"
-            />
-          </div>
+          <el-input
+            v-model="state.ruleForm.target_buzz_rate"
+            type="number"
+            placeholder="Please input"
+            class="input-with-select form-dialog"
+          />
         </el-form-item>
       </div>
     </el-form>
