@@ -145,8 +145,8 @@ let message = {
 
 const validatorNum = (rule: any, value: number, callback: (arg0: Error | undefined) => void) => {
   if (value) {
-    if (value > 1000 || value < 0) {
-      callback(new Error('值不可大于1000或者小于0'))
+    if (value >= 1000 || value <= 0) {
+      callback(new Error('0-1000'))
     } else {
       callback(undefined)
     }
@@ -156,8 +156,8 @@ const validatorNum = (rule: any, value: number, callback: (arg0: Error | undefin
 }
 const validatorNum1 = (rule: any, value: number, callback: (arg0: Error | undefined) => void) => {
   if (value) {
-    if (value > 1 || value < 0) {
-      callback(new Error('值不可大于1或者小于0'))
+    if (value >= 1 || value <= 0) {
+      callback(new Error('0-1'))
     } else {
       callback(undefined)
     }

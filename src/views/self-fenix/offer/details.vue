@@ -788,6 +788,11 @@ const submitFn = async () => {
   } else {
     delete ajaxData.traffic
   }
+  // !判断fenix_cvr是否有值
+  let fenix_cvr = ajaxData.fenix_cvr
+  if (fenix_cvr && Object.keys(fenix_cvr).length === 0) {
+    delete ajaxData.fenix_cvr
+  }
   // console.log(ajaxData)
   // return ajaxData
   let res: any
