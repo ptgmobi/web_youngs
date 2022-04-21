@@ -576,7 +576,7 @@ interface dataType {
   site_value: string
   description: string
   fenix_site: any
-  auto_cvr: any
+  fenix_cvr: any
 }
 const ruleForm = ref<FormInstance>()
 const defaultRuleForm: dataType = {
@@ -609,7 +609,7 @@ const defaultRuleForm: dataType = {
   site_value: '',
   description: '',
   fenix_site: {},
-  auto_cvr: {}
+  fenix_cvr: {}
 }
 let loading = ref(false)
 const state = reactive({
@@ -803,7 +803,10 @@ const submitFn = async () => {
   if (messageFun(res)) {
     // 回到list页面
     // proxy.$router.push({ path: '/fenix/offer/list' })
-    window.close()
+    console.log(process.env.NODE_ENV)
+    if (process.env.NODE_ENV !== 'serve-dev') {
+      window.close()
+    }
   }
 }
 const editDiySiteFun = () => {
@@ -1034,7 +1037,7 @@ const updateData = (data) => {
 
 const updateDataToAutoCvr = (data) => {
   console.log('auto_cvr', data)
-  state.ruleForm.auto_cvr = toRaw(data)
+  state.ruleForm.fenix_cvr = toRaw(data)
 }
 
 const editAutoCVR = () => {
@@ -1043,13 +1046,18 @@ const editAutoCVR = () => {
 
 const handleAutoCVR = computed(() => {
   // ${auto_cvr_status}_${auto_cvr_max}_${auto_cvr_min}_${target_buzz_rate}
-  let {
-    auto_cvr_status,
-    auto_cvr_max,
-    auto_cvr_min,
-    target_buzz_rate
-  } = state.ruleForm.auto_cvr
-  return `${auto_cvr_status === 1 ? '开' : '关'}_${auto_cvr_max}_${auto_cvr_min}_${target_buzz_rate}`
+  if (state.ruleForm.fenix_cvr) {
+    let {
+      auto_cvr_status,
+      auto_cvr_max,
+      auto_cvr_min,
+      target_buzz_rate
+    } = state.ruleForm.fenix_cvr
+    let flag = auto_cvr_status === 1 ? '开' : '关'
+    return `${flag}_${auto_cvr_max}_${auto_cvr_min}_${target_buzz_rate}`
+  }
+  return ''
+  
 })
 
 </script>

@@ -139,13 +139,25 @@ const props = defineProps({
 })
 
 let message = {
-  required: '必填项'
+  required: '必填项',
+  rule_1: '超出限制'
 }
 
-const validatorSiteValue = (rule: any, value: number, callback: (arg0: Error | undefined) => void) => {
+const validatorNum = (rule: any, value: number, callback: (arg0: Error | undefined) => void) => {
   if (value) {
-    if (value > 1000) {
-      callback(new Error('值不可大于1000'))
+    if (value > 1000 || value < 0) {
+      callback(new Error('值不可大于1000或者小于0'))
+    } else {
+      callback(undefined)
+    }
+  } else {
+    callback(undefined)
+  }
+}
+const validatorNum1 = (rule: any, value: number, callback: (arg0: Error | undefined) => void) => {
+  if (value) {
+    if (value > 1 || value < 0) {
+      callback(new Error('值不可大于1或者小于0'))
     } else {
       callback(undefined)
     }
@@ -161,15 +173,15 @@ const rules = reactive<FormRules>({
   auto_cvr_max: [
     { required: true, message: message.required, trigger: ['blur', 'change'] },
     // 限制3位长
-    { min: 0, max: 3, message: '123', trigger: ['blur', 'change'] }
+    { validator: validatorNum, trigger: ['blur', 'change'] }
   ],
   auto_cvr_min: [
     { required: true, message: message.required, trigger: ['blur', 'change'] },
-    { min: 0, max: 3, message: '123', trigger: ['blur', 'change'] }
+    { validator: validatorNum, trigger: ['blur', 'change'] }
   ],
   target_buzz_rate: [
     { required: true, message: message.required, trigger: ['blur', 'change'] },
-    { min: 0, max: 3, message: '123', trigger: ['blur', 'change'] }
+    { validator: validatorNum1, trigger: ['blur', 'change'] }
   ],
 })
 
@@ -178,6 +190,7 @@ const choiceRules = reactive<FormRules>({
 
 let state = reactive({
   ruleForm: {
+    id: '',
     offer_id: '',
     adv_offer: '',
     auto_cvr_status: 2,
@@ -192,10 +205,20 @@ let state = reactive({
 watch(() => {
   return props.msg
 }, (newVal, oldVal) => {
-  // console.log(newVal)
-  let msg = props.msg
-  state.ruleForm.offer_id = msg.offer_id
-  state.ruleForm.adv_offer = msg.adv_offer
+  state.ruleForm.offer_id = newVal.offer_id
+  state.ruleForm.adv_offer = newVal.adv_offer
+  let fenix_cvr = newVal.fenix_cvr
+  if (fenix_cvr && Object.keys(fenix_cvr).length !== 0) {
+    state.ruleForm.id = fenix_cvr.id
+    state.ruleForm.offer_id = (fenix_cvr.offer_id ? fenix_cvr.offer_id : newVal.offer_id).toString()
+    state.ruleForm.adv_offer = (fenix_cvr.adv_offer ? fenix_cvr.adv_offer : newVal.adv_offer).toString()
+    state.ruleForm.auto_cvr_status = fenix_cvr.auto_cvr_status
+    state.ruleForm.auto_start_hour = fenix_cvr.auto_start_hour.toString()
+    state.ruleForm.auto_end_hour = fenix_cvr.auto_end_hour.toString()
+    state.ruleForm.auto_cvr_max = fenix_cvr.auto_cvr_max
+    state.ruleForm.auto_cvr_min = fenix_cvr.auto_cvr_min
+    state.ruleForm.target_buzz_rate = fenix_cvr.target_buzz_rate
+  }
 }, {
   deep: true,
   immediate: true
@@ -226,11 +249,14 @@ const handleShow = computed(() => {
 })
 
 
-const numberArr = ['auto_cvr_max', 'auto_cvr_min', 'target_buzz_rate']
+const numberArr = ['id', 'auto_cvr_status', 'auto_start_hour', 'auto_end_hour', 'auto_cvr_max', 'auto_cvr_min', 'target_buzz_rate']
 const arrayArr = []
 
 const submitFn = () => {
   let finalData = handleAjaxArrayKeyFn(handleAjaxNumberKeyFn(state.ruleForm, numberArr), arrayArr)
+  if (finalData.id === 0) {
+    delete finalData.id
+  }
   emit('updateData', finalData)
   emit('update:visible', false)
   // handleAjaxNumberKeyFn
