@@ -210,14 +210,14 @@ watch(() => {
   let fenix_cvr = newVal.fenix_cvr
   if (fenix_cvr && Object.keys(fenix_cvr).length !== 0) {
     state.ruleForm.id = fenix_cvr.id
-    state.ruleForm.offer_id = (fenix_cvr.offer_id ? fenix_cvr.offer_id : newVal.offer_id).toString()
-    state.ruleForm.adv_offer = (fenix_cvr.adv_offer ? fenix_cvr.adv_offer : newVal.adv_offer).toString()
-    state.ruleForm.auto_cvr_status = fenix_cvr.auto_cvr_status
+    // state.ruleForm.offer_id = (fenix_cvr.offer_id ? fenix_cvr.offer_id : newVal.offer_id).toString()
+    // state.ruleForm.adv_offer = (fenix_cvr.adv_offer ? fenix_cvr.adv_offer : newVal.adv_offer).toString()
+    state.ruleForm.auto_cvr_status = fenix_cvr.auto_cvr_status ?? 2
     state.ruleForm.auto_start_hour = fenix_cvr.auto_start_hour ? fenix_cvr.auto_start_hour.toString() : '0'
     state.ruleForm.auto_end_hour = fenix_cvr.auto_end_hour ? fenix_cvr.auto_end_hour.toString() : '23'
-    state.ruleForm.auto_cvr_max = fenix_cvr.auto_cvr_max
-    state.ruleForm.auto_cvr_min = fenix_cvr.auto_cvr_min
-    state.ruleForm.target_buzz_rate = fenix_cvr.target_buzz_rate
+    state.ruleForm.auto_cvr_max = fenix_cvr.auto_cvr_max ?? ''
+    state.ruleForm.auto_cvr_min = fenix_cvr.auto_cvr_min ?? ''
+    state.ruleForm.target_buzz_rate = fenix_cvr.target_buzz_rate ?? ''
   }
 }, {
   deep: true,
