@@ -44,6 +44,7 @@ export default [
         },
         hidden: true
       },
+      // old-buzz
       {
         path: 'old-buzz',
         name: 'old-buzz',
@@ -77,7 +78,42 @@ export default [
           code: 35
         },
         hidden: true
-      }
+      },
+      // buzz sync
+      {
+        path: 'buzz-sync',
+        name: 'buzz-sync',
+        component: () => import('@/views/self-buzz/buzz-sync/list'),
+        meta: {
+          title: 'Buzz Sync',
+          elSvgIcon: 'Edit',
+          code: 36,
+          cachePage: true,
+          leaveRmCachePage: true
+        }
+      },
+      {
+        path: 'buzz-sync-create',
+        name: 'buzz-sync-create',
+        component: () => import('@/views/self-buzz/buzz-sync/details'),
+        meta: {
+          title: 'Buzz Sync Create',
+          icon: 'dashboard',
+          code: 37
+        },
+        hidden: true
+      },
+      {
+        path: 'buzz-sync-edit/:id',
+        name: 'buzz-sync-edit',
+        component: () => import('@/views/self-buzz/buzz-sync/details'),
+        meta: {
+          title: 'Buzz Sync Edit',
+          icon: 'dashboard',
+          code: 38
+        },
+        hidden: true
+      },
     ]
   }
 ]
