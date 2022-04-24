@@ -4,7 +4,7 @@ import { ObjTy } from '@/types/common'
 // ! buzz list
 export function ApiGetBuzzList(data: ObjTy) {
   return request({
-    url: '/obuzz',
+    url: '/buzz-sy',
     data,
     method: 'get',
     bfLoading: false,
@@ -15,7 +15,7 @@ export function ApiGetBuzzList(data: ObjTy) {
 
 export function ApichangeClk(data: ObjTy) {
   return request({
-    url: '/obuzz/offer-max-clk',
+    url: '/buzz-sy/offer-max-clk',
     data,
     method: 'patch',
     bfLoading: false,
@@ -26,7 +26,7 @@ export function ApichangeClk(data: ObjTy) {
 
 export function ApichangeSiteClkLimit(data: ObjTy) {
   return request({
-    url: '/obuzz/edit-clk-limit',
+    url: '/buzz-sy/edit-clk-limit',
     data,
     method: 'patch',
     bfLoading: false,
@@ -37,7 +37,7 @@ export function ApichangeSiteClkLimit(data: ObjTy) {
 
 export function ApichangeCutoff(data: ObjTy) {
   return request({
-    url: '/obuzz/cutoff',
+    url: '/buzz-sy/cutoff',
     data,
     method: 'patch',
     bfLoading: false,
@@ -48,7 +48,7 @@ export function ApichangeCutoff(data: ObjTy) {
 
 export function ApiChangeBuzzStatus(data: ObjTy) {
   return request({
-    url: '/obuzz/status',
+    url: '/buzz-sy/status',
     data,
     method: 'patch',
     bfLoading: false,
@@ -60,7 +60,7 @@ export function ApiChangeBuzzStatus(data: ObjTy) {
 // ! buzz details
 export function ApiOperationOfferCreate(data: ObjTy) {
   return request({
-    url: '/obuzz',
+    url: '/buzz-sy',
     data,
     method: 'post',
     bfLoading: false,
@@ -71,7 +71,7 @@ export function ApiOperationOfferCreate(data: ObjTy) {
 
 export function ApiOperationOfferEdit(data: ObjTy) {
   return request({
-    url: '/obuzz',
+    url: '/buzz-sy',
     data,
     method: 'put',
     bfLoading: false,
@@ -82,7 +82,7 @@ export function ApiOperationOfferEdit(data: ObjTy) {
 
 export function ApiGetOfferData(params: string) {
   return request({
-    url: `/obuzz/view/${params}`,
+    url: `/buzz-sy/view/${params}`,
     method: 'get',
     bfLoading: false,
     isParams: true,
@@ -92,7 +92,7 @@ export function ApiGetOfferData(params: string) {
 
 export function ApiGetCopyOfferData(data: ObjTy) {
   return request({
-    url: '/obuzz/copy',
+    url: '/buzz-sy/copy',
     method: 'get',
     data,
     bfLoading: false,
@@ -103,7 +103,7 @@ export function ApiGetCopyOfferData(data: ObjTy) {
 
 export function ApiGetConfig() {
   return request({
-    url: '/obuzz/edit-config',
+    url: '/buzz-sy/edit-config',
     method: 'get',
     bfLoading: false,
     isParams: true,
@@ -113,7 +113,7 @@ export function ApiGetConfig() {
 
 export function ApiGetDeviceCount(data: ObjTy) {
   return request({
-    url: '/obuzz/get-device-num',
+    url: '/buzz-sy/get-device-num',
     data,
     method: 'get',
     bfLoading: false,
@@ -124,7 +124,7 @@ export function ApiGetDeviceCount(data: ObjTy) {
 
 export function ApiGetOfferDevice(data: ObjTy) {
   return request({
-    url: '/obuzz/offer-device',
+    url: '/buzz-sy/offer-device',
     data,
     method: 'get',
     bfLoading: false,
@@ -135,7 +135,7 @@ export function ApiGetOfferDevice(data: ObjTy) {
 
 export function ApiChangeToOfferDevice(data: ObjTy) {
   return request({
-    url: '/obuzz/device',
+    url: '/buzz-sy/device',
     data,
     method: 'patch',
     bfLoading: false,

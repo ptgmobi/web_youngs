@@ -760,7 +760,9 @@ const submitFormFun = async () => {
   }
   if (messageFun(res)) {
     // proxy.$router.push({ path: '/buzz/old-buzz' })
-    window.close()
+    if (process.env.NODE_ENV !== 'serve-dev') {
+      window.close()
+    }
   }
 }
 
