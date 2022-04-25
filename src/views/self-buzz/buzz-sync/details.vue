@@ -417,6 +417,20 @@
             </el-option>
           </el-select>
         </el-form-item> -->
+
+        <!-- campaign_id -->
+        <el-form-item
+          label="Campaign ID:"
+          prop="campaign_id"
+        >
+          <el-input
+            v-model.trim="data.ruleForm.campaign_id"
+            class="form-one"
+            type="text"
+            placeholder=""
+          ></el-input>
+        </el-form-item>
+        
         <!-- note -->
         <el-form-item
           label="Note:"
@@ -430,6 +444,7 @@
             placeholder=""
           ></el-input>
         </el-form-item>
+        
       </div>
     </el-form>
     <!-- form -->
@@ -660,7 +675,8 @@ let data: any = reactive({
     clk_id: '',
     site_clk_id: '',
     // category_id: '',
-    note: ''
+    note: '',
+    campaign_id: ''
   },
   rules: {
     channel: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
