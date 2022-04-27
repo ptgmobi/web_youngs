@@ -79,6 +79,9 @@
             <el-radio :label="2">
               SDK
             </el-radio>
+            <el-radio :label="3">
+              Direct
+            </el-radio>
             <el-radio :label="4">
               BUZZ SYNC
             </el-radio>
