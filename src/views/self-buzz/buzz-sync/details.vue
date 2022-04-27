@@ -686,12 +686,12 @@ let data: any = reactive({
       { required: true, message: message.required, trigger: ['blur', 'change'] },
       { validator: validatorSpace },
       { validator: validatorHttp },
-      { validator: validatorStr },
-      { validator: validatorPkgName}
+      // { validator: validatorStr },
+      // { validator: validatorPkgName}
     ],
     pkg_name: [
       { required: true, message: message.required, trigger: ['blur', 'change'] },
-      { validator: validatorPkgName }
+      // { validator: validatorPkgName }
     ],
     conversion_flow: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
     event_name: [
