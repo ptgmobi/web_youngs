@@ -115,10 +115,19 @@ export function ApiGetAdvOfferForDump(data: ObjTy) {
     isParams: true
   })
 }
-// buzz获取当前offer信息
+// buzz获取offer信息（bz开头的）
 export function ApiGetAdvOfferForBuzzList(data: ObjTy) {
   return request({
     url: '/offer/buzz',
+    data,
+    method: 'get',
+    isParams: true
+  })
+}
+// buzz获取offer信息（bs开头的）
+export function ApiGetAdvOfferForBuzzSyncList(data: ObjTy) {
+  return request({
+    url: '/buzz-sy/copy',
     data,
     method: 'get',
     isParams: true

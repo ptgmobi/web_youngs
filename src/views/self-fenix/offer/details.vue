@@ -79,6 +79,9 @@
             <el-radio :label="2">
               SDK
             </el-radio>
+            <el-radio :label="4">
+              BUZZ SYNC
+            </el-radio>
           </el-radio-group>
         </el-form-item>
         <!-- Adv Status -->
@@ -474,7 +477,8 @@ import {
   ApiGetCountryList,
   ApiCreateOffer,
   ApiEditOffer,
-  ApietOfferForOne
+  ApietOfferForOne,
+  ApiGetAdvOfferForBuzzSyncList,
 } from '@/api/fenix'
 import Traffic from './traffic'
 import { ElMessage } from 'element-plus'
@@ -994,12 +998,28 @@ const searchAdvOffer = async () => {
     }
   } else {
     console.log('get offer for buzz')
-    state.ruleForm.channel_type = 1
-    state.ruleForm.adtype = 38
-    const { data: offerData } = await ApiGetAdvOfferForBuzzList(ajaxData)
-    console.log(offerData)
-    state.ruleForm.adv_status = offerData.status
-    setBuzzOffer(offerData)
+    let bzReg = /^bz(\S+)/
+    let bsReg = /^bs(\S+)/
+    // bz开头的
+    if (bzReg.test(str)) {
+      console.log('get offer for bz')
+      state.ruleForm.channel_type = 1
+      state.ruleForm.adtype = 38
+      const { data: offerData } = await ApiGetAdvOfferForBuzzList(ajaxData)
+      console.log(offerData)
+      state.ruleForm.adv_status = offerData.status ? offerData.status : 2
+      setBuzzOffer(offerData)
+    }
+    // bs开头的
+    if (bsReg.test(str)) {
+      console.log('get offer for bs')
+      state.ruleForm.channel_type = 4
+      state.ruleForm.adtype = 40
+      const { data: offerData } = await ApiGetAdvOfferForBuzzSyncList(ajaxData)
+      console.log(offerData)
+      state.ruleForm.adv_status = offerData.status ? offerData.status : 2
+      setBuzzOffer(offerData)
+    }
   }
 }
 const setBuzzOffer = (data: any) => {
@@ -1028,10 +1048,12 @@ const setDumpOffer = (data: any) => {
   state.ruleForm.conversion_flow = 9
 }
 const setCountry = (data: any) => {
-  if (Array.isArray(data)) {
-    state.ruleForm.country = data
-  } else {
-    state.ruleForm.country = [data]
+  if (data) {
+    if (Array.isArray(data)) {
+      state.ruleForm.country = data
+    } else {
+      state.ruleForm.country = [data]
+    }
   }
 }
 const updateData = (data) => {
