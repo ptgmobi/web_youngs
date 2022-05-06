@@ -3,83 +3,33 @@
     <!--    <teleport to="body">-->
     <!--      <div>i come from ErrorLogTest.vue</div>-->
     <!--    </teleport>-->
-    <div class="mt-2">
-      throw unhandledrejection
-    </div>
-    <el-button
-      type="primary"
-      @click="handle"
-    >
-      unhandledrejection
-    </el-button>
+    <div class="mt-2">throw unhandledrejection</div>
+    <el-button type="primary" @click="handle">unhandledrejection</el-button>
 
-    <div class="mt-2">
-      throw console.error
-    </div>
-    <el-button
-      type="primary"
-      @click="consoleErrorFun"
-    >
-      console.error
-    </el-button>
+    <div class="mt-2">throw console.error</div>
+    <el-button type="primary" @click="consoleErrorFun">console.error</el-button>
 
-    <div class="mt-2">
-      throw normalError
-    </div>
-    <el-button
-      type="primary"
-      @click="normalError"
-    >
-      normalError
-    </el-button>
+    <div class="mt-2">throw normalError</div>
+    <el-button type="primary" @click="normalError">normalError</el-button>
 
     <!--req relative-->
-    <div class="mt-2">
-      throw req cross origin
-    </div>
-    <el-button
-      type="primary"
-      @click="reqCrossOrigin"
-    >
-      reqCrossOrigin
-    </el-button>
-    <div class="mt-2">
-      throw req 404 error
-    </div>
-    <el-button
-      type="primary"
-      @click="req404"
-    >
-      req404
-    </el-button>
+    <div class="mt-2">throw req cross origin</div>
+    <el-button type="primary" @click="reqCrossOrigin">reqCrossOrigin</el-button>
+    <div class="mt-2">throw req 404 error</div>
+    <el-button type="primary" @click="req404">req404</el-button>
     <!-- resource load error   -->
-    <div class="mt-2">
-      throw image load error
-    </div>
-    <el-button
-      type="primary"
-      @click="errorLogImg"
-    >
-      imageLoadError
-    </el-button>
+    <div class="mt-2">throw image load error</div>
+    <el-button type="primary" @click="errorLogImg">imageLoadError</el-button>
     <!--image load error demo-->
-    <img
-      v-if="imgShow"
-      src="http://img.png"
-    />
+    <img v-if="imgShow" src="http://img.png" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useStore } from 'vuex'
-const store = useStore()
+const appStore = useAppStore()
 let settings = computed(() => {
-  return store.state.app.settings || {}
+  return appStore.settings || {}
 })
-
-const testChangeSettings = () => {
-  store.commit('app/M_settings', { sidebarLogo: !settings.value.sidebarLogo })
-}
 
 const handle = () => {
   new Promise((resolve, reject) => {
@@ -110,6 +60,7 @@ let reqCrossOrigin = () => {
 }
 
 import axiosReq from '@/utils/axiosReq'
+import { useAppStore } from '@/store/app'
 let req404 = () => {
   axiosReq({
     // baseURL: 'http://8.135.1.141/micro-service-test',

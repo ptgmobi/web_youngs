@@ -1,8 +1,5 @@
 <template>
-  <div
-    id="tags-view-container"
-    class="tags-view-container"
-  >
+  <div id="tags-view-container" class="tags-view-container">
     <div class="tags-view-wrapper">
       <router-link
         v-for="tag in visitedViews"
@@ -16,33 +13,14 @@
         @contextmenu.prevent="openMenu(tag, $event)"
       >
         {{ tag.title }}
-        <Close
-          v-if="!isAffix(tag)"
-          class="el-icon-close"
-          @click.prevent.stop="closeSelectedTag(tag)"
-        ></Close>
+        <Close v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"></Close>
       </router-link>
     </div>
-    <ul
-      v-show="visible"
-      :style="{ left: left + 'px', top: top + 'px' }"
-      class="contextmenu"
-    >
-      <li @click="refreshSelectedTag(selectedTag)">
-        Refresh
-      </li>
-      <li
-        v-if="!isAffix(selectedTag)"
-        @click="closeSelectedTag(selectedTag)"
-      >
-        Close
-      </li>
-      <li @click="closeOthersTags">
-        Close Others
-      </li>
-      <li @click="closeAllTags(selectedTag)">
-        Close All
-      </li>
+    <ul v-show="visible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
+      <li @click="refreshSelectedTag(selectedTag)">Refresh</li>
+      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">Close</li>
+      <li @click="closeOthersTags">Close Others</li>
+      <li @click="closeAllTags(selectedTag)">Close All</li>
     </ul>
   </div>
 </template>
@@ -51,13 +29,14 @@
 // import ScrollPane from './ScrollPane'
 import path from 'path'
 import { Close } from '@element-plus/icons-vue'
-import { onMounted, getCurrentInstance, watch, toRefs, reactive, computed } from 'vue'
 //获取store和router
-import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+
 import { RouterTy, RouteItemTy } from '~/router'
 import { ObjTy } from '~/common'
-const store = useStore()
+import { useAppStore } from '@/store/app'
+import { useTagsViewStore } from '@/store/tagsView'
+import { usePermissionStore } from '@/store/permission'
+
 const $route = useRoute()
 const $router = useRouter()
 
@@ -70,12 +49,12 @@ const state: ObjTy = reactive({
 })
 
 const visitedViews = computed(() => {
-  return store.state.tagsView.visitedViews
+  return tagsViewStore.visitedViews
 })
+const permissionStore = usePermissionStore()
 const routes = computed(() => {
-  return store.state.permission.routes
+  return permissionStore.routes
 })
-
 watch(
   () => $route.path,
   () => {
@@ -139,12 +118,13 @@ const filterAffixTags = (routes: RouterTy, basePath = '/') => {
   })
   return tags
 }
+const tagsViewStore = useTagsViewStore()
 const initTags = () => {
   const affixTags = (state.affixTags = filterAffixTags(routes.value))
   for (const tag of affixTags) {
     // Must have tag name
     if (tag.name) {
-      store.dispatch('tagsView/addVisitedView', tag)
+      tagsViewStore.addVisitedView(tag)
     }
   }
 }
@@ -152,7 +132,7 @@ const initTags = () => {
 const addTags = () => {
   const { name } = $route
   if (name) {
-    store.dispatch('tagsView/addView', $route)
+    tagsViewStore.addView($route)
   }
   return false
 }
@@ -164,19 +144,30 @@ const refreshSelectedTag = (view: RouteItemTy) => {
     })
   })
 }
-const closeSelectedTag = (view: RouteItemTy) => {
-  store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
+const appStore = useAppStore()
+const closeSelectedTag = (view: RouteItemTy | any) => {
+  tagsViewStore.delView(view).then(({ visitedViews }: any) => {
     if (isActive(view)) {
       toLastView(visitedViews, view)
+    }
+    //remove keep-alive by the closeTabRmCache
+    if (view.meta?.closeTabRmCache) {
+      const routerLevel = view.matched.length
+      if (routerLevel === 2) {
+        appStore.M_DEL_CACHED_VIEW(view.name)
+      }
+      if (routerLevel === 3) {
+        appStore.M_DEL_CACHED_VIEW_DEEP(view.name)
+      }
     }
   })
 }
 const closeOthersTags = () => {
   $router.push(state.selectedTag)
-  store.dispatch('tagsView/delOthersViews', state.selectedTag)
+  tagsViewStore.delOthersViews(state.selectedTag)
 }
 const closeAllTags = (view: RouteItemTy) => {
-  store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
+  tagsViewStore.delAllViews().then(({ visitedViews }: any) => {
     if (state.affixTags.some((tag: RouteItemTy) => tag.path === view.path)) {
       return
     }

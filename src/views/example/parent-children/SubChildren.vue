@@ -5,9 +5,7 @@
   </div>
   <!--  Teleport  https://www.jianshu.com/p/1ecf5006b1ae-->
 
-  <div class="mt-2">
-    Teleport
-  </div>
+  <div class="mt-2">Teleport</div>
   <!--
      teleport container
      attention: the container must have when the teleport render
@@ -15,16 +13,11 @@
   <div id="modal-container"></div>
 
   <!--  to container-->
-  <teleport
-    v-if="modalOpen"
-    to="#modal-container"
-  >
+  <teleport v-if="modalOpen" to="#modal-container">
     <div class="modal">
       <div>
         to container
-        <el-button @click="modalOpen = false">
-          Close
-        </el-button>
+        <el-button @click="modalOpen = false">Close</el-button>
       </div>
     </div>
   </teleport>
@@ -32,9 +25,7 @@
   <!--  <teleport v-if="modalOpen" to="body">-->
   <!--    <div>to body</div>-->
   <!--  </teleport>-->
-  <el-button @click="showModalOpen">
-    showModalOpen
-  </el-button>
+  <el-button @click="showModalOpen">showModalOpen</el-button>
 </template>
 
 <script setup lang="ts">

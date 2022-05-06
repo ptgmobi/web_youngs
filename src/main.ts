@@ -4,9 +4,9 @@ const app = createApp(App)
 import router from './router'
 import '@/styles/index.scss' // global css
 //import vuex
-import store from './store'
+// import store from './store'
 
-app.use(store)
+// app.use(store)
 
 //import element-plus
 import ElementPlus from 'element-plus'
@@ -61,5 +61,10 @@ import '@/styles/common.scss'
 //error log  collection
 // import errorLog from '@/hooks/useErrorLog'
 // errorLog()
+
+//pinia
+import { createPinia } from 'pinia'
+
+app.use(createPinia())
 
 app.use(router).mount('#app')

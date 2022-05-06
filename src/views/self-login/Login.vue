@@ -46,9 +46,11 @@
 <script setup lang="ts">
 import settings from '@/settings'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+// import { useStore } from 'vuex'
+import { useAppStore } from '@/store/app'
 import { ElMessage } from 'element-plus'
 import { ObjTy } from '~/common'
+import { useUserStore } from '@/store/user'
 //element valid
 const formRules = useElement().formRules
 //form
@@ -88,7 +90,8 @@ watch(
  * */
 let loading = ref(false)
 let tipMessage = ref('')
-const store = useStore()
+// const store = useStore()
+const appStore = useAppStore()
 const refloginForm: any = ref(null)
 let handleLogin = () => {
   refloginForm.value.validate((valid: any) => {
@@ -108,8 +111,12 @@ let loginReq = () => {
     email: formInline.username,
     password: formInline.password
   }
-  store
-    .dispatch('user/login', ajaxData)
+  // store
+  //   .dispatch('user/login', ajaxData)
+
+  const userStore = useUserStore()
+  userStore
+    .login(ajaxData)
     .then(() => {
       ElMessage({ message: '登录成功', type: 'success' })
       console.log(state.redirect)

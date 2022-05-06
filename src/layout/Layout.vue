@@ -26,14 +26,20 @@ export default {
 
 <script setup lang="ts">
 import { Sidebar, Navbar, AppMain, TagsView } from './components'
-import { useStore } from 'vuex'
-import defaultSettings from '@/settings'
-const store = useStore()
+//import ResizeHook to   listen  page size that   open or close
+import ResizeHook from './hook/ResizeHandler'
+import { useAppStore } from '@/store/app'
+// import { useStore } from 'vuex'
+// import defaultSettings from '@/settings'
+// const store = useStore()
+const appStore = useAppStore()
 const opened = computed(() => {
-  return store.state.app.sidebar.opened
+  return appStore.sidebar.opened
+  // return store.state.app.sidebar.opened
 })
 const settings = computed(() => {
-  return defaultSettings
+  return appStore.settings
+  // return defaultSettings
   // return store.state.app.settings
 })
 const classObj = computed(() => {
@@ -42,8 +48,6 @@ const classObj = computed(() => {
     hideSidebar: !settings.value.showLeftMenu
   }
 })
-//import ResizeHook to   listen  page size that   open or close
-import ResizeHook from './hook/ResizeHandler'
 ResizeHook()
 </script>
 

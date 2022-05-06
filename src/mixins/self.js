@@ -1,4 +1,5 @@
-import { useStore } from 'vuex'
+// import { useStore } from 'vuex'
+import { useUserStore } from '@/store/user'
 const mixin = {
   data() {
     return {}
@@ -6,8 +7,9 @@ const mixin = {
   created() {},
   methods: {
     judgePermissionElementFn(name) {
-      const store = useStore()
-      const element = store.getters.element
+      // const store = useStore()
+      const userStore = useUserStore()
+      const element = userStore.element
       return element.filter(ele => {
         return ele.Code === name
       })

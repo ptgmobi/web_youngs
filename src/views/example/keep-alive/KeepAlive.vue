@@ -1,42 +1,15 @@
 <template>
   <div class="scroll-y">
     <div>KeepAlive.vue</div>
-    <el-form
-      ref="refsearchForm"
-      :inline="true"
-      class="mt-2"
-    >
-      <el-form-item
-        label-width="0px"
-        label=""
-        prop="errorLog"
-        label-position="left"
-      >
-        <el-input
-          v-model="searchForm.errorLog"
-          class="widthPx-150"
-          placeholder="input to test keepAlive"
-        />
+    <el-form ref="refsearchForm" :inline="true" class="mt-2">
+      <el-form-item label-width="0px" label="" prop="errorLog" label-position="left">
+        <el-input v-model="searchForm.errorLog" class="widthPx-150" placeholder="input to test keepAlive" />
       </el-form-item>
-      <el-form-item
-        label-width="0px"
-        label=""
-        prop="pageUrl"
-        label-position="left"
-      >
-        <el-input
-          v-model="searchForm.pageUrl"
-          class="widthPx-150"
-          placeholder="input to test keepAlive"
-        />
+      <el-form-item label-width="0px" label="" prop="pageUrl" label-position="left">
+        <el-input v-model="searchForm.pageUrl" class="widthPx-150" placeholder="input to test keepAlive" />
       </el-form-item>
     </el-form>
-    <el-button
-      type="primary"
-      @click="routerDemoF"
-    >
-      to routerDemoF.vue
-    </el-button>
+    <el-button type="primary" @click="routerDemoF">to routerDemoF.vue</el-button>
   </div>
 </template>
 
@@ -46,6 +19,8 @@
 2.在路由配置处设置cachePage：即可缓存
 -->
 <script setup name="KeepAlive" lang="ts">
+import { useAppStore } from '@/store/app'
+
 let { searchForm } = useCommon()
 //$ref(experimental)
 //let testRef = $ref(1)
@@ -62,9 +37,9 @@ onDeactivated(() => {
 })
 
 const $route = useRoute()
-const $store = useStore()
 // cacheGroup为缓存分组  KeepAlive->routerDemoF->routerDemoS
 let cacheGroup = ['KeepAlive', 'routerDemoF', 'routerDemoS']
+const appStore = useAppStore()
 const unWatch = watch(
   () => $route.name,
   () => {
@@ -72,7 +47,7 @@ const unWatch = watch(
       useCommon()
         .sleep(300)
         .then(() => {
-          cacheGroup.forEach((fItem) => $store.commit('app/M_DEL_CACHED_VIEW', fItem))
+          cacheGroup.forEach((fItem) => appStore.M_DEL_CACHED_VIEW(fItem))
         })
       //remove watch
       unWatch()

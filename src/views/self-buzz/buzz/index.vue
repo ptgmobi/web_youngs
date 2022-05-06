@@ -2,7 +2,6 @@
   <router-view v-slot="{ Component }">
     <keep-alive
       :include="cachedInclude"
-      :exclude="cachedExclude"
     >
       <component :is="Component" />
     </keep-alive>
@@ -10,14 +9,14 @@
   </router-view>
 </template>
 <script lang="ts" setup name="buzz-index">
-const store = useStore()
+import { useAppStore } from '@/store/app'
+
+// const store = useStore()
+const appStore = useAppStore()
 const cachedInclude = computed(() => {
   // store.state.app.cachedInclude = []
-  return store.state.app.cachedInclude
+  // return store.state.app.cachedInclude
+  return appStore.cachedViewsDeep
 })
 
-const cachedExclude = computed(() => {
-  // store.state.app.cachedExclude = []
-  return store.state.app.cachedExclude
-})
 </script>

@@ -360,7 +360,8 @@ import { messageFun } from '@/utils/message'
 import { validEmail } from '@/utils/validate'
 import _ from 'lodash'
 import selfMixins from '@/mixins/self'
-import { useStore } from 'vuex'
+// import { useStore } from 'vuex'
+import { useUserStore } from '@/store/user'
 const defaultData = {
   // 邮箱
   email: '',
@@ -508,8 +509,9 @@ export default {
   created() {
     this.getConfig()
     this.init()
-    const store = useStore()
-    console.log(store.getters.element)
+    // const store = useStore()
+    const userStore = useUserStore()
+    console.log(userStore.element)
   },
   methods: {
     // 显示所属项目组

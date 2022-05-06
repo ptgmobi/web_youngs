@@ -6,8 +6,9 @@
   </router-view>
 </template>
 <script setup lang="ts" name="fenix-offer">
-const $store = useStore()
+import { useAppStore } from '@/store/app'
+const appStore = useAppStore()
 const cachedViewsDeep = computed(() => {
-  return $store.state.app.cachedViewsDeep
+  return appStore.cachedViewsDeep
 })
 </script>

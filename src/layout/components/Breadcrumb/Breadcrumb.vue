@@ -48,17 +48,20 @@
 <script setup lang="ts">
 import { onBeforeMount, getCurrentInstance, watch, ref, computed } from 'vue'
 import { compile } from 'path-to-regexp'
+import { useAppStore } from '@/store/app'
+import { RouteItemTy } from '~/router'
+import { useRoute, useRouter } from 'vue-router'
+
+const appStore = useAppStore()
 const levelList: any = ref(null)
 
 //Whether close the animation fo breadcrumb
-import { useStore } from 'vuex'
-const store = useStore()
+// import { useStore } from 'vuex'
+// const store = useStore()
 const settings = computed(() => {
-  return store.state.app.settings
+  return appStore.settings
+  // return store.state.app.settings
 })
-
-import { RouteItemTy } from '~/router'
-import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const getBreadcrumb = () => {
   // only show routes with meta.title

@@ -1,18 +1,12 @@
 <template>
   <div>
     <div>{{ name }}</div>
-    <el-button @click="emitFather">
-      emitFather
-    </el-button>
-    <el-button @click="getFatherMethod">
-      getFatherMethod
-    </el-button>
+    <el-button @click="emitFather">emitFather</el-button>
+    <el-button @click="getFatherMethod">getFatherMethod</el-button>
     <SubChildren />
   </div>
 
-  <div class="mt-2">
-    插槽
-  </div>
+  <div class="mt-2">插槽</div>
   <!-- 默认插槽 -->
   <slot>
     <!-- slot内为后备内容 -->
@@ -26,21 +20,14 @@
   </header>
   <!-- 作用域插槽 -->
   <footer>
-    <slot
-      name="footer"
-      testProps="子组件作用域传的值"
-    >
+    <slot name="footer" testProps="子组件作用域传的值">
       <h3>没传footer插槽</h3>
     </slot>
   </footer>
 
-  <div class="mt-2">
-    v-model sync
-  </div>
+  <div class="mt-2">v-model sync</div>
   <div>{{ childrenTitle }}</div>
-  <el-button @click="changeParentValue">
-    changeParentValue
-  </el-button>
+  <el-button @click="changeParentValue">changeParentValue</el-button>
 </template>
 
 <script setup lang="ts">

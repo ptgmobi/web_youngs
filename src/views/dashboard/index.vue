@@ -23,10 +23,13 @@
 </template>
 
 <script setup lang="ts">
-import { useStore } from 'vuex'
-const store = useStore()
+// import { useStore } from 'vuex'
+import { useUserStore } from '@/store/user'
+// const store = useStore()
+const userStore = useUserStore()
 const username = computed(() => {
-  return store.state.user.username
+  // return store.state.user.username
+  return userStore.username
 })
 
 const showObj = ref(GLOBAL_VAR)

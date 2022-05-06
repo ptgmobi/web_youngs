@@ -1,8 +1,9 @@
-import store from '@/store'
+// import store from '@/store'
 import axios from 'axios'
 import { ElLoading, ElMessage, ElMessageBox } from 'element-plus'
 import { getToken, setToken } from '@/utils/auth'
 import { AxiosConfigTy, AxiosReqTy, ObjTy } from '@/types/common'
+import { useUserStore } from '@/store/user'
 import router from '@/router'
 let reqConfig: any
 // import qs from 'qs'
@@ -80,7 +81,9 @@ service.interceptors.response.use(
     //       cancelButtonText: '取消',
     //       type: 'warning'
     //     }).then(() => {
-    // store.dispatch('user/resetState').then(() => {
+    // const userStore = useUserStore()
+    // userStore.resetState().then(() => {
+    // // store.dispatch('user/resetState').then(() => {
     //   router.push({ path: '/login' })
     // })
     //     })
@@ -112,8 +115,11 @@ service.interceptors.response.use(
           type: 'warning'
         })
           .then(() => {
-            store.dispatch('user/resetToken').then(() => {
+            const userStore = useUserStore()
+            userStore.resetState().then(() => {
+            // store.dispatch('user/resetToken').then(() => {
               location.reload()
+              // router.push({ path: '/login' })
             })
           })
           .catch((err: any) => {

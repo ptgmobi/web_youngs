@@ -6,10 +6,12 @@
 </template>
 <script setup lang="ts">
 // import { defineEmits, nextTick } from 'vue'
-import { useStore } from 'vuex'
-import $store from '@/store'
+// import { useStore } from 'vuex'
+// import $store from '@/store'
+import { useAppStore } from '@/store/app'
 await nextTick()
-const store = useStore()
+// const store = useStore()
+const appStore = useAppStore()
 const props = defineProps({
   count: Number
 })

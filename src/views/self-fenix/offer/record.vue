@@ -29,7 +29,6 @@
 <script lang="ts" setup>
 import { ref, toRefs, computed, reactive, watch, onMounted } from 'vue'
 import { ApiGetOfferLog } from '@/api/fenix'
-import { DataAnalysis } from '@element-plus/icons'
 import moment from 'moment'
 const props = defineProps({
   busData: {
