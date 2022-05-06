@@ -60,82 +60,81 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'ChangePass',
-  props: {
-    isChange: {
-      type: Boolean,
-      require: true
-    },
-    isDialog: {
-      type: Boolean,
-      require: true
-    }
+<script lang="ts" setup name="ChangePass">
+const emit = defineEmits(['wwpassCancel', 'wwpassConfirm'])
+let { proxy }: any = getCurrentInstance()
+const props = defineProps({
+  isChange: {
+    type: Boolean,
+    require: true
   },
-  data() {
-    const validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else {
-        if (this.formData.checkPass !== '') {
-          this.$refs.ruleFormPass.validateField('checkPass')
-        }
-        callback()
-      }
+  isDialog: {
+    type: Boolean,
+    require: true
+  }
+})
+
+let formData = reactive({
+  oldPass: '',
+  pass: '',
+  checkPass: ''
+})
+
+const validatePass = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('请输入密码'))
+  } else {
+    if (formData.checkPass !== '') {
+      proxy.$refs.ruleFormPass.validateField('checkPass')
     }
-    const validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.formData.pass) {
-        callback(new Error('两次输入密码不一致!'))
-      } else {
-        callback()
-      }
-    }
-    return {
-      formData: {
-        oldPass: '',
-        pass: '',
-        checkPass: ''
-      },
-      rules: {
-        oldPass: [{ required: this.isChange, message: '必填', trigger: 'blur' }],
-        pass: [
-          { required: true, message: '必填', trigger: 'blur' },
-          { validator: validatePass, min: 3 }
-        ],
-        checkPass: [
-          { required: true, message: '必填', trigger: 'blur' },
-          { validator: validatePass2, min: 3 }
-        ]
-      }
-    }
-  },
-  mounted() {
-    this.$refs['ruleFormPass'].clearValidate()
-  },
-  methods: {
-    cancelFun() {
-      this.$emit('wwpass-cancel', this.formData)
-    },
-    handleSubmitFn() {
-      this.$emit('wwpass-confirm', this.formData)
-    },
-    // 提交模态框
-    confirmFun(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          console.log('submit!')
-          this.handleSubmitFn()
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
-    }
+    callback()
   }
 }
+const validatePass2 = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('请再次输入密码'))
+  } else if (value !== formData.pass) {
+    callback(new Error('两次输入密码不一致!'))
+  } else {
+    callback()
+  }
+}
+
+let rules = reactive({
+  oldPass: [{ required: props.isChange, message: '必填', trigger: 'blur' }],
+  pass: [
+    { required: true, message: '必填', trigger: 'blur' },
+    { validator: validatePass, min: 3 }
+  ],
+  checkPass: [
+    { required: true, message: '必填', trigger: 'blur' },
+    { validator: validatePass2, min: 3 }
+  ]
+})
+
+onMounted(() => {
+  proxy.$refs['ruleFormPass'].clearValidate()
+})
+
+const cancelFun = () => {
+  emit('wwpassCancel', formData)
+}
+const handleSubmitFn = () => {
+  emit('wwpassConfirm', formData)
+}
+// 提交模态框
+const confirmFun = (formName) => {
+  proxy.$refs[formName].validate((valid) => {
+    if (valid) {
+      console.log('submit!')
+      handleSubmitFn()
+    } else {
+      console.log('error submit!!')
+      return false
+    }
+  })
+}
+
 </script>
 
 <style lang="scss" scoped></style>

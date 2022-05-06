@@ -14,7 +14,7 @@ import _ from 'lodash'
 
 const whiteList = ['/login', '/404', '/401'] // no redirect whitelist
 router.beforeEach(async (to: any, from, next: any) => {
-  console.log('route', from.path, to.path)
+  // console.log('route', from.path, to.path)
   // console.log(to.matched.length)
   // start progress bar
   if (settings.isNeedNprogress) NProgress.start()
@@ -49,7 +49,6 @@ router.beforeEach(async (to: any, from, next: any) => {
             // ! code start
             // const userInfo: any = await userStore.getInfo()
             const userInfo: any = await userStore.getInfo()
-            console.log(userInfo)
             // const userInfo: any = await store.dispatch('user/getInfo')
             const { menu } = userInfo
             const roles = [...menu]
