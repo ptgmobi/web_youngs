@@ -176,5 +176,10 @@ export const useUserStore = defineStore('user', {
         resolve(null)
       })
     }
+  },
+  getters: {
+    getId(state) {
+      return state.id
+    }
   }
 })

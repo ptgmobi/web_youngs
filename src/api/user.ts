@@ -56,7 +56,7 @@ export function changeUserPassword(params: ObjTy, data: ObjTy) {
   })
 }
 // 用户修改自己的密码
-export function changeMyPassword(params: ObjTy, data: ObjTy) {
+export function changeMyPassword(params: string, data: ObjTy) {
   return request({
     // baseURL: '/mock-api',
     url: `/user/pwd/${params}`,
