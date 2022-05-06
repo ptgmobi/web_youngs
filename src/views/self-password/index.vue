@@ -12,10 +12,13 @@ import Password from '@/components/Self/ChangePass/WwChangePass'
 import { changeMyPassword } from '@/api/user'
 import { messageFun } from '@/utils/message'
 import { useUserStore } from '@/store/user'
+import { useStore } from '@/store'
 const router = useRouter()
 const route = useRoute()
+const store = useStore()
 const userStore = useUserStore()
-const id = userStore.getId
+// const id = userStore.getId
+const id = store.id
 console.log(id)
 const submitFn = async (data: any) => {
   const ajaxData = {
