@@ -8,6 +8,7 @@ import administer from './modules/administer'
 import buzz from './modules/buzz'
 import fenix from './modules/fenix'
 import password from './modules/password'
+import serverclick from './modules/serverclick'
 
 export const constantRoutes: RouterTy = [
   {
@@ -100,6 +101,7 @@ export const asyncRoutes: RouterTy = [
   ...fenix,
   ...administer,
   ...password,
+  ...serverclick,
   // 404 page must be placed at the end !!!
   // using pathMatch install of "*" in vue-router 4.0
   { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }
