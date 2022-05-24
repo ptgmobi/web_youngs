@@ -8,7 +8,7 @@ export default [
     meta: {
       title: 'Server Click',
       elSvgIcon: 'MagicStick',
-      code: '1a'
+      code: 6
     },
     children: [
       {
@@ -19,7 +19,7 @@ export default [
         meta: {
           title: 'Overall Setting',
           elSvgIcon: 'Edit',
-          code: '1a0'
+          code: 60
         },
         children: [
           {
@@ -28,7 +28,7 @@ export default [
             component: () => import('@/views/self-server-click/overall-setting/list'),
             meta: {
               title: 'Overall Setting List',
-              code: '1a00'
+              code: 600
             },
             hidden: true
           },
@@ -38,7 +38,7 @@ export default [
             component: () => import('@/views/self-server-click/overall-setting/details'),
             meta: {
               title: 'Overall Setting Create',
-              code: '1a01'
+              code: 601
             },
             hidden: true
           },
@@ -48,7 +48,7 @@ export default [
             component: () => import('@/views/self-server-click/overall-setting/details'),
             meta: {
               title: 'Overall Setting Edit',
-              code: '1a02'
+              code: 602
             },
             hidden: true
           }
