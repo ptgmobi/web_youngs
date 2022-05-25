@@ -41,12 +41,28 @@
       <el-table-column
         label="操作">
         <template #default="scope">
-          <i class="el-icon-edit cp" 
+          <el-button
+            class="cp"
+            type="default"
+            icon="Edit"
+            circle
+            v-if='!scope.row.showtype'
+            @click='changeShowType(scope.row)'
+          ></el-button>
+          <el-button
+            class="cp"
+            type="primary"
+            icon="Edit"
+            circle
+            v-if='scope.row.showtype'
+            @click='submitFun(scope.row, "all")'
+          ></el-button>
+          <!-- <i class="el-icon-edit cp" 
           v-if='!scope.row.showtype'
           @click='changeShowType(scope.row)'></i>
           <i class="el-icon-edit-outline cp" 
           v-if='scope.row.showtype'
-          @click='submitFun(scope.row, "all")'></i>
+          @click='submitFun(scope.row, "all")'></i> -->
         </template>
       </el-table-column>
     </el-table-column>
@@ -119,12 +135,28 @@
           v-for='p in scope.row.all'
           >
             <div v-if='p.lib_type === o'>
-              <i class="el-icon-edit cp" 
+              <el-button
+                class="cp"
+                type="default"
+                icon="Edit"
+                circle
+                v-if='!p.showtype'
+                @click='changeShowType(p)'
+              ></el-button>
+              <el-button
+                class="cp"
+                type="primary"
+                icon="Edit"
+                circle
+                v-if='p.showtype'
+                @click='submitFun(p, "one")'
+              ></el-button>
+              <!-- <i class="el-icon-edit cp" 
               v-if='!p.showtype'
               @click='changeShowType(p)'></i>
               <i class="el-icon-edit-outline cp" 
               v-if='p.showtype'
-              @click='submitFun(p, "one")'></i>
+              @click='submitFun(p, "one")'></i> -->
             </div>
           </template>
         </template>
@@ -173,12 +205,28 @@
       <el-table-column
         label="操作">
         <template #default="scope">
-          <i class="el-icon-edit cp" 
+          <el-button
+            class="cp"
+            type="default"
+            icon="Edit"
+            circle
+            v-if='!scope.row.showtype'
+            @click='changeShowType(scope.row)'
+          ></el-button>
+          <el-button
+            class="cp"
+            type="primary"
+            icon="Edit"
+            circle
+            v-if='scope.row.showtype'
+            @click='submitFun(scope.row, "all")'
+          ></el-button>
+          <!-- <i class="el-icon-edit cp" 
           v-if='!scope.row.showtype'
           @click='changeShowType(scope.row)'></i>
           <i class="el-icon-edit-outline cp" 
           v-if='scope.row.showtype'
-          @click='submitFun(scope.row, "all")'></i>
+          @click='submitFun(scope.row, "all")'></i> -->
         </template>
       </el-table-column>
     </el-table-column>
@@ -245,18 +293,34 @@
       label="操作"
         >
         <template 
-        #default="scope"
+          #default="scope"
         >
           <template
             v-for='p in scope.row.all'
           >
             <div v-if='p.lib_type === o'>
-              <i class="el-icon-edit cp" 
+              <el-button
+                class="cp"
+                type="default"
+                icon="Edit"
+                circle
+                v-if='!p.showtype'
+                @click='changeShowType(p)'
+              ></el-button>
+              <el-button
+                class="cp"
+                type="primary"
+                icon="Edit"
+                circle
+                v-if='p.showtype'
+                @click='submitFun(p, "one")'
+              ></el-button>
+              <!-- <i class="el-icon-edit cp" 
               v-if='!p.showtype'
               @click='changeShowType(p)'></i>
               <i class="el-icon-edit-outline cp" 
               v-if='p.showtype'
-              @click='submitFun(p, "one")'></i>
+              @click='submitFun(p, "one")'></i> -->
             </div>
           </template>
         </template>
