@@ -11,15 +11,15 @@ import { PermissionTy } from '~/store'
  */
 function hasCodePermission(codeArr: Array<number>, routeItem: RouteItemTy) {
   const type = process.env.NODE_ENV
-  if (type === 'serve-dev') {
-    return true
-  } else {
+  // if (type === 'serve-dev') {
+  //   return true
+  // } else {
     if (routeItem.meta && routeItem.meta.code) {
       return codeArr.includes(routeItem.meta.code) || routeItem.hidden
     } else {
       return true
     }
-  }
+  // }
   
 }
 /**

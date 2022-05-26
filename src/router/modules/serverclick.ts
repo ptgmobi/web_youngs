@@ -24,31 +24,32 @@ export default [
         children: [
           {
             path: 'list',
-            name: 'fenix-fenix-list',
+            name: 'overall-setting-list',
             component: () => import('@/views/self-server-click/overall-setting/list'),
             meta: {
-              title: 'Overall Setting List',
-              code: 600
+              title: 'Overall Setting List'
             },
             hidden: true
-          },
+          }
+        ]
+      },
+      {
+        path: 'devicepackage',
+        name: 'devicepackage',
+        component: () => import('@/views/self-server-click/device-package'),
+        redirect: '/serverclick/devicepackage/list',
+        meta: {
+          title: 'Device Package',
+          elSvgIcon: 'Edit',
+          code: 61
+        },
+        children: [
           {
-            path: 'create',
-            name: 'fenix-fenix-create',
-            component: () => import('@/views/self-server-click/overall-setting/details'),
+            path: 'list',
+            name: 'device-package-list',
+            component: () => import('@/views/self-server-click/device-package/list'),
             meta: {
-              title: 'Overall Setting Create',
-              code: 601
-            },
-            hidden: true
-          },
-          {
-            path: 'edit/:id',
-            name: 'fenix-fenix-edit',
-            component: () => import('@/views/self-server-click/overall-setting/details'),
-            meta: {
-              title: 'Overall Setting Edit',
-              code: 602
+              title: 'Device Package List'
             },
             hidden: true
           }

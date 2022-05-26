@@ -170,7 +170,7 @@ export default {
       this.busData.item.id = scope.row.id
       // 查询one
       const { data: choiceData } = await getRole(this.busData.item.id)
-      this.busData.item.name = choiceData.role.name
+      this.busData.item.name = choiceData.role[0].name
       // this.busData.item.permissions.slice(0)
       // choiceData.role_permission.forEach(ele => {
       //   this.busData.item.permissions.push(ele)

@@ -96,8 +96,8 @@
               <el-switch
                 :disabled="!p.showtype"
                 v-model="p.lib_status"
-                active-value="1"
-                inactive-value="2"
+                :active-value="1"
+                :inactive-value="2"
                 >
               </el-switch>
             </div>
@@ -263,8 +263,8 @@
               <el-switch
                 :disabled="!p.showtype"
                 v-model="p.lib_status"
-                active-value="1"
-                inactive-value="2"
+                :active-value="1"
+                :inactive-value="2"
                 >
               </el-switch>
             </div>
@@ -477,7 +477,7 @@ const submitFun = async (item, type) => {
       update_type: type
     }
     ajaxData = Object.assign({}, ajaxData, item)
-    const arr = ['id', 'platform', 'lib_status']
+    const arr = ['id', 'platform', 'lib_status', 'lib_quantity_proportion']
     ajaxData = handleAjaxDataObjectFun(arr, ajaxData)
     const res = await serverClickOverallSettingChangeOne(ajaxData)
     if (messageFun(res)) {
