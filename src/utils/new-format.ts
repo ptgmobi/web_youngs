@@ -13,6 +13,23 @@ export function handleAjaxDataObjectFn(data: any) {
   }
   return newObj
 }
+
+// 通过传入数组和对象，把ajaxData的值转变为数字
+export function handleAjaxDataObjectFun(arr: any, data: any) {
+  const newObj: any = {}
+  for (const key in data) {
+    if (Object.prototype.hasOwnProperty.call(data, key)) {
+      const element = data[key]
+      if (arr.includes(key)) {
+        newObj[key] = Number(element)
+      } else {
+        newObj[key] = element
+      }
+    }
+  }
+  return newObj
+}
+
 // 把ajaxData的空值的key去掉，并且把字符串数字变为数值数字
 export function handleAjaxDataDelNoKeyFn(data: any) {
   const newObj: any = {}

@@ -3,7 +3,7 @@
   <el-table
   center
   :data="handleTableDataAndroid"
-  style="width: 100%"
+  class="w100 mt-30"
   border
   >
     <el-table-column
@@ -168,6 +168,7 @@
   center
   :data="handleTableDataiOS"
   style="width: 100%"
+  class="w100 mt-30"
   border
   >
     <el-table-column
@@ -330,7 +331,10 @@
 
 </template>
 <script lang="ts" setup>
-import { serverClickOverallSettingList } from '@/api/serverclick'
+import { messageFun } from '@/utils/message'
+import { handleAjaxDataObjectFun } from '@/utils/new-format'
+import { serverClickOverallSettingList, serverClickOverallSettingChangeAll, serverClickOverallSettingChangeOne, serverClickOverallSettingGetConfig, serverClickOverallSettingEditConfig } from '@/api/serverclick'
+
 let tableData = reactive({
   androidArr: [],
   iOSArr: []
@@ -338,7 +342,7 @@ let tableData = reactive({
 
 const handleTableData = (data, platform) => {
   let object = data
-  let arr = []
+  let arr: any = []
   for (const key in object) {
     if (object.hasOwnProperty(key)) {
       const element = object[key]
@@ -351,37 +355,6 @@ const handleTableData = (data, platform) => {
     }
   }
   return arr
-  // let arr = []
-  // data.map((ele) => {
-  //   let country = arr.find((o) => {
-  //     return o.content.country === ele.content.country
-  //   })
-  //   if (country) {
-  //     arr = arr.map((o) => {
-  //       if (o.content.country === ele.content.country) {
-  //         o = Object.assign({}, ele, o)
-  //       }
-  //       return o
-  //     })
-  //   } else {
-  //     arr.push(ele)
-  //   }
-  // })
-  // arr.map((object) => {
-  //   let reduce = 0
-  //   for (const key in object) {
-  //     if (object.hasOwnProperty(key)) {
-  //       const element = object[key];
-  //       if (key !== 'content') {
-  //         reduce = reduce + parseInt(element.lib_device_num)
-  //       }
-  //     }
-  //   }
-  //   object.content.all_device_num = reduce
-  //   return object
-  // })
-  // console.log(arr)
-  // return arr
 }
 
 const getTitlefun = (arr) => {
@@ -418,96 +391,109 @@ const init = () => {
 }
 
 const handleResult = (object) => {
+  let androidObj: Array<any> = []
+  let iOSObj: Array<any> = []
   for (const key in object) {
     if (object.hasOwnProperty(key)) {
       let element = object[key]
-      for (const k in element) {
-        if (element.hasOwnProperty(k)) {
-          let ele = element[k]
-          ele.showtype = false
-          ele.all.map((o) => {
-            o.showtype = false
-          })
-        }
+      let keyArr = key.split('_')
+      element.platform = keyArr[0]
+      element.country = keyArr[1]
+      element.showtype = false
+      element.all.map((o) => {
+        o.showtype = false
+      })
+      if (element.platform === '1') {
+        androidObj.push(element)
+      }
+      if (element.platform === '2') {
+        iOSObj.push(element)
       }
     }
   }
-  return object
+  return {
+    androidObj,
+    iOSObj
+  }
 }
 
-const handleAjaxData = (baseData) => {
-  let obj = {}
-  let AndroidTitle = new Set()
-  let iOSTitle = new Set()
-  let AndroidArr = []
-  let iosArr = []
-  if (baseData.length === 0) return false
-  baseData.map((ele) => {
-    let o = {}
-    let lib_type = window.encodeURI(ele['lib_type'])
-    o['content'] = ele
-    o['content'].showtype = false
-    o[`${lib_type}`] = ele
-    // Android
-    if (ele.platform == 1) {
-      AndroidTitle.add(ele['lib_type'])
-      AndroidArr.push(o)
-    }
-    // iOS
-    if (ele.platform == 2) {
-      iOSTitle.add(ele['lib_type'])
-      iosArr.push(o)
-    }
-    return ele
-  })
-  obj = {
-    handleAndroidTitle: Array.from(AndroidTitle),
-    handleiOSTitle: Array.from(iOSTitle),
-    handleAndroidArr: AndroidArr,
-    handleiOSArr: iosArr
-  }
-  // console.log(obj)
-  return obj
-}
+// const handleAjaxData = (baseData) => {
+//   let obj = {}
+//   let AndroidTitle = new Set()
+//   let iOSTitle = new Set()
+//   let AndroidArr = []
+//   let iosArr = []
+//   if (baseData.length === 0) return false
+//   baseData.map((ele) => {
+//     let o = {}
+//     let lib_type = window.encodeURI(ele['lib_type'])
+//     o['content'] = ele
+//     o['content'].showtype = false
+//     o[`${lib_type}`] = ele
+//     // Android
+//     if (ele.platform == 1) {
+//       AndroidTitle.add(ele['lib_type'])
+//       AndroidArr.push(o)
+//     }
+//     // iOS
+//     if (ele.platform == 2) {
+//       iOSTitle.add(ele['lib_type'])
+//       iosArr.push(o)
+//     }
+//     return ele
+//   })
+//   obj = {
+//     handleAndroidTitle: Array.from(AndroidTitle),
+//     handleiOSTitle: Array.from(iOSTitle),
+//     handleAndroidArr: AndroidArr,
+//     handleiOSArr: iosArr
+//   }
+//   // console.log(obj)
+//   return obj
+// }
 
 const changeShowType = (item) => {
   // console.log(item)
   item.showtype = !item.showtype
 }
 
-const submitFun = (item, type) => {
-        // console.log(item, type)
-        let ajaxData = {
-          update_type: type
-        }
-        ajaxData = Object.assign({}, ajaxData, item)
-        delete ajaxData.all
-        // $.ajax({
-        //   url: '/server-click/overall-setting',
-        //   type: 'post',
-        //   data: ajaxData,
-        //   success (result) {
-        //     // console.log(result)
-        //     if (result.status === 1) {
-        //       // ajax成功后才会执行
-        //       item.showtype = !item.showtype
-        //       that.$message({
-        //         message: result.info,
-        //         type: 'success'
-        //       })
-        //     } else {
-        //       that.$message.error(result.info)
-        //     }
-        //   }
-        // })
-      }
+const submitFun = async (item, type) => {
+  if (type === 'all') {
+    let ajaxData = {
+      update_type: type,
+      all: undefined
+    }
+    ajaxData = Object.assign({}, ajaxData, item)
+    const arr = ['platform', 'thread_offer_num']
+    ajaxData = handleAjaxDataObjectFun(arr, ajaxData)
+    delete ajaxData.all
+    const res = await serverClickOverallSettingChangeAll(ajaxData)
+    if (messageFun(res)) {
+      item.showtype = !item.showtype
+    }
+  }
+  if (type === 'one') {
+    let ajaxData = {
+      update_type: type
+    }
+    ajaxData = Object.assign({}, ajaxData, item)
+    const arr = ['id', 'platform', 'lib_status']
+    ajaxData = handleAjaxDataObjectFun(arr, ajaxData)
+    const res = await serverClickOverallSettingChangeOne(ajaxData)
+    if (messageFun(res)) {
+      item.showtype = !item.showtype
+    }
+  }
+  
+}
 
 const getList = async () => {
   const ajaxData = {}
   const res = await serverClickOverallSettingList(ajaxData)
   const { data: result } = res
-  tableData.androidArr = handleResult(result)['1']
-  tableData.iOSArr = handleResult(result)['2']
+  let finalObj = handleResult(result)
+  tableData.androidArr = finalObj.androidObj
+  tableData.iOSArr = finalObj.iOSObj
 }
 
 onMounted(() => {
