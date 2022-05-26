@@ -1,0 +1,1 @@
+System.register(["./index-legacy-3182ba3f.js"],(function(e){"use strict";var t,n,r,u,a,c;return{setters:[function(e){t=e.d,n=e.u,r=e.a,u=e.o,a=e.c,c=e.b}],execute:function(){e("default",t({setup:function(){var e=n(),t=r();return u((function(){var n=e.params,r=e.query,u=n.path;t.replace({path:"/"+u,query:r})})),function(){return a("div",null,[c(" ")])}}}))}}}));
