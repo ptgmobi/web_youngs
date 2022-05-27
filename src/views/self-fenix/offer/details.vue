@@ -941,6 +941,12 @@ watch(
   }
 )
 watch(
+  () => state.search.adv_offer,
+  (newVal, oldVal) => {
+    state.ruleForm.adv_offer = newVal
+  }
+)
+watch(
   () => state.ruleForm.adv_offer,
   (newVal, oldVal) => {
     // 导入是2，自建是1
@@ -965,7 +971,7 @@ const saveTraffic = (data: any) => {
 const searchAdvOffer = async () => {
   if (type.value === 'edit') return false
   console.log('get adv offer')
-  state.ruleForm.adv_offer = state.search.adv_offer
+  // state.ruleForm.adv_offer = state.search.adv_offer
   const str = state.ruleForm.adv_offer
   if (!str) return false
   // ! 首先判断是否已存在当前搜索的offer
