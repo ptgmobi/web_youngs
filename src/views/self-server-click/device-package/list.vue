@@ -34,7 +34,7 @@
             <!-- <el-table-column type="expand"></el-table-column> -->
             <el-table-column
               label="二级分类">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <span>{{ scope.row.two_sort }}</span>
               </template>
             </el-table-column>
@@ -42,18 +42,18 @@
               label="PKG"
               width="200"
               >
-              <template slot-scope="scope">
+              <template #default="scope">
                 <div class='flex'>
-                  <el-input size='mini' v-model="scope.row.pkg_name" placeholder="请输入内容"></el-input>
+                  <el-input  v-model="scope.row.pkg_name" placeholder="请输入内容"></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column
               width="300"
               label="Slot ID">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <div class='flex jcsb'>
-                  <el-input style='width: 100px;' size='mini' v-model="scope.row.searchSlot" placeholder="请输入内容"></el-input>
+                  <el-input style='width: 100px;'  v-model="scope.row.searchSlot" placeholder="请输入内容"></el-input>
                   <i class="cp icon el-icon-search" @click='searchSlot(scope.row)'></i>
                   <span style='width: 66px;'>{{scope.row.slot_id}}</span>
                 </div>
@@ -61,20 +61,20 @@
             </el-table-column>
             <el-table-column
               label="Slot Name">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <span>{{scope.row.slot_name}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="App Name">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <span>{{scope.row.app_name}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="操作">
-              <template slot-scope="scope">
-                <el-button class='ml-10' size='mini' type="primary"
+              <template #default="scope">
+                <el-button class='ml-10'  type="primary"
                 @click='submitSlot(scope.row)'
                 >提交</el-button>
               </template>
@@ -84,7 +84,7 @@
       </template>
       <el-dialog
         title="提示"
-        :visible.sync="dialogVisible"
+        v-model="dialogVisible"
         width="30%">
         <span>Slot ID:</span>
         <!-- ff474d3b -->
@@ -180,7 +180,6 @@ const handlelibtype = (basearr) => {
       })
     }
   })
-  console.log(resultarr)
   return resultarr
 }
 
@@ -199,7 +198,6 @@ const handleAjaxBaseData = (baseData) => {
     }
   })
   arr = [...handlelibtype(androidArr), ...handlelibtype(iosArr)]
-  console.log(arr)
   return arr
 }
 
