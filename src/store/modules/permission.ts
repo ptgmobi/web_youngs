@@ -12,6 +12,7 @@ const type = process.env.NODE_ENV
  * @param routeItem
  */
 function hasCodePermission(codeArr: Array<number>, routeItem: RouteItemTy) {
+  console.log('type', type)
   if (type === 'serve-dev') {
     return true
   } else {
