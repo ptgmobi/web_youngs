@@ -56,6 +56,15 @@ export default [
           title: '项目管理',
           code: 94
         }
+      },
+      {
+        path: 'administer-router',
+        component: () => import('@/views/self-administer/router/index'),
+        name: 'administer-router',
+        meta: {
+          title: '路由管理',
+          code: 95
+        }
       }
     ]
   }
