@@ -303,7 +303,6 @@
 </template>
 <script lang="ts" setup name="old-buzz">
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { getCurrentInstance, reactive, ref, shallowRef, onMounted, computed } from 'vue'
 import { ApiGetBuzzList, ApichangeClk, ApichangeSiteClkLimit, ApichangeCutoff, ApiChangeBuzzStatus, ApiGetOfferDevice, ApiChangeToOfferDevice } from '@/api/oldbuzz'
 import { ElMessage } from 'element-plus'
 import { messageFun } from '@/utils/message'
