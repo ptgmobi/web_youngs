@@ -298,6 +298,18 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="daily_cap"
+          label="Daily Cap"
+          align="center"
+          width="48"
+        >
+          <template #default="scope">
+            <div>
+              <span>{{ scope.row.daily_cap }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
           label="Target Cvr*w"
           align="center"
           width="150"
