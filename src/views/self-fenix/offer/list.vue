@@ -196,61 +196,61 @@
         height="70vh"
         border
       >
-        <el-table-column
+        <el-table-column sortable
           fixed
           prop="offer_id"
           label="Offer ID"
           align="center"
           width="60"
         />
-        <el-table-column
+        <el-table-column sortable
           fixed
           prop="adv_offer"
           label="Adv Offer"
           align="center"
           width="87"
         />
-        <el-table-column
+        <el-table-column sortable
           fixed
           prop="channel"
           label="Channel"
           align="center"
           width="42"
         />
-        <el-table-column
+        <el-table-column sortable
           prop="revenue"
           label="Revenue"
           align="center"
           width="45"
         />
 
-        <el-table-column
+        <el-table-column sortable
           prop="pkg"
           label="Package Name"
           align="center"
           width="100"
         />
-        <el-table-column
+        <el-table-column sortable
           prop="title"
           label="Offer Title"
           align="center"
           width="90"
         />
-        <el-table-column
+        <el-table-column sortable
           prop="pid"
           label="Pid"
           align="center"
           width="77"
         />
 
-        <el-table-column
+        <el-table-column sortable
           prop="country"
           label="Country"
           align="center"
           width="40"
         />
 
-        <el-table-column
+        <el-table-column sortable
           label="Adv Status"
           align="center"
           width="47"
@@ -261,7 +261,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column
+        <el-table-column sortable
           prop="offer_id"
           label="Click*w"
           align="center"
@@ -273,7 +273,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column
+        <el-table-column sortable
           prop="offer_id"
           label="Installs"
           align="center"
@@ -285,7 +285,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column
+        <el-table-column sortable
           prop="offer_id"
           label="Cvr*w"
           align="center"
@@ -297,7 +297,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column
+        <el-table-column sortable
           prop="daily_cap"
           label="Daily Cap"
           align="center"
@@ -309,7 +309,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column
+        <el-table-column sortable
           label="Target Cvr*w"
           align="center"
           width="150"
@@ -338,7 +338,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column
+        <el-table-column sortable
           label="Traffic Data"
           align="left"
           width="200"
@@ -363,7 +363,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column
+        <el-table-column sortable
           label="Operation"
           align="center"
           width="130"
@@ -405,7 +405,13 @@
             </el-popconfirm>
           </template>
         </el-table-column>
-        <el-table-column
+        <el-table-column sortable
+          prop="last_time"
+          label="Last Time"
+          align="center"
+          width="80"
+        />
+        <el-table-column sortable
           label="Platform"
           align="center"
           width="55"
@@ -416,13 +422,13 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column
+        <el-table-column sortable
           prop="attribute_provider"
           label="Attribute Provider"
           align="center"
           width="80"
         />
-        <el-table-column
+        <el-table-column sortable
           label="Record"
           align="center"
           width="52"
@@ -436,7 +442,7 @@
             ></el-button>
           </template>
         </el-table-column>
-        <el-table-column
+        <el-table-column sortable
           label="Comment"
           align="center"
           width="150"
