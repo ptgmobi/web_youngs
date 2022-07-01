@@ -114,6 +114,16 @@
       <!-- <el-input placeholder="请输入内容" v-model="data.searchForm.data" class='search-input'>
         <el-button slot="append" icon="Search" @click='searchFun'></el-button>
       </el-input> -->
+
+      <!-- 批量修改设备信息 -->
+      <div class="flex jc-start">
+        <el-button
+          class="cp"
+          type="primary"
+          icon="Edit"
+          @click="editPagesDeviceFun()"
+        >批量修改当前页面内所有offer的device</el-button>
+      </div>
     </div>
     <!-- table -->
     <el-table
@@ -303,7 +313,7 @@
 </template>
 <script lang="ts" setup name="old-buzz">
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { ApiGetBuzzList, ApichangeClk, ApichangeSiteClkLimit, ApichangeCutoff, ApiChangeBuzzStatus, ApiGetOfferDevice, ApiChangeToOfferDevice } from '@/api/oldbuzz'
+import { ApiGetBuzzList, ApichangeClk, ApichangeSiteClkLimit, ApichangeCutoff, ApiChangeBuzzStatus, ApiGetOfferDevice, ApiChangeToOfferDevice, ApiChangeToOffersDevice } from '@/api/oldbuzz'
 import { ElMessage } from 'element-plus'
 import { messageFun } from '@/utils/message'
 import _ from 'lodash'
@@ -341,6 +351,7 @@ const OptionsCutoffEnd = () => {
   })
   return arr
 }
+let isChangeDeviceAll = ref(false)
 let bus: any = reactive({
   offer: {},
   index: null,
@@ -511,6 +522,7 @@ const init = async () => {
 }
 const editDeviceFun = async (i, row) => {
   console.log('get device')
+  isChangeDeviceAll.value = false
   data.dialogVisibleDevice = true
   bus.offer = row
   bus.index = i
@@ -525,6 +537,17 @@ const editDeviceFun = async (i, row) => {
   // bus.cacheDevice.select = JSON.parse(row.device)
   bus.cacheDevice.select = deviceData.select
 }
+
+// 批量修改设备信息
+const editPagesDeviceFun = () => {
+  console.log('get device all')
+  let first = data.list.length !== 0 ? data.list[0] : ''
+  if (first) {
+    // 使用第一个
+    editDeviceFun(0, first)
+    isChangeDeviceAll.value = true
+  }
+}
 // 修改device数据
 const saveDevice = (data) => {
   bus.cacheDevice.select = data
@@ -534,14 +557,34 @@ const handleOneDeviceCount = (data) => {
 }
 // 保存提交device数据
 const setDevice = async () => {
-  const ajaxData = {
-    id: bus.offer.id,
-    device: JSON.stringify(bus.cacheDevice.select)
+  // 先判断是否批量修改
+  if (isChangeDeviceAll.value === true) {
+    // 获取当前页面所有的id
+    let idsArr = data.list.map(ele => ele.id)
+    let idsStr = idsArr.length !== 0 ? idsArr.join(',') : ''
+    if (idsStr) {
+      const ajaxData = {
+        ids: idsStr,
+        device: JSON.stringify(bus.cacheDevice.select)
+      }
+      const res = await ApiChangeToOffersDevice(ajaxData)
+      if (messageFun(res)) {
+        data.dialogVisibleDevice = false
+        init()
+      }
+    }
+  } else {
+    const ajaxData = {
+      id: bus.offer.id,
+      device: JSON.stringify(bus.cacheDevice.select)
+    }
+    const res = await ApiChangeToOfferDevice(ajaxData)
+    if (messageFun(res)) {
+      data.dialogVisibleDevice = false
+      bus.offer.device_count = bus.cacheDeviceCount
+    }
+    
   }
-  const res = await ApiChangeToOfferDevice(ajaxData)
-  messageFun(res)
-  data.dialogVisibleDevice = false
-  bus.offer.device_count = bus.cacheDeviceCount
   // searchFn()
 }
 onMounted(() => {

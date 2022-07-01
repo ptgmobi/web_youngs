@@ -143,3 +143,15 @@ export function ApiChangeToOfferDevice(data: ObjTy) {
     isAlertErrorMsg: false
   })
 }
+
+// 批量修改device
+export function ApiChangeToOffersDevice(data: ObjTy) {
+  return request({
+    url: '/obuzz/batch-device',
+    data,
+    method: 'patch',
+    bfLoading: false,
+    isParams: false,
+    isAlertErrorMsg: false
+  })
+}

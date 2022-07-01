@@ -57,7 +57,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, toRef, toRefs, toRaw, watch, onMounted, nextTick } from 'vue'
 import { thousandSeparator } from '@/utils/format'
 import _ from 'lodash'
 const emit = defineEmits(['kk', 'count', 'up'])
