@@ -1,1 +1,0 @@
-System.register(["./index-legacy-bdfa680e.js"],(function(e){"use strict";var t;return{setters:[function(e){t=e.G}],execute:function(){e("m",{data:function(){return{}},created:function(){},methods:{judgePermissionElementFn:function(e){return t().element.filter((function(t){return t.Code===e}))}}})}}}));

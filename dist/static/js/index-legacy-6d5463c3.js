@@ -1,0 +1,1 @@
+System.register(["./index-legacy-973cee41.js"],(function(e){"use strict";var t,n,r,u,c,a;return{setters:[function(e){t=e.d,n=e.u,r=e.a,u=e.o,c=e.c,a=e.b}],execute:function(){e("default",t({setup:function(){var e=n(),t=r();return u((function(){var n=e.params,r=e.query,u=n.path;t.replace({path:"/"+u,query:r})})),function(){return c("div",null,[a(" ")])}}}))}}}));
