@@ -1,1 +1,0 @@
-System.register(["./index-legacy-973cee41.js"],(function(e){"use strict";var t,n,r,u;return{setters:[function(e){t=e.d,n=e.n,r=e.L,u=e.s}],execute:function(){e("default",t({setup:function(e){return r().proxy.$router.push({path:"/dashboard/overview"}),function(e,t){return u(),n("div",null,"Index")}}}))}}}));
