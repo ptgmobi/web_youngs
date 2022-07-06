@@ -2,9 +2,9 @@ import Layout from '@/layout'
 export default [
   {
     path: '/advertiser',
-    redirect: '/advertiser/advertiserlist/index',
     component: Layout,
     name: 'advertiser',
+    redirect: '/advertiser/apiofferupdate',
     meta: {
       title: 'Advertiser',
       elSvgIcon: 'MagicStick',
@@ -58,6 +58,7 @@ export default [
         path: 'apiofferupdate',
         name: 'api-offer-update',
         component: () => import('@/views/self-advertiser/api-offer-update'),
+        redirect: '/advertiser/apiofferupdate/list',
         meta: {
           title: 'Api Offer Update',
           elSvgIcon: 'Edit',

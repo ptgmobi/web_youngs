@@ -5,7 +5,7 @@
     />
   </router-view>
 </template>
-<script lang="ts" setup name="buzz-sync">
+<script lang="ts" setup name="api-offer-update">
 onActivated(() => {
   console.log('onActivated')
 })

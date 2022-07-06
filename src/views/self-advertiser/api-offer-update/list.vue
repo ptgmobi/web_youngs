@@ -8,56 +8,49 @@
       class="w100"
       border
     >
-      <el-table-column
-        fixed
-        prop="offer_id"
-        label="Offer ID"
-        align="center"
-        width="70"
-      ></el-table-column>
-      <el-table-column align="center" label="Offer ID" prop="offer_id" width="120">
+      <el-table-column sortable align="center" label="Offer ID" prop="offer_id" width="120">
           <template #default="scope">
             <span>{{ scope.row.offer_id }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="PKG" prop="pkg_name" min-width="150">
+        <el-table-column sortable align="center" label="PKG" prop="pkg_name" min-width="150">
           <template #default="scope">
             <span>{{ scope.row.pkg_name }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="Platform" prop="platform" width="100">
+        <el-table-column sortable align="center" label="Platform" prop="platform" width="100">
           <template #default="scope">
             <span>{{ scope.row.targeting.os }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="Country" prop="targeting" width="100">
+        <el-table-column sortable align="center" label="Country" prop="targeting" width="100">
           <template #default="scope">
             <span>{{ scope.row.targeting.geo.join(',') }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="Payout" prop="payout" min-width="50">
+        <el-table-column sortable align="center" label="Payout" prop="payout" min-width="50">
           <template #default="scope">
             <span>{{ scope.row.payout }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="Daily Cap" prop="daily_cap" min-width="50">
+        <el-table-column sortable align="center" label="Daily Cap" prop="daily_cap" min-width="50">
           <template #default="scope">
             <span>{{ scope.row.daily_cap }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="Kpi" prop="kpi" min-width="100">
+        <el-table-column sortable align="center" label="Kpi" prop="kpi" min-width="100">
           <template #default="scope">
             <span>{{ scope.row.kpi }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="Last Modified" prop="last_time" min-width="95">
+        <el-table-column sortable align="center" label="Last Modified" prop="last_time" min-width="95">
           <template #default="scope">
             <span>{{ scope.row.last_time }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="Details" min-width="140">
+        <el-table-column sortable align="center" label="Details" min-width="140">
           <template #default="scope">
-            <div class="flex jc-between">
+            <div class="flex jc-around">
               <div>
                 <span>{{ scope.row.details }}</span>
               </div>
@@ -154,15 +147,14 @@ const init = async () => {
     return ele
   })
   data.list = result
-  pagination.total = Number(res.data.count)
+  pagination.total = Number(res.data.paging.count)
 }
 const showLog = async (scope) => {
   const ajaxData = {
     offer_id: scope.row.offer_id
   }
   const res = await ApiGetUpdateOffferLog(ajaxData)
-  const result = res.data
-  console.log(result)
+  const result = res.data.data
   busData.data = result
   dialogLog.value = true
 }
