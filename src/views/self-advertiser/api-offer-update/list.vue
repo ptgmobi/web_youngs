@@ -115,6 +115,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { ApiGetUpdateOfferList, ApiGetUpdateOffferLog } from '@/api/advertiser'
 
 let data = reactive({
