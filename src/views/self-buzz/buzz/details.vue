@@ -690,16 +690,16 @@ const submitFormFun = async () => {
   ajaxData['device'] = JSON.stringify(ajaxData['device'])
   console.log(ajaxData)
   // return ajaxData
-  if (name.value === 'create') {
+  if (name.value === 'buzz-create') {
     delete ajaxData['id']
     delete ajaxData['offer_id']
     res = await ApiOperationOfferCreate(ajaxData)
   }
-  if (name.value === 'edit') {
+  if (name.value === 'buzz-edit') {
     res = await ApiOperationOfferEdit(ajaxData)
   }
   if (messageFun(res)) {
-    proxy.$router.push({ path: '/adnetwork/buzz' })
+    proxy.$router.push({ path: '/buzz/list' })
   }
 }
 

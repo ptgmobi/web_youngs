@@ -417,18 +417,6 @@
             </el-option>
           </el-select>
         </el-form-item> -->
-        <!-- campaign_id -->
-        <el-form-item
-          label="Campaign ID:"
-          prop="campaign_id"
-        >
-          <el-input
-            v-model.trim="data.ruleForm.campaign_id"
-            class="form-one"
-            type="text"
-            placeholder=""
-          ></el-input>
-        </el-form-item>
         <!-- note -->
         <el-form-item
           label="Note:"
@@ -629,7 +617,7 @@ let data: any = reactive({
   loading: true,
   options: {
     channel: [],
-    attribute_provider: ['AppsFlyer', 'Branch', 'Adjust', 'Singular', 'AppMetrica', 'Lazada'],
+    attribute_provider: ['AppsFlyer', 'Branch', 'Adjust', 'Singular', 'AppMetrica'],
     time: [-1, ...[...new Array(24)].map((ele, index) => index)],
     platform: [
       { value: 1, label: 'Android' },
