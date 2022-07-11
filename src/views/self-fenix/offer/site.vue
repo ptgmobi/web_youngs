@@ -137,8 +137,22 @@
           </div>
         </el-form-item>
         <el-form-item
-          label=""
+          label="黑名单:"
+          prop="site_black_value"
         >
+          <div class="flex jc-start ai-center form-one">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 8, maxRows: 80 }"
+              v-model="state.ruleForm.site_black_value"
+              placeholder="请用英文逗号分割"
+              class="input-with-select"
+            />
+          </div>
+        </el-form-item>
+        <el-form-item
+          label=""
+        >{{state.ruleForm.site_value}}
           <div class="flex jc-start ai-center form-one">
             <site-list
               v-model:msg="state.ruleForm.site_value"
@@ -241,6 +255,7 @@ let state = reactive({
     day_limit_value: '',
     status_hour: 2,
     site_value: '',
+    site_black_value: ''
   }
 })
 
@@ -277,6 +292,7 @@ watch(() => {
     day_limit_value: fenixSiteData.day_limit_value || '',
     status_hour: status_hour,
     site_value: props.msg.site_value,
+    site_black_value: props.msg.site_black_value
   }
 }, {
   deep: true,

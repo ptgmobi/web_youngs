@@ -584,6 +584,7 @@ interface dataType {
   description: string
   fenix_site: any
   fenix_cvr: any
+  site_black_value: string
 }
 const ruleForm = ref<FormInstance>()
 const defaultRuleForm: dataType = {
@@ -616,7 +617,8 @@ const defaultRuleForm: dataType = {
   site_value: '',
   description: '',
   fenix_site: {},
-  fenix_cvr: {}
+  fenix_cvr: {},
+  site_black_value: ''
 }
 let loading = ref(false)
 const state = reactive({
