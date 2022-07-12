@@ -871,11 +871,9 @@ const saveFun = async (formEl: FormInstance | undefined) => {
 
 const getOfferIdFn = async () => {
   const res = await ApiGetOfferCreateId()
-  if (res.code === 200) {
+  if (res?.code === 200) {
     const { offer_id } = res
     state.ruleForm.offer_id = offer_id.toString()
-  } else {
-    getOfferIdFn()
   }
 }
 const getConfig = async () => {
@@ -1070,6 +1068,7 @@ const setCountry = (data: any) => {
 const updateData = (data) => {
   console.log('site_value', data.site_value.length)
   state.ruleForm.site_value = data.site_value
+  state.ruleForm.site_black_value = data.site_black_value
   state.ruleForm.fenix_site = toRaw(data)
 }
 

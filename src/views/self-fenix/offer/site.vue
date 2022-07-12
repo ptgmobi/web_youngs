@@ -152,7 +152,7 @@
         </el-form-item>
         <el-form-item
           label=""
-        >{{state.ruleForm.site_value}}
+        >
           <div class="flex jc-start ai-center form-one">
             <site-list
               v-model:msg="state.ruleForm.site_value"

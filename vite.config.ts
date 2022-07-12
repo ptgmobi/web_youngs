@@ -58,9 +58,9 @@ export default ({ command, mode }: any) => {
       proxy: {
         '/dev-api': {
           // 本地测试
-          // target: 'http://172.31.21.88:8888',
+          target: 'http://172.31.21.88:8888',
           // 线上地址
-          target: 'http://52.221.190.245:8888',
+          // target: 'http://52.221.190.245:8888',
           ws: false,
           changeOrigin: true,
           rewrite: path => path.replace(/^\/dev-api/, '')
