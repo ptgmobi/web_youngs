@@ -1,1 +1,0 @@
-import{R as t}from"./index-ad9a0ee6.js";function o(){return t({url:"/position",method:"get"})}function n(o){return t({url:`/position/view/${o}`,method:"get"})}function e(o){return t({url:"/position",method:"post",data:o})}function i(o,n){return t({url:`/position/${o}`,method:"patch",data:n})}export{n as a,i as b,o as g,e as s};
