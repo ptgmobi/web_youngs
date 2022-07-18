@@ -563,7 +563,7 @@ let validatorDevice = (rule: any, value: any, callback: (arg0: Error | undefined
 }
 let validatorSite = (rule: any, value: number, callback: (arg0: Error | undefined) => void) => {
   if (value) {
-    if (value === 1) {
+    if (value == 1) {
       callback(undefined)
     } else {
       if (data.ruleForm.hour) {
