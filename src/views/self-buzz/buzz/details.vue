@@ -268,23 +268,23 @@
           label="Device Cutoff:"
           prop="cutoff_start"
         >
-          <div class="flex ai-center">
-            <span v-text="data.ruleForm.cutoff_start * 100"></span>
-            %
-            <span>-</span>
-            <span v-text="data.ruleForm.cutoff_end * 100"></span>
-            % （
-            <span>总设备数:</span>
-            <span v-text="handleDeviceNum.all"></span>
-            ） （
-            <span>选中设备数:</span>
-            <span v-text="handleDeviceNum.judge"></span>
-            ）
-          </div>
-          <div class="flex jc-start form-one p10 pt-0 pb-0">
+          <div class="form-one">
+            <div class="flex jc-start">
+              <span v-text="data.ruleForm.cutoff_start * 100"></span>
+              %
+              <span>-</span>
+              <span v-text="data.ruleForm.cutoff_end * 100"></span>
+              % （
+              <span>总设备数:</span>
+              <span v-text="handleDeviceNum.all"></span>
+              ） （
+              <span>选中设备数:</span>
+              <span v-text="handleDeviceNum.judge"></span>
+              ）
+            </div>
             <el-slider
               v-model="cutoff"
-              class="w100"
+              class="device-cutoff"
               range
               :step="5"
               :show-stops="true"
