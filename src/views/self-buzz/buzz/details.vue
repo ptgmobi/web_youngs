@@ -127,7 +127,7 @@
         </el-form-item>
         <!-- conversion_flow -->
         <el-form-item
-          v-if="data.ruleForm.conversion_flow === '2'"
+          v-if="data.ruleForm.conversion_flow == 2"
           label="Event Name:"
           prop="event_name"
         >
@@ -509,7 +509,7 @@ let validatorSite = (rule: any, value: string, callback: (arg0: Error | undefine
   }
 }
 let validatorConversionFlow = (rule: any, value: any, callback: (arg0: Error | undefined) => void) => {
-  if (data.ruleForm.conversion_flow === '1') {
+  if (data.ruleForm.conversion_flow == 1) {
     callback(undefined)
   } else {
     if (value) {
