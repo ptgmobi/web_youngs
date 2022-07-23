@@ -436,7 +436,7 @@ const init = async () => {
   data.loading = true
   let ajaxData: any = {
     page: data.pagination.listQuery.page,
-    page_size: data.pagination.listQuery.limit
+    limit: data.pagination.listQuery.limit
     // attribute_provider: data.useData.attribute_provider,
     // platform: data.useData.platform,
     // pkg_name: data.useData.package_name,
