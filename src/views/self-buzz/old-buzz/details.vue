@@ -540,6 +540,12 @@ let validatorStr = (rule, value, callback) => {
         callback(new Error(`链接有错误，不能包含${ele}`))
       }
     })
+  } else if (data.ruleForm.attribute_provider === 'Adjust') {
+    if (value.includes('install_callback') || value.includes('event_callback')) {
+      callback(new Error('链接里不可以包含install_callback和event_callback'))
+    } else {
+      callback(undefined)
+    }
   }
   callback(undefined)
 }

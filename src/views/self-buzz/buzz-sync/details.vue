@@ -549,12 +549,19 @@ let validatorHttp = (rule, value, callback) => {
 }
 let validatorStr = (rule, value, callback) => {
   if (data.ruleForm.attribute_provider === 'AppsFlyer') {
-    const arr = ['af_sub_siteid', 'af_installpostback']
-    arr.map(ele => {
-      if (value.includes(ele)) {
-        callback(new Error(`链接有错误，不能包含${ele}`))
-      }
-    })
+    // const arr = ['af_sub_siteid', 'af_installpostback']
+    // arr.map(ele => {
+    //   if (value.includes(ele)) {
+    //     callback(new Error(`链接有错误，不能包含${ele}`))
+    //   }
+    // })
+    callback(undefined)
+  } else if (data.ruleForm.attribute_provider === 'Adjust') {
+    if (value.includes('install_callback') || value.includes('event_callback')) {
+      callback(new Error('链接里不可以包含install_callback和event_callback'))
+    } else {
+      callback(undefined)
+    }
   }
   callback(undefined)
 }
@@ -686,7 +693,7 @@ let data: any = reactive({
       { required: true, message: message.required, trigger: ['blur', 'change'] },
       { validator: validatorSpace },
       { validator: validatorHttp },
-      // { validator: validatorStr },
+      { validator: validatorStr },
       // { validator: validatorPkgName}
     ],
     pkg_name: [
