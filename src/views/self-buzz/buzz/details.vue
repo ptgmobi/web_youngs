@@ -725,7 +725,6 @@ const setCutoff = (newVal: Array<number>) => {
 watch(
   cutoff,
   (newVal, oldVal) => {
-    // console.log(newVal, oldVal)
     setCutoff(newVal)
   },
   { immediate: true }
@@ -806,7 +805,9 @@ const getOfferData = async () => {
     isCopy: false
   })
   // ! 给滑动条赋值
-  cutoff.value = [Number(data.ruleForm.cutoff_start) * 100, Number(data.ruleForm.cutoff_end) * 100]
+  let cutoff_start = data.ruleForm.cutoff_start ? Number(data.ruleForm.cutoff_start) * 100 : 0
+  let cutoff_end = data.ruleForm.cutoff_end ? Number(data.ruleForm.cutoff_end) * 100 : 100
+  cutoff.value = [cutoff_start, cutoff_end]
 }
 onMounted(() => {
   getConfig()
