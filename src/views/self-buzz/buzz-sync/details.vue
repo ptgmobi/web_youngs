@@ -639,7 +639,7 @@ let data: any = reactive({
   loading: true,
   options: {
     channel: [],
-    attribute_provider: ['AppsFlyer', 'Branch', 'Adjust', 'Singular', 'AppMetrica', 'Lazada'],
+    attribute_provider: ['AppsFlyer', 'Branch', 'Adjust', 'Singular', 'AppMetrica', 'Lazada', 'Other'],
     time: [-1, ...[...new Array(24)].map((ele, index) => index)],
     platform: [
       { value: 1, label: 'Android' },
