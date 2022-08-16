@@ -270,10 +270,10 @@
         >
           <div class="form-one">
             <div class="flex jc-start">
-              <span v-text="data.ruleForm.cutoff_start * 100"></span>
+              <span v-text="(data.ruleForm.cutoff_start * 100).toFixed(0)"></span>
               %
               <span>-</span>
-              <span v-text="data.ruleForm.cutoff_end * 100"></span>
+              <span v-text="(data.ruleForm.cutoff_end * 100).toFixed(0)"></span>
               % （
               <span>总设备数:</span>
               <span v-text="handleDeviceNum.all"></span>
@@ -769,7 +769,7 @@ const getDeviceCount = async (ajaxData: any) => {
   const res = await ApiGetDeviceCount(ajaxData)
   const { data: result } = res
   if (result.length !== 0) {
-    return result[0].device_num
+    return result.findLast(ele => ele).device_num
   } else {
     return 0
   }
