@@ -947,20 +947,13 @@ const handlePid = computed(() => {
     const arr = [...url.matchAll(reg)]
     if (arr.length !== 0) {
       pid = arr[0][1]
-      data.ruleForm.pid = pid
-      return pid
     }
   }
   if (ap === 'Adjust') {
-    const reg = /https:\/\/app.adjust.com\/([\s\S]*)\?/g
-    // return reg.exec(url)
-    const arr = [...url.matchAll(reg)]
-    console.log(arr)
-    if (arr.length !== 0) {
-      pid = arr[0][1]
-      data.ruleForm.pid = pid
-      return pid
-    }
+    const arrObj = new URL(url)
+    let pathname = arrObj.pathname
+    let pathnameArr: any = pathname.split('/')
+    pid = pathnameArr.findLast(ele => ele)
   }
   data.ruleForm.pid = pid
   return pid
