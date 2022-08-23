@@ -250,7 +250,7 @@
         </el-form-item>
         <!-- Group -->
         <el-form-item
-          label="Adv ID:"
+          label="Group:"
           prop="title"
         >
           <el-input
@@ -386,10 +386,14 @@ let validatorEndHour = (rule: any, value: string, callback: (arg0: Error | undef
 
 let options = reactive({
   type: [
-    {
-      value: 1,
-      label: 'no creatives无素材'
-    }
+    { value: 1, label: 'no creatives无素材' },
+    { value: 2, label: 'pictures图片广告' },
+    { value: 3, label: '原生视频广告' },
+    { value: 4, label: 'rewarded video激励视频' },
+    { value: 5, label: '敏感频道' },
+    { value: 6, label: 'CPS' },
+    { value: 7, label: '新banner' },
+    { value: 8, label: '新插屏' },
   ]
 })
 let bus: any = reactive({
