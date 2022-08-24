@@ -13,10 +13,10 @@
         <!-- AD Network Name -->
         <el-form-item
           label="AD Network Name:"
-          prop="title"
+          prop="name"
         >
           <el-input
-            v-model.trim="data.ruleForm.title"
+            v-model.trim="data.ruleForm.name"
             class="form-one"
             type="text"
             placeholder=""
@@ -25,10 +25,10 @@
         <!-- AD Network Short Name -->
         <el-form-item
           label="AD Network Short Name:"
-          prop="title"
+          prop="short_name"
         >
           <el-input
-            v-model.trim="data.ruleForm.title"
+            v-model.trim="data.ruleForm.short_name"
             class="form-one"
             type="text"
             placeholder=""
@@ -38,10 +38,10 @@
         <el-form-item
           class="mb-30"
           label="AD Network Description:"
-          prop="tracking_link"
+          prop="desc"
         >
           <el-input
-            v-model.trim="data.ruleForm.tracking_link"
+            v-model.trim="data.ruleForm.desc"
             class="form-one"
             type="textarea"
             :autosize="{ minRows: 8, maxRows: 80 }"
@@ -51,17 +51,17 @@
         <!-- Percent Of Traffic -->
         <el-form-item
           label="Percent Of Traffic:"
-          prop="clk_id"
+          prop="traffic_type"
         >
           <div class="flex jc-start form-one jc-start radio-box">
             <el-radio
-              v-model="data.ruleForm.clk_id"
+              v-model="data.ruleForm.traffic_type"
               :label="1"
             >
               whole traffic
             </el-radio>
             <el-radio
-              v-model="data.ruleForm.clk_id"
+              v-model="data.ruleForm.traffic_type"
               :label="2"
             >
               diversity in platform
@@ -70,11 +70,12 @@
         </el-form-item>
         <!-- All -->
         <el-form-item
-          label="All:"
-          prop="title"
+          label="all(%)"
+          prop="traffic_type_all"
+          v-if="data.ruleForm.traffic_type == 1"
         >
           <el-input
-            v-model.trim="data.ruleForm.title"
+            v-model.trim="data.ruleForm.traffic_type_all"
             class="form-one"
             type="number"
             placeholder=""
@@ -82,11 +83,12 @@
         </el-form-item>
         <!-- iOS -->
         <el-form-item
-          label="iOS:"
-          prop="title"
+          label="iOS(%):"
+          prop="traffic_type_ios"
+          v-if="data.ruleForm.traffic_type == 2"
         >
           <el-input
-            v-model.trim="data.ruleForm.title"
+            v-model.trim="data.ruleForm.traffic_type_ios"
             class="form-one"
             type="number"
             placeholder=""
@@ -94,11 +96,12 @@
         </el-form-item>
         <!-- Android -->
         <el-form-item
-          label="Android:"
-          prop="title"
+          label="Android(%):"
+          prop="traffic_type_android"
+          v-if="data.ruleForm.traffic_type == 2"
         >
           <el-input
-            v-model.trim="data.ruleForm.title"
+            v-model.trim="data.ruleForm.traffic_type_android"
             class="form-one"
             type="number"
             placeholder=""
@@ -111,13 +114,13 @@
         >
           <div class="flex jc-start form-one jc-start radio-box">
             <el-radio
-              v-model="data.ruleForm.clk_id"
+              v-model="data.ruleForm.pre_click_type"
               :label="1"
             >
               whole preclick
             </el-radio>
             <el-radio
-              v-model="data.ruleForm.clk_id"
+              v-model="data.ruleForm.pre_click_type"
               :label="2"
             >
               diversity in platform
@@ -126,11 +129,12 @@
         </el-form-item>
         <!-- All -->
         <el-form-item
-          label="All:"
-          prop="title"
+          label="all(%)"
+          prop="pre_click_type_all"
+          v-if="data.ruleForm.pre_click_type == 1"
         >
           <el-input
-            v-model.trim="data.ruleForm.title"
+            v-model.trim="data.ruleForm.pre_click_type_all"
             class="form-one"
             type="number"
             placeholder=""
@@ -138,11 +142,12 @@
         </el-form-item>
         <!-- iOS -->
         <el-form-item
-          label="iOS:"
-          prop="title"
+          label="iOS(%):"
+          prop="pre_click_type_ios"
+          v-if="data.ruleForm.pre_click_type == 2"
         >
           <el-input
-            v-model.trim="data.ruleForm.title"
+            v-model.trim="data.ruleForm.pre_click_type_ios"
             class="form-one"
             type="number"
             placeholder=""
@@ -150,11 +155,12 @@
         </el-form-item>
         <!-- Android -->
         <el-form-item
-          label="Android:"
-          prop="title"
+          label="Android(%):"
+          prop="pre_click_type_android"
+          v-if="data.ruleForm.pre_click_type == 2"
         >
           <el-input
-            v-model.trim="data.ruleForm.title"
+            v-model.trim="data.ruleForm.pre_click_type_android"
             class="form-one"
             type="number"
             placeholder=""
@@ -180,17 +186,17 @@
         <!-- 广告类型 -->
         <el-form-item
           label="广告类型:"
-          prop="clk_id"
+          prop="channel_content"
         >
           <div class="flex jc-start form-one jc-start radio-box">
             <el-radio
-              v-model="data.ruleForm.clk_id"
+              v-model="data.ruleForm.channel_content"
               :label="1"
             >
               app download
             </el-radio>
             <el-radio
-              v-model="data.ruleForm.clk_id"
+              v-model="data.ruleForm.channel_content"
               :label="2"
             >
               非app download
@@ -199,24 +205,24 @@
         </el-form-item>
         <!-- Channel Type -->
         <el-form-item
-          label="广告类型:"
-          prop="clk_id"
+          label="Channel Type:"
+          prop="channel_type"
         >
           <div class="flex jc-start form-one jc-start radio-box">
             <el-radio
-              v-model="data.ruleForm.clk_id"
+              v-model="data.ruleForm.channel_type"
               :label="1"
             >
               代理
             </el-radio>
             <el-radio
-              v-model="data.ruleForm.clk_id"
+              v-model="data.ruleForm.channel_type"
               :label="2"
             >
               API
             </el-radio>
             <el-radio
-              v-model="data.ruleForm.clk_id"
+              v-model="data.ruleForm.channel_type"
               :label="3"
             >
               直客
@@ -226,11 +232,11 @@
         <!-- Fenix Connected -->
         <el-form-item
           label="Fenix Connected:"
-          prop="clk_id"
+          prop="fenix_connected"
         >
           <div class="flex jc-start form-one jc-start radio-box">
             <el-switch
-              v-model="data.ruleForm.status"
+              v-model="data.ruleForm.fenix_connected"
               :active-value="1"
               :inactive-value="2"
             />
@@ -239,10 +245,10 @@
         <!-- Adv ID -->
         <el-form-item
           label="Adv ID:"
-          prop="title"
+          prop="adv_id"
         >
           <el-input
-            v-model.trim="data.ruleForm.title"
+            v-model.trim="data.ruleForm.adv_id"
             class="form-one"
             type="text"
             placeholder=""
@@ -251,10 +257,10 @@
         <!-- Group -->
         <el-form-item
           label="Group:"
-          prop="title"
+          prop="group"
         >
           <el-input
-            v-model.trim="data.ruleForm.title"
+            v-model.trim="data.ruleForm.group"
             class="form-one"
             type="text"
             placeholder=""
@@ -410,13 +416,7 @@ let data: any = reactive({
   dialogVisibleDevice: false,
   dialogVisibleSite: false,
   search: {
-    id: '',
-    baseDeviceSelect: {},
-    deviceData: {
-      all: [],
-      select: [],
-      count: 0
-    }
+    input: ''
   },
   type: '1',
   params: '',
@@ -435,77 +435,41 @@ let data: any = reactive({
     devices: []
   },
   ruleForm: {
-    type: '',
-    id: '',
-    offer_id: undefined,
-    operation_type: '',
-    channel: '',
-    copy_offer: '',
-    attribute_provider: 'AppsFlyer',
-    title: '',
-    // 过滤空格，制表符
-    tracking_link: '',
-    pid: '',
-    pkg_name: '',
-    conversion_flow: '',
-    event_name: '',
-    payout: undefined,
-    platform: '',
-    country: '',
-    max_clk_num: undefined,
-    site_clk_limit: undefined,
-    site_install_limitation: undefined,
-    start_hour: '-1',
-    end_hour: '-1',
-    device: [],
-    cutoff_start: undefined,
-    cutoff_end: undefined,
-    diy_siteid: '',
-    site_id: '',
-    hour: undefined,
-    clk_id: '',
-    site_clk_id: '',
-    // category_id: '',
-    note: '',
-    campaign_id: ''
+    name: '',
+    short_name: '',
+    desc: '',
+    traffic_type: 1,
+    traffic_type_all: '100',
+    traffic_type_ios: '100',
+    traffic_type_android: '100',
+    pre_click_type: 1,
+    pre_click_type_all: '100',
+    pre_click_type_ios: '100',
+    pre_click_type_android: '100',
+    type: [],
+    channel_content: '',
+    channel_type: '',
+    fenix_connected: 1,
+    adv_id: '',
+    group: ''
   },
   rules: {
-    channel: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    attribute_provider: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    title: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    tracking_link: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] },
-      { validator: validatorSpace },
-      { validator: validatorHttp },
-      // { validator: validatorStr },
-      // { validator: validatorPkgName}
-    ],
-    pkg_name: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] },
-      // { validator: validatorPkgName }
-    ],
-    conversion_flow: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    event_name: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] },
-      { validator: validatorConversionFlow }
-    ],
-    payout: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    platform: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    country: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    max_clk_num: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    device: [{ required: true, validator: validatorDevice, trigger: ['blur', 'change'] }],
-    site_id: [{ required: true, validator: validatorSite, trigger: ['blur', 'change'] }],
-    clk_id: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    start_hour: [{ required: false, validator: validatorStartHour, trigger: ['blur', 'change'] }],
-    end_hour: [{ required: false, validator: validatorEndHour, trigger: ['blur', 'change'] }],
-    cutoff_start: [{ required: true, trigger: ['blur', 'change'] }],
-    cutoff_end: [{ required: true, trigger: ['blur', 'change'] }]
-    // site_clk_id: [
-    //   { required: true, message: message.required, trigger: ['blur', 'change'] }
-    // ],
-    // category_id: [
-    //   { required: true, message: message.required, trigger: ['blur', 'change'] }
-    // ],
+    name: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    short_name: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    desc: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    traffic_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    traffic_type_all: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    traffic_type_ios: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    traffic_type_android: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    pre_click_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    pre_click_type_all: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    pre_click_type_ios: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    pre_click_type_android: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    channel_content: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    channel_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    fenix_connected: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    
   },
   siteData: []
 })
