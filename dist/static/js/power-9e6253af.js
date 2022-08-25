@@ -1,1 +1,0 @@
-import{R as r}from"./index-737f3264.js";function t(){return r({url:"/permission",method:"get",isParams:!0})}function s(t){return r({url:`/permission/view/${t}`,method:"get",isParams:!0})}function e(t){return r({url:"/permission",method:"post",data:t})}function i(t,s){return r({url:"/permission/update",method:"patch",data:s})}export{s as a,i as b,t as g,e as s};

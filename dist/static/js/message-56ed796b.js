@@ -1,0 +1,1 @@
+import{g as e}from"./index-c04c8366.js";function r(r){return!!r&&(e({title:200===r.code?"success":"error",dangerouslyUseHTMLString:!0,message:r.info,type:200===r.code?"success":"error"}),200===r.code)}export{r as m};
