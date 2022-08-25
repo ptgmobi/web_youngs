@@ -295,13 +295,13 @@
               v-model="data.ruleForm.p_type"
               :label="1"
             >
-              Algorithm
+              算法
             </el-radio>
             <el-radio
               v-model="data.ruleForm.p_type"
               :label="2"
             >
-              Label
+              标签
             </el-radio>
           </div>
         </el-form-item>

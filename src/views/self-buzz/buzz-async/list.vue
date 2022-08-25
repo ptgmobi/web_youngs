@@ -194,6 +194,16 @@
         width="55"
       ></el-table-column>
       <el-table-column
+        prop="p_type"
+        label="Delivery mode"
+        align="center"
+        width="75"
+      >
+        <template #default="scope">
+          <span>{{scope.row.p_type ==1 ? '算法' : '标签'}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
         label="Click Limitation"
         width="150"
         align="center"
@@ -241,8 +251,8 @@
         align="center"
       >
         <template #default="scope">
-          <div class="flex jc-between">
-            <span v-text="thousandSeparator(scope.row.device_count)"></span>
+          <div class="flex jc-around">
+            <span v-if="scope.row.device_count" v-text="scope.row.device_count ? thousandSeparator(scope.row.device_count) : ''"></span>
             <el-button
               class="cp ml-10 scale-button"
               type="primary"
