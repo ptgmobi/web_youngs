@@ -286,10 +286,30 @@
             </el-option>
           </el-select>
         </el-form-item> -->
+        <el-form-item
+          label="Delivery mode:"
+          prop="p_type"
+        >
+          <div class="flex jc-start form-one">
+            <el-radio
+              v-model="data.ruleForm.p_type"
+              :label="1"
+            >
+              Algorithm
+            </el-radio>
+            <el-radio
+              v-model="data.ruleForm.p_type"
+              :label="2"
+            >
+              Label
+            </el-radio>
+          </div>
+        </el-form-item>
         <!-- Select Device -->
         <el-form-item
           label="Select Device:"
           prop="device"
+          v-if="data.ruleForm.p_type == 2"
         >
           <div class="flex jc-start form-one">
             <el-button
@@ -330,6 +350,18 @@
             ></el-slider>
           </div>
         </el-form-item> -->
+        <!-- Device Cutoff -->
+        <el-form-item
+          label="Device Cutoff:"
+          prop="cutoff_start"
+          v-if="data.ruleForm.p_type == 1"
+        >
+          <cut-off
+            class="form-one"
+            :query="data.ruleForm"
+            @up="upDataCutoff"
+          />
+        </el-form-item>
         <!-- diy_siteid -->
         <el-form-item
           label="Diy SiteID:"
@@ -513,6 +545,7 @@ import { messageFun } from '@/utils/message'
 import { ElMessage } from 'element-plus'
 // import { useRouter } from 'vue-router'
 import Device from './device.vue'
+import cutOff from '../components/cutOff.vue'
 let { proxy }: any = getCurrentInstance()
 const router = useRouter()
 const message = {
@@ -683,7 +716,8 @@ let data: any = reactive({
     site_clk_id: '',
     // category_id: '',
     note: '',
-    campaign_id: ''
+    campaign_id: '',
+    p_type: 2
   },
   rules: {
     channel: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
@@ -715,13 +749,14 @@ let data: any = reactive({
     start_hour: [{ required: false, validator: validatorStartHour, trigger: ['blur', 'change'] }],
     end_hour: [{ required: false, validator: validatorEndHour, trigger: ['blur', 'change'] }],
     cutoff_start: [{ required: true, trigger: ['blur', 'change'] }],
-    cutoff_end: [{ required: true, trigger: ['blur', 'change'] }]
+    cutoff_end: [{ required: true, trigger: ['blur', 'change'] }],
     // site_clk_id: [
     //   { required: true, message: message.required, trigger: ['blur', 'change'] }
     // ],
     // category_id: [
     //   { required: true, message: message.required, trigger: ['blur', 'change'] }
     // ],
+    p_type: [{ required: true, trigger: ['blur', 'change'] }],
   },
   siteData: []
 })
@@ -869,9 +904,14 @@ const getDeviceCount = async (ajaxData: any) => {
   }
 }
 
-watchEffect(() => {
-  handleDeviceCount()
-})
+// watchEffect(() => {
+//   handleDeviceCount()
+// })
+
+const upDataCutoff = (obj) => {
+  data.ruleForm.cutoff_start = obj.cutoff_start
+  data.ruleForm.cutoff_end = obj.cutoff_end
+}
 
 const handleCopyOffer = (result: any, options: any) => {
   // console.log(Object.getOwnPropertyDescriptors(result))
