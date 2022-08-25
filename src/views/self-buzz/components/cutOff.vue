@@ -44,7 +44,7 @@ const props = defineProps({
 const emit = defineEmits(['up'])
 
 // 设备数
-let deviceNum = ref(100)
+let deviceNum = ref(0)
 let ruleForm = reactive({
   cutoff_start: props.query.cutoff_start,
   cutoff_end: props.query.cutoff_end,
@@ -58,7 +58,7 @@ const getDeviceCount = async (ajaxData: any) => {
   const res = await ApiGetDeviceCount(ajaxData)
   const { data: result } = res
   if (result.length !== 0) {
-    return result[0].device_num
+    return result.findLast(ele => ele).device_num
   } else {
     return 0
   }
@@ -72,18 +72,17 @@ const handleDeviceCount = async (): Promise<void> => {
       pkg_name, country, platform
     }
     const num = await getDeviceCount(ajaxData)
-    console.log(num)
     deviceNum.value = num
   }
 }
 
 const handleDeviceNum = computed(() => {
   const num = deviceNum.value
-  const cutoff_start = ruleForm.cutoff_start
-  const cutoff_end = ruleForm.cutoff_end
-  const res = {
-    judge: ((Number(cutoff_end) - Number(cutoff_start)) * Number(num)).toFixed(0),
-    all: Number(num).toFixed(0)
+  const cutoff_start = ruleForm.cutoff_start ? Number(ruleForm.cutoff_start) : 0
+  const cutoff_end = ruleForm.cutoff_end ? Number(ruleForm.cutoff_end) : 1
+  let res = {
+    judge: (cutoff_end - cutoff_start) * num,
+    all: num
   }
   return res
 })
@@ -99,8 +98,10 @@ watchEffect(() => {
 })
 
 watch(() => props.query, (newVal, oldVal) => {
-  ruleForm.cutoff_start = newVal.cutoff_start
-  ruleForm.cutoff_end = newVal.cutoff_end
+  if (newVal.cutoff_start !== void 0 && newVal.cutoff_end !== void 0) {
+    ruleForm.cutoff_start = newVal.cutoff_start
+    ruleForm.cutoff_end = newVal.cutoff_end
+  }
 }, {
   immediate: true,
   deep: true,
