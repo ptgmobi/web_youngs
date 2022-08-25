@@ -5,7 +5,7 @@
     />
   </router-view>
 </template>
-<script lang="ts" setup name="old-buzz">
+<script lang="ts" setup name="buzz-async">
 onActivated(() => {
   console.log('onActivated')
 })

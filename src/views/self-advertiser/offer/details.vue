@@ -442,7 +442,7 @@ const submitFormFun = async () => {
     res = await ApiOperationOfferEdit(ajaxData)
   }
   if (messageFun(res)) {
-    // proxy.$router.push({ path: '/buzz/old-buzz' })
+    // proxy.$router.push({ path: '/buzz/buzz-async' })
     if (process.env.NODE_ENV !== 'serve-dev') {
       window.close()
     }

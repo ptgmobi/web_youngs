@@ -2,7 +2,7 @@ import Layout from '@/layout'
 export default [
   {
     path: '/buzz',
-    redirect: '/buzz/old-buzz',
+    redirect: '/buzz/buzz-async',
     component: Layout,
     name: 'buzz',
     meta: {
@@ -44,13 +44,13 @@ export default [
         },
         hidden: true
       },
-      // old-buzz
+      // buzz-async
       {
-        path: 'old-buzz',
-        name: 'old-buzz',
-        component: () => import('@/views/self-buzz/old-buzz/list'),
+        path: 'buzz-async',
+        name: 'buzz-async',
+        component: () => import('@/views/self-buzz/buzz-async/list'),
         meta: {
-          title: 'Old Buzz',
+          title: 'Buzz Async',
           elSvgIcon: 'Edit',
           code: 33,
           cachePage: true,
@@ -58,22 +58,22 @@ export default [
         }
       },
       {
-        path: 'old-buzz-create',
-        name: 'old-buzz-create',
-        component: () => import('@/views/self-buzz/old-buzz/details'),
+        path: 'buzz-async-create',
+        name: 'buzz-async-create',
+        component: () => import('@/views/self-buzz/buzz-async/details'),
         meta: {
-          title: 'Old Buzz Create',
+          title: 'Buzz Async Create',
           icon: 'dashboard',
           code: 34
         },
         hidden: true
       },
       {
-        path: 'old-buzz-edit/:id',
-        name: 'old-buzz-edit',
-        component: () => import('@/views/self-buzz/old-buzz/details'),
+        path: 'buzz-async-edit/:id',
+        name: 'buzz-async-edit',
+        component: () => import('@/views/self-buzz/buzz-async/details'),
         meta: {
-          title: 'Old Buzz Edit',
+          title: 'Buzz Async Edit',
           icon: 'dashboard',
           code: 35
         },

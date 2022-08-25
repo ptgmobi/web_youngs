@@ -2,7 +2,7 @@
   <div>
     <div class="controlBox w100 mb-10">
       <div class="mb-10">
-        <!-- <router-link to="/buzz/old-buzz-create">
+        <!-- <router-link to="/buzz/buzz-async-create">
           <el-button type="primary">
             Offer Create
           </el-button>

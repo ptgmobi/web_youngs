@@ -766,7 +766,7 @@ const submitFormFun = async () => {
     res = await ApiOperationOfferEdit(ajaxData)
   }
   if (messageFun(res)) {
-    // proxy.$router.push({ path: '/buzz/old-buzz' })
+    // proxy.$router.push({ path: '/buzz/buzz-async' })
     if (process.env.NODE_ENV !== 'serve-dev') {
       window.close()
     }
@@ -983,12 +983,12 @@ onMounted(() => {
   getConfig()
   name.value = router.currentRoute.value.name
   console.log(name.value)
-  if (name.value === 'old-buzz-create') {
+  if (name.value === 'buzz-async-create') {
     data.ruleForm.operation_type = '1'
     data.ruleForm.type = '1'
   }
   // 如果是修改，获取当前id的值
-  if (name.value === 'old-buzz-edit') {
+  if (name.value === 'buzz-async-edit') {
     data.ruleForm.operation_type = '2'
     data.ruleForm.type = '2'
     const id = router.currentRoute.value.params.id
