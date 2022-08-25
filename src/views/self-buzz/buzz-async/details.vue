@@ -304,8 +304,6 @@
         </el-form-item>
         <!-- Device Cutoff -->
         <el-form-item label="Device Cutoff:" prop="cutoff_start">
-          {{data.ruleForm.cutoff_start}}
-          {{data.ruleForm.cutoff_end}}
           <cut-off
             class="form-one"
             :query="data.ruleForm"
@@ -585,10 +583,6 @@ let bus: any = reactive({
   cacheDevice: {}
 })
 let name: any = ref('')
-// 设备数
-let deviceNum = ref(0)
-// cutoff滑块
-let cutoff = ref([0, 100])
 let data: any = reactive({
   dialogVisibleDevice: false,
   dialogVisibleSite: false,
@@ -642,7 +636,7 @@ let data: any = reactive({
     end_hour: '-1',
     device: [],
     cutoff_start: 0,
-    cutoff_end: 55,
+    cutoff_end: 1,
     diy_siteid: '',
     site_id: '',
     hour: undefined,
@@ -775,18 +769,7 @@ const setDevice = () => {
   data.ruleForm.device = bus.cacheDevice.select
   data.dialogVisibleDevice = false
 }
-const setCutoff = (newVal: Array<number>) => {
-  data.ruleForm.cutoff_start = newVal[0] / 100
-  data.ruleForm.cutoff_end = newVal[1] / 100
-}
-watch(
-  cutoff,
-  (newVal, oldVal) => {
-    // console.log(newVal, oldVal)
-    setCutoff(newVal)
-  },
-  { immediate: true }
-)
+
 const getConfig = async () => {
   const res = await ApiGetConfig()
   if (res) {
@@ -799,49 +782,11 @@ const getConfig = async () => {
   }
   return '获取配置失败'
 }
-const handleDeviceCount = async (): Promise<void> => {
-  console.log('get device num')
-  const pkgName = data.ruleForm.pkg_name
-  const country = data.ruleForm.country
-  const platform = data.ruleForm.platform
-  const ajaxData = {
-    pkg_name: pkgName,
-    country,
-    platform
-  }
-  if (pkgName && country && platform) {
-    console.log('获取设备数')
-    // const num = await getDeviceCount(ajaxData)
-    // deviceNum.value = num
-  }
-}
-const handleDeviceNum = computed(() => {
-  const num = deviceNum.value
-  const cutoff_start = data.ruleForm.cutoff_start
-  const cutoff_end = data.ruleForm.cutoff_end
-  const res = {
-    judge: ((Number(cutoff_end) - Number(cutoff_start)) * Number(num)).toFixed(0),
-    all: Number(num).toFixed(0)
-  }
-  return res
-})
-const getDeviceCount = async (ajaxData: any) => {
-  const res = await ApiGetDeviceCount(ajaxData)
-  const { data: result } = res
-  if (result.length !== 0) {
-    return result[0].device_num
-  } else {
-    return 0
-  }
-}
 
-const upDataCutoff = (data) => {
-  console.log(data)
+const upDataCutoff = (obj) => {
+  data.ruleForm.cutoff_start = obj.cutoff_start
+  data.ruleForm.cutoff_end = obj.cutoff_end
 }
-
-// watchEffect(() => {
-//   handleDeviceCount()
-// })
 
 const handleCopyOffer = (result: any, options: any) => {
   // console.log(Object.getOwnPropertyDescriptors(result))
@@ -893,8 +838,6 @@ const getOfferData = async (id) => {
     isCopy: false
   })
   bus.offer = result
-  // ! 给滑动条赋值
-  // ! cutoff.value = [Number(data.ruleForm.cutoff_start) * 100, Number(data.ruleForm.cutoff_end) * 100]
 }
 const handleEditDeviceFun = async () => {
   console.log('get device')

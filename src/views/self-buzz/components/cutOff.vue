@@ -40,11 +40,11 @@ const props = defineProps({
   }
 })
 
+
 const emit = defineEmits(['up'])
 
 // 设备数
-let deviceNum = ref(0)
-
+let deviceNum = ref(100)
 let ruleForm = reactive({
   cutoff_start: props.query.cutoff_start,
   cutoff_end: props.query.cutoff_end,
@@ -96,6 +96,14 @@ const setCutoff = (newVal: Array<number>) => {
 
 watchEffect(() => {
   handleDeviceCount()
+})
+
+watch(() => props.query, (newVal, oldVal) => {
+  ruleForm.cutoff_start = newVal.cutoff_start
+  ruleForm.cutoff_end = newVal.cutoff_end
+}, {
+  immediate: true,
+  deep: true,
 })
 
 const changeFn = (data) => {
