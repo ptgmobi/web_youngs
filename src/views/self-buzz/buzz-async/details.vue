@@ -303,33 +303,15 @@
           </div>
         </el-form-item>
         <!-- Device Cutoff -->
-        <!-- <el-form-item label="Device Cutoff:" prop="cutoff_start">
-          <div class="flex ai-center">
-            <span v-text="data.ruleForm.cutoff_start * 100"></span>
-            %
-            <span>-</span>
-            <span v-text="data.ruleForm.cutoff_end * 100"></span>
-            % （
-            <span>总设备数:</span>
-            <span v-text="handleDeviceNum.all"></span>
-            ） （
-            <span>选中设备数:</span>
-            <span v-text="handleDeviceNum.judge"></span>
-            ）
-          </div>
-          <div class="flex jc-start form-one p10 pt-0 pb-0">
-            <el-slider
-              class="w100"
-              v-model="cutoff"
-              range
-              :step="5"
-              :show-stops="true"
-              show-input
-              :min="0"
-              :max="100"
-            ></el-slider>
-          </div>
-        </el-form-item> -->
+        <el-form-item label="Device Cutoff:" prop="cutoff_start">
+          {{data.ruleForm.cutoff_start}}
+          {{data.ruleForm.cutoff_end}}
+          <cut-off
+            class="form-one"
+            :query="data.ruleForm"
+            @up="upDataCutoff"
+          />
+        </el-form-item>
         <!-- diy_siteid -->
         <el-form-item
           label="Diy SiteID:"
@@ -498,6 +480,7 @@ import { messageFun } from '@/utils/message'
 import { ElMessage } from 'element-plus'
 // import { useRouter } from 'vue-router'
 import Device from './device.vue'
+import cutOff from '../components/cutOff.vue'
 let { proxy }: any = getCurrentInstance()
 const router = useRouter()
 const message = {
@@ -658,8 +641,8 @@ let data: any = reactive({
     start_hour: '-1',
     end_hour: '-1',
     device: [],
-    cutoff_start: undefined,
-    cutoff_end: undefined,
+    cutoff_start: 0,
+    cutoff_end: 55,
     diy_siteid: '',
     site_id: '',
     hour: undefined,
@@ -852,9 +835,13 @@ const getDeviceCount = async (ajaxData: any) => {
   }
 }
 
-watchEffect(() => {
-  handleDeviceCount()
-})
+const upDataCutoff = (data) => {
+  console.log(data)
+}
+
+// watchEffect(() => {
+//   handleDeviceCount()
+// })
 
 const handleCopyOffer = (result: any, options: any) => {
   // console.log(Object.getOwnPropertyDescriptors(result))
