@@ -1,1 +1,0 @@
-import{_ as a,m as e,s as r,A as s,p as n,a2 as t}from"./index-d3d4b352.js";var o=a({},[["render",function(a,o){const d=e("router-view");return r(),s(d,null,{default:n((({Component:a})=>[(r(),s(t(a)))])),_:1})}]]);export{o as default};
