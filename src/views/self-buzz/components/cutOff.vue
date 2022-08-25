@@ -81,8 +81,8 @@ const handleDeviceNum = computed(() => {
   const cutoff_start = ruleForm.cutoff_start ? Number(ruleForm.cutoff_start) : 0
   const cutoff_end = ruleForm.cutoff_end ? Number(ruleForm.cutoff_end) : 1
   let res = {
-    judge: (cutoff_end - cutoff_start) * num,
-    all: num
+    judge: ((cutoff_end - cutoff_start) * num).toFixed(0),
+    all: num.toFixed(0)
   }
   return res
 })
