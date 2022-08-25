@@ -1,0 +1,1 @@
+import{d as s,n as e,L as r,s as a}from"./index-d3d4b352.js";const d=s({setup(s){let{proxy:d}=r();return d.$router.push({path:"/dashboard/overview"}),(s,r)=>(a(),e("div",null,"Index"))}});export{d as default};
