@@ -65,6 +65,7 @@
   </span>
 </template>
 <script lang="ts" setup>
+
 const props = defineProps({
   msg: {
     require: true,
@@ -121,7 +122,7 @@ const analysisExcelFn = (str: string) => {
   return []
 }
 let data = reactive({
-  siteData: props.msg,
+  siteData: Array.isArray(props.msg) ? props.msg : [],
   siteRules: {
     site: [{ required: true, validator: validateSiteExcel, trigger: 'blur' }]
   },

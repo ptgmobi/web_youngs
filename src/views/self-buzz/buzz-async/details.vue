@@ -824,7 +824,11 @@ const handleCopyOffer = (result: any, options: any) => {
     result.device = JSON.parse(result['device'])
   }
   if (result['diy_siteid']) {
-    result.diy_siteid = JSON.parse(result['diy_siteid'])
+    try {
+      result.diy_siteid = JSON.parse(result['diy_siteid'])
+    } catch (e) {
+
+    }
   }
   if (options.type === '2') {
     resData.id = result['id']
