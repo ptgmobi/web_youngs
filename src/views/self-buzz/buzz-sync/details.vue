@@ -573,7 +573,8 @@ let validatorSpace = (rule, value, callback) => {
 }
 let validatorHttp = (rule, value, callback) => {
   let reg = /^http/
-  if (!reg.test(value)) {
+  let reg1 = /^lazada/
+  if (!reg.test(value) && !reg1.test(value)) {
     callback(new Error('必须为有效链接'))
   } else {
     callback(undefined)
