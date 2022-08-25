@@ -251,7 +251,7 @@
         align="center"
       >
         <template #default="scope">
-          <div class="flex jc-around">
+          <div class="flex jc-around" v-if="scope.row.p_type == 2">
             <span v-if="scope.row.device_count" v-text="scope.row.device_count ? thousandSeparator(scope.row.device_count) : ''"></span>
             <el-button
               class="cp ml-10 scale-button"
