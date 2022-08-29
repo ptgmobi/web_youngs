@@ -30,25 +30,24 @@
       center
       :data="data.list"
       class="w100"
-      height="70vh"
       border
     >
       <el-table-column
         fixed
-        prop="offer_id"
+        prop="name"
         label="Ad network name"
         align="center"
         width="120"
       ></el-table-column>
       <el-table-column
         fixed
-        prop="channel"
+        prop="short_name"
         label="Channel"
         align="center"
         width="60"
       ></el-table-column>
       <el-table-column
-        prop="pkg_name"
+        prop="status"
         label="Status"
         align="center"
         width="110"
@@ -65,23 +64,23 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="title"
+        prop="pmt"
         label="Android-PMT"
         align="center"
       >
         <template #default="scope">
           <div class="flex jc-around">
             <el-switch
-              v-model="scope.row.status"
+              v-model="scope.row.pmt"
               :active-value="1"
               :inactive-value="2"
-              @change="changeStatus(scope.row, 'status')"
+              @change="changeStatus(scope.row, 'pmt')"
             />
           </div>
         </template>
       </el-table-column>
       <el-table-column
-        prop="attribute_provider"
+        prop="android_semi_pmt"
         label="Android Semi PMT"
         align="center"
         width="80"
@@ -89,27 +88,44 @@
         <template #default="scope">
           <div class="flex jc-around">
             <el-switch
-              v-model="scope.row.status"
+              v-model="scope.row.android_semi_pmt"
               :active-value="1"
               :inactive-value="2"
-              @change="changeStatus(scope.row, 'status')"
+              @change="changeStatus(scope.row, 'android_semi_pmt')"
             />
           </div>
         </template>
       </el-table-column>
       <el-table-column
-        prop="pid"
+        prop="traffic_rate"
         label="Percentage"
         align="center"
-        width="90"
-      ></el-table-column>
+        width="160"
+      >
+        <template #default="scope">
+          <span v-for="d in handleRateData(scope.row.traffic_rate)">
+            <span>{{d[0]}}</span>
+            <span>:&nbsp</span>
+            <span>{{d[1]}}</span>
+            &nbsp
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column
-        prop="pid"
+        prop="pre_click_rate"
         label="Pre click"
         align="center"
-        width="90"
-      ></el-table-column>
-      
+        width="160"
+      >
+        <template #default="scope">
+          <span v-for="d in handleRateData(scope.row.pre_click_rate)">
+            <span>{{d[0]}}</span>
+            <span>:&nbsp</span>
+            <span>{{d[1]}}</span>
+            &nbsp
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column
         label="Operation"
         align="center"
@@ -147,8 +163,7 @@
 <script lang="ts" setup name="adNetwork">
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { getCurrentInstance, reactive, ref, shallowRef, onMounted, computed } from 'vue'
-import { ApiGetBuzzList, ApichangeClk, ApichangeSiteClkLimit, ApichangeCutoff, ApiChangeBuzzStatus, ApiGetOfferDevice, ApiChangeToOfferDevice } from '@/api/buzzsync'
-import { ElMessage } from 'element-plus'
+import { ApiGetAdnetworkList, ApiChangeAdnetworkStatus, ApiChangePmtStatus, ApiChangeAndroidPmtStatus} from '@/api/adnetwork'
 import { messageFun } from '@/utils/message'
 import _ from 'lodash'
 import { handleAjaxDataObjectFn, openNewUrl } from '@/utils/new-format'
@@ -229,12 +244,26 @@ const searchFn = () => {
 }
 
 const changeStatus = async (row: any, name) => {
-  let ajaxData = {
-    id: row.id,
-    name: row[name]
+  let res: any
+  // ApiChangeAdnetworkStatus, ApiChangePmtStatus, ApiChangeAndroidPmtStatus
+  if (name === 'status') {
+    res = await ApiChangeAdnetworkStatus({
+      id: row.id,
+      [name]: row[name]
+    })
   }
-  ajaxData = handleAjaxDataObjectFn(ajaxData)
-  const res = await ApiChangeBuzzStatus(ajaxData)
+  if (name === 'pmt') {
+    res = await ApiChangePmtStatus({
+      id: row.id,
+      [name]: row[name]
+    })
+  }
+  if (name === 'android_semi_pmt') {
+    res = await ApiChangeAndroidPmtStatus({
+      id: row.id,
+      [name]: row[name]
+    })
+  }
   messageFun(res)
 }
 const editFun = (row: any) => {
@@ -265,12 +294,16 @@ const init = async () => {
     ...ajaxData,
     ...data.useData
   }
-  const res = await ApiGetBuzzList(ajaxData)
+  const res = await ApiGetAdnetworkList(ajaxData)
   const { data: result } = res
-  const { page } = result
   data.list = result?.data
-  data.pagination.total = Number(page.count)
+  data.pagination.total = Number(result.count)
   data.loading = false
+}
+
+const handleRateData = (str) => {
+  let json = JSON.parse(str)
+  return Object.entries(json)
 }
 
 onMounted(() => {
