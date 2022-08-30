@@ -412,10 +412,10 @@ const submitFormFun = async () => {
   }
   console.log(res)
   if (messageFun(res)) {
-    proxy.$router.push({ path: '/adnetwork/adnetworklist/list' })
-    // if (process.env.NODE_ENV !== 'serve-dev') {
-    //   window.close()
-    // }
+    // proxy.$router.push({ path: '/adnetwork/adnetworklist/list' })
+    if (process.env.NODE_ENV !== 'serve-dev') {
+      window.close()
+    }
   }
 }
 
@@ -424,9 +424,13 @@ const getOfferData = async (id) => {
   const res = await ApiGetAdnetworkData(id)
   console.log(res)
   let { data: result } = res
-  result.traffic_rate = JSON.parse(result.traffic_rate)
-  result.pre_click_rate = JSON.parse(result.pre_click_rate)
-  result.types = JSON.parse(result.type)
+  try {
+    result.traffic_rate = JSON.parse(result.traffic_rate)
+    result.pre_click_rate = JSON.parse(result.pre_click_rate)
+    result.types = result.type ? JSON.parse(result.type) : []
+  } catch (e) {
+    console.log(e)
+  }
   data.ruleForm = {
     ...result
   }

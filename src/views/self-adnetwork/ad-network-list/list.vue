@@ -38,6 +38,7 @@
         label="Ad network name"
         align="center"
         width="120"
+        sortable
       ></el-table-column>
       <el-table-column
         fixed
@@ -45,12 +46,14 @@
         label="Channel"
         align="center"
         width="60"
+        sortable
       ></el-table-column>
       <el-table-column
         prop="status"
         label="Status"
         align="center"
         width="110"
+        sortable
       >
         <template #default="scope">
           <div class="flex jc-around">
@@ -67,6 +70,7 @@
         prop="pmt"
         label="Android-PMT"
         align="center"
+        sortable
       >
         <template #default="scope">
           <div class="flex jc-around">
@@ -84,6 +88,7 @@
         label="Android Semi PMT"
         align="center"
         width="80"
+        sortable
       >
         <template #default="scope">
           <div class="flex jc-around">
@@ -101,6 +106,7 @@
         label="Percentage"
         align="center"
         width="160"
+        sortable
       >
         <template #default="scope">
           <span v-for="d in handleRateData(scope.row.traffic_rate)">
@@ -116,6 +122,7 @@
         label="Pre click"
         align="center"
         width="160"
+        sortable
       >
         <template #default="scope">
           <span v-for="d in handleRateData(scope.row.pre_click_rate)">
