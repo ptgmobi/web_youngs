@@ -1,1 +1,0 @@
-import{_ as e,m as a,s as r,A as s,p as n,a2 as t}from"./index-80455ee7.js";var o=e({},[["render",function(e,o){const u=a("router-view");return r(),s(u,null,{default:n((({Component:e})=>[(r(),s(t(e)))])),_:1})}]]);export{o as default};
