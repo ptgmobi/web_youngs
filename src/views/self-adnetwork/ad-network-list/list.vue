@@ -12,9 +12,10 @@
         <div class="flex jc-start flex-wrap w100">
           <el-form-item label="" class="mr-0">
             <el-input
-              v-model="searchData.input"
+              v-model="data.searchForm.input"
               placeholder="Ad network name/Channel"
               class="input-with-select"
+              style="width: 200px;"
             >
               <template #append>
                 <el-button icon="Search" @click="searchFn" />
