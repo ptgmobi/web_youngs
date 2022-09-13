@@ -17,7 +17,7 @@ export default [
         component: () => import('@/views/self-light/light/list'),
         default: true,
         meta: {
-          title: 'light',
+          title: 'Light',
           elSvgIcon: 'Edit',
           code: 110,
           cachePage: true,

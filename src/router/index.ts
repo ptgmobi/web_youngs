@@ -100,6 +100,7 @@ export const constantRoutes: RouterTy = [
 export const asyncRoutes: RouterTy = [
   ...dashboard,
   ...publisher,
+  ...light,
   ...buzz,
   ...fenix,
   ...administer,
@@ -107,7 +108,6 @@ export const asyncRoutes: RouterTy = [
   ...serverclick,
   ...danetwork,
   ...advertiser,
-  ...light,
   // 404 page must be placed at the end !!!
   // using pathMatch install of "*" in vue-router 4.0
   { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }
