@@ -25,7 +25,7 @@ export default [
         }
       },
       {
-        path: 'create',
+        path: 'light-create',
         name: 'light-create',
         component: () => import('@/views/self-light/light/details'),
         meta: {
@@ -35,7 +35,7 @@ export default [
         hidden: true
       },
       {
-        path: 'edit/:id',
+        path: 'light-edit/:id',
         name: 'light-edit',
         component: () => import('@/views/self-light/light/details'),
         meta: {

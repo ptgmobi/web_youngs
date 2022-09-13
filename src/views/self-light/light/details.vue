@@ -819,7 +819,7 @@ const submitFormFun = async () => {
   }
   console.log(res)
   if (messageFun(res)) {
-    // proxy.$router.push({ path: '/buzz/buzz-sync' })
+    // proxy.$router.push({ path: '/Light/Light-sync' })
     if (process.env.NODE_ENV !== 'serve-dev') {
       window.close()
     }
@@ -1048,12 +1048,12 @@ onMounted(() => {
   getConfig()
   name.value = router.currentRoute.value.name
   console.log(name.value)
-  if (name.value === 'buzz-sync-create') {
+  if (name.value === 'light-create') {
     data.ruleForm.operation_type = '1'
     data.ruleForm.type = '1'
   }
   // 如果是修改，获取当前id的值
-  if (name.value === 'buzz-sync-edit') {
+  if (name.value === 'light-edit') {
     data.ruleForm.operation_type = '2'
     data.ruleForm.type = '2'
     const id = router.currentRoute.value.params.id

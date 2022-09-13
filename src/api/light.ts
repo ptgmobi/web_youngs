@@ -1,10 +1,10 @@
 // 172.31.21.0/af-report/view
 import request from '@/utils/axiosReq'
 import { ObjTy } from '@/types/common'
-// ! buzz list
-export function ApiGetBuzzList(data: ObjTy) {
+// ! light list
+export function ApiGetLightList(data: ObjTy) {
   return request({
-    url: '/buzz-sy',
+    url: 'light-sy',
     data,
     method: 'get',
     bfLoading: false,
@@ -15,7 +15,7 @@ export function ApiGetBuzzList(data: ObjTy) {
 
 export function ApichangeClk(data: ObjTy) {
   return request({
-    url: '/buzz-sy/offer-max-clk',
+    url: 'light-sy/offer-max-clk',
     data,
     method: 'patch',
     bfLoading: false,
@@ -26,7 +26,7 @@ export function ApichangeClk(data: ObjTy) {
 
 export function ApichangeSiteClkLimit(data: ObjTy) {
   return request({
-    url: '/buzz-sy/edit-clk-limit',
+    url: 'light-sy/edit-clk-limit',
     data,
     method: 'patch',
     bfLoading: false,
@@ -37,7 +37,7 @@ export function ApichangeSiteClkLimit(data: ObjTy) {
 
 export function ApichangeCutoff(data: ObjTy) {
   return request({
-    url: '/buzz-sy/cutoff',
+    url: 'light-sy/cutoff',
     data,
     method: 'patch',
     bfLoading: false,
@@ -46,9 +46,9 @@ export function ApichangeCutoff(data: ObjTy) {
   })
 }
 
-export function ApiChangeBuzzStatus(data: ObjTy) {
+export function ApiChangeLightStatus(data: ObjTy) {
   return request({
-    url: '/buzz-sy/status',
+    url: 'light-sy/status',
     data,
     method: 'patch',
     bfLoading: false,
@@ -57,10 +57,10 @@ export function ApiChangeBuzzStatus(data: ObjTy) {
   })
 }
 
-// ! buzz details
+// ! light details
 export function ApiOperationOfferCreate(data: ObjTy) {
   return request({
-    url: '/buzz-sy',
+    url: 'light-sy',
     data,
     method: 'post',
     bfLoading: false,
@@ -71,7 +71,7 @@ export function ApiOperationOfferCreate(data: ObjTy) {
 
 export function ApiOperationOfferEdit(data: ObjTy) {
   return request({
-    url: '/buzz-sy',
+    url: 'light-sy',
     data,
     method: 'put',
     bfLoading: false,
@@ -82,7 +82,7 @@ export function ApiOperationOfferEdit(data: ObjTy) {
 
 export function ApiGetOfferData(params: string) {
   return request({
-    url: `/buzz-sy/view/${params}`,
+    url: `light-sy/view/${params}`,
     method: 'get',
     bfLoading: false,
     isParams: true,
@@ -92,7 +92,7 @@ export function ApiGetOfferData(params: string) {
 
 export function ApiGetCopyOfferData(data: ObjTy) {
   return request({
-    url: '/buzz-sy/copy',
+    url: 'light-sy/copy',
     method: 'get',
     data,
     bfLoading: false,
@@ -103,7 +103,7 @@ export function ApiGetCopyOfferData(data: ObjTy) {
 
 export function ApiGetConfig() {
   return request({
-    url: '/buzz-sy/edit-config',
+    url: 'light-sy/edit-config',
     method: 'get',
     bfLoading: false,
     isParams: true,
@@ -113,7 +113,7 @@ export function ApiGetConfig() {
 
 export function ApiGetDeviceCount(data: ObjTy) {
   return request({
-    url: '/buzz-sy/get-device-num',
+    url: 'light-sy/get-device-num',
     data,
     method: 'get',
     bfLoading: false,
@@ -124,7 +124,7 @@ export function ApiGetDeviceCount(data: ObjTy) {
 
 export function ApiGetOfferDevice(data: ObjTy) {
   return request({
-    url: '/buzz-sy/offer-device',
+    url: 'light-sy/offer-device',
     data,
     method: 'get',
     bfLoading: false,
@@ -135,7 +135,7 @@ export function ApiGetOfferDevice(data: ObjTy) {
 
 export function ApiChangeToOfferDevice(data: ObjTy) {
   return request({
-    url: '/buzz-sy/device',
+    url: 'light-sy/device',
     data,
     method: 'patch',
     bfLoading: false,

@@ -2,7 +2,7 @@
   <div>
     <div class="controlBox w100 mb-10">
       <div class="mb-10">
-        <!-- <router-link to="/buzz/buzz-sync-create">
+        <!-- <router-link to="/Light/Light-sync-create">
           <el-button type="primary">
             Offer Create
           </el-button>
@@ -311,10 +311,10 @@
     </el-dialog>
   </div>
 </template>
-<script lang="ts" setup name="buzz-sync">
+<script lang="ts" setup name="light-list">
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { getCurrentInstance, reactive, ref, shallowRef, onMounted, computed } from 'vue'
-import { ApiGetBuzzList, ApichangeClk, ApichangeSiteClkLimit, ApichangeCutoff, ApiChangeBuzzStatus, ApiGetOfferDevice, ApiChangeToOfferDevice } from '@/api/light'
+import { ApiGetLightList, ApichangeClk, ApichangeSiteClkLimit, ApichangeCutoff, ApiChangeLightStatus, ApiGetOfferDevice, ApiChangeToOfferDevice } from '@/api/light'
 import { ElMessage } from 'element-plus'
 import { messageFun } from '@/utils/message'
 import _ from 'lodash'
@@ -453,7 +453,7 @@ const changeStatus = async (row: any) => {
     status: row.status
   }
   ajaxData = handleAjaxDataObjectFn(ajaxData)
-  const res = await ApiChangeBuzzStatus(ajaxData)
+  const res = await ApiChangeLightStatus(ajaxData)
   messageFun(res)
 }
 const editFun = (row: any) => {
@@ -467,12 +467,12 @@ const editFun = (row: any) => {
   // })
 }
 const createFn = () => {
-  let url = '/buzz/buzz-sync-create'
+  let url = '/light/light-create'
   openNewUrl(url)
 }
 const getEditUrl = (row: any) => {
   const id = row.id
-  return `/buzz/buzz-sync-edit/${id}`
+  return `/light/light-edit/${id}`
 }
 const init = async () => {
   data.loading = true
@@ -513,7 +513,7 @@ const init = async () => {
     ajaxData.tracking_link = data.useData.pid
   }
 
-  const res = await ApiGetBuzzList(ajaxData)
+  const res = await ApiGetLightList(ajaxData)
   const { data: result } = res
   const { page } = result
   data.list = result?.data
