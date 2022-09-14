@@ -1,0 +1,1 @@
+import{d as s,N as a,m as e,s as t,A as n,p as o,a3 as r}from"./index-b160a4d6.js";const u=s({name:"buzz-sync"}),d=s({...u,setup:s=>(a((()=>{})),(s,a)=>{const u=e("router-view");return t(),n(u,null,{default:o((({Component:s})=>[(t(),n(r(s)))])),_:1})})});export{d as default};

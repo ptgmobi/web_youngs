@@ -1,0 +1,1 @@
+import{d as e,l as a,I as s,m as n,s as t,A as o,p as r,a4 as u,q as d,a3 as c}from"./index-b160a4d6.js";const i=e({name:"fenix-offer"}),l=e({...i,setup(e){const i=a(),l=s((()=>i.cachedViewsDeep));return(e,a)=>{const s=n("router-view");return t(),o(s,null,{default:r((({Component:e})=>[(t(),o(u,{include:d(l)},[(t(),o(c(e)))],1032,["include"]))])),_:1})}}});export{l as default};

@@ -1,0 +1,1 @@
+import{d as a,N as s,m as e,s as t,A as o,p as n,a3 as r}from"./index-b160a4d6.js";const p=a({name:"api-offer-update"}),u=a({...p,setup:a=>(s((()=>{})),(a,s)=>{const p=e("router-view");return t(),o(p,null,{default:n((({Component:a})=>[(t(),o(r(a)))])),_:1})})});export{u as default};
