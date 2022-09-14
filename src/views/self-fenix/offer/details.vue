@@ -85,6 +85,9 @@
             <el-radio :label="5">
               Direct
             </el-radio>
+             <el-radio :label="6">
+              Light
+            </el-radio>
           </el-radio-group>
         </el-form-item>
         <!-- Adv Status -->
@@ -482,6 +485,7 @@ import {
   ApiEditOffer,
   ApietOfferForOne,
   ApiGetAdvOfferForBuzzSyncList,
+  ApiGetAdvOfferForLightSyncList,
 } from '@/api/fenix'
 import Traffic from './traffic'
 import { ElMessage } from 'element-plus'
@@ -1009,6 +1013,7 @@ const searchAdvOffer = async () => {
     console.log('get offer for buzz')
     let bzReg = /^bz(\S+)/
     let bsReg = /^bs(\S+)/
+    let lhReg = /^lh(\S+)/
     // bz开头的
     if (bzReg.test(str)) {
       console.log('get offer for bz')
@@ -1025,6 +1030,17 @@ const searchAdvOffer = async () => {
       state.ruleForm.channel_type = 4
       state.ruleForm.adtype = 40
       const { data: offerData } = await ApiGetAdvOfferForBuzzSyncList(ajaxData)
+      console.log(offerData)
+      state.ruleForm.adv_status = offerData.status ? offerData.status : 2
+      setBuzzOffer(offerData)
+    }
+
+    // lh开头的
+    if (lhReg.test(str)) {
+      console.log('get offer for lh')
+      state.ruleForm.channel_type = 6
+      state.ruleForm.adtype = 42
+      const { data: offerData } = await ApiGetAdvOfferForLightSyncList(ajaxData)
       console.log(offerData)
       state.ruleForm.adv_status = offerData.status ? offerData.status : 2
       setBuzzOffer(offerData)

@@ -133,6 +133,17 @@ export function ApiGetAdvOfferForBuzzSyncList(data: ObjTy) {
     isParams: true
   })
 }
+
+// buzz获取offer信息（lh开头的）
+export function ApiGetAdvOfferForLightSyncList(data: ObjTy) {
+  return request({
+    url: '/light-sy/copy',
+    data,
+    method: 'get',
+    isParams: true
+  })
+}
+
 // 创建offer
 export function ApiCreateOffer(data: ObjTy) {
   return request({
