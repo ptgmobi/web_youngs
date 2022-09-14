@@ -702,6 +702,10 @@ const state = reactive({
       {
         value: 'AppMetrica',
         label: 'AppMetrica'
+      },
+      {
+        value: 'Lazada',
+        label: 'Lazada'
       }
     ]
   },
