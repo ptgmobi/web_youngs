@@ -93,9 +93,9 @@ const setCutoff = (newVal: Array<number>) => {
   emit('up', ruleForm)
 }
 
-watchEffect(() => {
-  handleDeviceCount()
-})
+// watchEffect(() => {
+//   handleDeviceCount()
+// })
 
 watch(() => props.query, (newVal, oldVal) => {
   if (newVal.cutoff_start !== void 0 && newVal.cutoff_end !== void 0) {
