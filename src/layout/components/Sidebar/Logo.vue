@@ -43,7 +43,6 @@
 
 <script setup lang="ts">
 import { toRefs, reactive } from 'vue'
-import setting from '@/settings'
 import img from '@/assets/logo.svg'
 defineProps({
   collapse: {
@@ -52,7 +51,7 @@ defineProps({
   }
 })
 const state = reactive({
-  title: setting.title,
+  title: window.pageTitle,
   logo: img
 })
 //export to page for

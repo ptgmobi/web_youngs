@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, createWebHashHistory, Router } from 'vue-router'
 import Layout from '@/layout'
 import { RouterTy } from '@/types/router'
-// import test from './modules/test'
+import test from './modules/test'
 import dashboard from './modules/dashboard'
 import publisher from './modules/publisher'
 import administer from './modules/administer'
@@ -12,6 +12,34 @@ import serverclick from './modules/serverclick'
 import danetwork from './modules/adnetwork'
 import advertiser from './modules/advertiser'
 import light from './modules/light'
+
+const pageTitle = document.title
+console.log(pageTitle)
+let routerBox: any = []
+let indexModule: any = ''
+if (pageTitle === 'Youngs') {
+  window.pageTitle = 'Youngs'
+  routerBox = [
+    ...dashboard,
+    ...publisher,
+    ...light,
+    ...buzz,
+    ...fenix,
+    ...administer,
+    ...password,
+    ...serverclick,
+    ...danetwork,
+    ...advertiser,
+  ]
+  indexModule = import('@/views/self-index/index')
+}
+if (pageTitle === 'Dsp') {
+  window.pageTitle = 'Dsp'
+  routerBox = [
+    
+  ]
+  indexModule = import('@/views/dsp-index/index')
+}
 
 export const constantRoutes: RouterTy = [
   {
@@ -50,7 +78,7 @@ export const constantRoutes: RouterTy = [
       {
         path: 'index',
         name: 'index',
-        component: () => import('@/views/self-index/index'),
+        component: () => indexModule,
         //using el svg icon, the elSvgIcon first when at the same time using elSvgIcon and icon
         meta: {
           title: 'index',
@@ -97,17 +125,9 @@ export const constantRoutes: RouterTy = [
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
  */
+
 export const asyncRoutes: RouterTy = [
-  ...dashboard,
-  ...publisher,
-  ...light,
-  ...buzz,
-  ...fenix,
-  ...administer,
-  ...password,
-  ...serverclick,
-  ...danetwork,
-  ...advertiser,
+  ...routerBox,
   // 404 page must be placed at the end !!!
   // using pathMatch install of "*" in vue-router 4.0
   { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }

@@ -3,7 +3,7 @@
   <div class="login-container columnCC">
     <el-form ref="refloginForm" class="login-form" :model="formInline" :rules="formRules">
       <div class="title-container">
-        <h3 class="title text-center">{{ settings.title }}</h3>
+        <h3 class="title text-center">{{ title }}</h3>
       </div>
       <el-form-item prop="username" :rules="formRules.isNotNull">
         <div class="rowSC flex-1">
@@ -62,6 +62,8 @@ let state: ObjTy = reactive({
   otherQuery: {},
   redirect: undefined
 })
+
+let title = ref(window.pageTitle)
 
 /* listen router change  */
 const route = useRoute()

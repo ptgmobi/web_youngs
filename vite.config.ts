@@ -19,10 +19,57 @@ import VueSetupExtend from 'vite-plugin-vue-setup-extend-plus'
 import AutoImport from 'unplugin-auto-import/vite'
 
 import setting from './src/settings'
+
 const prodMock = setting.openProdMock
 // import packageJson from './package.json'
 // import { loadEnv } from 'vite'
+
+// 多页面配置开始-------------------------------------- 获取pnpm run dev后缀来运行对应的项目
+// 引入多页面配置文件
+// const project = require('./scripts/multiPages.json')
+// const npm_config_project = process.env.npm_config_project
+// let filterProjects = []
+// if (npm_config_project) {
+//   // 这一步操作主要是处理要单独打包和单独运行的配置项
+//   filterProjects = project.filter((ele) => {
+//     // 过滤出用户输入的单独打包的配置项
+//     return ele.chunk.toLowerCase() === npm_config_project.toLowerCase()
+//   })
+//   console.log(`--------单独构建：${filterProjects[0]['chunkName']}--------`)
+// } else {
+//   filterProjects = project
+// }
+
+/** 多页面配置 */
+const multiPages = (p) => {
+  const pages = {}
+  p.forEach((ele) => {
+    const htmlUrl = path.resolve(
+      __dirname,
+      `src/Project/${ele.chunk}/index.html`
+    )
+    pages[ele.chunk] = htmlUrl
+  })
+  return pages
+}
+/**多页面打包 */
+const multiBuild = (p) => {
+  const buildOutputConfigs = []
+  p.forEach((ele) => {
+    // 配置多出口打包
+    buildOutputConfigs.push({
+      dir: `dist/${ele.chunk}/`,
+      assetFileNames: '[ext]/[name]-[hash].[ext]',
+      chunkFileNames: 'js/[name]-[hash].js',
+      entryFileNames: 'js/[name]-[hash].js'
+    })
+  })
+  return buildOutputConfigs
+}
+// 多页面配置结束 --------------------------------------
+
 export default ({ command, mode }: any) => {
+  console.log(__dirname);
   return {
     /*
      * "/vue3-admin-plus" nginx deploy folder
@@ -146,11 +193,20 @@ export default ({ command, mode }: any) => {
       //build assets Separate
       assetsDir: 'static/assets',
       rollupOptions: {
+        input: {
+          // main: resolve(__dirname, 'src/index/index.html'),
+          youngs: resolve(__dirname, 'src/youngs/index.html'),
+          dsp: resolve(__dirname, 'src/dsp/index.html')
+        },
         output: {
           chunkFileNames: 'static/js/[name]-[hash].js',
           entryFileNames: 'static/js/[name]-[hash].js',
           assetFileNames: 'static/[ext]/[name]-[hash].[ext]'
         }
+        // //配置多页应用程序入口文件
+        // input: multiPages(filterProjects),
+        // //打包到目标目录
+        // output: multiBuild(filterProjects)
       }
     },
     resolve: {

@@ -20,7 +20,7 @@ interface SettingTy {
 }
 
 const setting: SettingTy = {
-  title: 'Youngs',
+  title: 'Yeahmobi',
   /**
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
