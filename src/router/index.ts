@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, createWebHashHistory, Router } from 'vue-router'
 import Layout from '@/layout'
 import { RouterTy } from '@/types/router'
+// youngs
 import test from './modules/test'
 import dashboard from './modules/dashboard'
 import publisher from './modules/publisher'
@@ -12,6 +13,8 @@ import serverclick from './modules/serverclick'
 import danetwork from './modules/adnetwork'
 import advertiser from './modules/advertiser'
 import light from './modules/light'
+// dsp
+import tool from './modules1/tool'
 
 const pageTitle = document.title
 console.log(pageTitle)
