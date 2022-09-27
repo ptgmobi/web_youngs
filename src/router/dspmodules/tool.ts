@@ -7,7 +7,7 @@ export default [
     name: 'tool',
     meta: {
       title: 'Tool',
-      elSvgIcon: 'MagicStick',
+      elSvgIcon: 'Setting',
       code: 3
     },
     children: [
@@ -15,7 +15,7 @@ export default [
         path: 'advsetting',
         name: 'advsetting',
         component: () => import('@/views/dsp-tool/dsp-advsetting'),
-        redirect: '/tool/advsetting/list',
+        redirect: './list',
         meta: {
           title: 'Adv Setting List',
           elSvgIcon: 'Edit',

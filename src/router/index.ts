@@ -14,7 +14,7 @@ import danetwork from './modules/adnetwork'
 import advertiser from './modules/advertiser'
 import light from './modules/light'
 // dsp
-import tool from './modules1/tool'
+import tool from './dspmodules/tool'
 
 const pageTitle = document.title
 console.log(pageTitle)
@@ -39,7 +39,7 @@ if (pageTitle === 'Youngs') {
 if (pageTitle === 'Dsp') {
   window.pageTitle = 'Dsp'
   routerBox = [
-    
+    ...tool
   ]
   indexModule = import('@/views/dsp-index/index')
 }
@@ -135,6 +135,7 @@ export const asyncRoutes: RouterTy = [
   // using pathMatch install of "*" in vue-router 4.0
   { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }
 ]
+console.log(asyncRoutes)
 const router: Router = createRouter({
   history: createWebHashHistory(),
   scrollBehavior: () => ({ top: 0 }),

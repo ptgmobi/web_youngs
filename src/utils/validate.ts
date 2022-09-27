@@ -79,3 +79,18 @@ export function isArray(arg: string) {
   }
   return Array.isArray(arg)
 }
+
+// ! self
+
+export function selfJudgeStringLength(str: any, len: number) : boolean {
+  if (str) {
+    return str.toString().length < len
+  }
+  return true
+}
+
+// 判断是否是整数
+export function selfValidatorIsInteger(str: any) : boolean {
+  // return (Number(str).toString() === str.toString() && str % 1 === 0)
+  return (Number(str).toString() === str.toString() && Number.isInteger(Number(str)))
+}

@@ -119,3 +119,116 @@ export function randomStr (num: number = 0) {
   return `${str1}${str2}`
 }
 
+// 提交表单的时候对表单提交数据进行美化
+// 字符串换为数字
+export function handleAjaxNumberKeyFn (obj, arr) {
+  let finalObj = {}
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      const element = obj[key]
+      if (arr.includes(key)) {
+        finalObj[key] = Number(element)
+      } else {
+        finalObj[key] = element
+      }
+    }
+  }
+  return finalObj
+}
+// 提交时数组换为字符串,不传为-1
+export function handleAjaxArrayKeyFn (obj, arr) {
+  let finalObj = {}
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      const element = obj[key]
+      if (arr.includes(key) && Array.isArray(element)) {
+        finalObj[key] = element.length === 0 ? '-1' : element.sort().join(',')
+      } else {
+        finalObj[key] = element
+      }
+    }
+  }
+  return finalObj
+}
+
+// 提交时数组换为字符串,不传为空
+export function handleAjaxArray2KeyFn (obj, arr) {
+  let finalObj = {}
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      const element = obj[key]
+      if (arr.includes(key) && Array.isArray(element)) {
+        if (element.length === 1) {
+          finalObj[key] = element.join()
+        } else {
+          finalObj[key] = element.length === 0 ? '' : element.sort().join(',')
+        }
+      } else {
+        finalObj[key] = element
+      }
+    }
+  }
+  console.log(finalObj)
+  return finalObj
+}
+
+// 把ajaxData的空值的key去掉
+export function handleAjaxDataDelNo2KeyFn(data: any) {
+  const newObj: any = {}
+  for (const key in data) {
+    if (Object.prototype.hasOwnProperty.call(data, key)) {
+      const element = data[key]
+      if (element && element !== '') {
+        newObj[key] = element
+      } else {
+        delete data[key]
+      }
+    }
+  }
+  return newObj
+}
+
+// 提交时个别空值需要传-1
+export function handleAjaxEmptyKeyFn(obj, arr) {
+  let finalObj = {}
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      const element = obj[key]
+      if (arr.includes(key) && element === '') {
+        finalObj[key] = -1
+      } else {
+        finalObj[key] = element
+      }
+    }
+  }
+  return finalObj
+}
+
+
+// 获取单个时, 数组字符串变为数组
+export function handleOneDataArrayFn(obj, arr) {
+  let finalObj = {}
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      const element = obj[key]
+      if (arr.includes(key)) {
+        if (element === '-1' || element === '') {
+          finalObj[key] = []
+        } else {
+          finalObj[key] = element.toString().includes(',') ? element.split(',').map(ele => ele.toString()) : [element.toString()]
+        }
+      } else {
+        finalObj[key] = element
+      }
+    }
+  }
+  return finalObj
+}
+
+// 获取options中对应的值
+export function getOptionsValue (key, arr) {
+  return arr.find(ele => {
+    return ele.value === key
+  })?.label
+}
+
