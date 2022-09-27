@@ -195,8 +195,8 @@ export default ({ command, mode }: any) => {
       rollupOptions: {
         input: {
           // main: resolve(__dirname, 'src/index/index.html'),
-          youngs: resolve(__dirname, 'src/youngs/index.html'),
-          dsp: resolve(__dirname, 'src/dsp/index.html')
+          youngs: resolve(__dirname, 'youngs.html'),
+          dsp: resolve(__dirname, 'dsp.html')
         },
         output: {
           chunkFileNames: 'static/js/[name]-[hash].js',

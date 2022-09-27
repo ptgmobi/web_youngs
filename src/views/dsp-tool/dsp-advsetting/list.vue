@@ -2,9 +2,7 @@
   <div>
     <div class="controlBox w100 mb-10">
       <div class="mb-10">
-        <el-button type="primary" @click="createFn">
-            新建广告主
-          </el-button>
+        <el-button type="primary" @click="createFn">新建广告主</el-button>
       </div>
       <el-form
         v-model="data.searchForm"
@@ -110,7 +108,7 @@
               type="primary"
               icon="Edit"
               circle
-              @click="editFn(scope.row)"
+              @click="editFn(scope)"
             ></el-button>
             <!-- <el-button class='cp mr-10' type="primary" icon="Edit" circle @click='editFun(scope.row)'></el-button> -->
             <el-switch
@@ -197,10 +195,6 @@ const editFun = (row: any) => {
       type: 'edit'
     }
   })
-}
-const getEditUrl = (row: any) => {
-  const id = row.id
-  return `/tool/advsetting/edit/${id}`
 }
 
 const createFn = () => {

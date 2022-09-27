@@ -20,7 +20,7 @@ const pageTitle = document.title
 console.log(pageTitle)
 let routerBox: any = []
 let indexModule: any = ''
-if (pageTitle === 'Youngs') {
+if (pageTitle === 'Youngs' || pageTitle === '') {
   window.pageTitle = 'Youngs'
   routerBox = [
     ...dashboard,
