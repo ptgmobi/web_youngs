@@ -16,10 +16,22 @@
         <el-form-item
           class="self-el-form-item"
           label="广告主名称:"
-          prop="name"
+          prop="ad_name"
         >
           <el-input
-            v-model.trim="state.ruleForm.name"
+            v-model.trim="state.ruleForm.ad_name"
+            class="form-one"
+            placeholder=""
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item
+          class="self-el-form-item"
+          label="广告主ID:"
+          prop="ad_id"
+        >
+          <el-input
+            v-model.trim="state.ruleForm.ad_id"
             class="form-one"
             placeholder=""
           >
@@ -44,12 +56,13 @@
         <el-form-item
           class="self-el-form-item"
           label="强制流量占比(%):"
-          prop="rate"
+          prop="flow_rate"
         >
           <el-input
-            v-model.trim="state.ruleForm.rate"
+            v-model.trim="state.ruleForm.flow_rate"
             class="form-one"
             placeholder=""
+            type="number"
           >
           </el-input>
         </el-form-item>
@@ -74,6 +87,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+  import { ApiAdvsettingCreate , ApiAdvsettingEdit, ApiGetAdvsettingData } from '@/api/tool'
 import optionsSetting from '@/self-options-setting'
 import { messageFun } from '@/utils/message'
 import splitButton from '@/components/Self/SplitButton'
@@ -102,14 +116,18 @@ let type: any = ref('create')
 
 const defaultRuleForm: any = {
   id: '',
-  name: '',
+  ad_id: '',
+  ad_name: '',
   desc: '',
-  rate: ''
+  flow_rate: ''
 }
 
 const state = reactive({
   ruleForm: defaultRuleForm,
-  rules: {},
+  rules: {
+    ad_name: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    flow_rate: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  },
   options: {}
 })
 
@@ -127,17 +145,16 @@ const saveFun = () => {
 }
 
 // 为数字的字段
-const numberKeyArr = ['id', 'rate']
+const numberKeyArr = ['flow_rate']
 
 const arrayKeyArr = []
 
 const emptyArr = []
 
 const setDataFn = async (id) => {
+  console.log(id)
   // 获取单个
-  const res = {
-    data: {}
-  }
+  const res = await ApiGetAdvsettingData(id)
   const {data: result} = res
   state.ruleForm = handleOneDataArrayFn(result, arrayKeyArr)
 }
@@ -152,13 +169,13 @@ const submitFn = async () => {
   // return false
   if (type.value === 'create') {
     delete ajaxData.id
-    const res = null
+    const res = await ApiAdvsettingCreate(ajaxData)
     if (messageFun(res)) {
       cancelFn()
     }
   }
   if (type.value === 'edit') {
-    const res = null
+    const res = await ApiAdvsettingEdit(ajaxData)
     if (messageFun(res)) {
       cancelFn()
     }
@@ -166,7 +183,13 @@ const submitFn = async () => {
 }
 
 const cancelFn = () => {
-  let url = './list'
+  let url = ''
+  if (type.value === 'create') {
+    url = './list'
+  }
+  if (type.value === 'edit') {
+    url = '../list'
+  }
   goNewUrl({
     url: url
   })

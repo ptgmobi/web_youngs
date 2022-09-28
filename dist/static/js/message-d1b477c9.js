@@ -1,1 +1,0 @@
-import{g as e}from"./index-b7a8022a.js";function r(r){return!!r&&(e({title:200===r.code?"success":"error",dangerouslyUseHTMLString:!0,message:r.info,type:200===r.code?"success":"error"}),200===r.code)}export{r as m};

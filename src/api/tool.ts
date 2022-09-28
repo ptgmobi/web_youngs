@@ -2,9 +2,9 @@
 import request from '@/utils/axiosReq'
 import { ObjTy } from '@/types/common'
 // ! buzz list
-export function ApiGetBuzzList(data: ObjTy) {
+export function ApiGetAdvsettingList(data: ObjTy) {
   return request({
-    url: '/buzz',
+    url: '/d/df/list',
     data,
     method: 'get',
     bfLoading: false,
@@ -13,9 +13,9 @@ export function ApiGetBuzzList(data: ObjTy) {
   })
 }
 
-export function ApichangeClk(data: ObjTy) {
+export function ApiChangeAdvsettingStatus(data: ObjTy) {
   return request({
-    url: '/buzz/edit-offer-max-clk',
+    url: '/d/df/status',
     data,
     method: 'patch',
     bfLoading: false,
@@ -24,32 +24,20 @@ export function ApichangeClk(data: ObjTy) {
   })
 }
 
-export function ApichangeCutoff(data: ObjTy) {
+export function ApiDeleteAdvsetting(params: string) {
   return request({
-    url: '/buzz/cutoff',
-    data,
-    method: 'patch',
+    url: `/d/df/${params}`,
+    method: 'delete',
     bfLoading: false,
     isParams: false,
     isAlertErrorMsg: false
   })
 }
 
-export function ApiChangeBuzzStatus(data: ObjTy) {
+// ! adv setting details
+export function ApiAdvsettingCreate(data: ObjTy) {
   return request({
-    url: '/buzz/status',
-    data,
-    method: 'patch',
-    bfLoading: false,
-    isParams: false,
-    isAlertErrorMsg: false
-  })
-}
-
-// ! buzz details
-export function ApiOperationOfferCreate(data: ObjTy) {
-  return request({
-    url: '/buzz',
+    url: '/d/df',
     data,
     method: 'post',
     bfLoading: false,
@@ -58,9 +46,9 @@ export function ApiOperationOfferCreate(data: ObjTy) {
   })
 }
 
-export function ApiOperationOfferEdit(data: ObjTy) {
+export function ApiAdvsettingEdit(data: ObjTy) {
   return request({
-    url: '/buzz',
+    url: '/d/df',
     data,
     method: 'put',
     bfLoading: false,
@@ -69,30 +57,9 @@ export function ApiOperationOfferEdit(data: ObjTy) {
   })
 }
 
-export function ApiGetOfferData(params: string) {
+export function ApiGetAdvsettingData(params: string) {
   return request({
-    url: `/buzz/view/${params}`,
-    method: 'get',
-    bfLoading: false,
-    isParams: true,
-    isAlertErrorMsg: false
-  })
-}
-
-export function ApiGetConfig() {
-  return request({
-    url: '/buzz/edit-config',
-    method: 'get',
-    bfLoading: false,
-    isParams: true,
-    isAlertErrorMsg: false
-  })
-}
-
-export function ApiGetDeviceCount(data: ObjTy) {
-  return request({
-    url: '/buzz/get-device-num',
-    data,
+    url: `/d/df/view/${params}`,
     method: 'get',
     bfLoading: false,
     isParams: true,

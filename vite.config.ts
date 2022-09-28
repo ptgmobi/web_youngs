@@ -54,7 +54,7 @@ const multiPages = (p) => {
 }
 /**多页面打包 */
 const multiBuild = (p) => {
-  const buildOutputConfigs = []
+  const buildOutputConfigs: any = []
   p.forEach((ele) => {
     // 配置多出口打包
     buildOutputConfigs.push({
@@ -105,9 +105,9 @@ export default ({ command, mode }: any) => {
       proxy: {
         '/dev-api': {
           // 本地测试
-          // target: 'http://172.31.21.88:8888',
+          target: 'http://172.31.21.88:8888',
           // 线上地址
-          target: 'http://manager.adsyoungs.com/prod-api/',
+          // target: 'http://manager.adsyoungs.com/prod-api/',
           ws: false,
           changeOrigin: true,
           rewrite: path => path.replace(/^\/dev-api/, '')
@@ -194,7 +194,7 @@ export default ({ command, mode }: any) => {
       assetsDir: 'static/assets',
       rollupOptions: {
         input: {
-          // main: resolve(__dirname, 'src/index/index.html'),
+          // main: resolve(__dirname, 'index.html'),
           youngs: resolve(__dirname, 'youngs.html'),
           dsp: resolve(__dirname, 'dsp.html')
         },

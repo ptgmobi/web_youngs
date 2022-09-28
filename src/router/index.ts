@@ -39,7 +39,8 @@ if (pageTitle === 'Youngs' || pageTitle === '') {
 if (pageTitle === 'Dsp') {
   window.pageTitle = 'Dsp'
   routerBox = [
-    ...tool
+    ...tool,
+    ...administer
   ]
   indexModule = import('@/views/dsp-index/index')
 }

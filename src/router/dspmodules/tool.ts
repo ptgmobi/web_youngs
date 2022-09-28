@@ -15,7 +15,7 @@ export default [
         path: 'advsetting',
         name: 'advsetting',
         component: () => import('@/views/dsp-tool/dsp-advsetting'),
-        redirect: './list',
+        redirect: '/tool/advsetting/list',
         meta: {
           title: 'Adv Setting List',
           elSvgIcon: 'Edit',

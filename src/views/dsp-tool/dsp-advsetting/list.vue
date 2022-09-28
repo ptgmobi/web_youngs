@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="controlBox w100 mb-10">
+    <div class="controlBox w100 flex jc-between ai-start">
       <div class="mb-10">
         <el-button type="primary" @click="createFn">新建广告主</el-button>
       </div>
       <el-form
         v-model="data.searchForm"
         :inline="true"
-        class="flex jc-between w100 ai-end"
+        class="flex jc-between ai-end"
       >
         <div class="flex jc-start flex-wrap w100">
           <el-form-item label="">
@@ -51,23 +51,23 @@
     >
       <el-table-column
         fixed
-        prop="id"
+        prop="ad_id"
         label="广告主ID"
         align="center"
       ></el-table-column>
       <el-table-column
         fixed
-        prop="name"
+        prop="ad_name"
         label="广告主名称"
         align="center"
       ></el-table-column>
       <el-table-column
-        prop="描述"
-        label="desc"
+        prop="desc"
+        label="描述"
         align="center"
       ></el-table-column>
       <el-table-column
-        prop="rate"
+        prop="flow_rate"
         label="强制流量占比%"
         width="120"
         align="center"
@@ -83,14 +83,14 @@
         align="center"
       ></el-table-column>
       <el-table-column
-        prop="create_date"
+        prop="create_time"
         label="创建时间"
         sortable
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="create_date"
+        prop="update_time"
         label="更新时间"
         sortable
         align="center"
@@ -110,13 +110,19 @@
               circle
               @click="editFn(scope)"
             ></el-button>
-            <!-- <el-button class='cp mr-10' type="primary" icon="Edit" circle @click='editFun(scope.row)'></el-button> -->
-            <el-switch
+            <el-button
+              class="cp mr-10"
+              type="danger"
+              icon="Delete"
+              circle
+              @click="delFn(scope)"
+            ></el-button>
+            <!-- <el-switch
               v-model="scope.row.status"
               :active-value="1"
               :inactive-value="2"
               @change="changeStatus(scope.row)"
-            />
+            /> -->
           </div>
         </template>
       </el-table-column>
@@ -136,7 +142,7 @@
 </template>
 <script lang="ts" setup name="dsp-advsetting-list">
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { ApiGetBuzzList,  ApiChangeBuzzStatus } from '@/api/tool'
+import { ApiGetAdvsettingList,  ApiChangeAdvsettingStatus, ApiDeleteAdvsetting } from '@/api/tool'
 import { messageFun } from '@/utils/message'
 import _ from 'lodash'
 import { handleAjaxDataObjectFn } from '@/utils/new-format'
@@ -183,18 +189,8 @@ const changeStatus = async (row: any) => {
     status: row.status
   }
   ajaxData = handleAjaxDataObjectFn(ajaxData)
-  const res = await ApiChangeBuzzStatus(ajaxData)
+  const res = await ApiChangeAdvsettingStatus(ajaxData)
   messageFun(res)
-}
-
-const editFun = (row: any) => {
-  const id = row.id
-  proxy.$router.push({
-    path: `/tool/advsetting/edit/${id}`,
-    query: {
-      type: 'edit'
-    }
-  })
 }
 
 const createFn = () => {
@@ -220,6 +216,15 @@ const editFn = ({row}: any) => {
     }
   })
 }
+
+const delFn = async ({row, $index}: any) => {
+  const { id } = row
+  const res = await ApiDeleteAdvsetting(id)
+  if (messageFun(res)) {
+    data.list.splice($index, 1)
+  }
+}
+
 const init = async () => {
   data.loading = true
   let ajaxData: any = {
@@ -230,9 +235,9 @@ const init = async () => {
     ajaxData.name = data.useData.name
   }
 
-  const res = await ApiGetBuzzList(ajaxData)
+  const res = await ApiGetAdvsettingList(ajaxData)
   const { data: result } = res
-  data.list = result?.data
+  data.list = result
   data.pagination.total = Number(result.count)
   data.loading = false
 }
