@@ -8,7 +8,7 @@ export default [
     meta: {
       title: 'Tool',
       elSvgIcon: 'Setting',
-      code: 3
+      code: 12
     },
     children: [
       {
@@ -19,7 +19,7 @@ export default [
         meta: {
           title: 'Adv Setting List',
           elSvgIcon: 'Edit',
-          code: 70
+          code: 120
         },
         children: [
           {
@@ -29,7 +29,7 @@ export default [
             meta: {
               title: 'Adv Setting List',
               elSvgIcon: 'Edit',
-              code: 700
+              code: 1200
             }
           },
           {
@@ -39,7 +39,7 @@ export default [
             meta: {
               title: 'Create Adv Setting',
               elSvgIcon: 'Edit',
-              code: 701
+              code: 1201
             },
             hidden: true
           },
@@ -49,7 +49,7 @@ export default [
             component: () => import('@/views/dsp-tool/dsp-advsetting/details'),
             meta: {
               title: 'Edit Adv Setting',
-              code: 702
+              code: 1202
             },
             hidden: true
           },
@@ -63,7 +63,7 @@ export default [
         meta: {
           title: 'Adx Setting List',
           elSvgIcon: 'Edit',
-          code: 70
+          code: 121
         },
         children: [
           {
@@ -73,7 +73,7 @@ export default [
             meta: {
               title: 'Adx Setting List',
               elSvgIcon: 'Edit',
-              code: 700
+              code: 1210
             }
           },
           {
@@ -83,7 +83,7 @@ export default [
             meta: {
               title: 'Create Adx Setting',
               elSvgIcon: 'Edit',
-              code: 701
+              code: 1211
             },
             hidden: true
           },
@@ -93,7 +93,7 @@ export default [
             component: () => import('@/views/dsp-tool/dsp-adxsetting/details'),
             meta: {
               title: 'Edit Adx Setting',
-              code: 702
+              code: 1212
             },
             hidden: true
           },
