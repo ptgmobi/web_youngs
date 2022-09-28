@@ -194,7 +194,7 @@ export default ({ command, mode }: any) => {
       assetsDir: 'static/assets',
       rollupOptions: {
         input: {
-          // main: resolve(__dirname, 'index.html'),
+          main: resolve(__dirname, 'index.html'),
           youngs: resolve(__dirname, 'youngs.html'),
           dsp: resolve(__dirname, 'dsp.html')
         },
