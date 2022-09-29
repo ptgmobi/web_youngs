@@ -1,1 +1,0 @@
-import{j as e}from"./main-882d1fc9.js";function r(r){return!!r&&(e({title:200===r.code?"success":"error",dangerouslyUseHTMLString:!0,message:r.info,type:200===r.code?"success":"error"}),200===r.code)}export{r as m};
