@@ -48,6 +48,12 @@
       <el-table-column
         fixed
         prop="id"
+        label="ID"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        fixed
+        prop="ad_id"
         label="广告主ID"
         align="center"
       ></el-table-column>

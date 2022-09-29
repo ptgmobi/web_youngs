@@ -15,6 +15,13 @@
       <div class="content-con from-one flex column">
         <el-form-item
           class="self-el-form-item"
+          label="ID:"
+          prop="id"
+        >
+          <span>{{state.ruleForm.id}}</span>
+        </el-form-item>
+        <el-form-item
+          class="self-el-form-item"
           label="广告主名称:"
           prop="ad_name"
         >
