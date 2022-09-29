@@ -4,7 +4,7 @@
       <div class="mb-10">
         <el-button type="primary" @click="createFn">新建广告主</el-button>
       </div>
-      <el-form
+      <!-- <el-form
         v-model="data.searchForm"
         :inline="true"
         class="flex jc-between ai-end"
@@ -31,14 +31,10 @@
               >
                 查询
               </el-button>
-              <!-- <el-button type="primary" @click="handleExportSearch">导出</el-button> -->
             </div>
           </el-form-item>
         </div>
-      </el-form>
-      <!-- <el-input placeholder="请输入内容" v-model="data.searchForm.data" class='search-input'>
-        <el-button slot="append" icon="Search" @click='searchFun'></el-button>
-      </el-input> -->
+      </el-form> -->
     </div>
     <!-- table -->
     <el-table
@@ -51,7 +47,7 @@
     >
       <el-table-column
         fixed
-        prop="ad_id"
+        prop="id"
         label="广告主ID"
         align="center"
       ></el-table-column>
@@ -147,6 +143,7 @@ import { messageFun } from '@/utils/message'
 import _ from 'lodash'
 import { handleAjaxDataObjectFn } from '@/utils/new-format'
 import useUtils from '@/hooks/self/useUtils'
+import { ElMessage } from 'element-plus'
 const { goNewUrl, openAlert } = useUtils()
 let { proxy }: any = getCurrentInstance()
 const searchData = shallowRef({
@@ -225,6 +222,20 @@ const delFn = async ({row, $index}: any) => {
   }
 }
 
+const judgeFlowRateFn = (res) => {
+  let count = res.reduce((prev, cur) => {
+    prev = prev + cur.flow_rate
+    return prev
+  }, 0)
+  if (count !== 100) {
+    let str = '温馨提示：所有广告主的强制流量占比之和必须等于100%，否则会造成系统错误或流量浪费。'
+    ElMessage({
+      message: str,
+      type: 'warning',
+    })
+  }
+}
+
 const init = async () => {
   data.loading = true
   let ajaxData: any = {
@@ -238,6 +249,7 @@ const init = async () => {
   const res = await ApiGetAdvsettingList(ajaxData)
   const { data: result } = res
   data.list = result
+  judgeFlowRateFn(result)
   data.pagination.total = Number(result.count)
   data.loading = false
 }
