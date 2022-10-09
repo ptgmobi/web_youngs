@@ -647,8 +647,9 @@ let validatorCountry = (rule: any, value: string, callback: (arg0: Error | undef
   if (value === '') {
     callback(new Error(message.required))
   } else {
-    let pidArr = data.ruleForm.pid.split(',')
-    if (data.ruleForm.pid && pidArr.length > 1) {
+    let pidStr = data.ruleForm.pid
+    let pidArr = pidStr ? pidStr.split(',') : []
+    if (pidStr && pidArr.length > 1 && pageType.value === '1') {
       if (value.length > 1) {
         callback(new Error('由于pid有多个，所以不能选择多个国家'))
       } else{
