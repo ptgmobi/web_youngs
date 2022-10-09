@@ -65,6 +65,8 @@ import '@/styles/common.scss'
 //pinia
 import { createPinia } from 'pinia'
 
+console.log(process.env.NODE_ENV)
+
 app.use(createPinia())
 
 app.use(router).mount('#app')

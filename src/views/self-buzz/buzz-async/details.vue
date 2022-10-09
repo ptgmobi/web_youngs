@@ -112,8 +112,15 @@
           prop="pid"
         >
           <div class="form-one flex jc-start">
-            <span>{{ handlePid }}</span>
+            <!-- <span>{{ handlePid }}</span> -->
             <!-- <span>{{data.ruleForm.pid}}</span> -->
+            <el-input
+              v-model.trim="data.ruleForm.pid"
+              class="form-one"
+              type="textarea"
+              :autosize="{ minRows: 1, maxRows: 80 }"
+              placeholder="多个pid请使用英文逗号分割"
+            ></el-input>
           </div>
         </el-form-item>
         <!-- pkg_name -->
@@ -200,10 +207,12 @@
         >
           <el-select
             v-model="data.ruleForm.country"
+            :multiple="pageType === '1'"
             filterable
             class="form-one"
             clearable
             placeholder=""
+            @change="changeCountryFn"
           >
             <el-option
               v-for="item in data.options.country"
@@ -512,12 +521,12 @@ const message = {
 let validatorPkgName = (rule: any, value: any, callback: (arg0: Error | undefined) => void) => {
   if (data.ruleForm.attribute_provider === 'AppsFlyer') {
     if (data.ruleForm.tracking_link.includes(data.ruleForm.pkg_name)) {
-      callback(undefined)
+      callback(void 0)
     } else {
       callback(new Error('Attribute Provider:为Appsflyer时Package Name的值必须包含在Traking Link中'))
     }
   } else {
-    callback(undefined)
+    callback(void 0)
   }
 }
 let validatorSpace = (rule, value, callback) => {
@@ -525,18 +534,18 @@ let validatorSpace = (rule, value, callback) => {
   if (reg.test(value)) {
     callback(new Error('链接中有空格'))
   } else {
-    callback(undefined)
+    callback(void 0)
   }
-  callback(undefined)
+  callback(void 0)
 }
 let validatorHttp = (rule, value, callback) => {
   let reg = /^http/
   if (!reg.test(value)) {
     callback(new Error('必须为有效链接'))
   } else {
-    callback(undefined)
+    callback(void 0)
   }
-  callback(undefined)
+  callback(void 0)
 }
 let validatorStr = (rule, value, callback) => {
   if (data.ruleForm.attribute_provider === 'AppsFlyer') {
@@ -550,21 +559,21 @@ let validatorStr = (rule, value, callback) => {
     if (value.includes('install_callback') || value.includes('event_callback')) {
       callback(new Error('链接里不可以包含install_callback和event_callback'))
     } else {
-      callback(undefined)
+      callback(void 0)
     }
   }
-  callback(undefined)
+  callback(void 0)
 }
 let validatorDevice = (rule: any, value: any, callback: (arg0: Error | undefined) => void) => {
-  callback(undefined)
+  callback(void 0)
 }
 let validatorSite = (rule: any, value: number, callback: (arg0: Error | undefined) => void) => {
   if (value) {
     if (value.toString() === '1') {
-      callback(undefined)
+      callback(void 0)
     } else {
       if (data.ruleForm.hour) {
-        callback(undefined)
+        callback(void 0)
       } else {
         callback(new Error('请选择具体数值'))
       }
@@ -575,10 +584,10 @@ let validatorSite = (rule: any, value: number, callback: (arg0: Error | undefine
 }
 let validatorConversionFlow = (rule: any, value: any, callback: (arg0: Error | undefined) => void) => {
   if (data.ruleForm.conversion_flow === '1') {
-    callback(undefined)
+    callback(void 0)
   } else {
     if (value) {
-      callback(undefined)
+      callback(void 0)
     } else {
       callback(new Error(message.required))
     }
@@ -589,7 +598,7 @@ let validatorStartHour = (rule: any, value: string, callback: (arg0: Error | und
     if (data.ruleForm.end_hour === '') {
       callback(new Error(message.required))
     } else {
-      callback(undefined)
+      callback(void 0)
     }
   }
 }
@@ -598,15 +607,65 @@ let validatorEndHour = (rule: any, value: string, callback: (arg0: Error | undef
     if (data.ruleForm.start_hour === '') {
       callback(new Error(message.required))
     } else {
-      callback(undefined)
+      callback(void 0)
     }
   }
 }
+
+let validatorPid = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
+  if (value === '') {
+    callback(new Error(message.required))
+  } else {
+    // 判断是否含有中文逗号
+    if (value.includes('，')) {
+      callback(new Error('请使用英文逗号分割'))
+    } else {
+      if (pageType.value === '1') {
+        // 如果国家选择了多个，则pid不能有多个
+        if (data.ruleForm.country.length > 1) {
+          if (value.includes(',')) {
+            callback(new Error('由于国家选择了多个，所以pid不能填多个'))
+          } else{
+            callback(void 0)
+          }
+        } else {
+          callback(void 0)
+        }
+      }
+      if (pageType.value === '2') {
+        if (value.includes(',')) {
+          callback(new Error('修改状态下PID不能有逗号'))
+        } else{
+          callback(void 0)
+        }
+      }
+    }
+  }
+}
+
+let validatorCountry = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
+  if (value === '') {
+    callback(new Error(message.required))
+  } else {
+    let pidArr = data.ruleForm.pid.split(',')
+    if (data.ruleForm.pid && pidArr.length > 1) {
+      if (value.length > 1) {
+        callback(new Error('由于pid有多个，所以不能选择多个国家'))
+      } else{
+        callback(void 0)
+      }
+    } else {
+      callback(void 0)
+    }
+  }
+}
+
 let bus: any = reactive({
   offer: {},
   index: null,
   cacheDevice: {}
 })
+let pageType = ref('')
 let name: any = ref('')
 let data: any = reactive({
   dialogVisibleDevice: false,
@@ -634,7 +693,8 @@ let data: any = reactive({
     country: [],
     site_id: ['0.2', '0.4', '0.6', '1', '2', '4', '8', '24', '72', '168'],
     category: [],
-    devices: []
+    devices: [],
+    pid: []
   },
   ruleForm: {
     type: '',
@@ -683,6 +743,10 @@ let data: any = reactive({
       { validator: validatorStr },
       { validator: validatorPkgName}
     ],
+    pid: [
+      { required: true, message: message.required, trigger: ['blur', 'change'] },
+      { validator: validatorPid },
+    ],
     pkg_name: [
       { required: true, message: message.required, trigger: ['blur', 'change'] },
       { validator: validatorPkgName }
@@ -694,7 +758,10 @@ let data: any = reactive({
     ],
     payout: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
     platform: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    country: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+    country: [
+      { required: true, message: message.required, trigger: ['blur', 'change'] },
+      { validator: validatorCountry },
+    ],
     max_clk_num: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
     device: [{ required: true, validator: validatorDevice, trigger: ['blur', 'change'] }],
     site_id: [{ required: true, validator: validatorSite, trigger: ['blur', 'change'] }],
@@ -758,6 +825,7 @@ const submitFormFun = async () => {
   ajaxData['site_install_limitation'] = parseFloat(ajaxData['site_install_limitation'])
   ajaxData['diy_siteid'] = JSON.stringify(ajaxData['diy_siteid'])
   ajaxData['device'] = JSON.stringify(ajaxData['device'])
+  ajaxData['country'] = ajaxData['country'].join(',')
   console.log(ajaxData)
   // return false
   // return ajaxData
@@ -831,8 +899,9 @@ const handleCopyOffer = (result: any, options: any) => {
     }
   }
   if (options.type === '2') {
-    resData.id = result['id']
-    resData.offer_id = result['offer_id']
+    result.id = result['id']
+    result.offer_id = result['offer_id']
+    // result.country = result['country'] ? result['country'].split(',') : []
   }
   resData = {
     ...result,
@@ -842,6 +911,7 @@ const handleCopyOffer = (result: any, options: any) => {
     delete resData.id
     delete resData.offer_id
   }
+  console.log(resData)
   return resData
 }
 // copy offer
@@ -940,6 +1010,13 @@ const countDevice = computed(() => {
   }
   return count ?? data.search.deviceData.count
 })
+
+// 选择国家时调用
+const changeCountryFn = () => {
+  proxy.$refs['ruleForm'].validateField('pid')
+}
+
+
 onMounted(() => {
   getConfig()
   name.value = router.currentRoute.value.name
@@ -947,11 +1024,13 @@ onMounted(() => {
   if (name.value === 'buzz-async-create') {
     data.ruleForm.operation_type = '1'
     data.ruleForm.type = '1'
+    pageType.value = '1'
   }
   // 如果是修改，获取当前id的值
   if (name.value === 'buzz-async-edit') {
     data.ruleForm.operation_type = '2'
     data.ruleForm.type = '2'
+    pageType.value = '2'
     const id = router.currentRoute.value.params.id
     getOfferData(id)
   }
