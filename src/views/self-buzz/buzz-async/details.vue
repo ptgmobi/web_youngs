@@ -973,21 +973,25 @@ const handlePid = () => {
   const url = data.ruleForm.tracking_link
   const ap = data.ruleForm.attribute_provider
   let pid = ''
-  if (ap === 'AppsFlyer') {
-    const reg = /pid=([\s\S]*)_int/g
-    // return reg.exec(url)
-    const arr = [...url.matchAll(reg)]
-    if (arr.length !== 0) {
-      pid = arr[0][1]
+  if (url.includes('pid={PID}')) {
+    return false
+  } else {
+    if (ap === 'AppsFlyer') {
+      const reg = /pid=([\s\S]*)_int/g
+      // return reg.exec(url)
+      const arr = [...url.matchAll(reg)]
+      if (arr.length !== 0) {
+        pid = arr[0][1]
+      }
     }
+    if (ap === 'Adjust') {
+      const arrObj = new URL(url)
+      let pathname = arrObj.pathname
+      let pathnameArr: any = pathname.split('/')
+      pid = pathnameArr.findLast(ele => ele)
+    }
+    data.ruleForm.pid = pid
   }
-  if (ap === 'Adjust') {
-    const arrObj = new URL(url)
-    let pathname = arrObj.pathname
-    let pathnameArr: any = pathname.split('/')
-    pid = pathnameArr.findLast(ele => ele)
-  }
-  data.ruleForm.pid = pid
 }
 const countDevice = computed(() => {
   // data.search.deviceData.count
