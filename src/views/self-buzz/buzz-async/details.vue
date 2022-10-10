@@ -649,14 +649,22 @@ let validatorCountry = (rule: any, value: string, callback: (arg0: Error | undef
   } else {
     let pidStr = data.ruleForm.pid
     let pidArr = pidStr ? pidStr.split(',') : []
-    if (pidStr && pidArr.length > 1 && pageType.value === '1') {
-      if (value.length > 1) {
-        callback(new Error('由于pid有多个，所以不能选择多个国家'))
-      } else{
+    if (pageType.value === '1') {
+      if (pidStr && pidArr.length > 1) {
+        if (value.length > 1) {
+          callback(new Error('由于pid有多个，所以不能选择多个国家'))
+        } else{
+          callback(void 0)
+        }
+      } else {
         callback(void 0)
       }
     } else {
-      callback(void 0)
+      if (value.length > 1) {
+        callback(new Error('修改状态下不能选择多个国家'))
+      } else {
+        callback(void 0)
+      }
     }
   }
 }

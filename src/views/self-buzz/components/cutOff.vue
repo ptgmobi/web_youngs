@@ -68,8 +68,9 @@ const handleDeviceCount = async (): Promise<void> => {
   const {pkg_name, country, platform} = props.query
   if (pkg_name && country && platform) {
     console.log('获取设备数')
+    let countryStr = Array.isArray(country) ? country.join(',') : country
     const ajaxData = {
-      pkg_name, country, platform
+      pkg_name, country: countryStr, platform
     }
     const num = await getDeviceCount(ajaxData)
     deviceNum.value = num
