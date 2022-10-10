@@ -1023,9 +1023,7 @@ const changeCountryFn = () => {
 // 监测tracklink链接，取出pid
 watch(() => data.ruleForm.tracking_link, (newVal, oldVal) => {
   // console.log(newVal)
-  if (pageType.value === '1') {
-    handlePid()
-  }
+  handlePid()
 }, {
   // ! 此处如果加上会多执行一次
   // immediate: true,
