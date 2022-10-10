@@ -128,12 +128,21 @@
           label="Package Name:"
           prop="pkg_name"
         >
-          <el-input
-            v-model.trim="data.ruleForm.pkg_name"
-            class="form-one"
-            type="text"
-            placeholder=""
-          ></el-input>
+          <div class="form-one">
+            <el-input
+              v-model.trim="data.ruleForm.pkg_name"
+              type="text"
+              placeholder=""
+            ></el-input>
+          </div>
+        </el-form-item>
+        <el-form-item
+          label="Hunl是否已开发完毕:"
+          prop="hunl_type"
+        >
+          <div class="form-one">
+            <span :class="{'color_success': data.ruleForm.hunl_type , 'color_warning': !data.ruleForm.hunl_type}">{{computedHunl}}</span>
+          </div>
         </el-form-item>
         <!-- conversion_flow_type -->
         <el-form-item
@@ -503,7 +512,8 @@ import {
   ApiGetCopyOfferData,
   ApiGetConfig,
   ApiGetDeviceCount,
-  ApiGetOfferDevice
+  ApiGetOfferDevice,
+  ApiGetHunl
 } from '@/api/oldbuzz'
 import _ from 'lodash'
 import site from './site'
@@ -739,7 +749,8 @@ let data: any = reactive({
     // category_id: '',
     campaign_id: '',
     note: '',
-    p_type: 2
+    p_type: 2,
+    hunl_type: false
   },
   rules: {
     channel: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
@@ -1036,6 +1047,31 @@ watch(() => data.ruleForm.tracking_link, (newVal, oldVal) => {
   // ! 此处如果加上会多执行一次
   // immediate: true,
   deep: true
+})
+
+// 监测package_name的变化实时获取hunl
+const getHunlFn = async () => {
+  if (data.ruleForm.pkg_name) {
+    const ajaxData = {
+      pkg_name: data.ruleForm.pkg_name
+    }
+    const res = await ApiGetHunl(ajaxData)
+    const { data: type } = res
+    data.ruleForm.hunl_type = type
+  }
+}
+const debouncegetHunlFn = _.debounce(getHunlFn, 1000)
+
+watch(() => data.ruleForm.pkg_name, async (newVal, oldVal) => {
+  debouncegetHunlFn()
+})
+
+const computedHunl = computed(() => {
+  if (data.ruleForm.hunl_type) {
+    return 'Hunl已开发完毕'
+  } else {
+    return 'Hunl没有开发完毕'
+  }
 })
 
 onMounted(() => {

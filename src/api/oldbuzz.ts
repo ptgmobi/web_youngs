@@ -155,3 +155,15 @@ export function ApiChangeToOffersDevice(data: ObjTy) {
     isAlertErrorMsg: false
   })
 }
+// 2022年10月10日15:59:45
+// 获取混量信息
+export function ApiGetHunl(data: ObjTy) {
+  return request({
+    url: '/obuzz/hunl',
+    data,
+    method: 'get',
+    bfLoading: false,
+    isParams: true,
+    isAlertErrorMsg: false
+  })
+}
