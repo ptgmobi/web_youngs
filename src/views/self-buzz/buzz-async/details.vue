@@ -969,7 +969,7 @@ const copyFun = () => {
   const offer_id = data.ruleForm.copy_offer
   getCopyOfferData(offer_id)
 }
-const handlePid = computed(() => {
+const handlePid = () => {
   const url = data.ruleForm.tracking_link
   const ap = data.ruleForm.attribute_provider
   let pid = ''
@@ -988,8 +988,7 @@ const handlePid = computed(() => {
     pid = pathnameArr.findLast(ele => ele)
   }
   data.ruleForm.pid = pid
-  return pid
-})
+}
 const countDevice = computed(() => {
   // data.search.deviceData.count
   let count = 0
@@ -1017,6 +1016,17 @@ const changeCountryFn = () => {
   proxy.$refs['ruleForm'].validateField('pid')
 }
 
+// 监测tracklink链接，取出pid
+watch(() => data.ruleForm.tracking_link, (newVal, oldVal) => {
+  // console.log(newVal)
+  if (pageType.value === '1') {
+    handlePid()
+  }
+}, {
+  // ! 此处如果加上会多执行一次
+  // immediate: true,
+  deep: true
+})
 
 onMounted(() => {
   getConfig()
