@@ -1,1 +1,0 @@
-import{d as t,g as s,o as a,c as o}from"./main-a1f62837.js";const e=t({setup(t){let{proxy:e}=s();return e.$router.push({path:"/tool/advsetting/list"}),(t,s)=>(a(),o("div",null,"Dsp Index"))}});export{e as default};
