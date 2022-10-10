@@ -140,7 +140,7 @@
           label="Hunl是否已开发完毕:"
           prop="hunl_type"
         >
-          <div class="form-one">
+          <div class="form-one fb">
             <span :class="{'color_success': data.ruleForm.hunl_type , 'color_warning': !data.ruleForm.hunl_type}">{{computedHunl}}</span>
           </div>
         </el-form-item>
@@ -1068,9 +1068,9 @@ watch(() => data.ruleForm.pkg_name, async (newVal, oldVal) => {
 
 const computedHunl = computed(() => {
   if (data.ruleForm.hunl_type) {
-    return 'Hunl已开发完毕'
+    return '是'
   } else {
-    return 'Hunl没有开发完毕'
+    return '否'
   }
 })
 
