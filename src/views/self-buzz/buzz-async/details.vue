@@ -207,7 +207,7 @@
         >
           <el-select
             v-model="data.ruleForm.country"
-            :multiple="pageType === '1'"
+            multiple
             filterable
             class="form-one"
             clearable
@@ -714,7 +714,7 @@ let data: any = reactive({
     event_name: '',
     payout: undefined,
     platform: '',
-    country: '',
+    country: [],
     max_clk_num: undefined,
     site_clk_limit: undefined,
     site_install_limitation: undefined,
@@ -902,8 +902,8 @@ const handleCopyOffer = (result: any, options: any) => {
   if (options.type === '2') {
     result.id = result['id']
     result.offer_id = result['offer_id']
-    // result.country = result['country'] ? result['country'].split(',') : []
   }
+  result.country = result['country'] ? result['country'].split(',') : []
   resData = {
     ...result,
     ...options
