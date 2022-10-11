@@ -143,7 +143,13 @@ const init = async () => {
   const res = await ApiGetUpdateOfferList(ajaxData)
   const result = res.data.data
   result.map(ele => {
-    ele.targeting = JSON.parse(ele.targeting)
+    if (ele.targeting) {
+      ele.targeting = JSON.parse(ele.targeting)
+    } else {
+      ele.targeting = {
+        geo: []
+      }
+    }
     return ele
   })
   data.list = result
