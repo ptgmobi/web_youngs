@@ -1,7 +1,7 @@
 <template>
 <div class="w100">
   <div class="flex jc-start">
-    <!-- <span v-text="(ruleForm.cutoff_start * 100).toFixed(0)"></span>
+    <span v-text="(ruleForm.cutoff_start * 100).toFixed(0)"></span>
     %
     <span>-</span>
     <span v-text="(ruleForm.cutoff_end * 100).toFixed(0)"></span>
@@ -11,8 +11,8 @@
     ） （
     <span>选中设备数:</span>
     <span v-text="handleDeviceNum.judge"></span>
-    ） -->
-    {{cutoff[0]}}-{{cutoff[1]}}
+    ）
+    <!-- {{cutoff[0]}}-{{cutoff[1]}} -->
   </div>
   <div class="p0-10">
     <el-slider
@@ -94,9 +94,9 @@ const setCutoff = (newVal: Array<number>) => {
   emit('up', ruleForm)
 }
 
-// watchEffect(() => {
-//   handleDeviceCount()
-// })
+watchEffect(() => {
+  handleDeviceCount()
+})
 
 watch(() => props.query, (newVal, oldVal) => {
   if (newVal.cutoff_start !== void 0 && newVal.cutoff_end !== void 0) {
