@@ -139,6 +139,18 @@ watchEffect(() => {
   const site_value = state.ruleForm.site_value.join(',')
   emit('update:msg', site_value)
 })
+
+const addListFn = (num) => {
+  clearSiteList()
+  state.ruleForm.site_num = num
+  addRandomFn()
+  const site_value = state.ruleForm.site_value.join(',')
+  emit('update:msg', site_value)
+  console.log(site_value)
+  return true
+}
+
+defineExpose({ addListFn })
 </script>
 <style scoped lang="scss">
 .search-con{

@@ -155,6 +155,7 @@
         >
           <div class="flex jc-start ai-center form-one">
             <site-list
+              ref="refChildren"
               v-model:msg="state.ruleForm.site_value"
             ></site-list>
           </div>
@@ -177,6 +178,7 @@
 <script setup lang="ts">
 import siteList from './siteList.vue'
 import type { ElForm } from 'element-plus'
+let refChildren: any = ref<any>()
 const emit = defineEmits(['update:visible', 'updateData'])
 type FormInstance = InstanceType<typeof ElForm>
 const ruleFormRef = ref<FormInstance>()
@@ -317,5 +319,14 @@ const submitFn = () => {
   emit('updateData', state.ruleForm)
   emit('update:visible', false)
 }
+
+let childRef = ref('childRef')
+let childMethod = (num) => {
+  refChildren.value.addListFn(num)
+  emit('updateData', state.ruleForm)
+  return true
+}
+
+defineExpose({ childRef, childMethod })
 
 </script>

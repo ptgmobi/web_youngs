@@ -341,6 +341,44 @@
             ></el-option>
           </el-select>
         </el-form-item>
+        <!-- site_install_limit_value_min -->
+        <el-form-item
+          label="Site Install Limit Min:"
+          prop="site_install_limit_value_min"
+        >
+          <div class="flex jc-start ai-center form-one">
+            <el-input
+              v-model="state.ruleForm.site_install_limit_value_min"
+              placeholder="Please input"
+              class="input-with-select"
+              type="number"
+              setup="1"
+            />
+          </div>
+        </el-form-item>
+        <!-- site_install_limit_value_max -->
+        <el-form-item
+          label="Site Install Limit Max:"
+          prop="site_install_limit_value_max"
+        >
+          <div class="flex jc-start ai-center form-one">
+            <el-input
+              v-model="state.ruleForm.site_install_limit_value_max"
+              placeholder="Please input"
+              class="input-with-select"
+              type="number"
+              setup="1"
+            />
+          </div>
+        </el-form-item>
+        <el-form-item
+          label="site_install_limit_value:"
+          prop="site_install_limit_value"
+        >
+          <div class="flex jc-start ai-center form-one">
+            {{state.ruleForm.site_install_limit_value}}
+          </div>
+        </el-form-item>
         <!-- Site Value -->
         <el-form-item
           label="Site Value:"
@@ -452,6 +490,7 @@
       width="70%"
     >
       <site
+        ref="refChildren"
         :msg="state.ruleForm"
         @updateData="updateData"
         v-model:visible="dialogVisibleSite"
@@ -496,6 +535,9 @@ import type { FormInstance, FormRules } from 'element-plus'
 
 let { proxy }: any = getCurrentInstance()
 const router = useRouter()
+
+let refChildren: any = ref<any>()
+
 const message = {
   required: '此项必填'
 }
@@ -557,6 +599,26 @@ let validatorCountry = (rule: any, value: Array<string>, callback: (arg0: Error 
   }
 }
 
+let validatorNumberIsInteger = (rule: any, value: Array<string>, callback: (arg0: Error | undefined) => void) => {
+  if (value) {
+    if (Number.isInteger(Number(value))) {
+      callback(undefined)
+    } else {
+      callback(new Error('必须为整数'))
+    }
+  } else {
+    callback(undefined)
+  }
+}
+
+let validatorNumberFn1 = (rule: any, value: Array<string>, callback: (arg0: Error | undefined) => void) => {
+  if (state.ruleForm.site_install_limit_value_min < state.ruleForm.site_install_limit_value_max) {
+    callback(undefined)
+  } else {
+    callback(new Error('min必须小于max'))
+  }
+}
+
 interface dataType {
   id: number | undefined
   offer_id: string
@@ -589,6 +651,9 @@ interface dataType {
   fenix_site: any
   fenix_cvr: any
   site_black_value: string
+  site_install_limit_value_min: number
+  site_install_limit_value_max: number
+  site_install_limit_value: Array<number>
 }
 const ruleForm = ref<FormInstance>()
 const defaultRuleForm: dataType = {
@@ -622,7 +687,11 @@ const defaultRuleForm: dataType = {
   description: '',
   fenix_site: {},
   fenix_cvr: {},
-  site_black_value: ''
+  site_black_value: '',
+  site_install_limit_value_min: 4,
+  site_install_limit_value_max: 6,
+  site_install_limit_value: [],
+
 }
 let loading = ref(false)
 const state = reactive({
@@ -680,6 +749,10 @@ const state = reactive({
       {
         value: 'rule_value',
         label: '固定值'
+      },
+      {
+        value: 'site_install_limit',
+        label: '自动_install数'
       }
     ],
     attribute_provider: [
@@ -708,23 +781,6 @@ const state = reactive({
         label: 'Lazada'
       }
     ]
-  },
-  rules: {
-    channel: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    channel_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    status: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    title: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    pkg: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    platform: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    country: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] },
-      { validator: validatorCountry, trigger: ['blur', 'change'] }
-    ],
-    revenue: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    traffic: [{ required: false, validator: validatorTraffic, trigger: ['blur', 'change'] }],
-    adv_tracking_link: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    site_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-    is_s2s: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
   },
   choiceRules: {
     no_required: [{ required: false }],
@@ -757,11 +813,22 @@ const rules = reactive<FormRules>({
   adv_tracking_link: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
   site_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
   is_s2s: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
+  site_install_limit_value_min: [
+    { required: true, message: message.required, trigger: ['blur', 'change'] },
+    { validator: validatorNumberIsInteger, trigger: ['blur', 'change'] },
+    { validator: validatorNumberFn1, trigger: ['blur', 'change'] },
+  ],
+
+  site_install_limit_value_max: [
+    { required: true, message: message.required, trigger: ['blur', 'change'] },
+    { validator: validatorNumberIsInteger, trigger: ['blur', 'change'] },
+    { validator: validatorNumberFn1, trigger: ['blur', 'change'] },
+  ],
 })
 let name: any = ref('')
 let id: any = ref('')
 let type: any = ref('')
-let dialogVisibleSite: any = ref(false)
+let dialogVisibleSite: any = ref(true)
 let dialogVisibleAutoCvr: any = ref(false)
 const handleTraffic = (arr: Array<any>) => {
   const finalArr: Array<any> = []
@@ -778,6 +845,26 @@ const handleTraffic = (arr: Array<any>) => {
   })
   return finalArr
 }
+
+const createBigSiteListFn = () => {
+  if (type.value = 'create') {
+    let count = state.ruleForm.traffic.reduce((prev, cur) => {
+      // 只有开的时候才加
+      if (cur.pub_status.toString() == '1') {
+        prev = prev + Number(cur.cap_daily)
+      }
+      return prev
+    }, 0)
+    console.log(count)
+    let n = count / state.ruleForm.site_install_limit_value_max * 0.2
+    console.log(n)
+    n = Math.ceil(n)
+    console.log(n)
+    // 触发site组件，批量新增
+    refChildren.value.childMethod(n)
+  }
+}
+
 const submitFn = async () => {
   loading.value = true
   const baseAjax = _.cloneDeep(state.ruleForm)
@@ -810,8 +897,8 @@ const submitFn = async () => {
   if (fenix_cvr && Object.keys(fenix_cvr).length === 0) {
     delete ajaxData.fenix_cvr
   }
-  // console.log(ajaxData)
-  // return ajaxData
+  console.log(ajaxData)
+  return ajaxData
   let res: any
   // 创建
   if (type.value === 'create') {
@@ -866,6 +953,8 @@ const getConversionFlowLabelToValue = (s: any) => {
 // ! 使用新的写法 2022-04-20 09:35:09
 const saveFun = async (formEl: FormInstance | undefined) => {
   console.log(formEl)
+  // 新建时触发
+  createBigSiteListFn()
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
@@ -906,6 +995,11 @@ let busOffer: any = reactive({
 })
 onMounted(async () => {
   init()
+  // ! 此处必须有,要不然没法获取到子组件的方法
+  dialogVisibleSite.value = false
+  // setTimeout(()=> {
+  //   console.log(refChildren.value)
+  // }, 1000)
 })
 const init = async () => {
   name.value = router.currentRoute.value.name
@@ -969,6 +1063,18 @@ watch(
     deep: true
   }
 )
+
+watchEffect(() => {
+  let min = Number(state.ruleForm.site_install_limit_value_min)
+  let max = Number(state.ruleForm.site_install_limit_value_max)
+  if (Number.isInteger(min) && Number.isInteger(max) && min < max) {
+    let arr: Array<number> = []
+    for (let index = min; index < max + 1; index++) {
+      arr.push(index)
+    }
+    state.ruleForm.site_install_limit_value = arr
+  }
+})
 // !!! 会陷入死循环，舍弃此用法
 const saveTraffic = (data: any) => {
   console.log(data)
