@@ -897,6 +897,7 @@ const submitFn = async () => {
   if (fenix_cvr && Object.keys(fenix_cvr).length === 0) {
     delete ajaxData.fenix_cvr
   }
+  ajaxData.site_install_limit_value = ajaxData.site_install_limit_value.join(',')
   console.log(ajaxData)
   // return ajaxData
   let res: any
@@ -1024,6 +1025,10 @@ const getOfferForOne = async () => {
   state.ruleForm.country = [offerData.country]
   state.search.adv_offer = offerData.adv_offer
   state.ruleForm.traffic = offerData.traffic ? JSON.parse(offerData.traffic) : []
+  state.ruleForm.site_install_limit_value = offerData.site_install_limit_value ? offerData.site_install_limit_value.split(',') : []
+  let site_install_limit_value = [...state.ruleForm.site_install_limit_value]
+  state.ruleForm.site_install_limit_value_min = site_install_limit_value.shift() ?? 0
+  state.ruleForm.site_install_limit_value_max = site_install_limit_value.pop() ?? 0
   busOffer = toRaw(state.ruleForm)
 }
 const judgeSiteType = computed(() => {
