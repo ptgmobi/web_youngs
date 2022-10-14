@@ -898,7 +898,7 @@ const submitFn = async () => {
     delete ajaxData.fenix_cvr
   }
   console.log(ajaxData)
-  return ajaxData
+  // return ajaxData
   let res: any
   // 创建
   if (type.value === 'create') {
