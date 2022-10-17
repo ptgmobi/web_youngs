@@ -1049,9 +1049,6 @@ const getOfferForOne = async () => {
   state.ruleForm.country = [offerData.country]
   state.search.adv_offer = offerData.adv_offer
   state.ruleForm.traffic = offerData.traffic ? JSON.parse(offerData.traffic) : []
-  let site_install_limit_value_arr: Array<any> = state.ruleForm.site_install_limit_value ? state.ruleForm.site_install_limit_value.split(',') : []
-  state.ruleForm.site_install_limit_min = site_install_limit_value_arr.shift() ?? 4
-  state.ruleForm.site_install_limit_max = site_install_limit_value_arr.pop() ?? 6
   busOffer = toRaw(state.ruleForm)
 }
 const judgeSiteType = computed(() => {
