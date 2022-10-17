@@ -17,6 +17,11 @@
         >
           <div class="flex jc-start ai-center form-one">
             <span v-text="state.ruleForm.offer_id"></span>
+            <el-input
+              v-model="state.ruleForm.offer_id"
+              placeholder="Please input"
+              class="input-with-select"
+            />
           </div>
         </el-form-item>
         <!-- Adv Offer -->
@@ -341,15 +346,15 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <!-- site_install_limit_value_min -->
+        <!-- site_install_limit_min -->
         <el-form-item
           label="Site Install Limit Min:"
-          prop="site_install_limit_value_min"
+          prop="site_install_limit_min"
           v-if="state.ruleForm.site_type === 'site_install_limit'"
         >
           <div class="flex jc-start ai-center form-one">
             <el-input
-              v-model="state.ruleForm.site_install_limit_value_min"
+              v-model="state.ruleForm.site_install_limit_min"
               placeholder="Please input"
               class="input-with-select"
               type="number"
@@ -357,15 +362,15 @@
             />
           </div>
         </el-form-item>
-        <!-- site_install_limit_value_max -->
+        <!-- site_install_limit_max -->
         <el-form-item
           label="Site Install Limit Max:"
-          prop="site_install_limit_value_max"
+          prop="site_install_limit_max"
           v-if="state.ruleForm.site_type === 'site_install_limit'"
         >
           <div class="flex jc-start ai-center form-one">
             <el-input
-              v-model="state.ruleForm.site_install_limit_value_max"
+              v-model="state.ruleForm.site_install_limit_max"
               placeholder="Please input"
               class="input-with-select"
               type="number"
@@ -614,7 +619,7 @@ let validatorNumberIsInteger = (rule: any, value: Array<string>, callback: (arg0
 }
 
 let validatorNumberFn1 = (rule: any, value: Array<string>, callback: (arg0: Error | undefined) => void) => {
-  if (state.ruleForm.site_install_limit_value_min < state.ruleForm.site_install_limit_value_max) {
+  if (state.ruleForm.site_install_limit_min < state.ruleForm.site_install_limit_max) {
     callback(undefined)
   } else {
     callback(new Error('min必须小于max'))
@@ -653,8 +658,8 @@ interface dataType {
   fenix_site: any
   fenix_cvr: any
   site_black_value: string
-  site_install_limit_value_min: number
-  site_install_limit_value_max: number
+  site_install_limit_min: number
+  site_install_limit_max: number
   site_install_limit_value: string
   cap_total: number
 }
@@ -691,8 +696,8 @@ const defaultRuleForm: dataType = {
   fenix_site: {},
   fenix_cvr: {},
   site_black_value: '',
-  site_install_limit_value_min: 4,
-  site_install_limit_value_max: 6,
+  site_install_limit_min: 4,
+  site_install_limit_max: 6,
   site_install_limit_value: '',
   cap_total: 0
 
@@ -817,13 +822,13 @@ const rules = reactive<FormRules>({
   adv_tracking_link: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
   site_type: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
   is_s2s: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
-  site_install_limit_value_min: [
+  site_install_limit_min: [
     { required: true, message: message.required, trigger: ['blur', 'change'] },
     { validator: validatorNumberIsInteger, trigger: ['blur', 'change'] },
     { validator: validatorNumberFn1, trigger: ['blur', 'change'] },
   ],
 
-  site_install_limit_value_max: [
+  site_install_limit_max: [
     { required: true, message: message.required, trigger: ['blur', 'change'] },
     { validator: validatorNumberIsInteger, trigger: ['blur', 'change'] },
     { validator: validatorNumberFn1, trigger: ['blur', 'change'] },
@@ -860,7 +865,7 @@ const createBigSiteListFn = () => {
       return prev
     }, 0)
     console.log(count)
-    let n = count / state.ruleForm.site_install_limit_value_max * 0.2
+    let n = count / state.ruleForm.site_install_limit_max * 0.2
     console.log(n)
     n = Math.ceil(n)
     console.log(n)
@@ -894,8 +899,8 @@ const submitFn = async () => {
   ajaxData.country = baseAjax.country[0]
   ajaxData.revenue = parseFloat(ajaxData.revenue)
   ajaxData.target_cvr = parseFloat(ajaxData.target_cvr)
-  ajaxData.site_install_limit_value_min = parseFloat(ajaxData.site_install_limit_value_min)
-  ajaxData.site_install_limit_value_max = parseFloat(ajaxData.site_install_limit_value_max)
+  ajaxData.site_install_limit_min = parseFloat(ajaxData.site_install_limit_min)
+  ajaxData.site_install_limit_max = parseFloat(ajaxData.site_install_limit_max)
   if (ajaxData.fenix_site.day_limit) {
     ajaxData.fenix_site.day_limit = parseFloat(ajaxData.fenix_site.day_limit)
   }
@@ -1045,8 +1050,8 @@ const getOfferForOne = async () => {
   state.search.adv_offer = offerData.adv_offer
   state.ruleForm.traffic = offerData.traffic ? JSON.parse(offerData.traffic) : []
   let site_install_limit_value_arr: Array<any> = state.ruleForm.site_install_limit_value ? state.ruleForm.site_install_limit_value.split(',') : []
-  state.ruleForm.site_install_limit_value_min = site_install_limit_value_arr.shift() ?? 4
-  state.ruleForm.site_install_limit_value_max = site_install_limit_value_arr.pop() ?? 6
+  state.ruleForm.site_install_limit_min = site_install_limit_value_arr.shift() ?? 4
+  state.ruleForm.site_install_limit_max = site_install_limit_value_arr.pop() ?? 6
   busOffer = toRaw(state.ruleForm)
 }
 const judgeSiteType = computed(() => {
@@ -1088,8 +1093,8 @@ watch(
 )
 
 watchEffect(() => {
-  let min_str = state.ruleForm.site_install_limit_value_min
-  let max_str = state.ruleForm.site_install_limit_value_max
+  let min_str = state.ruleForm.site_install_limit_min
+  let max_str = state.ruleForm.site_install_limit_max
   let min = Number(min_str)
   let max = Number(max_str)
   if (min && max && Number.isInteger(min) && Number.isInteger(max) && min < max) {

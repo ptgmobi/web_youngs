@@ -8,7 +8,7 @@ export default [
     meta: {
       title: 'advertiser',
       elSvgIcon: 'Setting',
-      code: 12
+      code: 100000
     },
     children: [
       {
@@ -19,7 +19,7 @@ export default [
         meta: {
           title: 'Advertiser',
           elSvgIcon: 'Edit',
-          code: 30,
+          code: 100001,
           cachePage: true,
           leaveRmCachePage: false
         }
@@ -30,7 +30,7 @@ export default [
         component: () => import('@/views/dsp-advertiser/advertiser/details'),
         meta: {
           title: 'Advertiser Create',
-          code: 31
+          code: 100002
         },
         hidden: true
       },
@@ -40,7 +40,7 @@ export default [
         component: () => import('@/views/dsp-advertiser/advertiser/details'),
         meta: {
           title: 'Advertiser Edit',
-          code: 32
+          code: 100003
         },
         hidden: true
       },
