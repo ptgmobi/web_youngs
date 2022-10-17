@@ -345,6 +345,7 @@
         <el-form-item
           label="Site Install Limit Min:"
           prop="site_install_limit_value_min"
+          v-if="state.ruleForm.site_type === 'site_install_limit'"
         >
           <div class="flex jc-start ai-center form-one">
             <el-input
@@ -360,6 +361,7 @@
         <el-form-item
           label="Site Install Limit Max:"
           prop="site_install_limit_value_max"
+          v-if="state.ruleForm.site_type === 'site_install_limit'"
         >
           <div class="flex jc-start ai-center form-one">
             <el-input
@@ -371,14 +373,14 @@
             />
           </div>
         </el-form-item>
-        <el-form-item
+        <!-- <el-form-item
           label="site_install_limit_value:"
           prop="site_install_limit_value"
         >
           <div class="flex jc-start ai-center form-one">
             {{state.ruleForm.site_install_limit_value}}
           </div>
-        </el-form-item>
+        </el-form-item> -->
         <!-- Site Value -->
         <el-form-item
           label="Site Value:"
@@ -1086,14 +1088,18 @@ watch(
 )
 
 watchEffect(() => {
-  let min = Number(state.ruleForm.site_install_limit_value_min)
-  let max = Number(state.ruleForm.site_install_limit_value_max)
-  if (Number.isInteger(min) && Number.isInteger(max) && min < max) {
+  let min_str = state.ruleForm.site_install_limit_value_min
+  let max_str = state.ruleForm.site_install_limit_value_max
+  let min = Number(min_str)
+  let max = Number(max_str)
+  if (min && max && Number.isInteger(min) && Number.isInteger(max) && min < max) {
     let arr: Array<number> = []
     for (let index = min; index < max + 1; index++) {
       arr.push(index)
     }
     state.ruleForm.site_install_limit_value = arr.join(',')
+  } else {
+    state.ruleForm.site_install_limit_value = ''
   }
 })
 // !!! 会陷入死循环，舍弃此用法
