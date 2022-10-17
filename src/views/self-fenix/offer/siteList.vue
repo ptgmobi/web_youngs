@@ -1,8 +1,5 @@
 <template>
   <div class="w100">
-    <div class="mb-10">
-      
-    </div>
     <!-- 操作 -->
     <div class="control-box flex jc-between ai-start w100">
       <el-input
@@ -135,9 +132,17 @@ const uploadData = (data) => {
     state.ruleForm.site_value.push(ele[0])
   })
 }
-watchEffect(() => {
+
+watch (() => props.msg, (newVal, oldVal) => {
+  state.ruleForm.site_value = handleFn(props.msg)
+})
+
+watch(() => state.ruleForm.site_value, (newVal, oldVal) => {
   const site_value = state.ruleForm.site_value.join(',')
   emit('update:msg', site_value)
+}, {
+  deep: true,
+  immediate: true
 })
 
 const addListFn = (num) => {
@@ -145,9 +150,9 @@ const addListFn = (num) => {
   state.ruleForm.site_num = num
   addRandomFn()
   const site_value = state.ruleForm.site_value.join(',')
-  emit('update:msg', site_value)
   console.log(site_value)
-  return true
+  emit('update:msg', site_value)
+  return site_value
 }
 
 defineExpose({ addListFn })

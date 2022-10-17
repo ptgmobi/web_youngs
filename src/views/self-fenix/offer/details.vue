@@ -653,7 +653,8 @@ interface dataType {
   site_black_value: string
   site_install_limit_value_min: number
   site_install_limit_value_max: number
-  site_install_limit_value: Array<number>
+  site_install_limit_value: string
+  cap_total: number
 }
 const ruleForm = ref<FormInstance>()
 const defaultRuleForm: dataType = {
@@ -690,7 +691,8 @@ const defaultRuleForm: dataType = {
   site_black_value: '',
   site_install_limit_value_min: 4,
   site_install_limit_value_max: 6,
-  site_install_limit_value: [],
+  site_install_limit_value: '',
+  cap_total: 0
 
 }
 let loading = ref(false)
@@ -847,7 +849,7 @@ const handleTraffic = (arr: Array<any>) => {
 }
 
 const createBigSiteListFn = () => {
-  if (type.value = 'create') {
+  if (type.value === 'create') {
     let count = state.ruleForm.traffic.reduce((prev, cur) => {
       // 只有开的时候才加
       if (cur.pub_status.toString() == '1') {
@@ -865,6 +867,18 @@ const createBigSiteListFn = () => {
   }
 }
 
+const judgeCapTotalFn = (list) => {
+  let count = list.reduce((prev, cur) => {
+    // 只有开的时候才加
+    if (cur.pub_status.toString() == '1') {
+      prev = prev + Number(cur.cap_daily)
+    }
+    return prev
+  }, 0)
+  console.log(count)
+  return count
+}
+
 const submitFn = async () => {
   loading.value = true
   const baseAjax = _.cloneDeep(state.ruleForm)
@@ -878,6 +892,8 @@ const submitFn = async () => {
   ajaxData.country = baseAjax.country[0]
   ajaxData.revenue = parseFloat(ajaxData.revenue)
   ajaxData.target_cvr = parseFloat(ajaxData.target_cvr)
+  ajaxData.site_install_limit_value_min = parseFloat(ajaxData.site_install_limit_value_min)
+  ajaxData.site_install_limit_value_max = parseFloat(ajaxData.site_install_limit_value_max)
   if (ajaxData.fenix_site.day_limit) {
     ajaxData.fenix_site.day_limit = parseFloat(ajaxData.fenix_site.day_limit)
   }
@@ -897,10 +913,11 @@ const submitFn = async () => {
   if (fenix_cvr && Object.keys(fenix_cvr).length === 0) {
     delete ajaxData.fenix_cvr
   }
-  ajaxData.site_install_limit_value = ajaxData.site_install_limit_value.join(',')
+  ajaxData.cap_total = judgeCapTotalFn(baseAjax.traffic)
   console.log(ajaxData)
   // return ajaxData
   let res: any
+  console.log(type.value)
   // 创建
   if (type.value === 'create') {
     res = await ApiCreateOffer(ajaxData)
@@ -922,6 +939,7 @@ const submitFn = async () => {
 const editDiySiteFun = () => {
   dialogVisibleSite.value = true
 }
+
 const getConversionFlowValueToLabel = (n: any) => {
   if (n) {
     const obj = state.options.conversion_flow.find((ele) => {
@@ -954,8 +972,7 @@ const getConversionFlowLabelToValue = (s: any) => {
 // ! 使用新的写法 2022-04-20 09:35:09
 const saveFun = async (formEl: FormInstance | undefined) => {
   console.log(formEl)
-  // 新建时触发
-  createBigSiteListFn()
+  // createBigSiteListFn()
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
@@ -1025,10 +1042,9 @@ const getOfferForOne = async () => {
   state.ruleForm.country = [offerData.country]
   state.search.adv_offer = offerData.adv_offer
   state.ruleForm.traffic = offerData.traffic ? JSON.parse(offerData.traffic) : []
-  state.ruleForm.site_install_limit_value = offerData.site_install_limit_value ? offerData.site_install_limit_value.split(',') : []
-  let site_install_limit_value = [...state.ruleForm.site_install_limit_value]
-  state.ruleForm.site_install_limit_value_min = site_install_limit_value.shift() ?? 0
-  state.ruleForm.site_install_limit_value_max = site_install_limit_value.pop() ?? 0
+  let site_install_limit_value_arr: Array<any> = state.ruleForm.site_install_limit_value ? state.ruleForm.site_install_limit_value.split(',') : []
+  state.ruleForm.site_install_limit_value_min = site_install_limit_value_arr.shift() ?? 4
+  state.ruleForm.site_install_limit_value_max = site_install_limit_value_arr.pop() ?? 6
   busOffer = toRaw(state.ruleForm)
 }
 const judgeSiteType = computed(() => {
@@ -1077,7 +1093,7 @@ watchEffect(() => {
     for (let index = min; index < max + 1; index++) {
       arr.push(index)
     }
-    state.ruleForm.site_install_limit_value = arr
+    state.ruleForm.site_install_limit_value = arr.join(',')
   }
 })
 // !!! 会陷入死循环，舍弃此用法

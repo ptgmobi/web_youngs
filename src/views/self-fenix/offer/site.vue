@@ -178,6 +178,7 @@
 <script setup lang="ts">
 import siteList from './siteList.vue'
 import type { ElForm } from 'element-plus'
+import _ from 'lodash'
 let refChildren: any = ref<any>()
 const emit = defineEmits(['update:visible', 'updateData'])
 type FormInstance = InstanceType<typeof ElForm>
@@ -275,8 +276,7 @@ const judgeSiteType = computed(() => {
 watch(() => {
   return props.msg
 }, (newVal, oldVal) => {
-  // console.log(newVal)
-  let fenixSiteData = props.msg.fenix_site
+  let fenixSiteData = _.cloneDeep(props.msg.fenix_site)
   let status_day = fenixSiteData.status_day || 2
   let status_hour = fenixSiteData.status_hour || 2
   // !
@@ -312,7 +312,6 @@ const saveFun = (formEl: FormInstance | undefined) => {
       return false
     }
   })
-  
 }
 
 const submitFn = () => {
@@ -322,7 +321,9 @@ const submitFn = () => {
 
 let childRef = ref('childRef')
 let childMethod = (num) => {
-  refChildren.value.addListFn(num)
+  let site_value = refChildren.value.addListFn(num)
+  // state.ruleForm.site_value = site_value
+  console.log(state.ruleForm.site_value)
   emit('updateData', state.ruleForm)
   return true
 }
