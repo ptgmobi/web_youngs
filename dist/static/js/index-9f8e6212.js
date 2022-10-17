@@ -1,0 +1,1 @@
+import{d as s,o as t,c as e,x as a,y as l}from"./main-0f2b385e.js";const i={class:"w100 flex jc-between p10-20"},o={class:"mr-10"},p=a("div",{class:"split-box"},null,-1),r=s({props:{title:{type:String,default:""}},setup(s){const r=s;return(s,c)=>(t(),e("div",i,[a("div",o,l(r.title),1),p]))}});export{r as _};
