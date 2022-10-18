@@ -383,6 +383,8 @@
           prop="site_install_limit_value"
         >
           <div class="flex jc-start ai-center form-one">
+            {{state.ruleForm.cap_total}}
+            <br>
             {{state.ruleForm.site_install_limit_value}}
           </div>
         </el-form-item> -->
@@ -619,10 +621,10 @@ let validatorNumberIsInteger = (rule: any, value: Array<string>, callback: (arg0
 }
 
 let validatorNumberFn1 = (rule: any, value: Array<string>, callback: (arg0: Error | undefined) => void) => {
-  if (state.ruleForm.site_install_limit_min < state.ruleForm.site_install_limit_max) {
+  if (state.ruleForm.site_install_limit_max >= state.ruleForm.site_install_limit_min) {
     callback(undefined)
   } else {
-    callback(new Error('min必须小于max'))
+    callback(new Error('max必须>=min'))
   }
 }
 
@@ -1094,7 +1096,7 @@ watchEffect(() => {
   let max_str = state.ruleForm.site_install_limit_max
   let min = Number(min_str)
   let max = Number(max_str)
-  if (min && max && Number.isInteger(min) && Number.isInteger(max) && min < max) {
+  if (min && max && Number.isInteger(min) && Number.isInteger(max) && max >= min) {
     let arr: Array<number> = []
     for (let index = min; index < max + 1; index++) {
       arr.push(index)
