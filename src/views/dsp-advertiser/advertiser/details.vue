@@ -15,7 +15,7 @@
       <div class="content-con from-one flex column">
         <el-form-item
           class="self-el-form-item"
-          label="名称:"
+          label="广告主名称:"
           prop="name"
         >
           <el-input
@@ -27,20 +27,20 @@
         </el-form-item>
         <el-form-item
           class="self-el-form-item"
-          label="Email:"
-          prop="email"
+          label="描述:"
+          prop="desc"
         >
           <el-input
-            v-model.trim="state.ruleForm.email"
+            v-model.trim="state.ruleForm.desc"
             class="form-one"
             placeholder=""
-            :disabled="type === 'edit'"
+            type="textarea"
           >
           </el-input>
         </el-form-item>
         <el-form-item
           class="self-el-form-item"
-          label="流量来源:"
+          label="广告主类型:"
           prop="flow_source"
         >
           <el-select
@@ -60,7 +60,7 @@
         </el-form-item>
         <el-form-item
           class="self-el-form-item"
-          label="描述:"
+          label="广告主地址:"
           prop="desc"
         >
           <el-input
@@ -71,36 +71,39 @@
           >
           </el-input>
         </el-form-item>
+        <el-form-item
+          class="self-el-form-item"
+          label="行业分类:"
+          prop="flow_source"
+        >
+          <el-select
+            v-model="state.ruleForm.flow_source"
+            filterable
+            class="form-one"
+            clearable
+            placeholder=""
+          >
+            <el-option
+              v-for="item in state.options.flow_source"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          class="self-el-form-item"
+          label="Logo:"
+          prop="flow_source"
+        >
+          上传图片
+        </el-form-item>
       </div>
       <split-button title="Offer信息"></split-button>
       <div class="content-con from-one flex column">
         <el-form-item
           class="self-el-form-item"
-          label="公司全称:"
-          prop="company"
-        >
-          <el-input
-            v-model.trim="state.ruleForm.company"
-            class="form-one"
-            placeholder=""
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item
-          class="self-el-form-item"
-          label="Domain:"
-          prop="domain"
-        >
-          <el-input
-            v-model.trim="state.ruleForm.domain"
-            class="form-one"
-            placeholder=""
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item
-          class="self-el-form-item"
-          label="国家/地区:"
+          label="选择时区:"
           prop="country"
         >
           <el-select
@@ -118,99 +121,59 @@
             ></el-option>
           </el-select>
         </el-form-item>
+        
         <el-form-item
           class="self-el-form-item"
-          label="通信地址:"
-          prop="address"
+          label="转化单价（美元）:"
+          prop="company"
         >
           <el-input
-            v-model.trim="state.ruleForm.address"
+            v-model.trim="state.ruleForm.company"
             class="form-one"
             placeholder=""
-            type="textarea"
           >
           </el-input>
         </el-form-item>
+
         <el-form-item
           class="self-el-form-item"
-          label="电话:"
-          prop="phone"
+          label="日花费上限（美元）:"
+          prop="company"
         >
           <el-input
-            v-model.trim="state.ruleForm.phone"
+            v-model.trim="state.ruleForm.company"
             class="form-one"
             placeholder=""
-            
           >
           </el-input>
         </el-form-item>
-        <!-- skype -->
+
         <el-form-item
           class="self-el-form-item"
-          label="Skype:"
-          prop="skype"
+          label="强制流量占比%:"
+          prop="company"
         >
           <el-input
-            v-model.trim="state.ruleForm.skype"
+            v-model.trim="state.ruleForm.company"
             class="form-one"
             placeholder=""
-            
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item
-          class="self-el-form-item"
-          label="微信:"
-          prop="wechat"
-        >
-          <el-input
-            v-model.trim="state.ruleForm.wechat"
-            class="form-one"
-            placeholder=""
-            
           >
           </el-input>
         </el-form-item>
       </div>
       <split-button title="追踪信息"></split-button>
       <div class="content-con from-one flex column">
+        
         <el-form-item
           class="self-el-form-item"
-          label="流量类型:"
-          prop="flow_type"
-        >
-          <el-checkbox-group v-model="state.ruleForm.flow_type">
-            <el-checkbox
-              v-for="item in state.options.flow_type"
-              :label="item.value"
-              name="type"
-            >{{item.label}}
-            </el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item
-          class="self-el-form-item"
-          label="广告样式:"
-          prop="ad_type"
-        >
-          <el-checkbox-group v-model="state.ruleForm.ad_type">
-            <el-checkbox
-              v-for="item in state.options.ad_type"
-              :label="item.value"
-              name="type"
-            >{{item.label}}
-            </el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item
-          label="流量所属地区:"
+          label="第三方监测平台:"
           prop="flow_region"
         >
           <el-select
             v-model="state.ruleForm.flow_region_type"
             filterable
             placeholder="请选择"
-            class="form-one-left"
+            class="form-one"
           >
             <el-option
               v-for="item in state.options.choice_type"
@@ -219,144 +182,57 @@
               :value="item.value"
             ></el-option>
           </el-select>
-          <el-select
-            v-model="state.ruleForm.flow_region"
-            filterable
-            clearable
-            placeholder=""
-            multiple
-            class="form-one-right"
-          >
-            <el-option
-              v-for="item in state.options.country"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            ></el-option>
-          </el-select>
         </el-form-item>
-        <el-form-item
-          label="服务器所在地区:"
-          prop="service_region"
-        >
-          <el-select
-            v-model="state.ruleForm.service_region_type"
-            filterable
-            placeholder="请选择"
-            class="form-one-left"
-          >
-            <el-option
-              v-for="item in state.options.choice_type"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-          <el-select
-            v-model="state.ruleForm.service_region"
-            filterable
-            clearable
-            placeholder=""
-            multiple
-            class="form-one-right"
-          >
-            <el-option
-              v-for="item in state.options.country"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
+
         <el-form-item
           class="self-el-form-item"
-          label="竞价协议:"
-          prop="bidding_agreement"
+          label="点击监测链接:"
+          prop="desc"
         >
-          <el-select
-            v-model="state.ruleForm.bidding_agreement"
-            filterable
+          <el-input
+            v-model.trim="state.ruleForm.desc"
             class="form-one"
-            clearable
             placeholder=""
+            type="textarea"
           >
-            <el-option
-              v-for="item in state.options.bidding_agreement"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
+          </el-input>
         </el-form-item>
+
         <el-form-item
           class="self-el-form-item"
-          label="竞价类型:"
-          prop="bidding_type"
+          label="曝光监测链接:"
+          prop="desc"
         >
-          <el-select
-            v-model="state.ruleForm.bidding_type"
-            filterable
+          <el-input
+            v-model.trim="state.ruleForm.desc"
             class="form-one"
-            clearable
             placeholder=""
+            type="textarea"
           >
-            <el-option
-              v-for="item in state.options.bidding_type"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
+          </el-input>
         </el-form-item>
-        <el-form-item
-          class="self-el-form-item"
-          label="交易货币:"
-          prop="currency"
-        >
-          <el-select
-            v-model="state.ruleForm.currency"
-            filterable
-            class="form-one"
-            clearable
-            placeholder=""
-          >
-            <el-option
-              v-for="item in state.options.currency"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
+        
       </div>
       <split-button title="数据回传"></split-button>
       <div class="content-con from-one flex column">
         <el-form-item
           class="self-el-form-item"
-          label="底价($):"
-          prop="floor_price"
+          label="回传方式:"
+          prop="flow_region"
         >
-          <el-input
-            v-model.trim="state.ruleForm.floor_price"
+          <el-select
+            v-model="state.ruleForm.flow_region_type"
+            filterable
+            placeholder="请选择"
             class="form-one"
-            placeholder="不填表示不限制底价"
-            type="number"
           >
-          </el-input>
-        </el-form-item>
-        <el-form-item
-          class="self-el-form-item"
-          label="最大QPS:"
-          prop="max_qps"
-        >
-          <el-input
-            v-model.trim="state.ruleForm.max_qps"
-            class="form-one"
-            placeholder="不填表示不限制QPS"
-            type="number"
-            step="1"
-          >
-          </el-input>
+            <el-option
+              v-for="item in state.options.choice_type"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
       </div>
     </el-form>
