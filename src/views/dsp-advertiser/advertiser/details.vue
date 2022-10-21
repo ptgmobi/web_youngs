@@ -96,7 +96,16 @@
           label="Logo:"
           prop="flow_source"
         >
-          上传图片
+          <el-upload
+            class="avatar-uploader"
+            action=""
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img v-if="state.ruleForm.imageUrl" :src="state.ruleForm.imageUrl" class="avatar" />
+            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+          </el-upload>
         </el-form-item>
       </div>
       <split-button title="Offer信息"></split-button>
@@ -269,7 +278,8 @@ import {
 } from '@/utils/new-format'
 import { selfJudgeStringLength, selfValidatorIsInteger } from '@/utils/validate.ts'
 import validator from 'validator';
-import _ from 'lodash'
+import _, { isArguments } from 'lodash'
+import type { UploadProps } from 'element-plus'
 
 const { flow_source, flow_type, ad_type, bidding_agreement, bidding_type, currency, status, choice_type, choice_type_region  } = optionsSetting
 const { getRouterData, getCommonCountryList, goNewUrl } = useUtils()
@@ -477,6 +487,53 @@ const cancelFn = () => {
   })
 }
 
+const handleAvatarSuccess: UploadProps['onSuccess'] = (
+  response,
+  uploadFile
+) => {
+  state.ruleForm.imageUrl.value = URL.createObjectURL(uploadFile.raw!)
+}
+
+const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
+  console.log(rawFile)
+  // if (rawFile.type !== 'image/jpeg') {
+  //   console.error('Avatar picture must be JPG format!')
+  //   return false
+  // } else if (rawFile.size / 1024 / 1024 > 2) {
+  //   console.error('Avatar picture size can not exceed 2MB!')
+  //   return false
+  // }
+  // return true
+  const isJPG = rawFile.type === "image/png"; // 验证图片类型
+  const isLt100M = rawFile.size / (1024 * 1024) < 100; // 验证图片大小
+  const isSize = new Promise(function (resolve, reject) {
+    let width = 100; // 限制上传图片的宽度
+    let height = 100; // 限制上传图片的高度
+    let URL = window.URL || window.webkitURL;
+    let image = new Image();
+    image.onload = function () {
+      console.log(image)
+      let valid = image.width <= width && image.height <= height;
+      valid ? resolve(null) : reject();
+    };
+    image.src = URL.createObjectURL(rawFile);
+  }).then(
+    () => rawFile,
+    () => {
+      console.error("图片尺寸过大,请上传100*100尺寸的图片"); // 提示 看需求
+      return Promise.reject();
+    }
+  );
+
+  if (!isJPG) {
+    console.error("格式错误，请上传png格式图片"); // 提示 看需求
+  }
+  if (!isLt100M) {
+    console.error("文件过大，文件大小不超过100M"); // 提示 看需求
+  }
+  return isJPG && isLt100M && isSize;
+}
+
 const getConfig = async () => {
 }
 
@@ -499,6 +556,33 @@ onMounted(() => {
 })
 
 </script>
-<style lang="scss">
+<style scoped>
+.avatar-uploader .avatar {
+  width: 100px;
+  height: 100px;
+  display: block;
+}
+</style>
 
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
+}
 </style>

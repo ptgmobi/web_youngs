@@ -63,14 +63,6 @@
               </template>
             </el-input>
           </el-form-item>
-          <el-form-item label="">
-            <el-checkbox
-              v-model="state.searchForm.is_del"
-              true-label=""
-              false-label="1"
-              label="包含已归档"
-            />
-          </el-form-item>
         </div>
         <div class="flex">
           <el-form-item
@@ -101,27 +93,29 @@
       class="w100"
       border
     >
-      <el-table-column type="expand">
-        <template #default="props">
-          <div class="p10">
-            <p>ID: {{ props.row.id }}</p>
-          </div>
-        </template>
-      </el-table-column>
       <el-table-column sortable
         prop="id"
-        label="ID"
-        align="center"
-      ></el-table-column>
-      <el-table-column sortable
-        width="120"
-        prop="name"
-        label="名称"
+        label="广告主ID"
         align="center"
       ></el-table-column>
       <el-table-column sortable
         prop="status"
-        label="状态"
+        label="广告主Logo"
+        align="center"
+      >
+        <template #default="scope">
+          <img src="" alt="">
+        </template>
+      </el-table-column>
+      <el-table-column sortable
+        width="120"
+        prop="name"
+        label="广告主名称"
+        align="center"
+      ></el-table-column>
+      <el-table-column sortable
+        prop="status"
+        label="开关"
         align="center"
       >
         <template #default="scope">
@@ -134,15 +128,56 @@
           <!-- <span>{{getOptionsValue(scope.row.status, state.options.status)}}</span> -->
         </template>
       </el-table-column>
+      <el-table-column sortable
+        width="120"
+        prop="name"
+        label="广告主类型"
+        align="center"
+      ></el-table-column>
+      <el-table-column sortable
+        width="120"
+        prop="name"
+        label="广告主地址"
+        align="center"
+      ></el-table-column>
+      <el-table-column sortable
+        width="120"
+        prop="name"
+        label="日花费上限($)"
+        align="center"
+      ></el-table-column>
+      <el-table-column sortable
+        width="120"
+        prop="name"
+        label="强制流量占比(%)"
+        align="center"
+      ></el-table-column>
+      <el-table-column sortable
+        width="120"
+        prop="name"
+        label="广告主分类"
+        align="center"
+      ></el-table-column>
+      <el-table-column sortable
+        width="120"
+        prop="name"
+        label="创建人"
+        align="center"
+      ></el-table-column>
+      <el-table-column sortable
+        width="120"
+        prop="name"
+        label="日花费上限($)"
+        align="center"
+      ></el-table-column>
       <el-table-column
-        width="140"
+        width="200"
         label="操作"
         align="center"
       >
         <template #default="scope">
           <div class="flex jc-around">
             <el-button
-              v-if="scope.row.is_del === 1"
               class="cp"
               type="primary"
               @click="editFn(scope)"
@@ -162,93 +197,6 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column sortable
-        width="180"
-        prop="email"
-        label="Email"
-        align="center"
-      ></el-table-column>
-      <el-table-column sortable
-        prop="token"
-        label="Token"
-        align="center"
-        width="200"
-      >
-        <template #default="scope">
-          <div class="flex jc-around">
-            <el-popover
-              v-if="scope.row.token"
-              placement="top-start"
-              :width="200"
-              trigger="hover"
-              :content="scope.row.token"
-            >
-              <template #reference>
-                <span class="token cp">{{scope.row.token}}</span>
-              </template>
-            </el-popover>
-            <el-button
-              class="cp"
-              type="default"
-              @click="copyTokenFn(scope.row.token)"
-            >复制</el-button>
-            <el-button
-              class="cp"
-              type="default"
-              @click="updateTokenFn(scope)"
-            >更新</el-button>
-            <!-- <router-link :to="getEditUrl(scope.row)">
-              
-            </router-link> -->
-            <!-- <el-button class='cp mr-10' type="primary" icon="Edit" circle @click='editFun(scope.row)'></el-button> -->
-            
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column sortable
-        prop="token"
-        label="流量来源"
-        align="center"
-      >
-        <template #default="scope">
-          <span>{{getOptionsValue(scope.row.flow_source, state.options.flow_source)}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column sortable
-        prop="end_point"
-        label="End Point"
-        align="center"
-      >
-        <template #default="scope">
-          <div class="flex jc-around">
-            <el-button
-              class="cp mr-10"
-              type="default"
-              @click="openEndPointFn(scope.row)"
-            >查看</el-button>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column sortable
-        prop="report_api"
-        label="Report Api"
-        align="center"
-      >
-        <template #default="scope">
-          <div class="flex jc-around">
-            <el-button
-              class="cp mr-10"
-              type="default"
-              @click="openReportApiFn(scope.row)"
-            >查看</el-button>
-          </div>
-        </template>
-      </el-table-column>
-      <!-- <el-table-column sortable
-        prop="name"
-        label="创建人"
-        align="center"
-      ></el-table-column> -->
       <el-table-column sortable
         width="160"
         prop="create_date"
@@ -421,7 +369,7 @@ const editFn = ({row}: any) => {
   // state.cache = row
   const { id } = row
   goNewUrl({
-    url: `/advertiser/${id}`,
+    url: `/advertiser/edit/${id}`,
     query: {
       type: 'edit'
     }
@@ -469,7 +417,7 @@ const init = async () => {
   const res = await ApiGetAdvertiserList(ajaxData)
   const { data: result } = res
   state.list = result?.data
-  state.pagination.total = Number(result.paging.count)
+  state.pagination.total = Number(result.count)
   state.loading = false
 }
 
