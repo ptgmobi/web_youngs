@@ -965,7 +965,7 @@ const handleEditDeviceFun = async () => {
   const ajaxData = {
     id: data.ruleForm.id,
     platform: data.ruleForm.platform,
-    country: data.ruleForm.country
+    country: Array.isArray(data.ruleForm.country) ? data.ruleForm.country.join(',') : data.ruleForm.country
   }
   const { data: deviceData } = await ApiGetOfferDevice(ajaxData)
   bus.cacheDevice.all = deviceData.all
