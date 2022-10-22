@@ -41,17 +41,17 @@
         <el-form-item
           class="self-el-form-item"
           label="广告主类型:"
-          prop="flow_source"
+          prop="adv_type"
         >
           <el-select
-            v-model="state.ruleForm.flow_source"
+            v-model="state.ruleForm.adv_type"
             filterable
             class="form-one"
             clearable
             placeholder=""
           >
             <el-option
-              v-for="item in state.options.flow_source"
+              v-for="item in state.options.adv_type"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -61,10 +61,10 @@
         <el-form-item
           class="self-el-form-item"
           label="广告主地址:"
-          prop="desc"
+          prop="adv_address"
         >
           <el-input
-            v-model.trim="state.ruleForm.desc"
+            v-model.trim="state.ruleForm.adv_address"
             class="form-one"
             placeholder=""
             type="textarea"
@@ -74,17 +74,17 @@
         <el-form-item
           class="self-el-form-item"
           label="行业分类:"
-          prop="flow_source"
+          prop="ind_cla"
         >
           <el-select
-            v-model="state.ruleForm.flow_source"
+            v-model="state.ruleForm.ind_cla"
             filterable
             class="form-one"
             clearable
             placeholder=""
           >
             <el-option
-              v-for="item in state.options.flow_source"
+              v-for="item in state.options.ind_cla"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -94,7 +94,7 @@
         <el-form-item
           class="self-el-form-item"
           label="Logo:"
-          prop="flow_source"
+          prop="logo"
         >
           <el-upload
             class="avatar-uploader"
@@ -103,7 +103,7 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
-            <img v-if="state.ruleForm.imageUrl" :src="state.ruleForm.imageUrl" class="avatar" />
+            <img v-if="state.ruleForm.logo" :src="state.ruleForm.logo" class="avatar" />
             <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
           </el-upload>
         </el-form-item>
@@ -113,17 +113,17 @@
         <el-form-item
           class="self-el-form-item"
           label="选择时区:"
-          prop="country"
+          prop="time_zone"
         >
           <el-select
-            v-model="state.ruleForm.country"
+            v-model="state.ruleForm.time_zone"
             filterable
             class="form-one"
             clearable
             placeholder=""
           >
             <el-option
-              v-for="item in state.options.country"
+              v-for="item in state.options.time_zone"
               :key="item.id"
               :label="item.name"
               :value="item.id"
@@ -134,12 +134,14 @@
         <el-form-item
           class="self-el-form-item"
           label="转化单价（美元）:"
-          prop="company"
+          prop="price"
         >
           <el-input
-            v-model.trim="state.ruleForm.company"
+            v-model.trim="state.ruleForm.price"
             class="form-one"
             placeholder=""
+            type="number"
+            step="0.001"
           >
           </el-input>
         </el-form-item>
@@ -147,10 +149,10 @@
         <el-form-item
           class="self-el-form-item"
           label="日花费上限（美元）:"
-          prop="company"
+          prop="spend_limit"
         >
           <el-input
-            v-model.trim="state.ruleForm.company"
+            v-model.trim="state.ruleForm.spend_limit"
             class="form-one"
             placeholder=""
           >
@@ -160,10 +162,10 @@
         <el-form-item
           class="self-el-form-item"
           label="强制流量占比%:"
-          prop="company"
+          prop="flow_rate"
         >
           <el-input
-            v-model.trim="state.ruleForm.company"
+            v-model.trim="state.ruleForm.flow_rate"
             class="form-one"
             placeholder=""
           >
@@ -176,16 +178,16 @@
         <el-form-item
           class="self-el-form-item"
           label="第三方监测平台:"
-          prop="flow_region"
+          prop="third_party"
         >
           <el-select
-            v-model="state.ruleForm.flow_region_type"
+            v-model="state.ruleForm.third_party"
             filterable
             placeholder="请选择"
             class="form-one"
           >
             <el-option
-              v-for="item in state.options.choice_type"
+              v-for="item in state.options.third_party"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -196,10 +198,10 @@
         <el-form-item
           class="self-el-form-item"
           label="点击监测链接:"
-          prop="desc"
+          prop="click_url"
         >
           <el-input
-            v-model.trim="state.ruleForm.desc"
+            v-model.trim="state.ruleForm.click_url"
             class="form-one"
             placeholder=""
             type="textarea"
@@ -210,10 +212,10 @@
         <el-form-item
           class="self-el-form-item"
           label="曝光监测链接:"
-          prop="desc"
+          prop="impression_url"
         >
           <el-input
-            v-model.trim="state.ruleForm.desc"
+            v-model.trim="state.ruleForm.impression_url"
             class="form-one"
             placeholder=""
             type="textarea"
@@ -227,16 +229,16 @@
         <el-form-item
           class="self-el-form-item"
           label="回传方式:"
-          prop="flow_region"
+          prop="return_mode"
         >
           <el-select
-            v-model="state.ruleForm.flow_region_type"
+            v-model="state.ruleForm.return_mode"
             filterable
             placeholder="请选择"
             class="form-one"
           >
             <el-option
-              v-for="item in state.options.choice_type"
+              v-for="item in state.options.return_mode"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -291,40 +293,42 @@ const message = {
 
 let type: any = ref('create')
 
-const defaultRuleForm: any = {
-  id: '',
+type ruleFormType =  {
+  id: number | undefined
+  name: string
+  desc: string
+  adv_type: number | undefined
+  adv_address: string
+  ind_cla: number | undefined
+  logo: string
+  time_zone: string
+  price: number | undefined
+  spend_limit: number | undefined
+  flow_rate: number | undefined
+  third_party: number | undefined
+  click_url: string
+  impression_url: string
+  return_mode: number | undefined
+  is_del: number
+}
+
+const defaultRuleForm: ruleFormType = {
+  id: void 0,
   name: '',
-  email: '',
-  flow_source: '',
   desc: '',
-  company: '',
-  domain: '',
-  country: '',
-  address: '',
-  phone: '',
-  skype: '',
-  wechat: '',
-  flow_type: ['1'],
-  ad_type: ['1', '2', '3'],
-  flow_region: '',
-  flow_region_type: 1,
-  service_region: '',
-  service_region_type: 1,
-  bidding_agreement: 2,
-  bidding_type: 1,
-  currency: 1,
-  floor_price: '',
-  max_qps: '',
-  demand_limit: [],
-  demand_limit_type: 1,
-  bd: '',
-  am: '',
-  password: '',
-  salt: '',
-  status: '1',
-  is_del: '1',
-  create_date: '',
-  update_date: '',
+  adv_type: void 0,
+  adv_address: '',
+  ind_cla: void 0,
+  logo: '',
+  time_zone: '',
+  price: void 0,
+  spend_limit: void 0,
+  flow_rate: void 0,
+  third_party: void 0,
+  click_url: '',
+  impression_url: '',
+  return_mode: void 0,
+  is_del: 0
 }
 
 // selfJudgeStringLength
@@ -399,15 +403,11 @@ const state = reactive({
     ]
   },
   options: {
-    flow_source,
-    flow_type,
-    ad_type,
-    bidding_agreement,
-    bidding_type,
-    currency,
-    status,
-    choice_type,
-    choice_type_region,
+    adv_type: [],
+    ind_cla: [],
+    time_zone: [],
+    third_party: [],
+    return_mode: [],
     country: [
       {
         id: '0',
@@ -438,20 +438,17 @@ const saveFun = () => {
 }
 
 // 为数字的字段
-const numberKeyArr = ['id', 'flow_source', 'country', 'flow_region_type', 'service_region_type', 'bidding_agreement', 'bidding_type', 'floor_price', 'max_qps', 'demand_limit_type', 'status', 'is_del', 'currency']
+const numberKeyArr = ['id', 'adv_type', 'ind_cla', 'price', 'spend_limit', 'flow_rate', 'third_party', 'return_mode']
 
-const arrayKeyArr = ['ad_type', 'flow_type', 'flow_region', 'service_region', 'demand_limit']
-
-const arr_1 = [
-  'flow_region_type', 'service_region_type', 'demand_limit_type'
-]
+// 数组转换为字符串
+const arrayKeyArr = []
 
 const setDataFn = async (id) => {
   // 获取单个
   const res = await ApiGetAdvertiserOne(id)
   const {data: result} = res
   result.country = result.country ? result.country.toString() : ''
-  state.ruleForm = handleOneDataArrayFn(result, arrayKeyArr)
+  state.ruleForm = result
   console.log(state.ruleForm)
 }
 
@@ -459,12 +456,11 @@ const submitFn = async () => {
   let baseData = toRaw(state.ruleForm)
   let ajaxData: any = baseData
   // 先删除为空的字段
-  ajaxData = handleAjaxDataDelNo2KeyFn(ajaxData)
-  ajaxData = handleAjaxEmptyKeyFn(ajaxData, arr_1)
+  // ajaxData = handleAjaxDataDelNo2KeyFn(ajaxData)
   ajaxData = handleAjaxNumberKeyFn(ajaxData, numberKeyArr)
   ajaxData = handleAjaxArrayKeyFn(ajaxData, arrayKeyArr)
   console.log(ajaxData)
-  // return false
+  return false
   if (type.value === 'create') {
     delete ajaxData.id
     const res = await ApiAdvertiserCreate(ajaxData)
@@ -473,7 +469,7 @@ const submitFn = async () => {
     }
   }
   if (type.value === 'edit') {
-    const res = await ApiAdvertiserEdit(ajaxData.id, ajaxData)
+    const res = await ApiAdvertiserEdit(ajaxData)
     if(messageFun(res)) {
       cancelFn()
     }
@@ -491,7 +487,7 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (
   response,
   uploadFile
 ) => {
-  state.ruleForm.imageUrl.value = URL.createObjectURL(uploadFile.raw!)
+  state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
 }
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
