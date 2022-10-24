@@ -32,13 +32,13 @@
           </el-form-item>
           <el-form-item label="">
             <el-select
-              v-model="state.searchForm.flow_source"
+              v-model="state.searchForm.adv_type"
               filterable
               clearable
-              placeholder="全部流量来源"
+              placeholder="广告主类型"
             >
               <el-option
-                v-for="item in state.options.flow_source"
+                v-for="item in state.options.adv_type"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -48,11 +48,12 @@
           <el-form-item label="">
             <el-input
               v-model="state.searchForm.value"
-              placeholder="名称/ID/token"
+              placeholder="请输入"
               class="input-with-select"
             >
               <template #prepend>
-                <el-select v-model="state.searchForm.value_type" placeholder="名称/ID/token" class="search-input-select">
+                <el-select v-model="state.searchForm.value_type" placeholder="" class="search-input-select" 
+              style="width: 120px;">
                   <el-option
                     v-for="item in state.options.value_type"
                     :key="item.value"
@@ -94,17 +95,17 @@
       border
     >
       <el-table-column sortable
-        prop="id"
+        prop="adv_id"
         label="广告主ID"
         align="center"
       ></el-table-column>
       <el-table-column sortable
-        prop="status"
+        prop="logo"
         label="广告主Logo"
         align="center"
       >
         <template #default="scope">
-          <img src="" alt="">
+          <img class="logo-img" :src="scope.row.logo" alt="">
         </template>
       </el-table-column>
       <el-table-column sortable
@@ -130,31 +131,31 @@
       </el-table-column>
       <el-table-column sortable
         width="120"
-        prop="name"
+        prop="adv_type"
         label="广告主类型"
         align="center"
       ></el-table-column>
       <el-table-column sortable
         width="120"
-        prop="name"
+        prop="adv_address"
         label="广告主地址"
         align="center"
       ></el-table-column>
       <el-table-column sortable
         width="120"
-        prop="name"
+        prop="spend_limit"
         label="日花费上限($)"
         align="center"
       ></el-table-column>
       <el-table-column sortable
         width="120"
-        prop="name"
+        prop="flow_rate"
         label="强制流量占比(%)"
         align="center"
       ></el-table-column>
       <el-table-column sortable
         width="120"
-        prop="name"
+        prop="ind_cla"
         label="广告主分类"
         align="center"
       ></el-table-column>
@@ -162,12 +163,6 @@
         width="120"
         prop="name"
         label="创建人"
-        align="center"
-      ></el-table-column>
-      <el-table-column sortable
-        width="120"
-        prop="name"
-        label="日花费上限($)"
         align="center"
       ></el-table-column>
       <el-table-column
@@ -245,11 +240,19 @@ import { handleAjaxDataObjectFn, handleAjaxDataDelNoKeyFn, getOptionsValue } fro
 import useUtils from '@/hooks/self/useUtils'
 import { clipboardFn } from '@/utils/clipboard'
 import { ApiGetAdvertiserList, ApiChangeAdvertiserStatus, ApiDeleteAdvertiser } from '@/api/dsp-advertiser'
-const { flow_source, flow_type, ad_type, bidding_agreement, bidding_type, currency, status, choice_type, choice_type_region, value_type  } = optionsSetting
+
+const {
+  status, 
+  adv_type, 
+  ind_cla,
+  third_party,
+  return_mode, 
+} = optionsSetting
+
 const { goNewUrl, openAlert } = useUtils()
 const searchData = shallowRef({
   status: 1,
-  flow_source: '',
+  adv_type: '',
   value_type: 'name',
   value: '',
   is_del: '1'
@@ -271,8 +274,16 @@ let state = reactive({
   loading: true,
   options: {
     status,
-    flow_source,
-    value_type
+    adv_type,
+    ind_cla,
+    third_party,
+    return_mode,
+    value_type: [
+      {value: 'id', label: '广告主ID'},
+      {value: 'name', label: '广告主名称'},
+      {value: 'desc', label: '描述'},
+
+    ]
   },
   list: [],
   pagination: {
@@ -303,7 +314,7 @@ const changeStatus = async ({row}) => {
     id: row.id,
     status: row.status
   }
-  let res = await ApiChangeAdvertiserStatus(row.id, ajaxData)
+  let res = await ApiChangeAdvertiserStatus(ajaxData)
   messageFun(res)
 }
 
@@ -429,5 +440,9 @@ onMounted(() => {
 <style lang="scss" scoped>
 .search-input-select{
   width: 80px;
+}
+.logo-img{
+  width: 50px;
+  height: 50px;
 }
 </style>

@@ -15,6 +15,14 @@
       <div class="content-con from-one flex column">
         <el-form-item
           class="self-el-form-item"
+          label="广告主ID:"
+          prop="adv_id"
+          v-if="type==='edit'"
+        >
+          <span>{{state.ruleForm.adv_id}}</span>
+        </el-form-item>
+        <el-form-item
+          class="self-el-form-item"
           label="广告主名称:"
           prop="name"
         >
@@ -98,10 +106,12 @@
         >
           <el-upload
             class="avatar-uploader"
-            action=""
+            name="logo_url"
+            :action="uploadImgHref"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
+            :headers="headersObj"
           >
             <img v-if="state.ruleForm.logo" :src="state.ruleForm.logo" class="avatar" />
             <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
@@ -124,9 +134,9 @@
           >
             <el-option
               v-for="item in state.options.time_zone"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -282,8 +292,15 @@ import { selfJudgeStringLength, selfValidatorIsInteger } from '@/utils/validate.
 import validator from 'validator';
 import _, { isArguments } from 'lodash'
 import type { UploadProps } from 'element-plus'
+import { getToken, setToken } from '@/utils/auth'
+const {
+  adv_type, 
+  ind_cla,
+  third_party,
+  return_mode,
+  time_zone
+} = optionsSetting
 
-const { flow_source, flow_type, ad_type, bidding_agreement, bidding_type, currency, status, choice_type, choice_type_region  } = optionsSetting
 const { getRouterData, getCommonCountryList, goNewUrl } = useUtils()
 let { proxy }: any = getCurrentInstance()
 
@@ -291,43 +308,51 @@ const message = {
   required: '此项必填'
 }
 
+let headersObj = {
+  token: getToken(),
+}
+
+let uploadImgHref = ref(`/${import.meta.env.VITE_APP_BASE_URL}/d/dv/pic`)
+
 let type: any = ref('create')
 
 type ruleFormType =  {
   id: number | undefined
+  adv_id: string
   name: string
   desc: string
-  adv_type: number | undefined
+  adv_type: string
   adv_address: string
-  ind_cla: number | undefined
+  ind_cla: string
   logo: string
   time_zone: string
   price: number | undefined
   spend_limit: number | undefined
   flow_rate: number | undefined
-  third_party: number | undefined
+  third_party: string
   click_url: string
   impression_url: string
-  return_mode: number | undefined
+  return_mode: string
   is_del: number
 }
 
 const defaultRuleForm: ruleFormType = {
   id: void 0,
+  adv_id: '',
   name: '',
   desc: '',
-  adv_type: void 0,
+  adv_type: '',
   adv_address: '',
-  ind_cla: void 0,
+  ind_cla: '',
   logo: '',
   time_zone: '',
   price: void 0,
   spend_limit: void 0,
   flow_rate: void 0,
-  third_party: void 0,
+  third_party: '',
   click_url: '',
   impression_url: '',
-  return_mode: void 0,
+  return_mode: '',
   is_del: 0
 }
 
@@ -371,56 +396,34 @@ const state = reactive({
       {required: true, message: message.required, trigger: ['blur', 'change']},
       {validator: validatorStrLenValue, max: 100, trigger: ['blur', 'change']}
     ],
-    email: [
-      { required: true, message: message.required, trigger: ['blur', 'change'] },
-      {validator: validatorEmail, trigger: ['blur']}
-    ],
-    flow_source: [{ required: true, message: message.required, trigger: ['blur', 'change'] }],
     desc: [
       {validator: validatorStrLenValue, max: 200, trigger: ['blur', 'change']}
     ],
-    company: [
-      {validator: validatorStrLenValue, max: 100, trigger: ['blur', 'change']}
+    adv_type: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
-    domain: [
-      {validator: validatorStrLenValue, max: 100, trigger: ['blur', 'change']},
-      {validator: validatorUrl, trigger: ['blur', 'change']},
+    adv_address: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
-    address: [
-      {validator: validatorStrLenValue, max: 100, trigger: ['blur', 'change']}
+    ind_cla: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
-    phone: [
-      {validator: validatorStrLenValue, max: 100, trigger: ['blur', 'change']}
+    price: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
-    skype: [
-      {validator: validatorStrLenValue, max: 100, trigger: ['blur', 'change']}
+    spend_limit: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
-    wechat: [
-      {validator: validatorStrLenValue, max: 100, trigger: ['blur', 'change']}
+    third_party: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
-    max_qps: [
-      {validator: validatorMaxQps, trigger: ['blur', 'change']}
-    ]
   },
   options: {
-    adv_type: [],
-    ind_cla: [],
-    time_zone: [],
-    third_party: [],
-    return_mode: [],
-    country: [
-      {
-        id: '0',
-        name: 'Unknown',
-        short_name: 'UNKNOWN'
-      }
-    ],
-    demand_limit: [
-      {
-        id: '0',
-        name: ''
-      }
-    ]
+    adv_type,
+    ind_cla,
+    time_zone,
+    third_party,
+    return_mode
   }
 })
 
@@ -438,7 +441,7 @@ const saveFun = () => {
 }
 
 // 为数字的字段
-const numberKeyArr = ['id', 'adv_type', 'ind_cla', 'price', 'spend_limit', 'flow_rate', 'third_party', 'return_mode']
+const numberKeyArr = ['id', 'price', 'spend_limit', 'flow_rate']
 
 // 数组转换为字符串
 const arrayKeyArr = []
@@ -447,8 +450,10 @@ const setDataFn = async (id) => {
   // 获取单个
   const res = await ApiGetAdvertiserOne(id)
   const {data: result} = res
-  result.country = result.country ? result.country.toString() : ''
-  state.ruleForm = result
+  state.ruleForm = {
+    ...state.ruleForm,
+    ...result
+  }
   console.log(state.ruleForm)
 }
 
@@ -460,7 +465,7 @@ const submitFn = async () => {
   ajaxData = handleAjaxNumberKeyFn(ajaxData, numberKeyArr)
   ajaxData = handleAjaxArrayKeyFn(ajaxData, arrayKeyArr)
   console.log(ajaxData)
-  return false
+  // return false
   if (type.value === 'create') {
     delete ajaxData.id
     const res = await ApiAdvertiserCreate(ajaxData)
@@ -477,7 +482,7 @@ const submitFn = async () => {
 }
 
 const cancelFn = () => {
-  let url = './list'
+  let url = '/advertiser/list'
   goNewUrl({
     url: url
   })
@@ -487,7 +492,8 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (
   response,
   uploadFile
 ) => {
-  state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
+  // state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
+  state.ruleForm.logo = response.data
 }
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
@@ -510,6 +516,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     image.onload = function () {
       console.log(image)
       let valid = image.width <= width && image.height <= height;
+      valid = true
       valid ? resolve(null) : reject();
     };
     image.src = URL.createObjectURL(rawFile);
@@ -554,8 +561,8 @@ onMounted(() => {
 </script>
 <style scoped>
 .avatar-uploader .avatar {
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   display: block;
 }
 </style>
@@ -577,8 +584,8 @@ onMounted(() => {
 .el-icon.avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
-  width: 178px;
-  height: 178px;
+  width: 50px;
+  height: 50px;
   text-align: center;
 }
 </style>

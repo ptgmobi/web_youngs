@@ -4,7 +4,7 @@ import { ObjTy } from '@/types/common'
 // ! buzz list
 export function ApiGetAdvertiserList(data: ObjTy) {
   return request({
-    url: '/buzz',
+    url: '/d/dv/list',
     data,
     method: 'get',
     bfLoading: false,
@@ -15,7 +15,7 @@ export function ApiGetAdvertiserList(data: ObjTy) {
 
 export function ApiChangeAdvertiserStatus(data: ObjTy) {
   return request({
-    url: '/buzz/status',
+    url: '/d/dv/status',
     data,
     method: 'patch',
     bfLoading: false,
@@ -26,7 +26,7 @@ export function ApiChangeAdvertiserStatus(data: ObjTy) {
 
 export function ApiDeleteAdvertiser(data: ObjTy) {
   return request({
-    url: '/buzz/status',
+    url: '/d/dv/delete',
     data,
     method: 'delete',
     bfLoading: false,
@@ -38,7 +38,7 @@ export function ApiDeleteAdvertiser(data: ObjTy) {
 // ! details
 export function ApiAdvertiserCreate(data: ObjTy) {
   return request({
-    url: '/buzz',
+    url: '/d/dv',
     data,
     method: 'post',
     bfLoading: false,
@@ -49,7 +49,7 @@ export function ApiAdvertiserCreate(data: ObjTy) {
 
 export function ApiAdvertiserEdit(data: ObjTy) {
   return request({
-    url: '/buzz',
+    url: '/d/dv',
     data,
     method: 'put',
     bfLoading: false,
@@ -60,7 +60,7 @@ export function ApiAdvertiserEdit(data: ObjTy) {
 
 export function ApiGetAdvertiserOne(params: string) {
   return request({
-    url: `/buzz/view/${params}`,
+    url: `/d/dv/view/${params}`,
     method: 'get',
     bfLoading: false,
     isParams: true,
@@ -70,7 +70,7 @@ export function ApiGetAdvertiserOne(params: string) {
 
 export function ApiGetConfig() {
   return request({
-    url: '/buzz/edit-config',
+    url: '/d/dv/edit-config',
     method: 'get',
     bfLoading: false,
     isParams: true,

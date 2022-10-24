@@ -1,111 +1,82 @@
-interface OptionTy {
-  value: number | string
-  label: string
-}
-
-interface SettingTy {
-  flow_source: Array<OptionTy>
-  offer_source: Array<OptionTy>
-  flow_type: Array<OptionTy>
-  ad_type: Array<OptionTy>
-  bidding_agreement: Array<OptionTy>
-  bidding_type: Array<OptionTy>
-  currency: Array<OptionTy>
-  status: Array<OptionTy>
-  choice_type: Array<OptionTy>
-  choice_type_region: Array<OptionTy>
-  method: Array<OptionTy>
-  security: Array<OptionTy>
-  is_del: Array<OptionTy>
-  value_type: Array<OptionTy>
-  device_type: Array<OptionTy>
-  platform: Array<OptionTy>
-}
-
-const setting: SettingTy = {
-  flow_source: [
-    {value: 1, label: '开发者'},
-    {value: 2, label: 'ADX'},
-    {value: 3, label: 'SSP'},
-    {value: 4, label: 'DSP'},
-  ],
-  offer_source: [
-    {value: 1, label: '直客'},
-    {value: 2, label: 'ADX'},
-    {value: 3, label: 'SSP'},
-    {value: 4, label: 'DSP'},
-  ],
-  flow_type: [
-    {value: '1', label: 'in-app'},
-    {value: '2', label: 'mobile'},
-    {value: '3', label: 'pc web'}
-  ],
-  ad_type: [
-    {value: '1', label: '图片'},
-    {value: '2', label: '原生'},
-    {value: '3', label: '视频'}
-  ],
-  bidding_agreement: [
-    {value: 1, label: 'OpenRTB2.3'},
-    {value: 2, label: 'OpenRTB2.5'},
-    {value: 3, label: 'OpenRTB3.0'},
-    {value: 4, label: '自定义'},
-    {value: 5, label: '未知'},
-  ],
-  bidding_type: [
-    {value: 1, label: '第一高价'},
-    {value: 2, label: '第二高价'},
-    {value: 3, label: '其它'},
-    {value: 4, label: '未知'},
-  ],
-  currency: [
-    {value: 1, label: '美元USD'},
-    {value: 2, label: '人民币CNY'},
-  ],
+const setting: any = {
   status: [
     {value: 1, label: '开'},
     {value: 2, label: '关'},
   ],
-  choice_type_region: [
-    {value: 1, label: '包含这些地区'},
-    {value: 2, label: '排除这些地区'},
+  //新建广告主 > 广告主类型
+  adv_type: [
+    {value: 'app-android', label: 'App-Android'},
+    {value: 'app-ios', label: 'App-iOS'},
+    {value: 'web', label: 'Web'},
   ],
-  choice_type: [
-    {value: 1, label: '包含'},
-    {value: 2, label: '排除'},
+  //新建广告主 > 行业分类
+  ind_cla: [
+    {value: 'e-commerce', label: '电商'},
+    {value: 'game', label: '游戏'},
+    {value: 'entertainment', label: '泛娱乐'},
+    {value: 'other', label: '其他'},
   ],
-  method: [
-    {value: 'head', label: 'HEAD'},
-    {value: 'get', label: 'GET'},
-    {value: 'post', label: 'POST'},
+  //新建广告主 > 第三方监测平台
+  third_party: [
+    {value: 'appflyer', label: 'Appflyer'},
+    {value: 'adjust', label: 'Adjust'},
+    {value: 'branch', label: 'Branch'},
+    {value: 'other-third', label: '其他第三方'},
+    {value: 'client', label: '客户追踪'},
+    {value: 'no', label: '无追踪'},
   ],
-  security: [
-    {value: 'http', label: 'http'},
-    {value: 'https', label: 'https'},
+  //新建广告主 > 回传方式
+  return_mode: [
+    {value: 'appflyer', label: 'Appflyer回传'},
+    {value: 'adjust', label: 'Adjust回传'},
+    {value: 'branch', label: 'Branch回传'},
+    {value: 'other-third', label: '其他第三方回传'},
+    {value: 'client-sdk', label: '客户SDK回传'},
+    {value: 'client-api', label: '客户API回传'},
+    {value: 'client-excel', label: '客户人工回传'},
+    {value: 'no', label: '无回传'},
   ],
-  is_del: [
-    {value: 1, label: '未删除'},
-    {value: 2, label: '删除'},
-  ],
-  value_type: [
-    {value: 'name', label: '名称'},
-    {value: 'id', label: 'ID'},
-    {value: 'token', label: 'Token'},
-  ],
-  device_type: [
-    {value: '1,4', label: '手机'},
-    {value: '5', label: '平板'},
-    {value: '2', label: 'PC'},
-    {value: '3,6,7', label: '其他'},
-    {value: '0', label: '未知'},
-  ],
-  platform: [
-    {value: '1', label: 'Android'},
-    {value: '2', label: 'iOS'},
-    {value: 'Windows', label: 'Windows'},
-    {value: 'MacOS', label: 'MacOS'},
-    {value: '0', label: '其他'},
+  // time_zone
+  time_zone: [
+    {value: 'UTC-12', label: 'UTC-12（IDLW — 国际换日线）'},
+    {value: 'UTC-11', label: 'UTC-11 （SST — 美属萨摩亚标准时间）'},
+    {value: 'UTC-10', label: 'UTC-10（HST — 夏威夷-阿留申标准时间）'},
+    {value: 'UTC-9:30', label: 'UTC-9:30（MIT — 马克萨斯群岛标准时间）'},
+    {value: 'UTC-9', label: 'UTC-9（AKST — 阿拉斯加标准时间）'},
+    {value: 'UTC-8', label: 'UTC-8（PST — 太平洋标准时间）'},
+    {value: 'UTC-7', label: 'UTC-7（MST — 北美山区标准时间）'},
+    {value: 'UTC-6', label: 'UTC-6（CST — 北美中部标准时间）'},
+    {value: 'UTC-5', label: 'UTC-5（EST — 北美东部标准时间）'},
+    {value: 'UTC-4', label: 'UTC-4（AST — 大西洋标准时间）'},
+    {value: 'UTC-3:30', label: 'UTC-3:30（NST — 纽芬兰岛标准时间）'},
+    {value: 'UTC-3', label: 'UTC-3（BRT — 巴西利亚标准时间）'},
+    {value: 'UTC-2', label: 'UTC-2（FNT — 费尔南多·迪诺罗尼亚群岛标准时间）'},
+    {value: 'UTC-1', label: 'UTC-1（CVT — 佛得角标准时间）'},
+    {value: 'UTC', label: 'UTC（WET — 欧洲西部时区，GMT - 格林尼治标准时间）'},
+    {value: 'UTC+1', label: 'UTC+1（CET — 欧洲中部时区）'},
+    {value: 'UTC+2', label: 'UTC+2（EET — 欧洲东部时区）'},
+    {value: 'UTC+3', label: 'UTC+3（MSK — 莫斯科时区）'},
+    {value: 'UTC+3:30', label: 'UTC+3:30（IRST — 伊朗标准时间）'},
+    {value: 'UTC+4', label: 'UTC+4（GST — 海湾标准时间）'},
+    {value: 'UTC+4:30', label: 'UTC+4:30（AFT — 阿富汗标准时间）'},
+    {value: 'UTC+5', label: 'UTC+5（PKT — 巴基斯坦标准时间）'},
+    {value: 'UTC+5:30', label: 'UTC+5:30（IST — 印度标准时间）'},
+    {value: 'UTC+5:45', label: 'UTC+5:45（NPT — 尼泊尔标准时间）'},
+    {value: 'UTC+6', label: 'UTC+6（BHT — 孟加拉标准时间）'},
+    {value: 'UTC+6:30', label: 'UTC+6:30（MMT — 缅甸标准时间）'},
+    {value: 'UTC+7', label: 'UTC+7（ICT — 中南半岛标准时间）'},
+    {value: 'UTC+8', label: 'UTC+8（CT/CST — 中原标准时间）'},
+    {value: 'UTC+9', label: 'UTC+9（JST — 日本标准时间）'},
+    {value: 'UTC+9:30', label: 'UTC+9:30（ACST — 澳大利亚中部标准时间）'},
+    {value: 'UTC+10', label: 'UTC+10（AEST — 澳大利亚东部标准时间）'},
+    {value: 'UTC+10:30', label: 'UTC+10:30（LHST — 豪勋爵群岛标准时间）'},
+    {value: 'UTC+11', label: 'UTC+11（VUT — 瓦努阿图标准时间）'},
+    {value: 'UTC+12', label: 'UTC+12（NZST — 纽西兰标准时间）'},
+    {value: 'UTC+12:45', label: 'UTC+12:45（CHAST — 查塔姆群岛标准时间）'},
+    {value: 'UTC+13', label: 'UTC+13（PHOT — 菲尼克斯群岛标准时间）'},
+    {value: 'UTC+14', label: 'UTC+14（LINT — 莱恩群岛标准时间）'},
   ]
+
 }
 
 
