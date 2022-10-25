@@ -1,4 +1,5 @@
 const setting: any = {
+  uploadUrl: import.meta.env.VITE_APP_BASE_URL,
   status: [
     {value: 1, label: '开'},
     {value: 2, label: '关'},

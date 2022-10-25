@@ -17,6 +17,7 @@ interface SettingTy {
   showTopNavbar: boolean
   mainNeedAnimation: boolean
   viteBasePath: string
+  uploadUrl: string
 }
 
 const setting: SettingTy = {

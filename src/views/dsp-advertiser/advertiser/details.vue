@@ -294,6 +294,7 @@ import _, { isArguments } from 'lodash'
 import type { UploadProps } from 'element-plus'
 import { getToken, setToken } from '@/utils/auth'
 const {
+  uploadUrl,
   adv_type, 
   ind_cla,
   third_party,
@@ -312,7 +313,9 @@ let headersObj = {
   token: getToken(),
 }
 
-let uploadImgHref = ref(`${import.meta.env.VITE_APP_BASE_URL}/d/dv/pic`)
+console.log(uploadUrl)
+
+let uploadImgHref = ref(`${uploadUrl}/d/dv/pic`)
 
 let type: any = ref('create')
 
