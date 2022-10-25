@@ -6,7 +6,7 @@ export default [
     component: Layout,
     name: 'advertiser',
     meta: {
-      title: 'advertiser',
+      title: 'Advertiser',
       elSvgIcon: 'Setting',
       code: 100000
     },
