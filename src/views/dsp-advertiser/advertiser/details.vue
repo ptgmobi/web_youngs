@@ -312,7 +312,7 @@ let headersObj = {
   token: getToken(),
 }
 
-let uploadImgHref = ref(`/${import.meta.env.VITE_APP_BASE_URL}/d/dv/pic`)
+let uploadImgHref = ref(`${import.meta.env.VITE_APP_BASE_URL}/d/dv/pic`)
 
 let type: any = ref('create')
 
