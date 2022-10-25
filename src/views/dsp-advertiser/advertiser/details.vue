@@ -107,11 +107,11 @@
           <el-upload
             class="avatar-uploader"
             name="logo_url"
-            :action="uploadImgHref"
+            action=""
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
-            :headers="headersObj"
+            :http-request="uploadHttpRequest"
           >
             <img v-if="state.ruleForm.logo" :src="state.ruleForm.logo" class="avatar" />
             <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
@@ -277,7 +277,7 @@
 </template>
 <script lang="ts" setup>
 import optionsSetting from '@/self-options-setting'
-import { ApiAdvertiserCreate, ApiGetAdvertiserOne, ApiAdvertiserEdit } from '@/api/dsp-advertiser'
+import { ApiAdvertiserCreate, ApiGetAdvertiserOne, ApiAdvertiserEdit, ApiUploadImg } from '@/api/dsp-advertiser'
 import { messageFun } from '@/utils/message'
 import splitButton from '@/components/Self/SplitButton'
 import useUtils from '@/hooks/self/useUtils'
@@ -292,7 +292,6 @@ import { selfJudgeStringLength, selfValidatorIsInteger } from '@/utils/validate.
 import validator from 'validator';
 import _, { isArguments } from 'lodash'
 import type { UploadProps } from 'element-plus'
-import { getToken, setToken } from '@/utils/auth'
 const {
   uploadUrl,
   adv_type, 
@@ -308,14 +307,6 @@ let { proxy }: any = getCurrentInstance()
 const message = {
   required: '此项必填'
 }
-
-let headersObj = {
-  token: getToken(),
-}
-
-console.log(uploadUrl)
-
-let uploadImgHref = ref(`${uploadUrl}/d/dv/pic`)
 
 let type: any = ref('create')
 
@@ -499,16 +490,16 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (
   state.ruleForm.logo = response.data
 }
 
-const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
-  console.log(rawFile)
-  // if (rawFile.type !== 'image/jpeg') {
-  //   console.error('Avatar picture must be JPG format!')
-  //   return false
-  // } else if (rawFile.size / 1024 / 1024 > 2) {
-  //   console.error('Avatar picture size can not exceed 2MB!')
-  //   return false
-  // }
-  // return true
+const uploadHttpRequest: UploadProps['httpRequest'] = async(
+  param
+) => {
+  const formData = new FormData()
+  formData.append("logo_url", param.file)
+  const res = await ApiUploadImg(formData)
+  return res
+}
+
+const beforeAvatarUpload: UploadProps['beforeUpload'] = async (rawFile) => {
   const isJPG = rawFile.type === "image/png"; // 验证图片类型
   const isLt100M = rawFile.size / (1024 * 1024) < 100; // 验证图片大小
   const isSize = new Promise(function (resolve, reject) {
@@ -517,7 +508,6 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     let URL = window.URL || window.webkitURL;
     let image = new Image();
     image.onload = function () {
-      console.log(image)
       let valid = image.width <= width && image.height <= height;
       valid = true
       valid ? resolve(null) : reject();
@@ -537,7 +527,8 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   if (!isLt100M) {
     console.error("文件过大，文件大小不超过100M"); // 提示 看需求
   }
-  return isJPG && isLt100M && isSize;
+  
+  return isJPG && isLt100M && isSize
 }
 
 const getConfig = async () => {

@@ -77,3 +77,12 @@ export function ApiGetConfig() {
     isAlertErrorMsg: false
   })
 }
+
+export function ApiUploadImg(data: ObjTy) {
+  return request({
+    url: `/d/dv/pic`,
+    method: 'post',
+    data,
+    isUploadFile: true
+  })
+}

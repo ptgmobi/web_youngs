@@ -174,6 +174,7 @@ export function axiosReq({
   timeout,
   isAlertErrorMsg = true
 }: AxiosConfigTy): any {
+  console.log(url)
   return service({
     url: url,
     method: method ?? 'post',
