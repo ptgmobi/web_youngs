@@ -1,1 +1,0 @@
-import{Q as r}from"./main-63a735d7.js";function t(){return r({url:"/role",method:"get",isParams:!0})}function a(t){return r({url:`/role/view/${t}`,method:"get",bfLoading:!1,isParams:!0})}function o(t){return r({url:"/role",method:"post",data:t})}function e(t,a){return r({url:`/role/${t}`,method:"patch",data:a})}export{a,e as b,t as g,o as s};
