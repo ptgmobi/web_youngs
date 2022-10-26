@@ -535,7 +535,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = async (rawFile) => {
     console.error("文件过大，文件大小不超过100M"); // 提示 看需求
   }
   
-  return isJPG && isLt100M && isSize
+  return isSize
 }
 
 const getConfig = async () => {
