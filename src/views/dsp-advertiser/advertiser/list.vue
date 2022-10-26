@@ -134,7 +134,11 @@
         prop="adv_type"
         label="广告主类型"
         align="center"
-      ></el-table-column>
+      >
+        <template #default="scope">
+          <span>{{getOptionsValue(scope.row.adv_type, state.options.adv_type)}}</span>
+        </template>
+      </el-table-column>
       <el-table-column sortable
         width="120"
         prop="adv_address"
@@ -158,10 +162,14 @@
         prop="ind_cla"
         label="广告主分类"
         align="center"
-      ></el-table-column>
+      >
+        <template #default="scope">
+          <span>{{getOptionsValue(scope.row.ind_cla, state.options.ind_cla)}}</span>
+        </template>
+      </el-table-column>
       <el-table-column sortable
         width="120"
-        prop="name"
+        prop="user"
         label="创建人"
         align="center"
       ></el-table-column>

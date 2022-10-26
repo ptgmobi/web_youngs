@@ -108,6 +108,7 @@
             class="avatar-uploader"
             name="logo_url"
             action=""
+            v-model:file-list="fileList"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -291,7 +292,7 @@ import {
 import { selfJudgeStringLength, selfValidatorIsInteger } from '@/utils/validate.ts'
 import validator from 'validator';
 import _, { isArguments } from 'lodash'
-import type { UploadProps } from 'element-plus'
+import type { UploadProps, UploadUserFile } from 'element-plus'
 const {
   uploadUrl,
   adv_type, 
@@ -330,6 +331,8 @@ type ruleFormType =  {
   is_del: number
 }
 
+let fileList = ref<UploadUserFile[]>([])
+
 const defaultRuleForm: ruleFormType = {
   id: void 0,
   adv_id: '',
@@ -339,7 +342,7 @@ const defaultRuleForm: ruleFormType = {
   adv_address: '',
   ind_cla: '',
   logo: '',
-  time_zone: '',
+  time_zone: 'UTC+8',
   price: void 0,
   spend_limit: void 0,
   flow_rate: void 0,
@@ -448,6 +451,10 @@ const setDataFn = async (id) => {
     ...state.ruleForm,
     ...result
   }
+  fileList.value = [{
+    name: 'logo_url',
+    url: state.ruleForm.logo
+  }]
   console.log(state.ruleForm)
 }
 
@@ -455,7 +462,7 @@ const submitFn = async () => {
   let baseData = toRaw(state.ruleForm)
   let ajaxData: any = baseData
   // 先删除为空的字段
-  // ajaxData = handleAjaxDataDelNo2KeyFn(ajaxData)
+  ajaxData = handleAjaxDataDelNo2KeyFn(ajaxData)
   ajaxData = handleAjaxNumberKeyFn(ajaxData, numberKeyArr)
   ajaxData = handleAjaxArrayKeyFn(ajaxData, arrayKeyArr)
   console.log(ajaxData)
