@@ -464,7 +464,7 @@ const submitFn = async () => {
   // 先删除为空的字段
   ajaxData = handleAjaxDataDelNo2KeyFn(ajaxData)
   ajaxData = handleAjaxNumberKeyFn(ajaxData, numberKeyArr)
-  ajaxData = handleAjaxArrayKeyFn(ajaxData, arrayKeyArr)
+  // ajaxData = handleAjaxArrayKeyFn(ajaxData, arrayKeyArr)
   console.log(ajaxData)
   // return false
   if (type.value === 'create') {

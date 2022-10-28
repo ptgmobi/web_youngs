@@ -16,6 +16,7 @@ import light from './modules/light'
 // dsp
 import tool from './dspmodules/tool'
 import dspadvertiser from './dspmodules/advertiser'
+import dspadfrom from './dspmodules/ad'
 
 
 const pageTitle = document.title
@@ -42,6 +43,7 @@ if (pageTitle === 'Dsp') {
   window.pageTitle = 'Dsp'
   routerBox = [
     ...dspadvertiser,
+    ...dspadfrom,
     ...tool,
     ...administer
   ]
