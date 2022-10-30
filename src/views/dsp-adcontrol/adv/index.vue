@@ -1,0 +1,1 @@
+<template>adv index</template>

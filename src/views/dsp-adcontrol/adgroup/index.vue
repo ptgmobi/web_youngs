@@ -5,7 +5,7 @@
     />
   </router-view>
 </template>
-<script lang="ts" setup name="dsp-ad">
+<script lang="ts" setup name="dsp-adcontrol-adgroup">
 onActivated(() => {
   console.log('onActivated')
 })

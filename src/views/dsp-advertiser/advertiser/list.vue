@@ -191,12 +191,12 @@
               type="default"
               @click="editFn(scope)"
             >查看</el-button>
-            <el-button
+            <!-- <el-button
               class="cp"
               type="danger"
               @click="deleteFn(scope)"
               :disabled="scope.row.is_del === 2"
-            >归档</el-button>
+            >归档</el-button> -->
           </div>
         </template>
       </el-table-column>
@@ -244,7 +244,7 @@ import optionsSetting from '@/self-options-setting'
 import Pagination from '@/components/Pagination/index.vue' // secondary package based on el-pagination
 import { messageFun } from '@/utils/message'
 import _ from 'lodash'
-import { handleAjaxDataObjectFn, handleAjaxDataDelNoKeyFn, getOptionsValue } from '@/utils/new-format'
+import { handleAjaxDataObjectFn, handleAjaxEmptyKeyFn, handleAjaxDataDelNoKeyFn, getOptionsValue } from '@/utils/new-format'
 import useUtils from '@/hooks/self/useUtils'
 import { clipboardFn } from '@/utils/clipboard'
 import { ApiGetAdvertiserList, ApiChangeAdvertiserStatus, ApiDeleteAdvertiser } from '@/api/dsp-advertiser'
@@ -259,7 +259,7 @@ const {
 
 const { goNewUrl, openAlert } = useUtils()
 const searchData = shallowRef({
-  status: 1,
+  status: '',
   adv_type: '',
   value_type: 'name',
   value: '',
@@ -432,6 +432,7 @@ const init = async () => {
   ajaxData[ajaxData.value_type] = ajaxData.value
   delete ajaxData.value_type
   delete ajaxData.value
+  // ajaxData = handleAjaxEmptyKeyFn(ajaxData, ['status', 'adv_type'])
   ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
   const res = await ApiGetAdvertiserList(ajaxData)
   const { data: result } = res
