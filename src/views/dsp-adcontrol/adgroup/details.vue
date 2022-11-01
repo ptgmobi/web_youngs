@@ -159,15 +159,63 @@ let type: any = ref('create')
 
 type ruleFormType =  {
   id: number | undefined
-  adv_name: string
-  adv_series_name: string
+  // 广告组名称
+  adv_group_name: string
+  // RTA推广ID
+  rta_id: string
+  // 所属广告系列
+  adv_series_id: number
   desc: string
-  // 1：再营销；2：拉新
-  marbet_target: number
-  // 1：动态商品促销；2：固定链接推广
-  adv_series_type: number
-  // 广告系列预算
-  adv_series_budget: number | undefined
+  // 受众包
+  target_pkg_ids: string
+  // 国家/地区类型：1包含，2排除
+  country_type: number
+  country: string
+  // 操作系统：1：android,2:ios, 3: windows, 4:macOS, 5:其他， 6:未知
+  system: string
+  // 终端类型：1手机，2平板，3pc,4其他，5未知
+  terminal_type: string
+  // 网络链接：1:wifi, 2: 移动网络，3： 其他，4： 未知
+  network_type: string
+  // 流量类型： 1： in-APP, 2: web
+  flow_type: string
+  // adx类型： 1： 包含，2： 排除
+  adx_type: number
+  adx: string
+  // 自定义媒体类型： 1： 包含，2： 排除
+  custem_media_type: number
+  // 自定义媒体
+  custem_media: string
+  // 推广周期： 1：从现在开始长期有效，2：限定周期
+  promotion_cycle: number
+  // 推广周期--开始时间
+  promotion_cycle_st: string
+  // 推广周期--结束时间
+  promotion_cycle_et: string
+  // 投放时段: 1:全天；2：限时
+  launch_period_type: number
+  // 投放时段--天
+  launch_period_day: string
+  // 投放时段--小时
+  launch_period_hour: string
+  // 频次控制类型： 1：不限频次，2：限定频次
+  frequency_control_type: number
+  // 频次控制--行为类型： 1： 单人曝光频次，2：单人点击频次
+  frequency_control_people_type: number
+  // 频次控制--每日次数
+  frequency_control_num: number
+  // 投放速度： 1: 匀速，2： 加速
+  release_speed: number
+  // 日预算
+  speed_limit_day: number
+  // 付费方式： 1： CPM
+  payment_method: number
+  // 出价方式： 1：统一出价，2：adx出价
+  price_method: number
+  // 分adx出价；json数据
+  adx_price: string
+  // 出价方式: 1: 自动出价，2：手动出价
+  price_type: number
   // 1开2关
   status: number
   is_del: number
