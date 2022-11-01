@@ -251,6 +251,28 @@ $y) {
   }
 }
 
+.self-el-form-item{
+  @extend .flex;
+  @extend .w100;
+}
+.self-el-form-item-no-label{
+  .el-form-item__content{
+    margin-left: 0 !important;
+  }
+}
+
+.form-one{
+  width: 600px !important;
+  height: 100%;
+}
+
+.form-one-left{
+  width: 150px !important;
+}
+.form-one-right{
+  width: 450px !important;
+}
+
 p{
   word-wrap: break-word;
 }

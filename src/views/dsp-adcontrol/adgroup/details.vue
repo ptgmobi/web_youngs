@@ -12,38 +12,54 @@
       :disabled="type === 'edit' && state.ruleForm.is_del === 2"
     >
       <split-button title="基础信息"></split-button>
-      <div class="content-con from-one flex column">
+      <div class="content-con form-one flex column">
+        <!-- 广告组名称 -->
         <el-form-item
           class="self-el-form-item"
-          label="广告主系列名称:"
-          prop="adv_series_name"
+          label="广告组名称:"
+          prop="adv_group_name"
         >
           <el-input
-            v-model.trim="state.ruleForm.adv_series_name"
+            v-model.trim="state.ruleForm.adv_group_name"
             class="form-one"
             placeholder=""
           >
           </el-input>
         </el-form-item>
+        <!-- RTA推广ID -->
+        <el-form-item
+          class="self-el-form-item"
+          label="RTA推广ID:"
+          prop="rta_id"
+        >
+          <el-input
+            v-model.trim="state.ruleForm.rta_id"
+            class="form-one"
+            placeholder=""
+          >
+          </el-input>
+        </el-form-item>
+        <!-- 所属广告系列 -->
         <el-form-item
           class="self-el-form-item"
           label="广告主名称:"
-          prop="adv_name"
+          prop="adv_series_id"
         >
           <el-select
-            v-model="state.ruleForm.adv_name"
+            v-model="state.ruleForm.adv_series_id"
             filterable
             placeholder="请选择"
             class="form-one"
           >
             <el-option
-              v-for="item in state.options.adv_name"
+              v-for="item in state.options.adv_series_id"
               :key="item.value"
               :label="item.label"
               :value="item.value"
             ></el-option>
           </el-select>
         </el-form-item>
+        <!-- 描述 -->
         <el-form-item
           class="self-el-form-item"
           label="描述:"
@@ -58,52 +74,460 @@
           </el-input>
         </el-form-item>
       </div>
-      <split-button title="目标与预算"></split-button>
-      <div class="content-con from-one flex column">
+      <split-button title="选择受众"></split-button>
+      <div class="content-con form-one flex column">
+        <!-- 受众包 -->
         <el-form-item
           class="self-el-form-item"
-          label="营销目标:"
-          prop="marbet_target"
-        >
-          <el-radio-group class="form-one" v-model="state.ruleForm.marbet_target">
-            <template v-for="item in state.options.marbet_target">
-              <el-radio :label="item.value">{{item.label}}</el-radio>
-            </template>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item
-          class="self-el-form-item"
-          label="广告类型:"
-          prop="adv_series_type"
+          label="广告主名称:"
+          prop="adv_series_id"
         >
           <el-select
-            v-model="state.ruleForm.adv_series_type"
+            v-model="state.ruleForm.target_pkg_ids"
             filterable
             placeholder="请选择"
             class="form-one"
           >
             <el-option
-              v-for="item in state.options.adv_series_type"
+              v-for="item in state.options.target_pkg_ids"
               :key="item.value"
               :label="item.label"
               :value="item.value"
             ></el-option>
           </el-select>
         </el-form-item>
+        <!-- 国家/地区 -->
+        <div class="flex form-one">
+          <el-form-item
+            label="国家/地区:"
+            prop="country_type"
+          >
+            <el-select
+              v-model="state.ruleForm.country_type"
+              filterable
+              placeholder=""
+              class="form-one-left"
+            >
+              <el-option
+                v-for="item in state.options.choice_type"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            label=""
+            prop="country"
+            class="self-el-form-item-no-label"
+          >
+            <el-select
+              v-model="state.ruleForm.country"
+              filterable
+              clearable
+              placeholder=""
+              multiple
+              class="form-one-right"
+            >
+              <el-option
+                v-for="item in state.options.country"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </div>
+        <!-- 操作系统 -->
         <el-form-item
           class="self-el-form-item"
-          label="广告日预算（美元）:"
-          prop="adv_series_budget"
+          label="操作系统:"
+          prop="system"
+        >
+          <el-checkbox-group v-model="state.ruleForm.system">
+            <template v-for="item in state.options.system">
+              <el-checkbox :label="item.value">{{item.label}}</el-checkbox>
+            </template>
+          </el-checkbox-group>
+        </el-form-item>
+        <!-- 终端类型 -->
+        <el-form-item
+          class="self-el-form-item"
+          label="终端类型:"
+          prop="terminal_type"
+        >
+          <el-checkbox-group v-model="state.ruleForm.terminal_type">
+            <template v-for="item in state.options.terminal_type">
+              <el-checkbox :label="item.value">{{item.label}}</el-checkbox>
+            </template>
+          </el-checkbox-group>
+        </el-form-item>
+        <!-- 网络连接 -->
+        <el-form-item
+          class="self-el-form-item"
+          label="网络连接:"
+          prop="network_type"
+        >
+          <el-checkbox-group v-model="state.ruleForm.network_type">
+            <template v-for="item in state.options.network_type">
+              <el-checkbox :label="item.value">{{item.label}}</el-checkbox>
+            </template>
+          </el-checkbox-group>
+        </el-form-item>
+      </div>
+      <split-button title="选择媒体"></split-button>
+      <div class="content-con form-one flex column">
+        <!-- 流量类型 -->
+        <el-form-item
+          class="self-el-form-item" 
+          label="流量类型:"
+          prop="flow_type"
+        >
+          <el-checkbox-group v-model="state.ruleForm.flow_type">
+            <template v-for="item in state.options.flow_type">
+              <el-checkbox :label="item.value">{{item.label}}</el-checkbox>
+            </template>
+          </el-checkbox-group>
+        </el-form-item>
+        <!-- Adx -->
+        <el-form-item
+          class="self-el-form-item" 
+          label="Adx:"
+          prop="adx"
+        >
+          <el-select
+            v-model="state.ruleForm.adx_type"
+            filterable
+            placeholder="请选择"
+            class="form-one-left"
+          >
+            <el-option
+              v-for="item in state.options.choice_type"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+          <el-select
+            v-model="state.ruleForm.adx"
+            filterable
+            clearable
+            placeholder=""
+            multiple
+            class="form-one-right"
+          >
+            <el-option
+              v-for="item in state.options.adx"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <!-- 媒体分类 -->
+        <el-form-item
+          class="self-el-form-item" 
+          label="媒体分类:"
+          prop="media"
+        >
+          <el-select
+            v-model="state.ruleForm.media_type"
+            filterable
+            placeholder="请选择"
+            class="form-one-left"
+          >
+            <el-option
+              v-for="item in state.options.choice_type"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+          <el-select
+            v-model="state.ruleForm.media"
+            filterable
+            clearable
+            placeholder=""
+            multiple
+            class="form-one-right"
+          >
+            <el-option
+              v-for="item in state.options.media"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <!-- 自定义媒体列表 -->
+        <el-form-item
+          class="self-el-form-item" 
+          label="自定义媒体列表:"
+          prop="custem_media"
+        >
+          <el-select
+            v-model="state.ruleForm.custem_media_type"
+            filterable
+            placeholder="请选择"
+            class="form-one-left"
+          >
+            <el-option
+              v-for="item in state.options.choice_type"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+          <el-select
+            v-model="state.ruleForm.custem_media"
+            filterable
+            clearable
+            placeholder=""
+            multiple
+            class="form-one-right"
+          >
+            <el-option
+              v-for="item in state.options.custem_media"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <!-- PMP ID -->
+        <el-form-item
+          class="self-el-form-item"
+          label="PMP ID:"
+          prop="pmp_id"
         >
           <el-input
-            v-model.trim="state.ruleForm.adv_series_budget"
+            v-model.trim="state.ruleForm.pmp_id"
+            class="form-one"
+            placeholder=""
+            type="textarea"
+          >
+          </el-input>
+        </el-form-item>
+      </div>
+      <split-button title="投放设置"></split-button>
+      <div class="content-con form-one flex column">
+        <!-- 推广周期 -->
+        <el-form-item
+          class="self-el-form-item"
+          label="推广周期:"
+          prop="promotion_cycle"
+        >
+          <el-radio-group class="form-one" v-model="state.ruleForm.promotion_cycle">
+            <template v-for="item in state.options.promotion_cycle">
+              <el-radio :label="item.value">{{item.label}}</el-radio>
+            </template>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item
+          class="self-el-form-item"
+          label=""
+          prop="promotion_cycle_arr"
+        >
+          <!-- 日期组件 -->
+          <el-date-picker
+            v-model="state.ruleForm.promotion_cycle_arr"
+            class="mr-10 mb-10"
+            type="daterange"
+            unlink-panels
+            format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :clearable="false"
+          ></el-date-picker>
+        </el-form-item>
+        
+        <!-- 投放时段 -->
+        <el-form-item
+          class="self-el-form-item" 
+          label="投放时段:"
+          prop="launch_period_type"
+        >
+          <el-radio-group class="form-one" v-model="state.ruleForm.launch_period_type">
+            <template v-for="item in state.options.launch_period_type">
+              <el-radio :label="item.value">{{item.label}}</el-radio>
+            </template>
+          </el-radio-group>
+        </el-form-item>
+        <!-- 投放时段--天 -->
+        {{state.ruleForm.launch_period_day}}
+        <el-form-item
+          class="self-el-form-item"
+          label=""
+          prop="launch_period_day"
+        >
+          <!-- 周 -->
+          <el-date-picker
+            v-model="state.ruleForm.launch_period_day"
+            class="mr-10 mb-10"
+            type="week"
+            unlink-panels
+            format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :clearable="false"
+          ></el-date-picker>
+        </el-form-item>
+        <!-- 投放时段--小时 -->
+        {{state.ruleForm.launch_period_hour}}
+        <el-form-item
+          class="self-el-form-item"
+          label=""
+          prop="launch_period_hour"
+        >
+          <!-- 小时 -->
+          <el-time-picker
+            v-model="state.ruleForm.launch_period_hour"
+            is-range
+            range-separator="To"
+            start-placeholder="Start time"
+            end-placeholder="End time"
+          />
+        </el-form-item>
+        <!-- 频次控制 -->
+        <el-form-item
+          class="self-el-form-item" 
+          label="频次控制:"
+          prop="frequency_control_type"
+        >
+          <el-radio-group class="form-one" v-model="state.ruleForm.frequency_control_type">
+            <template v-for="item in state.options.frequency_control_type">
+              <el-radio :label="item.value">{{item.label}}</el-radio>
+            </template>
+          </el-radio-group>
+        </el-form-item>
+        <div class="flex form-one">
+          <el-form-item
+            class="self-el-form-item-no-label" 
+            label=""
+            prop="frequency_control_type"
+          >
+            <el-select
+              v-model="state.ruleForm.frequency_control_people_type"
+              filterable
+              clearable
+              placeholder=""
+              multiple
+              class="form-one-left"
+            >
+              <el-option
+                v-for="item in state.options.frequency_control_people_type"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            class="self-el-form-item-no-label" 
+            label=""
+            prop="frequency_control_num"
+          >
+            <div class="form-one-right flex jc-between">
+              <el-input
+                v-model.trim="state.ruleForm.frequency_control_num"
+                placeholder=""
+                type="number"
+              ></el-input>
+              <span class="center" style="width:50px;">次/日</span>
+            </div>
+          </el-form-item>
+        </div>
+        <!-- 投放速度 -->
+        <el-form-item
+          class="self-el-form-item" 
+          label="投放速度:"
+          prop="release_speed"
+        >
+          <el-radio-group class="form-one" v-model="state.ruleForm.release_speed">
+            <template v-for="item in state.options.release_speed">
+              <el-radio :label="item.value">{{item.label}}</el-radio>
+            </template>
+          </el-radio-group>
+        </el-form-item>
+      </div>
+      <split-button title="预算与出价"></split-button>
+      <div class="content-con form-one flex column">
+        <!-- 广告预算 -->
+        <el-form-item
+          class="self-el-form-item"
+          label="广告日预算($):"
+          prop="speed_limit_day"
+        >
+          <el-input
+            v-model.trim="state.ruleForm.speed_limit_day"
             class="form-one"
             placeholder=""
           >
           </el-input>
         </el-form-item>
+        <!-- 付费方式  -->
+        <el-form-item
+          class="self-el-form-item" 
+          label="付费方式"
+          prop="payment_method"
+        >
+          <el-select
+            v-model="state.ruleForm.payment_method"
+            filterable
+            clearable
+            placeholder=""
+            class="form-one"
+          >
+            <el-option
+              v-for="item in state.options.payment_method"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <!-- 单价类型 -->
+        <el-form-item
+          class="self-el-form-item" 
+          label="单价类型:"
+          prop="price_method"
+        >
+          <el-radio-group class="form-one" v-model="state.ruleForm.price_method">
+            <template v-for="item in state.options.price_method">
+              <el-radio :label="item.value">{{item.label}}</el-radio>
+            </template>
+          </el-radio-group>
+        </el-form-item>
+        <!-- 出价方式为分adx出价时 -->
+        <el-form-item
+          class="self-el-form-item-no-label form-one" 
+          label=""
+          prop="adx_price"
+        >
+          <Adx
+            class="w100"
+            ref="traffic"
+            v-model:list="state.ruleForm.adx_price"
+            @kk="saveAdxPrice"
+          ></Adx>
+        </el-form-item>
+        <!-- 出价方式 -->
+        <el-form-item
+          class="self-el-form-item" 
+          label="出价方式:"
+          prop="price_type"
+        >
+          <el-radio-group class="form-one" v-model="state.ruleForm.price_type">
+            <template v-for="item in state.options.price_type">
+              <el-radio :label="item.value">{{item.label}}</el-radio>
+            </template>
+          </el-radio-group>
+        </el-form-item>
       </div>
-      
     </el-form>
     <!-- form -->
     <!-- footer -->
@@ -139,13 +563,14 @@ import {
 import { selfJudgeStringLength, selfValidatorIsInteger } from '@/utils/validate.ts'
 import validator from 'validator';
 import _, { isArguments } from 'lodash'
-import type { UploadProps, UploadUserFile } from 'element-plus'
+import { getSectionTime, getSectionAnyTime, choiceDefaultProduct } from '@/utils/format'
+import Adx from './components/adx.vue'
 const {
-  adv_type, 
-  ind_cla,
-  third_party,
-  return_mode,
-  time_zone
+  choice_type,
+  system,
+  terminal_type,
+  network_type,
+  flow_type
 } = optionsSetting
 
 const { getRouterData, getCommonCountryList, goNewUrl } = useUtils()
@@ -164,76 +589,134 @@ type ruleFormType =  {
   // RTA推广ID
   rta_id: string
   // 所属广告系列
-  adv_series_id: number
+  adv_series_id: number | undefined
   desc: string
   // 受众包
   target_pkg_ids: string
   // 国家/地区类型：1包含，2排除
-  country_type: number
+  country_type: number | undefined
   country: string
   // 操作系统：1：android,2:ios, 3: windows, 4:macOS, 5:其他， 6:未知
-  system: string
+  system: Array<number>
   // 终端类型：1手机，2平板，3pc,4其他，5未知
-  terminal_type: string
+  terminal_type: Array<number>
   // 网络链接：1:wifi, 2: 移动网络，3： 其他，4： 未知
-  network_type: string
+  network_type: Array<number>
   // 流量类型： 1： in-APP, 2: web
-  flow_type: string
+  flow_type: Array<number>
   // adx类型： 1： 包含，2： 排除
-  adx_type: number
+  adx_type: number | undefined
+  // adx
   adx: string
+  // 媒体分类
+  media_type: number | undefined
+  // 媒体
+  media: string
   // 自定义媒体类型： 1： 包含，2： 排除
-  custem_media_type: number
+  custem_media_type: number | undefined
   // 自定义媒体
   custem_media: string
+  pmp_id: string
   // 推广周期： 1：从现在开始长期有效，2：限定周期
-  promotion_cycle: number
+  promotion_cycle: number | undefined
+  promotion_cycle_arr: Array<string>
   // 推广周期--开始时间
   promotion_cycle_st: string
   // 推广周期--结束时间
   promotion_cycle_et: string
   // 投放时段: 1:全天；2：限时
-  launch_period_type: number
+  launch_period_type: number | undefined
   // 投放时段--天
   launch_period_day: string
   // 投放时段--小时
   launch_period_hour: string
   // 频次控制类型： 1：不限频次，2：限定频次
-  frequency_control_type: number
+  frequency_control_type: number | undefined
   // 频次控制--行为类型： 1： 单人曝光频次，2：单人点击频次
-  frequency_control_people_type: number
+  frequency_control_people_type: number | undefined
   // 频次控制--每日次数
-  frequency_control_num: number
+  frequency_control_num: number | undefined
   // 投放速度： 1: 匀速，2： 加速
-  release_speed: number
+  release_speed: number | undefined
   // 日预算
-  speed_limit_day: number
+  speed_limit_day: number | undefined
   // 付费方式： 1： CPM
-  payment_method: number
+  payment_method: number | undefined
   // 出价方式： 1：统一出价，2：adx出价
-  price_method: number
+  price_method: number | undefined
   // 分adx出价；json数据
-  adx_price: string
+  adx_price: Array<any>
   // 出价方式: 1: 自动出价，2：手动出价
-  price_type: number
-  // 1开2关
-  status: number
-  is_del: number
+  price_type: number | undefined
+  is_del: number | undefined
 }
 
 const defaultRuleForm: ruleFormType = {
   id: void 0,
-  adv_name: '',
-  adv_series_name: '',
+  // 广告组名称
+  adv_group_name: '',
+  // RTA推广ID
+  rta_id: '',
+  // 所属广告系列
+  adv_series_id: void 0,
   desc: '',
-  // 营销目标
-  marbet_target: 1,
-  // 广告类型
-  adv_series_type: 1,
-  // 广告日预算
-  adv_series_budget: void 0,
-  status: 1,
-  is_del: 0
+  // 受众包
+  target_pkg_ids: '',
+  // 国家/地区类型：1包含，2排除
+  country_type: void 0,
+  country: '',
+  // 操作系统：1：android,2:ios, 3: windows, 4:macOS, 5:其他， 6:未知
+  system: [1],
+  // 终端类型：1手机，2平板，3pc,4其他，5未知
+  terminal_type: [1, 2],
+  // 网络链接：1:wifi, 2: 移动网络，3： 其他，4： 未知
+  network_type: [1,2,3],
+  // 流量类型： 1： in-APP, 2: web
+  flow_type: [1],
+  // adx类型： 1： 包含，2： 排除
+  adx_type: 1,
+  adx: '',
+  // 媒体分类类型： 1： 包含，2： 排除
+  media_type: void 0,
+  // 媒体分类
+  media: '',
+  // 自定义媒体类型： 1： 包含，2： 排除
+  custem_media_type: void 0,
+  // 自定义媒体
+  custem_media: '',
+  pmp_id: '',
+  // 推广周期： 1：从现在开始长期有效，2：限定周期
+  promotion_cycle: 2,
+  promotion_cycle_arr: [],
+  // 推广周期--开始时间
+  promotion_cycle_st: '',
+  // 推广周期--结束时间
+  promotion_cycle_et: '',
+  // 投放时段: 1:全天；2：限时
+  launch_period_type: void 0,
+  // 投放时段--天
+  launch_period_day: '',
+  // 投放时段--小时
+  launch_period_hour: '',
+  // 频次控制类型： 1：不限频次，2：限定频次
+  frequency_control_type: void 0,
+  // 频次控制--行为类型： 1： 单人曝光频次，2：单人点击频次
+  frequency_control_people_type: void 0,
+  // 频次控制--每日次数
+  frequency_control_num: void 0,
+  // 投放速度： 1: 匀速，2： 加速
+  release_speed: 1,
+  // 日预算
+  speed_limit_day: void 0,
+  // 付费方式： 1： CPM
+  payment_method: 1,
+  // 出价方式： 1：统一出价，2：adx出价
+  price_method: 2,
+  // 分adx出价；json数据
+  adx_price: [],
+  // 出价方式: 1: 自动出价，2：手动出价
+  price_type: 1,
+  is_del: void 0,
 }
 
 // selfJudgeStringLength
@@ -272,36 +755,73 @@ const validatorMaxQps = (rule: any, value: string, callback: (arg0: Error | unde
 const state = reactive({
   ruleForm: defaultRuleForm,
   rules: {
-    adv_series_name: [
-      {required: true, message: message.required, trigger: ['blur', 'change']},
-      {validator: validatorStrLenValue, max: 100, trigger: ['blur', 'change']}
-    ],
-    adv_name: [
+    adv_group_name: [
       {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
-    desc: [
-      {validator: validatorStrLenValue, max: 200, trigger: ['blur', 'change']}
-    ],
-    adv_series_type: [
-      {required: true, message: message.required, trigger: ['blur', 'change']},
-    ],
-    adv_series_budget: [
-      {required: true, message: message.required, trigger: ['blur', 'change']},
-    ],
+    
   },
   options: {
-    adv_type,
-    // 广告类型
-    adv_series_type: [
-      {value: 1, label: '动态商品促销'},
-      {value: 2, label: '固定链接推广'},
+    choice_type,
+    system,
+    terminal_type,
+    network_type,
+    flow_type,
+    country: [
+      {
+        id: 0,
+        name: 'Unknown',
+        short_name: 'UNKNOWN'
+      }
     ],
-    // 营销目标
-    marbet_target: [
-      {value: 1, label: '再营销'},
-      {value: 2, label: '拉新'},
+    // 所属广告系列
+    adv_series_id: [],
+    // 受众包
+    target_pkg_ids: [],
+    // adx
+    adx: [],
+    // 媒体分类
+    media: [],
+    // 自定义媒体列表
+    custem_media: [],
+    // 推广周期
+    promotion_cycle: [
+      {value: 1, label: '从现在开始长期有效'},
+      {value: 2, label: '限定周期'}
     ],
-    adv_name: []
+    // 投放时段
+    launch_period_type: [
+      {value: 1, label: '全天'},
+      {value: 2, label: '限时'}
+    ],
+    // 频次控制类型
+    frequency_control_type: [
+      {value: 1, label: '不限频次'},
+      {value: 2, label: '限定频次'}
+    ],
+    // 频次控制--行为类型
+    frequency_control_people_type: [
+      {value: 1, label: '单人曝光频次'},
+      {value: 2, label: '单人点击频次'}
+    ],
+    // 投放速度
+    release_speed: [
+      {value: 1, label: '匀速投放-排期内匀速展示广告（推荐）'},
+      {value: 2, label: '加速投放-尽快展示广告'}
+    ],
+    // 付费方式
+    payment_method: [
+      {value: 1, label: 'CPM'},
+    ],
+    // 单价
+    price_method: [
+      {value: 1, label: '统一出价'},
+      {value: 2, label: '分adx出价'}
+    ],
+    // 出价方式
+    price_type: [
+      {value: 1, label: '自动出价'},
+      {value: 2, label: '手动出价'}
+    ]
     
   }
 })
@@ -360,6 +880,10 @@ const submitFn = async () => {
   }
 }
 
+const saveAdxPrice = (data) => {
+  console.log(data)
+}
+
 const cancelFn = () => {
   let url = '/adcontrol/adseries/list'
   goNewUrl({
@@ -368,13 +892,22 @@ const cancelFn = () => {
 }
 
 const getConfig = async () => {
+  state.options.country = await getCommonCountryList()
+  // 获取全部的列表进程一一排重比对
+  const ajaxData = {
+    demand_id: '',
+    page: 1,
+    limit: 1000
+  }
+  // const {data: listData} = await ApiGetReportApiList(ajaxData)
+  // const {data: list} = listData
+  // state.options.judgeList = handleJudgeList(list)
 }
 
 const init = () => {
   console.info('init')
   let { query, params } = getRouterData()
   type.value = query.type?.toString() ?? ''
-  getConfig()
   if (type.value === 'create') {
     state.ruleForm = _.cloneDeep(defaultRuleForm)
   }
@@ -382,6 +915,7 @@ const init = () => {
     const { id } = params
     setDataFn(id)
   }
+  getConfig()
 }
 
 onMounted(() => {

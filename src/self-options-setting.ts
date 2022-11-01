@@ -1,7 +1,40 @@
 const setting: any = {
+  choice_type: [
+    {value: 1, label: '包含'},
+    {value: 2, label: '排除'},
+  ],
   status: [
     {value: 1, label: '开'},
     {value: 2, label: '关'},
+  ],
+  // 操作系统
+  system: [
+    {value: 1, label: 'Android'},
+    {value: 2, label: 'iOS'},
+    {value: 3, label: 'Windows'},
+    {value: 4, label: 'macOS'},
+    {value: 5, label: '其他'},
+    {value: 6, label: '未知'},
+  ],
+  // 终端类型
+  terminal_type: [
+    {value: 1, label: '手机'},
+    {value: 2, label: '平板'},
+    {value: 3, label: 'PC'},
+    {value: 4, label: '其他'},
+    {value: 5, label: '未知'},
+  ],
+  // 网络连接
+  network_type: [
+    {value: 1, label: 'WIFI'},
+    {value: 2, label: '移动网络'},
+    {value: 3, label: '其他'},
+    {value: 4, label: '未知'},
+  ],
+  // 流量类型
+  flow_type: [
+    {value: 1, label: 'in-APP'},
+    {value: 2, label: 'Web'},
   ],
   //新建广告主 > 广告主类型
   adv_type: [

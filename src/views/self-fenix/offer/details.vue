@@ -90,7 +90,7 @@
             <el-radio :label="5">
               Direct
             </el-radio>
-             <el-radio :label="6">
+            <el-radio :label="6">
               Light
             </el-radio>
           </el-radio-group>
