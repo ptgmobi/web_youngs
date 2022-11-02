@@ -175,6 +175,11 @@ $y) {
 .w100 {
   width: 100%;
 }
+
+.w100-super {
+  width: 100% !important;
+}
+
 .w90 {
   width: 95%;
 }
@@ -249,28 +254,6 @@ $y) {
   .pb-#{$i*5} {
     padding-bottom: #{$i*5}px !important;
   }
-}
-
-.self-el-form-item{
-  @extend .flex;
-  @extend .w100;
-}
-.self-el-form-item-no-label{
-  .el-form-item__content{
-    margin-left: 0 !important;
-  }
-}
-
-.form-one{
-  width: 600px !important;
-  height: 100%;
-}
-
-.form-one-left{
-  width: 150px !important;
-}
-.form-one-right{
-  width: 450px !important;
 }
 
 p{
@@ -548,4 +531,26 @@ th{
 html, body{
   // ! 全国哀悼
   // filter: grayscale(1);
+}
+
+.self-el-form-item{
+  @extend .flex;
+  @extend .w100;
+}
+.self-el-form-item-no-label{
+  .el-form-item__content{
+    margin-left: 0 !important;
+  }
+}
+
+.form-one{
+  width: 600px !important;
+  height: 100%;
+}
+
+.form-one-left{
+  width: 150px !important;
+}
+.form-one-right{
+  width: 300px !important;
 }

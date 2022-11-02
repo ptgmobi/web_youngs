@@ -97,16 +97,16 @@
           </el-select>
         </el-form-item>
         <!-- 国家/地区 -->
-        <div class="flex form-one">
+        <div class="flex">
           <el-form-item
             label="国家/地区:"
             prop="country_type"
           >
             <el-select
+              class="form-one-left"
               v-model="state.ruleForm.country_type"
               filterable
               placeholder=""
-              class="form-one-left"
             >
               <el-option
                 v-for="item in state.options.choice_type"
@@ -122,12 +122,12 @@
             class="self-el-form-item-no-label"
           >
             <el-select
+              class="form-one-right"
               v-model="state.ruleForm.country"
               filterable
               clearable
               placeholder=""
               multiple
-              class="form-one-right"
             >
               <el-option
                 v-for="item in state.options.country"
@@ -323,6 +323,7 @@
             </template>
           </el-radio-group>
         </el-form-item>
+        {{state.ruleForm.promotion_cycle_arr}}
         <el-form-item
           class="self-el-form-item"
           label=""
@@ -331,7 +332,7 @@
           <!-- 日期组件 -->
           <el-date-picker
             v-model="state.ruleForm.promotion_cycle_arr"
-            class="mr-10 mb-10"
+            class="w100-super"
             type="daterange"
             unlink-panels
             format="YYYY-MM-DD"
@@ -363,18 +364,12 @@
           prop="launch_period_day"
         >
           <!-- 周 -->
-          <el-date-picker
-            v-model="state.ruleForm.launch_period_day"
-            class="mr-10 mb-10"
-            type="week"
-            unlink-panels
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :clearable="false"
-          ></el-date-picker>
+          <el-checkbox-group class="w100-super" v-model="state.ruleForm.launch_period_day">
+            <template v-for="item in state.options.launch_period_day">
+              <el-checkbox :label="item.value">{{item.label}}</el-checkbox>
+            </template>
+          </el-checkbox-group>
+
         </el-form-item>
         <!-- 投放时段--小时 -->
         {{state.ruleForm.launch_period_hour}}
@@ -385,11 +380,14 @@
         >
           <!-- 小时 -->
           <el-time-picker
+            class="w100-super"
             v-model="state.ruleForm.launch_period_hour"
             is-range
-            range-separator="To"
-            start-placeholder="Start time"
-            end-placeholder="End time"
+            format="HH:mm"
+            value-format="HH:mm"
+            range-separator="至"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间"
           />
         </el-form-item>
         <!-- 频次控制 -->
@@ -404,9 +402,9 @@
             </template>
           </el-radio-group>
         </el-form-item>
-        <div class="flex form-one">
+        <div class="flex">
           <el-form-item
-            class="self-el-form-item-no-label" 
+            class="self-el-form-item" 
             label=""
             prop="frequency_control_type"
           >
@@ -415,7 +413,6 @@
               filterable
               clearable
               placeholder=""
-              multiple
               class="form-one-left"
             >
               <el-option
@@ -478,7 +475,6 @@
           <el-select
             v-model="state.ruleForm.payment_method"
             filterable
-            clearable
             placeholder=""
             class="form-one"
           >
@@ -504,7 +500,7 @@
         </el-form-item>
         <!-- 出价方式为分adx出价时 -->
         <el-form-item
-          class="self-el-form-item-no-label form-one" 
+          class="self-el-form-item" 
           label=""
           prop="adx_price"
         >
@@ -570,7 +566,8 @@ const {
   system,
   terminal_type,
   network_type,
-  flow_type
+  flow_type,
+  week
 } = optionsSetting
 
 const { getRouterData, getCommonCountryList, goNewUrl } = useUtils()
@@ -627,9 +624,9 @@ type ruleFormType =  {
   // 投放时段: 1:全天；2：限时
   launch_period_type: number | undefined
   // 投放时段--天
-  launch_period_day: string
+  launch_period_day: Array<number>
   // 投放时段--小时
-  launch_period_hour: string
+  launch_period_hour: Array<string>
   // 频次控制类型： 1：不限频次，2：限定频次
   frequency_control_type: number | undefined
   // 频次控制--行为类型： 1： 单人曝光频次，2：单人点击频次
@@ -663,7 +660,7 @@ const defaultRuleForm: ruleFormType = {
   // 受众包
   target_pkg_ids: '',
   // 国家/地区类型：1包含，2排除
-  country_type: void 0,
+  country_type: 1,
   country: '',
   // 操作系统：1：android,2:ios, 3: windows, 4:macOS, 5:其他， 6:未知
   system: [1],
@@ -677,11 +674,11 @@ const defaultRuleForm: ruleFormType = {
   adx_type: 1,
   adx: '',
   // 媒体分类类型： 1： 包含，2： 排除
-  media_type: void 0,
+  media_type: 1,
   // 媒体分类
   media: '',
   // 自定义媒体类型： 1： 包含，2： 排除
-  custem_media_type: void 0,
+  custem_media_type: 1,
   // 自定义媒体
   custem_media: '',
   pmp_id: '',
@@ -693,17 +690,17 @@ const defaultRuleForm: ruleFormType = {
   // 推广周期--结束时间
   promotion_cycle_et: '',
   // 投放时段: 1:全天；2：限时
-  launch_period_type: void 0,
+  launch_period_type: 2,
   // 投放时段--天
-  launch_period_day: '',
+  launch_period_day: [],
   // 投放时段--小时
-  launch_period_hour: '',
+  launch_period_hour: [],
   // 频次控制类型： 1：不限频次，2：限定频次
-  frequency_control_type: void 0,
+  frequency_control_type: 2,
   // 频次控制--行为类型： 1： 单人曝光频次，2：单人点击频次
-  frequency_control_people_type: void 0,
+  frequency_control_people_type: 2,
   // 频次控制--每日次数
-  frequency_control_num: void 0,
+  frequency_control_num: 6,
   // 投放速度： 1: 匀速，2： 加速
   release_speed: 1,
   // 日预算
@@ -821,7 +818,9 @@ const state = reactive({
     price_type: [
       {value: 1, label: '自动出价'},
       {value: 2, label: '手动出价'}
-    ]
+    ],
+    // 周
+    launch_period_day: week
     
   }
 })

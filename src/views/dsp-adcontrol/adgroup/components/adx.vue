@@ -36,7 +36,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="Payout"
+        label="单价($/前次曝光)"
         align="center"
       >
         <template #default="scope">
@@ -45,13 +45,13 @@
             type="number"
             min="0"
             step="0.001"
-            placeholder="Please input"
+            placeholder="请输入单价"
             class="input-with-select"
           />
         </template>
       </el-table-column>
       <el-table-column
-        label="Cap Daily"
+        label="自动点击率%"
         align="center"
       >
         <template #default="scope">
@@ -68,7 +68,7 @@
       <el-table-column
         label="Operation"
         align="center"
-        width="180px"
+        width="100px"
       >
         <template #default="scope">
           <div class="flex">
