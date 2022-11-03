@@ -15,7 +15,7 @@
       border
     >
       <el-table-column
-        label="Pub Name"
+        label="Adx Name"
         align="center"
       >
         <template #default="scope">
@@ -66,7 +66,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="Operation"
+        label="操作"
         align="center"
         width="100px"
       >

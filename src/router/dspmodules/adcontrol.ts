@@ -2,6 +2,7 @@ import Layout from '@/layout'
 export default [
   {
     path: '/adcontrol',
+    redirect: '/adcontrol/adv',
     component: Layout,
     name: 'adcontrol',
     meta: {

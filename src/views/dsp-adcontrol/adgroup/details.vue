@@ -42,7 +42,7 @@
         <!-- 所属广告系列 -->
         <el-form-item
           class="self-el-form-item"
-          label="广告主名称:"
+          label="所属广告系列:"
           prop="adv_series_id"
         >
           <el-select
@@ -79,7 +79,7 @@
         <!-- 受众包 -->
         <el-form-item
           class="self-el-form-item"
-          label="广告主名称:"
+          label="受众包:"
           prop="adv_series_id"
         >
           <el-select
