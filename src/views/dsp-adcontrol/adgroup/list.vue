@@ -411,7 +411,7 @@ const createFn = () => {
   // detailsType.value = 'create'
   // dialogVisibleEdit.value = true
   goNewUrl({
-    url: '/adcontrol/adseries/create',
+    url: '/adcontrol/adgroup/create',
     query: {
       type: 'create'
     }
@@ -428,7 +428,7 @@ const editFn = ({row}: any) => {
   // state.cache = row
   const { id } = row
   goNewUrl({
-    url: `/adcontrol/adseries/edit/${id}`,
+    url: `/adcontrol/adgroup/edit/${id}`,
     query: {
       type: 'edit'
     }
