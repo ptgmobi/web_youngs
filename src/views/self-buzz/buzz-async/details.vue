@@ -701,7 +701,7 @@ let validatorCountry = (rule: any, value: string, callback: (arg0: Error | undef
 
 let validatorLineArr = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
   console.log(value)
-  if (value.length !== 0 && value[0] && value[1]) {
+  if (value && value.length !== 0 && value[0] && value[1]) {
     let createNow = moment(line_arr_0).format('X')
     let start_t = moment(value[0]).format('X')
     let end_t = moment(value[1]).format('X')
