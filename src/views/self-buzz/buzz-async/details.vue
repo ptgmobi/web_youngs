@@ -307,6 +307,23 @@
         <!-- Select Device -->
         
         <el-form-item
+          label="自动上下线时间:"
+          prop="line_arr"
+        >
+          <div class="flex jc-start">
+            <el-date-picker
+              format="YYYY-MM-DD HH:mm:ss"
+              value-format="YYYY-MM-DD HH:mm:ss"
+              v-model="data.ruleForm.line_arr"
+              type="datetimerange"
+              range-separator="-"
+              start-placeholder="上线时间"
+              end-placeholder="下线时间"
+              class="form-one"
+            />
+          </div>
+        </el-form-item>
+        <el-form-item
           label="Delivery mode:"
           prop="p_type"
         >
@@ -523,6 +540,9 @@ import { ElMessage } from 'element-plus'
 // import { useRouter } from 'vue-router'
 import Device from './device.vue'
 import cutOff from '../components/cutOff.vue'
+import { getToday, getAddNumYear } from '@/utils/format.js'
+import moment from 'moment'
+
 let { proxy }: any = getCurrentInstance()
 const router = useRouter()
 const message = {
@@ -679,11 +699,37 @@ let validatorCountry = (rule: any, value: string, callback: (arg0: Error | undef
   }
 }
 
+let validatorLineArr = (rule: any, value: string, callback: (arg0: Error | undefined) => void) => {
+  console.log(value)
+  if (value.length !== 0 && value[0] && value[1]) {
+    let createNow = moment(line_arr_0).format('X')
+    let start_t = moment(value[0]).format('X')
+    let end_t = moment(value[1]).format('X')
+    // 创建时才验证
+    if (pageType.value === '1') {
+      if (start_t < createNow) {
+        callback(new Error('开始时间不能早于现在'))
+      }
+    }
+    if (end_t < start_t) {
+      callback(new Error('结束时间必须大于开始时间'))
+    }
+    callback(void 0)
+  } else {
+    callback(new Error('必填项'))
+  }
+  
+}
+
 let bus: any = reactive({
   offer: {},
   index: null,
   cacheDevice: {}
 })
+
+let line_arr_0 = getToday()
+let line_arr_1 = getAddNumYear(1)
+
 let pageType = ref('')
 let name: any = ref('')
 let data: any = reactive({
@@ -738,6 +784,11 @@ let data: any = reactive({
     site_install_limitation: undefined,
     start_hour: '-1',
     end_hour: '-1',
+    line_arr: [
+      line_arr_0, line_arr_1
+    ],
+    online_st: '',
+    offline_et: '',
     device: [],
     cutoff_start: 0,
     cutoff_end: 1,
@@ -797,6 +848,7 @@ let data: any = reactive({
     //   { required: true, message: message.required, trigger: ['blur', 'change'] }
     // ],
     p_type: [{ required: true, trigger: ['blur', 'change'] }],
+    line_arr: [{ required: true, validator: validatorLineArr, trigger: ['blur', 'change'] }],
   },
   siteData: []
 })
@@ -829,6 +881,8 @@ const submitFormFun = async () => {
   let ajaxData: any = {
     ...data.ruleForm
   }
+  ajaxData['online_st'] = ajaxData['line_arr'][0]
+  ajaxData['offline_et'] = ajaxData['line_arr'][1]
   ajaxData['clk_id'] = parseFloat(ajaxData['clk_id'])
   ajaxData['conversion_flow'] = parseFloat(ajaxData['conversion_flow'])
   ajaxData['cutoff_end'] = parseFloat(ajaxData['cutoff_end'])
@@ -921,6 +975,7 @@ const handleCopyOffer = (result: any, options: any) => {
   if (options.type === '2') {
     result.id = result['id']
     result.offer_id = result['offer_id']
+    result['line_arr'] = [result['online_st'], result['offline_et']]
   }
   result.country = result['country'] ? result['country'].split(',') : []
   resData = {

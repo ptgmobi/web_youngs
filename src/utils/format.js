@@ -58,6 +58,7 @@ export function getSectionAnyTime(startnum, endnum, type) {
 export function getSectionTimeArr(num, type) {
   return [...new Array(num - 1)].map((i, idx) => moment().subtract(idx, type).format('YYYY-MM-DD')).reverse()
 }
+
 /**
  * 获取一天24小时数组
  * ? params
@@ -232,6 +233,18 @@ export function thousandSeparator(num) {
   // } while (n)
   // return ans.split('').reverse().join('')
 }
+
+
+// 获取今日时间
+export function getToday() {
+  return moment().format('YYYY-MM-DD HH:mm:ss')
+}
+
+// 获取某年时间
+export function getAddNumYear(num) {
+  return moment().add(num, 'year').format('YYYY-MM-DD HH:mm:ss')
+}
+
 
 // 获取昨日时间
 export function getYestenday() {
