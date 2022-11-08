@@ -15,10 +15,10 @@
           placeholder="请选择广告主"
         >
           <el-option
-            v-for="item in options.adv"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="item in options.advertiser"
+            :key="item.adv_id"
+            :label="item.name"
+            :value="item.adv_id"
           ></el-option>
         </el-select>
       </el-form-item>
@@ -43,8 +43,11 @@
 </template>
 <script lang="ts" setup>
 import { getSectionTime, getSectionAnyTime, choiceDefaultProduct } from '@/utils/format'
+import { ApiGetAdvertiserList } from '@/api/dsp-advertiser'
+
+const emit = defineEmits(['up'])
 let searchForm = reactive({
-  adv: '',
+  adv: void 0,
   date: getSectionTime(6, 'day')
 })
 
@@ -74,7 +77,46 @@ let shortcuts = reactive([
 ])
 
 let options = reactive({
-  adv: []
+  advertiser: [{
+    adv_id: '',
+    name: ''
+  }]
+})
+
+const getConfig = async () => {
+  const {data: {data: result }} = await ApiGetAdvertiserList({
+    page: 1,
+    limit: 10000
+  })
+  options.advertiser = result
+}
+
+// watch(() => searchForm.adv, (newVal, oldVal) => {
+//   emit('up', searchForm)
+// }, {
+//   immediate: true,
+//   deep: true
+// })
+
+watchEffect(() => {
+  let adv = searchForm.adv
+  let date = toRaw(searchForm.date)
+  emit('up', {
+    adv,
+    date
+  })
+})
+
+// const changeSelectAdv = (data) => {
+//   emit('up', data)
+// }
+
+const init = async () => {
+  await getConfig()
+}
+
+onMounted(() => {
+  init()
 })
 </script>
 <style lang="scss">

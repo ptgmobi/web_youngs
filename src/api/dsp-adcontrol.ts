@@ -3,7 +3,7 @@ import { ObjTy } from '@/types/common'
 // ad series
 export function ApiGetAdSeriesList(data: ObjTy) {
   return request({
-    url: '/dvs/list',
+    url: '/d/dvs/list',
     data,
     method: 'get', 
     bfLoading: false,
@@ -14,7 +14,7 @@ export function ApiGetAdSeriesList(data: ObjTy) {
 
 export function ApiChangeAdSeriesStatus(data: ObjTy) {
   return request({
-    url: '/dvs/status',
+    url: '/d/dvs/status',
     data,
     method: 'patch',
     bfLoading: false,
@@ -25,7 +25,7 @@ export function ApiChangeAdSeriesStatus(data: ObjTy) {
 
 export function ApiDeleteAdSeries(data: ObjTy) {
   return request({
-    url: '/dvs/delete',
+    url: 'd/dvs/del',
     data,
     method: 'delete',
     bfLoading: false,
@@ -37,7 +37,7 @@ export function ApiDeleteAdSeries(data: ObjTy) {
 // ! details
 export function ApiAdSeriesCreate(data: ObjTy) {
   return request({
-    url: '/dvs',
+    url: '/d/dvs',
     data,
     method: 'post',
     bfLoading: false,
@@ -48,7 +48,7 @@ export function ApiAdSeriesCreate(data: ObjTy) {
 
 export function ApiAdSeriesEdit(data: ObjTy) {
   return request({
-    url: '/dvs',
+    url: '/d/dvs',
     data,
     method: 'put',
     bfLoading: false,
@@ -59,7 +59,7 @@ export function ApiAdSeriesEdit(data: ObjTy) {
 
 export function ApiGetAdSeriesOne(params: string) {
   return request({
-    url: `/dvs/view/${params}`,
+    url: `/d/dvs/view/${params}`,
     method: 'get',
     bfLoading: false,
     isParams: true,
@@ -69,7 +69,7 @@ export function ApiGetAdSeriesOne(params: string) {
 
 export function ApiGetConfig() {
   return request({
-    url: '/dvs/edit-config',
+    url: '/d/dvs/edit-config',
     method: 'get',
     bfLoading: false,
     isParams: true,
@@ -81,7 +81,7 @@ export function ApiGetConfig() {
 
 export function ApiGetAdGroupList(data: ObjTy) {
   return request({
-    url: '/dvg/list',
+    url: '/d/dvg/list',
     data,
     method: 'get', 
     bfLoading: false,
@@ -92,7 +92,7 @@ export function ApiGetAdGroupList(data: ObjTy) {
 
 export function ApiChangeAdGroupStatus(data: ObjTy) {
   return request({
-    url: '/dvg/status',
+    url: '/d/dvg/status',
     data,
     method: 'patch',
     bfLoading: false,
@@ -103,7 +103,7 @@ export function ApiChangeAdGroupStatus(data: ObjTy) {
 
 export function ApiDeleteAdGroup(data: ObjTy) {
   return request({
-    url: '/dvg/delete',
+    url: '/d/dvg/delete',
     data,
     method: 'delete',
     bfLoading: false,
@@ -115,7 +115,7 @@ export function ApiDeleteAdGroup(data: ObjTy) {
 // ! details
 export function ApiAdGroupCreate(data: ObjTy) {
   return request({
-    url: '/dvg',
+    url: '/d/dvg',
     data,
     method: 'post',
     bfLoading: false,
@@ -126,7 +126,7 @@ export function ApiAdGroupCreate(data: ObjTy) {
 
 export function ApiAdGroupEdit(data: ObjTy) {
   return request({
-    url: '/dvg',
+    url: '/d/dvg',
     data,
     method: 'put',
     bfLoading: false,
@@ -137,7 +137,7 @@ export function ApiAdGroupEdit(data: ObjTy) {
 
 export function ApiGetAdGroupOne(params: string) {
   return request({
-    url: `/dvg/view/${params}`,
+    url: `/d/dvg/view/${params}`,
     method: 'get',
     bfLoading: false,
     isParams: true,

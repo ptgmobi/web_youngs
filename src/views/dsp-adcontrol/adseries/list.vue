@@ -1,13 +1,7 @@
 <template>
   <div>
     <div class="controlBox w100 mb-10">
-      <search/>
-      <div class="mb-10 w100">
-        <!-- <el-button type="primary" @click='createFun'>Offer Create</el-button> -->
-        <!-- <router-link to="/buzz/create"> -->
-          <el-button type="primary" @click="createFn">新建广告系列</el-button>
-        <!-- </router-link> -->
-      </div>
+      <search @up="changeTopSearch"/>
       <el-form
         v-model="state.searchForm"
         :inline="true"
@@ -107,15 +101,35 @@
       <!-- <el-input placeholder="请输入内容" v-model="state.searchForm.data" class='search-input'>
         <el-button slot="append" icon="Search" @click='searchFun'></el-button>
       </el-input> -->
+      <div class="mb-10 w100">
+          <el-button type="primary" @click="createFn">新建广告系列</el-button>
+          <el-select
+            class="ml-10"
+            v-model="batch.data.mode"
+            filterable
+            placeholder="批量操作"
+            @change="batchFn"
+          >
+            <el-option
+              v-for="item in batch.options.mode"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+      </div>
     </div>
     <!-- table -->
     <el-table
+      ref="multipleTableRef"
       v-loading="state.loading"
       center
       :data="state.list"
       class="w100"
       border
+      @selection-change="handleSelectionChange"
     >
+      <el-table-column align="center" type="selection" width="55" />
       <el-table-column sortable
         prop="id"
         label="广告系列ID"
@@ -184,7 +198,6 @@
             <el-button
               class="cp"
               type="primary"
-              @click="editFn(scope)"
             >复制</el-button>
             <!-- <el-button
               v-if="scope.row.is_del === 2"
@@ -283,6 +296,12 @@ import useUtils from '@/hooks/self/useUtils'
 import { clipboardFn } from '@/utils/clipboard'
 import { ApiGetAdSeriesList, ApiChangeAdSeriesStatus, ApiDeleteAdSeries } from '@/api/dsp-adcontrol'
 import search from '../components/search.vue'
+import { ElTable } from 'element-plus'
+
+const multipleTableRef = ref<InstanceType<typeof ElTable>>()
+
+const handleSelectionArr = ref([{id: ''}])
+
 const {
   status, 
   adv_type, 
@@ -300,6 +319,8 @@ const searchData = shallowRef({
   value_type: 'adv_series_name',
   value: ''
 })
+
+const topSearchData = ref({})
 
 const dialogVisibleReportApi = ref(false)
 
@@ -329,7 +350,7 @@ let state = reactive({
     ],
     value_type: [
       {value: 'adv_series_name', label: '广告系列名称'},
-      {value: 'id', label: '广告系列ID'},
+      {value: 'ads_id', label: '广告系列ID'},
       {value: 'desc', label: '描述'},
     ]
   },
@@ -347,6 +368,60 @@ let state = reactive({
     }
   }
 })
+
+let batch = reactive({
+  data: {
+    mode: '',
+  },
+  options: {
+    mode: [
+      {
+        value: 1,
+        label: '开启'
+      },
+      {
+        value: 2,
+        label: '暂停'
+      },
+      {
+        value: 0,
+        label: '归档'
+      },
+    ]
+  }
+})
+
+// 批量操作
+const handleSelectionChange = ((val: any) => {
+  handleSelectionArr.value = val
+})
+
+const batchFn = async () => {
+  let ids = handleSelectionArr.value.map(ele => {
+    return ele.id
+  })
+  console.log(ids)
+  // 当前操作方式
+  let batchMode = batch.data.mode
+  // 批量开启
+  if (batchMode.toString() === '1') {
+    
+  }
+  // 批量暂停
+  if (batchMode.toString() === '2') {
+    
+  }
+  // 批量归档
+  if (batchMode.toString() === '0') {
+    console.log('批量归档')
+    const res = await deleteFunction(ids)
+    if (messageFun(res)) {
+      init()
+    }
+    
+  }
+}
+
 
 const copyFn = (text) => {
   clipboardFn(text)
@@ -435,12 +510,18 @@ const editFn = ({row}: any) => {
   })
 }
 
+const deleteFunction = async (ids) => {
+  const res = await ApiDeleteAdSeries({
+    ids,
+    is_del: 2
+  })
+  return res
+}
+
 const deleteFun = (scope: any) => {
   return async () => {
     const {row, $index: index} = scope
-    const res = await ApiDeleteAdSeries({
-      id: row.id
-    })
+    const res = await deleteFunction([row.id])
     if (messageFun(res)) {
       state.list.splice(index, 1)
     }
@@ -449,10 +530,19 @@ const deleteFun = (scope: any) => {
 
 const deleteFn = async(scope: any) => {
   openAlert({
-    text: `确认归档${scope.row.name}？`,
+    text: `确认归档${scope.row.adv_series_name}？`,
     title: '归档操作',
     buttonText: '确认'
   }, deleteFun(scope))
+}
+
+const changeTopSearch = (data) => {
+  console.log(data)
+  topSearchData.value = {
+    adv_id: data.adv,
+    st: data.date[0],
+    et: data.date[1]
+  }
 }
 
 const init = async () => {
@@ -460,7 +550,8 @@ const init = async () => {
   let ajaxData: any = {
     page: state.pagination.listQuery.page,
     limit: state.pagination.listQuery.limit,
-    ...searchData.value
+    ...searchData.value,
+    ...topSearchData.value
   }
   ajaxData[ajaxData.value_type] = ajaxData.value
   delete ajaxData.value_type

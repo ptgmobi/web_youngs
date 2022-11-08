@@ -1,7 +1,7 @@
 // 172.31.21.0/af-report/view
 import request from '@/utils/axiosReq'
 import { ObjTy } from '@/types/common'
-// ! buzz list
+
 export function ApiGetAdvertiserList(data: ObjTy) {
   return request({
     url: '/d/dv/list',

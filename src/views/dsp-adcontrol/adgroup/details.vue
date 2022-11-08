@@ -546,6 +546,7 @@
 <script lang="ts" setup>
 import optionsSetting from '@/self-options-setting'
 import { ApiAdSeriesCreate, ApiGetAdSeriesOne, ApiAdSeriesEdit } from '@/api/dsp-adcontrol'
+import { ApiGetAdvertiserList } from '@/api/dsp-advertiser'
 import { messageFun } from '@/utils/message'
 import splitButton from '@/components/Self/SplitButton'
 import useUtils from '@/hooks/self/useUtils'
@@ -820,7 +821,8 @@ const state = reactive({
       {value: 2, label: '手动出价'}
     ],
     // 周
-    launch_period_day: week
+    launch_period_day: week,
+    advertiser: []
     
   }
 })
@@ -891,16 +893,16 @@ const cancelFn = () => {
 }
 
 const getConfig = async () => {
-  state.options.country = await getCommonCountryList()
-  // 获取全部的列表进程一一排重比对
-  const ajaxData = {
-    demand_id: '',
-    page: 1,
-    limit: 1000
-  }
-  // const {data: listData} = await ApiGetReportApiList(ajaxData)
-  // const {data: list} = listData
-  // state.options.judgeList = handleJudgeList(list)
+  Promise.all([getCommonCountryList(), ApiGetAdvertiserList({
+    limit: 1000,
+    page: 1
+  })]).then(data => {
+    let countryData = data[0]
+    let advertiserData = data[1]
+    state.options.country = countryData
+    state.options.advertiser = advertiserData.data.data
+  })
+
 }
 
 const init = () => {

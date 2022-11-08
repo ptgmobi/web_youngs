@@ -31,16 +31,16 @@
           prop="adv_name"
         >
           <el-select
-            v-model="state.ruleForm.adv_name"
+            v-model="state.ruleForm.adv_id"
             filterable
             placeholder="请选择"
             class="form-one"
           >
             <el-option
-              v-for="item in state.options.adv_name"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="item in state.options.advertiser"
+              :key="item.adv_id"
+              :label="item.name"
+              :value="item.adv_id"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -99,6 +99,7 @@
             v-model.trim="state.ruleForm.adv_series_budget"
             class="form-one"
             placeholder=""
+            type="number"
           >
           </el-input>
         </el-form-item>
@@ -126,6 +127,7 @@
 <script lang="ts" setup>
 import optionsSetting from '@/self-options-setting'
 import { ApiAdSeriesCreate, ApiGetAdSeriesOne, ApiAdSeriesEdit } from '@/api/dsp-adcontrol'
+import { ApiGetAdvertiserList } from '@/api/dsp-advertiser'
 import { messageFun } from '@/utils/message'
 import splitButton from '@/components/Self/SplitButton'
 import useUtils from '@/hooks/self/useUtils'
@@ -159,7 +161,7 @@ let type: any = ref('create')
 
 type ruleFormType =  {
   id: number | undefined
-  adv_name: string
+  adv_id: string
   adv_series_name: string
   desc: string
   // 1：再营销；2：拉新
@@ -175,7 +177,7 @@ type ruleFormType =  {
 
 const defaultRuleForm: ruleFormType = {
   id: void 0,
-  adv_name: '',
+  adv_id: '',
   adv_series_name: '',
   desc: '',
   // 营销目标
@@ -228,7 +230,7 @@ const state = reactive({
       {required: true, message: message.required, trigger: ['blur', 'change']},
       {validator: validatorStrLenValue, max: 100, trigger: ['blur', 'change']}
     ],
-    adv_name: [
+    adv_id: [
       {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
     desc: [
@@ -253,7 +255,12 @@ const state = reactive({
       {value: 1, label: '再营销'},
       {value: 2, label: '拉新'},
     ],
-    adv_name: []
+    advertiser: [
+      {
+        adv_id: '',
+        name: ''
+      }
+    ]
     
   }
 })
@@ -272,7 +279,7 @@ const saveFun = () => {
 }
 
 // 为数字的字段
-const numberKeyArr = ['id', 'adv_id', 'adv_series_type', 'adv_series_budget']
+const numberKeyArr = ['id', 'adv_series_type', 'adv_series_budget']
 
 // 数组转换为字符串
 const arrayKeyArr = []
@@ -320,6 +327,16 @@ const cancelFn = () => {
 }
 
 const getConfig = async () => {
+  Promise.all([
+    ApiGetAdvertiserList({
+      limit: 10000,
+      page: 1
+    })
+  ]).then(data => {
+    console.log(data)
+    let advertiserData = data[0]
+    state.options.advertiser = advertiserData.data.data
+  })
 }
 
 const init = () => {
