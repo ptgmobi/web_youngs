@@ -44,12 +44,11 @@
 <script lang="ts" setup>
 import { getSectionTime, getSectionAnyTime, choiceDefaultProduct } from '@/utils/format'
 import { ApiGetAdvertiserList } from '@/api/dsp-advertiser'
+import { useDspStore } from '@/store/dsp'
 
 const emit = defineEmits(['up'])
-let searchForm = reactive({
-  adv: void 0,
-  date: getSectionTime(6, 'day')
-})
+
+let searchForm: any = reactive(useDspStore().topsearch)
 
 let shortcuts = reactive([
   {
@@ -101,10 +100,17 @@ const getConfig = async () => {
 watchEffect(() => {
   let adv = searchForm.adv
   let date = toRaw(searchForm.date)
-  emit('up', {
+  // 存到pinia
+  const dspStore = useDspStore()
+  const ajaxData = {
     adv,
     date
-  })
+  }
+  console.log(ajaxData)
+  dspStore
+    .setSearchData(ajaxData)
+  emit('up', ajaxData)
+  console.log(useDspStore().topsearch)
 })
 
 // const changeSelectAdv = (data) => {

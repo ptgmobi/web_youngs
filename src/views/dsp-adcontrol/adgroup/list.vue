@@ -291,8 +291,9 @@ const {
   return_mode, 
 } = optionsSetting
 
-const { goNewUrl, openAlert } = useUtils()
-const searchData = shallowRef({
+const { getRouterData, getCommonCountryList, openAlert } = useUtils()
+const searchData: any = reactive({
+  adv_series_id: '',
   status: '',
   adv_series_type: '',
   marbet_target: '',
@@ -312,8 +313,8 @@ let state = reactive({
   cache: {
     item: {}
   },
-  searchForm: searchData.value,
-  useData: searchData.value,
+  searchForm: searchData,
+  useData: searchData,
   loading: true,
   options: {
     status,
@@ -457,10 +458,13 @@ const deleteFn = async(scope: any) => {
 
 const init = async () => {
   state.loading = true
+  let { query, params } = getRouterData()
+  let { adseries } = query
+  searchData.adv_series_id = adseries
   let ajaxData: any = {
     page: state.pagination.listQuery.page,
     limit: state.pagination.listQuery.limit,
-    ...searchData.value
+    ...searchData
   }
   ajaxData[ajaxData.value_type] = ajaxData.value
   delete ajaxData.value_type

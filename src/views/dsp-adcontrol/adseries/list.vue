@@ -171,7 +171,8 @@
         align="center"
       >
         <template #default="scope">
-          <span>{{scope.row.ad_group}}</span>
+          <!-- <span>{{scope.row.ad_group}}</span> -->
+          <span class="color_primary cp" @click="goAdGroupList(scope)">{{scope.row.ad_group ? scope.row.ad_group.length : 6}}</span>
         </template>
       </el-table-column>
       <el-table-column sortable
@@ -180,7 +181,8 @@
         align="center"
       >
         <template #default="scope">
-          <span>{{scope.row.ad}}</span>
+          <!-- <span>{{scope.row.ad}}</span> -->
+          <span class="color_primary cp" @click="goAdList(scope)">{{scope.row.ad ? scope.row.ad.length : 8}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -506,6 +508,27 @@ const editFn = ({row}: any) => {
     url: `/adcontrol/adseries/edit/${id}`,
     query: {
       type: 'edit'
+    }
+  })
+}
+
+
+const goAdGroupList = ({row}: any) => {
+  goNewUrl({
+    url: `/adcontrol/adgroup/list`,
+    query: {
+      adseries: row.id,
+      type: 'list'
+    }
+  })
+}
+
+const goAdList = ({row}: any) => {
+  goNewUrl({
+    url: `/adcontrol/ad/list`,
+    query: {
+      adseries: row.id,
+      type: 'list'
     }
   })
 }
