@@ -48,7 +48,13 @@ import { useDspStore } from '@/store/dsp'
 
 const emit = defineEmits(['up'])
 
-let searchForm: any = reactive(useDspStore().topsearch)
+const topsearchData: any = useDspStore().topsearch
+let {adv, date} = topsearchData
+
+let searchForm: any = reactive({
+  adv,
+  date: date ? date : []
+})
 
 let shortcuts = reactive([
   {

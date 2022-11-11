@@ -52,10 +52,10 @@
             class="form-one"
           >
             <el-option
-              v-for="item in state.options.adv_series_id"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="item in state.options.adv_series"
+              :key="item.id"
+              :label="item.adv_series_name"
+              :value="item.id"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -131,9 +131,9 @@
             >
               <el-option
                 v-for="item in state.options.country"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -218,9 +218,9 @@
           >
             <el-option
               v-for="item in state.options.adx"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -323,7 +323,6 @@
             </template>
           </el-radio-group>
         </el-form-item>
-        {{state.ruleForm.promotion_cycle_arr}}
         <el-form-item
           class="self-el-form-item"
           label=""
@@ -357,7 +356,6 @@
           </el-radio-group>
         </el-form-item>
         <!-- 投放时段--天 -->
-        {{state.ruleForm.launch_period_day}}
         <el-form-item
           class="self-el-form-item"
           label=""
@@ -372,7 +370,6 @@
 
         </el-form-item>
         <!-- 投放时段--小时 -->
-        {{state.ruleForm.launch_period_hour}}
         <el-form-item
           class="self-el-form-item"
           label=""
@@ -507,7 +504,7 @@
           <Adx
             class="w100"
             ref="traffic"
-            v-model:list="state.ruleForm.adx_price"
+            v-model:list="handleChoiceAdx"
             @kk="saveAdxPrice"
           ></Adx>
         </el-form-item>
@@ -545,7 +542,7 @@
 </template>
 <script lang="ts" setup>
 import optionsSetting from '@/self-options-setting'
-import { ApiAdSeriesCreate, ApiGetAdSeriesOne, ApiAdSeriesEdit } from '@/api/dsp-adcontrol'
+import { ApiAdGroupCreate, ApiGetAdGroupOne, ApiAdGroupEdit, ApiGetAdGroupList, ApiGetAdxList, ApiGetAdSeriesList } from '@/api/dsp-adcontrol'
 import { ApiGetAdvertiserList } from '@/api/dsp-advertiser'
 import { messageFun } from '@/utils/message'
 import splitButton from '@/components/Self/SplitButton'
@@ -562,6 +559,7 @@ import validator from 'validator';
 import _, { isArguments } from 'lodash'
 import { getSectionTime, getSectionAnyTime, choiceDefaultProduct } from '@/utils/format'
 import Adx from './components/adx.vue'
+import { Console } from 'console'
 const {
   choice_type,
   system,
@@ -605,15 +603,15 @@ type ruleFormType =  {
   // adx类型： 1： 包含，2： 排除
   adx_type: number | undefined
   // adx
-  adx: string
+  adx: Array<string>
   // 媒体分类
   media_type: number | undefined
   // 媒体
-  media: string
+  media: Array<string>
   // 自定义媒体类型： 1： 包含，2： 排除
   custem_media_type: number | undefined
   // 自定义媒体
-  custem_media: string
+  custem_media: Array<string>
   pmp_id: string
   // 推广周期： 1：从现在开始长期有效，2：限定周期
   promotion_cycle: number | undefined
@@ -673,15 +671,15 @@ const defaultRuleForm: ruleFormType = {
   flow_type: [1],
   // adx类型： 1： 包含，2： 排除
   adx_type: 1,
-  adx: '',
+  adx: [],
   // 媒体分类类型： 1： 包含，2： 排除
   media_type: 1,
   // 媒体分类
-  media: '',
+  media: [],
   // 自定义媒体类型： 1： 包含，2： 排除
   custem_media_type: 1,
   // 自定义媒体
-  custem_media: '',
+  custem_media: [],
   pmp_id: '',
   // 推广周期： 1：从现在开始长期有效，2：限定周期
   promotion_cycle: 2,
@@ -765,22 +763,31 @@ const state = reactive({
     network_type,
     flow_type,
     country: [
-      {
-        id: 0,
-        name: 'Unknown',
-        short_name: 'UNKNOWN'
-      }
+      {value: '', label: ''}
     ],
     // 所属广告系列
-    adv_series_id: [],
+    adv_series: [
+      {
+        id: '',
+        adv_series_name: ''
+      }
+    ],
     // 受众包
-    target_pkg_ids: [],
+    target_pkg_ids: [
+      {value: '', label: ''}
+    ],
     // adx
-    adx: [],
+    adx: [
+      {id: '', name: '', price: '', rate: ''}
+    ],
     // 媒体分类
-    media: [],
+    media: [
+      {value: '', label: ''}
+    ],
     // 自定义媒体列表
-    custem_media: [],
+    custem_media: [
+      {value: '', label: ''}
+    ],
     // 推广周期
     promotion_cycle: [
       {value: 1, label: '从现在开始长期有效'},
@@ -788,8 +795,8 @@ const state = reactive({
     ],
     // 投放时段
     launch_period_type: [
-      {value: 1, label: '全天'},
-      {value: 2, label: '限时'}
+      {value: 1, label: '全天投放'},
+      {value: 2, label: '限定时间段'}
     ],
     // 频次控制类型
     frequency_control_type: [
@@ -822,7 +829,9 @@ const state = reactive({
     ],
     // 周
     launch_period_day: week,
-    advertiser: []
+    advertiser: [
+      {value: '', label: ''}
+    ]
     
   }
 })
@@ -841,40 +850,69 @@ const saveFun = () => {
 }
 
 // 为数字的字段
-const numberKeyArr = ['id', 'adv_id', 'adv_series_type', 'adv_series_budget']
+const numberKeyArr = ['id', 'adv_id', 'adv_series_type', 'adv_series_budget', 'speed_limit_day']
 
 // 数组转换为字符串
-const arrayKeyArr = []
+const arrayKeyArr = ['adx', 'system', 'terminal_type', 'network_type', 'flow_type', 'launch_period_day', 'launch_period_hour', 'country', 'media', 'custem_media']
 
 const setDataFn = async (id) => {
   // 获取单个
-  const res = await ApiGetAdSeriesOne(id)
+  const res = await ApiGetAdGroupOne(id)
   const {data: result} = res
+  result.country = result.country ? result.country.toString() : ''
+  result.promotion_cycle_arr = [result.promotion_cycle_st, result.promotion_cycle_et]
+  result.adx_price = JSON.parse(result.adx_price)
+  handleAdxDataFn(result.adx_price)
+  let finalResult = handleOneDataArrayFn(result, arrayKeyArr)
   state.ruleForm = {
     ...state.ruleForm,
-    ...result
+    ...finalResult
   }
-  console.log(state.ruleForm)
+}
+
+const handleAdxDataFn = (data) => {
+  state.options.adx = state.options.adx.map(ele => {
+    let obj = data.find(o => {
+      return o.id == ele.id
+    })
+    if (obj) {
+      ele = {
+        ...ele,
+        ...obj
+      }
+    } else {
+      ele.price = ''
+      ele.rate = ''
+    }
+    return ele
+  })
 }
 
 const submitFn = async () => {
   let baseData = toRaw(state.ruleForm)
-  let ajaxData: any = baseData
+  let ajaxData: any = _.cloneDeep(baseData)
+  if (ajaxData.promotion_cycle_arr && ajaxData.promotion_cycle_arr.length !== 0) {
+    ajaxData.promotion_cycle_st = ajaxData.promotion_cycle_arr[0]
+    ajaxData.promotion_cycle_et = ajaxData.promotion_cycle_arr[1]
+    delete ajaxData.promotion_cycle_arr
+  }
+  let adx_json = _.cloneDeep(ajaxData.adx_price)
+  ajaxData.adx_price = JSON.stringify(adx_json)
   // 先删除为空的字段
   ajaxData = handleAjaxDataDelNo2KeyFn(ajaxData)
   ajaxData = handleAjaxNumberKeyFn(ajaxData, numberKeyArr)
-  // ajaxData = handleAjaxArrayKeyFn(ajaxData, arrayKeyArr)
+  ajaxData = handleAjaxArrayKeyFn(ajaxData, arrayKeyArr)
   console.log(ajaxData)
   // return false
   if (type.value === 'create') {
     delete ajaxData.id
-    const res = await ApiAdSeriesCreate(ajaxData)
+    const res = await ApiAdGroupCreate(ajaxData)
     if(messageFun(res)) {
       cancelFn()
     }
   }
   if (type.value === 'edit') {
-    const res = await ApiAdSeriesEdit(ajaxData)
+    const res = await ApiAdGroupEdit(ajaxData)
     if(messageFun(res)) {
       cancelFn()
     }
@@ -882,33 +920,48 @@ const submitFn = async () => {
 }
 
 const saveAdxPrice = (data) => {
-  console.log(data)
+  state.ruleForm.adx_price = data
 }
 
 const cancelFn = () => {
-  let url = '/adcontrol/adseries/list'
+  let url = '/adcontrol/adgroup/list'
   goNewUrl({
     url: url
   })
 }
 
-const getConfig = async () => {
-  Promise.all([getCommonCountryList(), ApiGetAdvertiserList({
-    limit: 1000,
+const getConfig = () => {
+  let ajaxData = {
+    limit: 10000,
     page: 1
-  })]).then(data => {
+  }
+  return Promise.all([getCommonCountryList(), ApiGetAdvertiserList(ajaxData), ApiGetAdSeriesList(ajaxData), ApiGetAdxList()]).then(data => {
     let countryData = data[0]
     let advertiserData = data[1]
+    let advSeriesData = data[2]
+    let adxData = data[3]
     state.options.country = countryData
     state.options.advertiser = advertiserData.data.data
+    state.options.adv_series = advSeriesData.data.data
+    state.options.adx = adxData.data.data
   })
 
 }
 
-const init = () => {
+const handleChoiceAdx = computed(() => {
+  let choice = state.ruleForm.adx
+  let arr: any = state.options.adx.filter(ele => {
+    return choice.includes(ele.id)
+  })
+  return arr
+})
+
+const init = async () => {
   console.info('init')
   let { query, params } = getRouterData()
   type.value = query.type?.toString() ?? ''
+  console.log(type.value)
+  await getConfig()
   if (type.value === 'create') {
     state.ruleForm = _.cloneDeep(defaultRuleForm)
   }
@@ -916,7 +969,6 @@ const init = () => {
     const { id } = params
     setDataFn(id)
   }
-  getConfig()
 }
 
 onMounted(() => {

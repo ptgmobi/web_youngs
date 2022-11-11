@@ -4,7 +4,7 @@ import { ObjTy } from '@/types/common'
 export function ApiGetCommonCountryList() {
   return request({
     // baseURL: '/mock-api',
-    url: '/c/country',
+    url: '/d/common/country',
     method: 'get',
     isParams: true
   })

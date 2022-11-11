@@ -1,3 +1,5 @@
+import { isNumber } from "lodash"
+
 // 把ajaxData的值转变为数字
 export function handleAjaxDataObjectFn(data: any) {
   const newObj: any = {}
@@ -142,7 +144,7 @@ export function handleAjaxArrayKeyFn (obj, arr) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       const element = obj[key]
       if (arr.includes(key) && Array.isArray(element)) {
-        finalObj[key] = element.length === 0 ? '-1' : element.sort().join(',')
+        finalObj[key] = element.length === 0 ? '' : element.sort().join(',')
       } else {
         finalObj[key] = element
       }
@@ -215,7 +217,13 @@ export function handleOneDataArrayFn(obj, arr) {
         if (element === '-1' || element === '') {
           finalObj[key] = []
         } else {
-          finalObj[key] = element.toString().includes(',') ? element.split(',').map(ele => ele.toString()) : [element.toString()]
+          finalObj[key] = element.toString().includes(',') ? element.split(',').map(ele => {
+            if(isFinite(ele)) {
+              return Number(ele)
+            } else {
+              return ele.toString()
+            }
+          }) : [element.toString()]
         }
       } else {
         finalObj[key] = element

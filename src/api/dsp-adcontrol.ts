@@ -145,3 +145,14 @@ export function ApiGetAdGroupOne(params: string) {
   })
 }
 
+// 获取adx列表
+export function ApiGetAdxList() {
+  return request({
+    url: '/d/dax/list',
+    method: 'get', 
+    bfLoading: false,
+    isParams: true,
+    isAlertErrorMsg: false
+  })
+}
+

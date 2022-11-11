@@ -51,10 +51,21 @@ export default function () {
   const getCommonCountryList = async () => {
     const res = await ApiGetCommonCountryList()
     const {data: countryData} = res
-    return countryData.map(ele => {
-      ele.id = ele.id.toString()
+    let arr: any = []
+    for (const key in countryData) {
+      if (Object.prototype.hasOwnProperty.call(countryData, key)) {
+        const element = countryData[key]
+        if (element.short_name) {
+          arr.push(element)
+        }
+      }
+    }
+    arr.map(ele => {
+      ele.value = ele.short_name.toString()
+      ele.label = `${ele.short_name}-${ele.zh_cn}`
       return ele
     })
+    return arr
   }
 
   // 二次弹框确认

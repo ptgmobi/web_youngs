@@ -2,12 +2,6 @@
   <div>
     <div class="controlBox w100 mb-10">
       <search/>
-      <div class="mb-10 w100">
-        <!-- <el-button type="primary" @click='createFun'>Offer Create</el-button> -->
-        <!-- <router-link to="/buzz/create"> -->
-          <el-button type="primary" @click="createFn">新建广告系列</el-button>
-        <!-- </router-link> -->
-      </div>
       <el-form
         v-model="state.searchForm"
         :inline="true"
@@ -31,28 +25,13 @@
           </el-form-item>
           <el-form-item label="">
             <el-select
-              v-model="state.searchForm.adv_series_type"
+              v-model="state.searchForm.adv_series_id"
               filterable
               clearable
-              placeholder="广告类型"
+              placeholder="广告系列"
             >
               <el-option
-                v-for="item in state.options.adv_series_type"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="">
-            <el-select
-              v-model="state.searchForm.marbet_target"
-              filterable
-              clearable
-              placeholder="营销目标"
-            >
-              <el-option
-                v-for="item in state.options.marbet_target"
+                v-for="item in state.options.adv_series_id"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -104,9 +83,23 @@
           </el-form-item>
         </div>
       </el-form>
-      <!-- <el-input placeholder="请输入内容" v-model="state.searchForm.data" class='search-input'>
-        <el-button slot="append" icon="Search" @click='searchFun'></el-button>
-      </el-input> -->
+      <div class="mb-10 w100">
+        <el-button type="primary" @click="createFn">新建广告组</el-button>
+        <el-select
+          class="ml-10"
+          v-model="batch.data.mode"
+          filterable
+          placeholder="批量操作"
+          @change="batchFn"
+        >
+          <el-option
+            v-for="item in batch.options.mode"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+      </div>
     </div>
     <!-- table -->
     <el-table
@@ -118,13 +111,13 @@
     >
       <el-table-column sortable
         prop="id"
-        label="广告系列ID"
+        label="广告组ID"
         align="center"
       ></el-table-column>
       <el-table-column sortable
         width="120"
         prop="adv_series_name"
-        label="广告系列名称"
+        label="广告组名称"
         align="center"
       ></el-table-column>
       <el-table-column sortable
@@ -152,15 +145,6 @@
         </template>
       </el-table-column>
       <el-table-column sortable
-        prop="ad_group"
-        label="广告组"
-        align="center"
-      >
-        <template #default="scope">
-          <span>{{scope.row.ad_group}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column sortable
         prop="ad"
         label="广告"
         align="center"
@@ -184,7 +168,6 @@
             <el-button
               class="cp"
               type="primary"
-              @click="editFn(scope)"
             >复制</el-button>
             <!-- <el-button
               v-if="scope.row.is_del === 2"
@@ -203,22 +186,22 @@
       </el-table-column>
       <el-table-column sortable
         width="120"
-        prop="adv_series_type"
-        label="广告类型"
+        prop="country"
+        label="国家"
         align="center"
       >
         <template #default="scope">
-          <span>{{getOptionsValue(scope.row.adv_type, state.options.adv_series_type)}}</span>
+          <span>{{scope.row.country}}</span>
         </template>
       </el-table-column>
       <el-table-column sortable
         width="120"
-        prop="marbet_target"
-        label="营销目标"
+        prop="promotion_cycle"
+        label="推广周期"
         align="center"
       >
         <template #default="scope">
-          <span>{{getOptionsValue(scope.row.adv_type, state.options.marbet_target)}}</span>
+          <span>{{getOptionsValue(scope.row.promotion_cycle, state.options.promotion_cycle)}}</span>
         </template>
       </el-table-column>
       
@@ -258,7 +241,7 @@
         @pagination="init"
       />
     </div>
-    <!-- report api -->
+    <!-- 复制 -->
     <el-dialog
       v-model="dialogVisibleReportApi"
       title="Report Api"
@@ -281,8 +264,9 @@ import _ from 'lodash'
 import { handleAjaxDataObjectFn, handleAjaxEmptyKeyFn, handleAjaxDataDelNoKeyFn, getOptionsValue } from '@/utils/new-format'
 import useUtils from '@/hooks/self/useUtils'
 import { clipboardFn } from '@/utils/clipboard'
-import { ApiGetAdSeriesList, ApiChangeAdSeriesStatus, ApiDeleteAdSeries } from '@/api/dsp-adcontrol'
+import { ApiGetAdGroupList, ApiChangeAdGroupStatus, ApiDeleteAdGroup } from '@/api/dsp-adcontrol'
 import search from '../components/search.vue'
+const handleSelectionArr = ref([{id: ''}])
 const {
   status, 
   adv_type, 
@@ -291,14 +275,14 @@ const {
   return_mode, 
 } = optionsSetting
 
-const { getRouterData, getCommonCountryList, openAlert } = useUtils()
+const { goNewUrl, getRouterData, getCommonCountryList, openAlert } = useUtils()
 const searchData: any = reactive({
   adv_series_id: '',
   status: '',
   adv_series_type: '',
   marbet_target: '',
   is_del: '1',
-  value_type: 'adv_series_name',
+  value_type: 'adv_group_name',
   value: ''
 })
 
@@ -317,6 +301,7 @@ let state = reactive({
   useData: searchData,
   loading: true,
   options: {
+    adv_series_id: [],
     status,
     // 广告类型
     adv_series_type: [
@@ -329,9 +314,14 @@ let state = reactive({
       {value: 2, label: '拉新'},
     ],
     value_type: [
-      {value: 'adv_series_name', label: '广告系列名称'},
-      {value: 'id', label: '广告系列ID'},
+      {value: 'adv_group_name', label: '广告组名称'},
+      {value: 'id', label: '广告组ID'},
       {value: 'desc', label: '描述'},
+    ],
+    // 推广周期
+    promotion_cycle: [
+      {value: 1, label: '从现在开始长期有效'},
+      {value: 2, label: '限定周期'}
     ]
   },
   list: [],
@@ -349,6 +339,28 @@ let state = reactive({
   }
 })
 
+let batch = reactive({
+  data: {
+    mode: '',
+  },
+  options: {
+    mode: [
+      {
+        value: 1,
+        label: '开启'
+      },
+      {
+        value: 2,
+        label: '暂停'
+      },
+      {
+        value: 0,
+        label: '归档'
+      },
+    ]
+  }
+})
+
 const copyFn = (text) => {
   clipboardFn(text)
 }
@@ -363,7 +375,7 @@ const changeStatus = async ({row}) => {
     id: row.id,
     status: row.status
   }
-  let res = await ApiChangeAdSeriesStatus(ajaxData)
+  let res = await ApiChangeAdGroupStatus(ajaxData)
   messageFun(res)
 }
 
@@ -439,7 +451,7 @@ const editFn = ({row}: any) => {
 const deleteFun = (scope: any) => {
   return async () => {
     const {row, $index: index} = scope
-    const res = await ApiDeleteAdSeries({
+    const res = await ApiDeleteAdGroup({
       id: row.id
     })
     if (messageFun(res)) {
@@ -454,6 +466,31 @@ const deleteFn = async(scope: any) => {
     title: '归档操作',
     buttonText: '确认'
   }, deleteFun(scope))
+}
+
+const batchFn = async () => {
+  let ids = handleSelectionArr.value.map(ele => {
+    return ele.id
+  })
+  console.log(ids)
+  // 当前操作方式
+  let batchMode = batch.data.mode
+  // 批量开启
+  if (batchMode.toString() === '1') {
+    
+  }
+  // 批量暂停
+  if (batchMode.toString() === '2') {
+    
+  }
+  // 批量归档
+  if (batchMode.toString() === '0') {
+    console.log('批量归档')
+    // const res = await deleteFunction(ids)
+    // if (messageFun(res)) {
+    //   init()
+    // }
+  }
 }
 
 const init = async () => {
@@ -471,10 +508,12 @@ const init = async () => {
   delete ajaxData.value
   // ajaxData = handleAjaxEmptyKeyFn(ajaxData, ['status', 'adv_type'])
   ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
-  const res = await ApiGetAdSeriesList(ajaxData)
-  const { data: result } = res
-  state.list = result?.data
-  state.pagination.total = Number(result.count)
+  const res = await ApiGetAdGroupList(ajaxData)
+  if (res) {
+    const { data: result } = res
+    state.list = result?.data
+    state.pagination.total = Number(result.count)
+  }
   state.loading = false
 }
 

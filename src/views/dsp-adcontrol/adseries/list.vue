@@ -102,21 +102,21 @@
         <el-button slot="append" icon="Search" @click='searchFun'></el-button>
       </el-input> -->
       <div class="mb-10 w100">
-          <el-button type="primary" @click="createFn">新建广告系列</el-button>
-          <el-select
-            class="ml-10"
-            v-model="batch.data.mode"
-            filterable
-            placeholder="批量操作"
-            @change="batchFn"
-          >
-            <el-option
-              v-for="item in batch.options.mode"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
+        <el-button type="primary" @click="createFn">新建广告系列</el-button>
+        <el-select
+          class="ml-10"
+          v-model="batch.data.mode"
+          filterable
+          placeholder="批量操作"
+          @change="batchFn"
+        >
+          <el-option
+            v-for="item in batch.options.mode"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
       </div>
     </div>
     <!-- table -->
@@ -273,7 +273,7 @@
         @pagination="init"
       />
     </div>
-    <!-- report api -->
+    <!-- 复制 -->
     <el-dialog
       v-model="dialogVisibleReportApi"
       title="Report Api"
@@ -313,6 +313,7 @@ const {
 } = optionsSetting
 
 const { goNewUrl, openAlert } = useUtils()
+
 const searchData = shallowRef({
   status: '',
   adv_series_type: '',
@@ -582,9 +583,11 @@ const init = async () => {
   // ajaxData = handleAjaxEmptyKeyFn(ajaxData, ['status', 'adv_type'])
   ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
   const res = await ApiGetAdSeriesList(ajaxData)
-  const { data: result } = res
-  state.list = result?.data
-  state.pagination.total = Number(result.count)
+  if (res) {
+    const { data: result } = res
+    state.list = result?.data
+    state.pagination.total = Number(result.count)
+  }
   state.loading = false
 }
 
