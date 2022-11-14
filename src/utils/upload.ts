@@ -1,5 +1,6 @@
 import uploadSetting from '@/self-upload-setting'
 import type { UploadProps, UploadUserFile, genFileId } from 'element-plus'
+import { ApiUploadImg } from '@/api/dsp-advertiser'
 
 const {
   logo_type_reg,
@@ -68,14 +69,12 @@ const validate = async (rawFile, type) => {
     })
     const judgeLimit = new Promise(function (resolve, reject) {
       let file_limit = rawFile.size
-      let valid = file_limit > image_limit
+      let valid = file_limit <= image_limit
       valid ? resolve(true) : reject('图片大小错误')
     })
-    return Promise.allSettled(judgeSize, judgeTyle, judgeLimit).then(value => {
+    return Promise.allSettled([judgeSize, judgeTyle, judgeLimit]).then(value => {
       console.log(value)
       return value
-    }).finally((value: any) => {
-      console.log(value)
     })
   }
   if (type === 'video') {
@@ -86,19 +85,67 @@ const validate = async (rawFile, type) => {
         URL.revokeObjectURL(video)
         let w = videoObj.videoWidth
         let h = videoObj.videoHeight
-        console.log(videoObj.videoWidth, videoObj.videoHeight)
         let valid = video_size.find(ele => {
           return ele.width === w && ele.height === h
         })
         valid = true
-        valid ? resolve(null) : reject()
+        valid ? resolve(true) : reject('视频尺寸错误')
       }
       videoObj.src = video
       videoObj.load()
     })
+    const judgeTyle = new Promise(function (resolve, reject) {
+      let file_type = rawFile.type
+      console.log(file_type, video_type_reg)
+      let valid = video_type_reg.test(file_type)
+      valid ? resolve(true) : reject('视频类型错误')
+    })
+    const judgeLimit = new Promise(function (resolve, reject) {
+      let file_limit = rawFile.size
+      let valid = file_limit <= video_limit
+      valid ? resolve(true) : reject('视频大小错误')
+    })
+    return Promise.allSettled([judgeSize, judgeTyle, judgeLimit]).then(value => {
+      console.log(value)
+      return value
+    })
+  }
+}
+
+const uploadHttpRequest: UploadProps['httpRequest'] = async(
+  param
+) => {
+  const formData = new FormData()
+  formData.append("logo_url", param.file)
+  if (process.env.NODE_ENV === 'serve-dev') {
+    return void 0
+  } else {
+    const res = await ApiUploadImg(formData)
+    return res
+  }
+}
+
+const handleRes = (res) => {
+  let errArr = res.filter(ele => {
+    return ele.status === 'rejected'
+  })
+  if (errArr.length !== 0) {
+    return {
+      status: 0,
+      msg: errArr.map(ele => {
+        return ele.reason
+      }).join(',')
+    }
+  } else {
+    return {
+      status: 1,
+      msg: 'success'
+    }
   }
 }
 
 export default {
-  validate
+  validate,
+  uploadHttpRequest,
+  handleRes
 }

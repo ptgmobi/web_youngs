@@ -95,8 +95,8 @@
             v-model:file-list="fileListVideoUrl"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
-            :on-success="handleAvatarSuccessForUrl"
-            :before-upload="beforeAvatarUpload"
+            :on-success="handleAvatarSuccessForVideo"
+            :before-upload="beforeAvatarUploadVideo"
             :http-request="uploadHttpRequest"
           >
             <video v-if="state.ruleForm.url" :src="state.ruleForm.url" alt="Video" controls></video>
@@ -109,7 +109,7 @@
           class="self-el-form-item"
           label="上传封面:"
           prop="cover_url"
-        >
+        >{{fileListCoverUrl}}
           <el-upload
             class="avatar-uploader"
             name="cover_url"
@@ -119,7 +119,7 @@
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
             :on-success="handleAvatarSuccessForCoverUrl"
-            :before-upload="beforeAvatarUpload"
+            :before-upload="beforeAvatarUploadCoverImage"
             :http-request="uploadHttpRequest"
           >
             <!-- <img v-if="state.ruleForm.url" :src="state.ruleForm.url" :preview-src-list="[state.ruleForm.url]" class="avatar" />
@@ -256,7 +256,7 @@ import _, { isArguments } from 'lodash'
 import type { UploadProps, UploadUserFile, genFileId } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import uploadFn from '@/utils/upload'
-const { validate: validateUpload } = uploadFn
+const { validate: validateUpload, uploadHttpRequest, handleRes } = uploadFn
 
 const {
   adv_type, 
@@ -331,6 +331,8 @@ type ruleFormType =  {
   brand: string
   // 封面
   cover_url: string
+  // 视频
+  video_url: string
 }
 
 const defaultRuleForm: ruleFormType = {
@@ -352,7 +354,8 @@ const defaultRuleForm: ruleFormType = {
   main_body: '',
   actions: '',
   brand: '',
-  cover_url: ''
+  cover_url: '',
+  video_url: ''
 
 }
 
@@ -510,19 +513,6 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
   dialogVisible.value = true
 }
 
-const handleAvatarSuccessForUrl: UploadProps['onSuccess'] = (
-  response,
-  uploadFile
-) => {
-  // state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
-  state.ruleForm.url = response?.data
-  fileListUrl.value.splice(0)
-  fileListUrl.value.push({
-    name: '',
-    url: response?.data
-  })
-}
-
 const handleAvatarSuccessForLogoUrl: UploadProps['onSuccess'] = (
   response,
   uploadFile
@@ -531,6 +521,19 @@ const handleAvatarSuccessForLogoUrl: UploadProps['onSuccess'] = (
   state.ruleForm.url = response?.data
   fileListLogoUrl.value.splice(0)
   fileListLogoUrl.value.push({
+    name: '',
+    url: response?.data
+  })
+}
+
+const handleAvatarSuccessForUrl: UploadProps['onSuccess'] = (
+  response,
+  uploadFile
+) => {
+  // state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
+  state.ruleForm.url = response?.data
+  fileListUrl.value.splice(0)
+  fileListUrl.value.push({
     name: '',
     url: response?.data
   })
@@ -549,80 +552,44 @@ const handleAvatarSuccessForCoverUrl: UploadProps['onSuccess'] = (
   })
 }
 
-const uploadHttpRequest: UploadProps['httpRequest'] = async(
-  param
+const handleAvatarSuccessForVideo: UploadProps['onSuccess'] = (
+  response,
+  uploadFile
 ) => {
-  const formData = new FormData()
-  formData.append("logo_url", param.file)
-  if (process.env.NODE_ENV === 'serve-dev') {
-    return void 0
-  } else {
-    const res = await ApiUploadImg(formData)
-    return res
+  // state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
+  state.ruleForm.url = response?.data
+  fileListVideoUrl.value.splice(0)
+  fileListVideoUrl.value.push({
+    name: '',
+    url: response?.data
+  })
+}
+
+const handleResFn = (res, fileList) => {
+  let result = handleRes(res)
+  if (result.status === 0) {
+    fileList.pop()
   }
 }
 
 const beforeAvatarUploadLogo = async (rawFile) => {
   const res = await validateUpload(rawFile, 'logo')
-  console.log(res)
-  return res
+  handleResFn(res, fileListLogoUrl)
 }
 
 const beforeAvatarUploadImage = async (rawFile) => {
-  return validateUpload(rawFile, 'image')
+  const res = await validateUpload(rawFile, 'image')
+  handleResFn(res, fileListUrl)
 }
 
-const beforeAvatarUpload: UploadProps['beforeUpload'] = async (rawFile) => {
-  console.log(rawFile)
-  let type = rawFile.type
-  const isImage = type.includes('image')
-  const isVidel = type.includes('video')
-  const isLt100M = rawFile.size / (1024 * 1024) < 100 // 验证图片大小
-  const isSize = new Promise(function (resolve, reject) {
-    let width = 100 // 限制上传图片的宽度
-    let height = 100 // 限制上传图片的高度
-    let URL = window.URL || window.webkitURL
-    if (isImage) {
-      let image = new Image()
-      image.onload = function () {
-        let valid = image.width !== width && image.height !== height
-        valid = true
-        valid ? resolve(null) : reject()
-      }
-      image.src = URL.createObjectURL(rawFile)
-    }
-    if (isVidel) {
-      let valid = true
-      let video = URL.createObjectURL(rawFile)
-      let videoObj = document.createElement('video')
-      videoObj.onloadedmetadata = function (evt) {
-        URL.revokeObjectURL(video)
-        console.log(videoObj.videoWidth, videoObj.videoHeight)
-        let valid = videoObj.videoWidth !== width || videoObj.videoHeight !== height
-        valid = true
-        valid ? resolve(null) : reject()
-      }
-      videoObj.src = video
-      videoObj.load()
-      valid ? resolve(null) : reject()
-    }
-    
-  }).then(
-    () => rawFile,
-    () => {
-      console.error("图片尺寸过大,请上传100*100尺寸的图片"); // 提示 看需求
-      return Promise.reject();
-    }
-  )
+const beforeAvatarUploadCoverImage = async (rawFile) => {
+  const res = await validateUpload(rawFile, 'image')
+  handleResFn(res, fileListCoverUrl)
+}
 
-  if (!isImage) {
-    console.error("格式错误，请上传图片格式"); // 提示 看需求
-  }
-  if (!isLt100M) {
-    console.error("文件过大，文件大小不超过100M"); // 提示 看需求
-  }
-  
-  return isSize
+const beforeAvatarUploadVideo = async (rawFile) => {
+  const res = await validateUpload(rawFile, 'video')
+  handleResFn(res, fileListVideoUrl)
 }
 
 const init = () => {
@@ -660,6 +627,7 @@ onMounted(() => {
   position: relative;
   overflow: hidden;
   transition: var(--el-transition-duration-fast);
+  background-color: #f4f5f5;
 }
 
 .avatar-uploader .el-upload:hover {
