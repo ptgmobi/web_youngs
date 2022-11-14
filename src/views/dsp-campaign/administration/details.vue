@@ -280,6 +280,10 @@ const {
   video_limit,
   video_duration,
   video_size,
+  // cover_image
+  cover_image_type_reg,
+  cover_image_limit,
+  cover_image_size,
 } = uploadSetting
 
 const { getRouterData, getCommonCountryList, goNewUrl } = useUtils()
@@ -566,20 +570,60 @@ const handleSuccessForVideo: UploadProps['onSuccess'] = (
   })
 }
 
+// const {
+//   logo_type_reg,
+//   logo_limit,
+//   logo_size,
+//   // image
+//   image_type_reg,
+//   image_limit,
+//   image_size,
+//   // video
+//   video_type_reg,
+//   video_limit,
+//   video_duration,
+//   video_size,
+//   // cover_image
+//   cover_image_type_reg,
+//   cover_image_limit,
+//   cover_image_size,
+// } = uploadSetting
+
 const beforeUploadLogo = async (rawFile) => {
-  return validateUpload(rawFile, 'logo')
+  const options = {
+    type_reg: logo_type_reg,
+    limit: logo_limit,
+    size: logo_size
+  }
+  return validateUpload(rawFile, 'image', options)
 }
 
 const beforeUploadImage = (rawFile) => {
-  return validateUpload(rawFile, 'image')
+  const options = {
+    type_reg: image_type_reg,
+    limit: image_limit,
+    size: image_size
+  }
+  return validateUpload(rawFile, 'image', options)
 }
 
 const beforeUploadCoverImage = async (rawFile) => {
-  return validateUpload(rawFile, 'image')
+  const options = {
+    type_reg: cover_image_type_reg,
+    limit: cover_image_limit,
+    size: cover_image_size
+  }
+  return validateUpload(rawFile, 'image', options)
 }
 
 const beforeUploadVideo = async (rawFile) => {
-  return validateUpload(rawFile, 'video')
+  const options = {
+    type_reg: video_type_reg,
+    limit: video_limit,
+    size: video_size,
+    duration: video_duration
+  }
+  return validateUpload(rawFile, 'video', options)
 }
 
 const init = () => {

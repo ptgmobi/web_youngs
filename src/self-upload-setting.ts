@@ -31,7 +31,14 @@ const setting: any = {
   video_size: [
     { width: 320, height: 480 },
     { width: 480, height: 320 },
-  ]
+  ],
+  // cover image
+  cover_image_type_reg: /png|jpg|jpeg|gif/,
+  cover_image_limit: 3 * (1024 * 1024),
+  cover_image_size: [
+    { width: 320, height: 480 },
+    { width: 480, height: 320 },
+  ],
 }
 
 
