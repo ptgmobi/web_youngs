@@ -55,7 +55,7 @@
             </template>
           </el-radio-group>
         </el-form-item>
-        <!-- 上传素材 -->
+        <!-- 上传素材 --- 图片 -->
         <el-form-item
           class="self-el-form-item"
           label="上传素材:"
@@ -66,10 +66,10 @@
             name="url"
             action=""
             list-type="picture-card"
-            v-model:file-list="fileList"
+            v-model:file-list="fileListUrl"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
-            :on-success="handleAvatarSuccess"
+            :on-success="handleAvatarSuccessForUrl"
             :before-upload="beforeAvatarUpload"
             :http-request="uploadHttpRequest"
           >
@@ -77,14 +77,88 @@
             <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon> -->
             <el-icon><Plus /></el-icon>
           </el-upload>
-          <el-dialog v-model="dialogVisible">
-            <img w-full :src="dialogImageUrl" alt="Preview Image" />
-          </el-dialog>
         </el-form-item>
-        <!--  -->
-        
+        <!-- 上传Logo -->
+        <el-form-item
+          v-if="state.ruleForm.type === 3"
+          class="self-el-form-item"
+          label="上传Logo:"
+          prop="url"
+        >
+          <el-upload
+            class="avatar-uploader"
+            name="logo_url"
+            action=""
+            list-type="picture-card"
+            v-model:file-list="fileListLogoUrl"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove"
+            :on-success="handleAvatarSuccessForLogoUrl"
+            :before-upload="beforeAvatarUpload"
+            :http-request="uploadHttpRequest"
+          >
+            <!-- <img v-if="state.ruleForm.url" :src="state.ruleForm.url" :preview-src-list="[state.ruleForm.url]" class="avatar" />
+            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon> -->
+            <el-icon><Plus /></el-icon>
+          </el-upload>
+        </el-form-item>
+        <!-- 标题 -->
+        <el-form-item
+          v-if="state.ruleForm.type === 3"
+          class="self-el-form-item"
+          label="标题:"
+          prop="title"
+        >
+          <el-input
+            v-model.trim="state.ruleForm.title"
+            class="form-one"
+            placeholder=""
+          >
+          </el-input>
+        </el-form-item>
+        <!-- 正文 -->
+        <el-form-item
+          v-if="state.ruleForm.type === 3"
+          class="self-el-form-item"
+          label="正文:"
+          prop="main_body"
+        >
+          <el-input
+            v-model.trim="state.ruleForm.main_body"
+            class="form-one"
+            placeholder=""
+          >
+          </el-input>
+        </el-form-item>
+        <!-- 行动号召 -->
+        <el-form-item
+          v-if="state.ruleForm.type === 3"
+          class="self-el-form-item"
+          label="行动号召:"
+          prop="actions"
+        >
+          <el-input
+            v-model.trim="state.ruleForm.actions"
+            class="form-one"
+            placeholder=""
+          >
+          </el-input>
+        </el-form-item>
+        <!-- 品牌 -->
+        <el-form-item
+          v-if="state.ruleForm.type === 3"
+          class="self-el-form-item"
+          label="品牌:"
+          prop="brand"
+        >
+          <el-input
+            v-model.trim="state.ruleForm.brand"
+            class="form-one"
+            placeholder=""
+          >
+          </el-input>
+        </el-form-item>
       </div>
-      
     </el-form>
     <!-- form -->
     <!-- footer -->
@@ -102,6 +176,10 @@
         取消
       </el-button>
     </div>
+    <!-- 图片预览 -->
+    <el-dialog v-model="dialogVisible">
+      <img w-full :src="dialogImageUrl" alt="Preview Image" />
+    </el-dialog>
   </div>
 </template>
 <script lang="ts" setup>
@@ -142,7 +220,8 @@ const message = {
 
 let type: any = ref('create')
 
-let fileList = ref<UploadUserFile[]>([])
+let fileListUrl = ref<UploadUserFile[]>([])
+let fileListLogoUrl = ref<UploadUserFile[]>([])
 
 type ruleFormType =  {
   id: number | undefined
@@ -343,14 +422,27 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
   dialogVisible.value = true
 }
 
-const handleAvatarSuccess: UploadProps['onSuccess'] = (
+const handleAvatarSuccessForUrl: UploadProps['onSuccess'] = (
   response,
   uploadFile
 ) => {
   // state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
   state.ruleForm.url = response.data
-  fileList.value.splice(0)
-  fileList.value.push({
+  fileListUrl.value.splice(0)
+  fileListUrl.value.push({
+    name: '',
+    url: response.data
+  })
+}
+
+const handleAvatarSuccessForLogoUrl: UploadProps['onSuccess'] = (
+  response,
+  uploadFile
+) => {
+  // state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
+  state.ruleForm.url = response.data
+  fileListLogoUrl.value.splice(0)
+  fileListLogoUrl.value.push({
     name: '',
     url: response.data
   })
