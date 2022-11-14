@@ -57,8 +57,9 @@
         </el-form-item>
         <!-- 上传素材 --- 图片 -->
         <el-form-item
+          v-if="state.ruleForm.type === 1"
           class="self-el-form-item"
-          label="上传素材:"
+          label="上传图片素材:"
           prop="url"
         >
           <el-upload
@@ -70,6 +71,54 @@
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
             :on-success="handleAvatarSuccessForUrl"
+            :before-upload="beforeAvatarUploadImage"
+            :http-request="uploadHttpRequest"
+          >
+            <!-- <img v-if="state.ruleForm.url" :src="state.ruleForm.url" :preview-src-list="[state.ruleForm.url]" class="avatar" />
+            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon> -->
+            <el-icon><Plus /></el-icon>
+          </el-upload>
+        </el-form-item>
+        <!-- 上传素材 --- 视频 -->
+        <el-form-item
+          v-if="state.ruleForm.type === 2"
+          class="self-el-form-item"
+          label="上传视频素材:"
+          prop="url"
+        >
+          <el-upload
+            class="avatar-uploader"
+            name="url"
+            action=""
+            :limit="1"
+            :show-file-list="false"
+            v-model:file-list="fileListVideoUrl"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove"
+            :on-success="handleAvatarSuccessForUrl"
+            :before-upload="beforeAvatarUpload"
+            :http-request="uploadHttpRequest"
+          >
+            <video v-if="state.ruleForm.url" :src="state.ruleForm.url" alt="Video" controls></video>
+            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+          </el-upload>
+        </el-form-item>
+        <!-- 上传封面 -->
+        <el-form-item
+          v-if="state.ruleForm.type === 2"
+          class="self-el-form-item"
+          label="上传封面:"
+          prop="cover_url"
+        >
+          <el-upload
+            class="avatar-uploader"
+            name="cover_url"
+            action=""
+            list-type="picture-card"
+            v-model:file-list="fileListCoverUrl"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove"
+            :on-success="handleAvatarSuccessForCoverUrl"
             :before-upload="beforeAvatarUpload"
             :http-request="uploadHttpRequest"
           >
@@ -80,7 +129,7 @@
         </el-form-item>
         <!-- 上传Logo -->
         <el-form-item
-          v-if="state.ruleForm.type === 3"
+          v-if="state.ruleForm.type === 3 || state.ruleForm.type === 2"
           class="self-el-form-item"
           label="上传Logo:"
           prop="url"
@@ -94,7 +143,7 @@
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
             :on-success="handleAvatarSuccessForLogoUrl"
-            :before-upload="beforeAvatarUpload"
+            :before-upload="beforeAvatarUploadLogo"
             :http-request="uploadHttpRequest"
           >
             <!-- <img v-if="state.ruleForm.url" :src="state.ruleForm.url" :preview-src-list="[state.ruleForm.url]" class="avatar" />
@@ -104,7 +153,7 @@
         </el-form-item>
         <!-- 标题 -->
         <el-form-item
-          v-if="state.ruleForm.type === 3"
+          v-if="state.ruleForm.type === 3 || state.ruleForm.type === 2"
           class="self-el-form-item"
           label="标题:"
           prop="title"
@@ -118,7 +167,7 @@
         </el-form-item>
         <!-- 正文 -->
         <el-form-item
-          v-if="state.ruleForm.type === 3"
+          v-if="state.ruleForm.type === 3 || state.ruleForm.type === 2"
           class="self-el-form-item"
           label="正文:"
           prop="main_body"
@@ -178,12 +227,16 @@
     </div>
     <!-- 图片预览 -->
     <el-dialog v-model="dialogVisible">
-      <img w-full :src="dialogImageUrl" alt="Preview Image" />
+      <div class="flex">
+        <img w-full v-if="dialogImageUrlType === 'image'" :src="dialogImageUrl" alt="Preview Image" />
+        <video w-full v-if="dialogImageUrlType === 'video'" :src="dialogImageUrl" alt="Preview Video" controls></video>
+      </div>
     </el-dialog>
   </div>
 </template>
 <script lang="ts" setup>
 import optionsSetting from '@/self-options-setting'
+import uploadSetting from '@/self-upload-setting'
 import { ApiAdSeriesCreate, ApiGetAdSeriesOne, ApiAdSeriesEdit } from '@/api/dsp-adcontrol'
 import { ApiUploadImg } from '@/api/dsp-advertiser'
 import { ApiGetAdvertiserList } from '@/api/dsp-advertiser'
@@ -200,8 +253,11 @@ import {
 import { selfJudgeStringLength, selfValidatorIsInteger } from '@/utils/validate.ts'
 import validator from 'validator';
 import _, { isArguments } from 'lodash'
-import type { UploadProps, UploadUserFile } from 'element-plus'
+import type { UploadProps, UploadUserFile, genFileId } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
+import uploadFn from '@/utils/upload'
+const { validate: validateUpload } = uploadFn
+
 const {
   adv_type, 
   ind_cla,
@@ -210,9 +266,25 @@ const {
   time_zone
 } = optionsSetting
 
+const {
+  logo_type_reg,
+  logo_limit,
+  logo_size,
+  // image
+  image_type_reg,
+  image_limit,
+  image_size,
+  // video
+  video_type_reg,
+  video_limit,
+  video_duration,
+  video_size,
+} = uploadSetting
+
 const { getRouterData, getCommonCountryList, goNewUrl } = useUtils()
 let { proxy }: any = getCurrentInstance()
 const dialogImageUrl = ref('')
+const dialogImageUrlType = ref('')
 const dialogVisible = ref(false)
 const message = {
   required: '此项必填'
@@ -221,7 +293,9 @@ const message = {
 let type: any = ref('create')
 
 let fileListUrl = ref<UploadUserFile[]>([])
+let fileListVideoUrl = ref<UploadUserFile[]>([])
 let fileListLogoUrl = ref<UploadUserFile[]>([])
+let fileListCoverUrl = ref<UploadUserFile[]>([])
 
 type ruleFormType =  {
   id: number | undefined
@@ -255,6 +329,8 @@ type ruleFormType =  {
   actions: string
   // 品牌
   brand: string
+  // 封面
+  cover_url: string
 }
 
 const defaultRuleForm: ruleFormType = {
@@ -275,7 +351,8 @@ const defaultRuleForm: ruleFormType = {
   title: '',
   main_body: '',
   actions: '',
-  brand: ''
+  brand: '',
+  cover_url: ''
 
 }
 
@@ -413,12 +490,23 @@ const getConfig = async () => {
   
 }
 
+// upload
 const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
-  console.log(uploadFile, uploadFiles)
+  // console.log(uploadFile, uploadFiles)
 }
 
 const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
   dialogImageUrl.value = uploadFile.url!
+  let imgType = ''
+  let videoReg = video_type_reg
+  let imgReg = image_type_reg
+  if (imgReg.test(dialogImageUrl.value)) {
+    imgType = 'image'
+  }
+  if (videoReg.test(dialogImageUrl.value)) {
+    imgType = 'video'
+  }
+  dialogImageUrlType.value = imgType
   dialogVisible.value = true
 }
 
@@ -427,11 +515,11 @@ const handleAvatarSuccessForUrl: UploadProps['onSuccess'] = (
   uploadFile
 ) => {
   // state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
-  state.ruleForm.url = response.data
+  state.ruleForm.url = response?.data
   fileListUrl.value.splice(0)
   fileListUrl.value.push({
     name: '',
-    url: response.data
+    url: response?.data
   })
 }
 
@@ -440,11 +528,24 @@ const handleAvatarSuccessForLogoUrl: UploadProps['onSuccess'] = (
   uploadFile
 ) => {
   // state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
-  state.ruleForm.url = response.data
+  state.ruleForm.url = response?.data
   fileListLogoUrl.value.splice(0)
   fileListLogoUrl.value.push({
     name: '',
-    url: response.data
+    url: response?.data
+  })
+}
+
+const handleAvatarSuccessForCoverUrl: UploadProps['onSuccess'] = (
+  response,
+  uploadFile
+) => {
+  // state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
+  state.ruleForm.cover_url = response?.data
+  fileListCoverUrl.value.splice(0)
+  fileListCoverUrl.value.push({
+    name: '',
+    url: response?.data
   })
 }
 
@@ -453,35 +554,69 @@ const uploadHttpRequest: UploadProps['httpRequest'] = async(
 ) => {
   const formData = new FormData()
   formData.append("logo_url", param.file)
-  const res = await ApiUploadImg(formData)
+  if (process.env.NODE_ENV === 'serve-dev') {
+    return void 0
+  } else {
+    const res = await ApiUploadImg(formData)
+    return res
+  }
+}
+
+const beforeAvatarUploadLogo = async (rawFile) => {
+  const res = await validateUpload(rawFile, 'logo')
+  console.log(res)
   return res
+}
+
+const beforeAvatarUploadImage = async (rawFile) => {
+  return validateUpload(rawFile, 'image')
 }
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = async (rawFile) => {
   console.log(rawFile)
-  const isJPG = rawFile.type === "image/png"; // 验证图片类型
-  const isLt100M = rawFile.size / (1024 * 1024) < 100; // 验证图片大小
+  let type = rawFile.type
+  const isImage = type.includes('image')
+  const isVidel = type.includes('video')
+  const isLt100M = rawFile.size / (1024 * 1024) < 100 // 验证图片大小
   const isSize = new Promise(function (resolve, reject) {
-    let width = 100; // 限制上传图片的宽度
-    let height = 100; // 限制上传图片的高度
-    let URL = window.URL || window.webkitURL;
-    let image = new Image();
-    image.onload = function () {
-      let valid = image.width <= width && image.height <= height;
-      valid = true
-      valid ? resolve(null) : reject();
-    };
-    image.src = URL.createObjectURL(rawFile);
+    let width = 100 // 限制上传图片的宽度
+    let height = 100 // 限制上传图片的高度
+    let URL = window.URL || window.webkitURL
+    if (isImage) {
+      let image = new Image()
+      image.onload = function () {
+        let valid = image.width !== width && image.height !== height
+        valid = true
+        valid ? resolve(null) : reject()
+      }
+      image.src = URL.createObjectURL(rawFile)
+    }
+    if (isVidel) {
+      let valid = true
+      let video = URL.createObjectURL(rawFile)
+      let videoObj = document.createElement('video')
+      videoObj.onloadedmetadata = function (evt) {
+        URL.revokeObjectURL(video)
+        console.log(videoObj.videoWidth, videoObj.videoHeight)
+        let valid = videoObj.videoWidth !== width || videoObj.videoHeight !== height
+        valid = true
+        valid ? resolve(null) : reject()
+      }
+      videoObj.src = video
+      videoObj.load()
+      valid ? resolve(null) : reject()
+    }
+    
   }).then(
     () => rawFile,
     () => {
       console.error("图片尺寸过大,请上传100*100尺寸的图片"); // 提示 看需求
       return Promise.reject();
     }
-  );
+  )
 
-  if (!isJPG) {
-    console.error("格式错误，请上传png格式图片"); // 提示 看需求
+  if (!isImage) {
+    console.error("格式错误，请上传图片格式"); // 提示 看需求
   }
   if (!isLt100M) {
     console.error("文件过大，文件大小不超过100M"); // 提示 看需求
@@ -511,8 +646,8 @@ onMounted(() => {
 </script>
 <style scoped>
 .avatar-uploader .avatar {
-  width: 100px;
-  height: 100px;
+  width: 148px;
+  height: 148px;
   display: block;
 }
 </style>
@@ -534,8 +669,8 @@ onMounted(() => {
 .el-icon.avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
-  width: 100px;
-  height: 100px;
+  width: 148px;
+  height: 148px;
   text-align: center;
 }
 </style>

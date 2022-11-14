@@ -307,7 +307,7 @@
         <!-- Select Device -->
         
         <el-form-item
-          label="自动上下线时间:"
+          label="自动上下线时间(UTC):"
           prop="line_arr"
         >
           <div class="flex jc-start">
