@@ -70,8 +70,8 @@
             v-model:file-list="fileListUrl"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
-            :on-success="handleAvatarSuccessForUrl"
-            :before-upload="beforeAvatarUploadImage"
+            :on-success="handleSuccessForUrl"
+            :before-upload="beforeUploadImage"
             :http-request="uploadHttpRequest"
           >
             <!-- <img v-if="state.ruleForm.url" :src="state.ruleForm.url" :preview-src-list="[state.ruleForm.url]" class="avatar" />
@@ -90,13 +90,14 @@
             class="avatar-uploader"
             name="url"
             action=""
+            accept="mp4"
             :limit="1"
             :show-file-list="false"
             v-model:file-list="fileListVideoUrl"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
-            :on-success="handleAvatarSuccessForVideo"
-            :before-upload="beforeAvatarUploadVideo"
+            :on-success="handleSuccessForVideo"
+            :before-upload="beforeUploadVideo"
             :http-request="uploadHttpRequest"
           >
             <video v-if="state.ruleForm.url" :src="state.ruleForm.url" alt="Video" controls></video>
@@ -109,7 +110,7 @@
           class="self-el-form-item"
           label="上传封面:"
           prop="cover_url"
-        >{{fileListCoverUrl}}
+        >
           <el-upload
             class="avatar-uploader"
             name="cover_url"
@@ -118,8 +119,8 @@
             v-model:file-list="fileListCoverUrl"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
-            :on-success="handleAvatarSuccessForCoverUrl"
-            :before-upload="beforeAvatarUploadCoverImage"
+            :on-success="handleSuccessForCoverUrl"
+            :before-upload="beforeUploadCoverImage"
             :http-request="uploadHttpRequest"
           >
             <!-- <img v-if="state.ruleForm.url" :src="state.ruleForm.url" :preview-src-list="[state.ruleForm.url]" class="avatar" />
@@ -142,8 +143,8 @@
             v-model:file-list="fileListLogoUrl"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
-            :on-success="handleAvatarSuccessForLogoUrl"
-            :before-upload="beforeAvatarUploadLogo"
+            :on-success="handleSuccessForLogoUrl"
+            :before-upload="beforeUploadLogo"
             :http-request="uploadHttpRequest"
           >
             <!-- <img v-if="state.ruleForm.url" :src="state.ruleForm.url" :preview-src-list="[state.ruleForm.url]" class="avatar" />
@@ -256,7 +257,7 @@ import _, { isArguments } from 'lodash'
 import type { UploadProps, UploadUserFile, genFileId } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import uploadFn from '@/utils/upload'
-const { validate: validateUpload, uploadHttpRequest, handleRes } = uploadFn
+const { validate: validateUpload, uploadHttpRequest } = uploadFn
 
 const {
   adv_type, 
@@ -513,7 +514,7 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
   dialogVisible.value = true
 }
 
-const handleAvatarSuccessForLogoUrl: UploadProps['onSuccess'] = (
+const handleSuccessForLogoUrl: UploadProps['onSuccess'] = (
   response,
   uploadFile
 ) => {
@@ -526,7 +527,7 @@ const handleAvatarSuccessForLogoUrl: UploadProps['onSuccess'] = (
   })
 }
 
-const handleAvatarSuccessForUrl: UploadProps['onSuccess'] = (
+const handleSuccessForUrl: UploadProps['onSuccess'] = (
   response,
   uploadFile
 ) => {
@@ -539,7 +540,7 @@ const handleAvatarSuccessForUrl: UploadProps['onSuccess'] = (
   })
 }
 
-const handleAvatarSuccessForCoverUrl: UploadProps['onSuccess'] = (
+const handleSuccessForCoverUrl: UploadProps['onSuccess'] = (
   response,
   uploadFile
 ) => {
@@ -552,7 +553,7 @@ const handleAvatarSuccessForCoverUrl: UploadProps['onSuccess'] = (
   })
 }
 
-const handleAvatarSuccessForVideo: UploadProps['onSuccess'] = (
+const handleSuccessForVideo: UploadProps['onSuccess'] = (
   response,
   uploadFile
 ) => {
@@ -565,31 +566,20 @@ const handleAvatarSuccessForVideo: UploadProps['onSuccess'] = (
   })
 }
 
-const handleResFn = (res, fileList) => {
-  let result = handleRes(res)
-  if (result.status === 0) {
-    fileList.pop()
-  }
+const beforeUploadLogo = async (rawFile) => {
+  return validateUpload(rawFile, 'logo')
 }
 
-const beforeAvatarUploadLogo = async (rawFile) => {
-  const res = await validateUpload(rawFile, 'logo')
-  handleResFn(res, fileListLogoUrl)
+const beforeUploadImage = (rawFile) => {
+  return validateUpload(rawFile, 'image')
 }
 
-const beforeAvatarUploadImage = async (rawFile) => {
-  const res = await validateUpload(rawFile, 'image')
-  handleResFn(res, fileListUrl)
+const beforeUploadCoverImage = async (rawFile) => {
+  return validateUpload(rawFile, 'image')
 }
 
-const beforeAvatarUploadCoverImage = async (rawFile) => {
-  const res = await validateUpload(rawFile, 'image')
-  handleResFn(res, fileListCoverUrl)
-}
-
-const beforeAvatarUploadVideo = async (rawFile) => {
-  const res = await validateUpload(rawFile, 'video')
-  handleResFn(res, fileListVideoUrl)
+const beforeUploadVideo = async (rawFile) => {
+  return validateUpload(rawFile, 'video')
 }
 
 const init = () => {

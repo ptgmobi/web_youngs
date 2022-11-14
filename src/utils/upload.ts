@@ -1,5 +1,6 @@
 import uploadSetting from '@/self-upload-setting'
 import type { UploadProps, UploadUserFile, genFileId } from 'element-plus'
+import { ElMessage } from 'element-plus'
 import { ApiUploadImg } from '@/api/dsp-advertiser'
 
 const {
@@ -43,9 +44,17 @@ const validate = async (rawFile, type) => {
       let valid = file_limit <= logo_limit
       valid ? resolve(null) : reject('图片大小错误')
     })
-    return Promise.allSettled([judgeSize, judgeTyle, judgeLimit]).then(value => {
-      console.log(value)
+    const res = await Promise.allSettled([judgeTyle, judgeLimit, judgeSize,]).then(value => {
       return value
+    })
+    console.log(res)
+    return new Promise((resolve, reject) => {
+      let result: any = handleRes(res)
+      if (result.status) {
+        resolve(result)
+      } else {
+        reject('error')
+      }
     })
   }
   if (type === 'image') {
@@ -65,6 +74,7 @@ const validate = async (rawFile, type) => {
     const judgeTyle = new Promise(function (resolve, reject) {
       let file_type = rawFile.type
       let valid = image_type_reg.test(file_type)
+      console.log(valid)
       valid ? resolve(true) : reject('图片类型错误')
     })
     const judgeLimit = new Promise(function (resolve, reject) {
@@ -72,9 +82,17 @@ const validate = async (rawFile, type) => {
       let valid = file_limit <= image_limit
       valid ? resolve(true) : reject('图片大小错误')
     })
-    return Promise.allSettled([judgeSize, judgeTyle, judgeLimit]).then(value => {
-      console.log(value)
+    const res = await Promise.allSettled([judgeTyle, judgeLimit, judgeSize,]).then(value => {
       return value
+    })
+    console.log(res)
+    return new Promise((resolve, reject) => {
+      let result: any = handleRes(res)
+      if (result.status) {
+        resolve(result)
+      } else {
+        reject('error')
+      }
     })
   }
   if (type === 'video') {
@@ -83,20 +101,26 @@ const validate = async (rawFile, type) => {
       let videoObj = document.createElement('video')
       videoObj.onloadedmetadata = function (evt) {
         URL.revokeObjectURL(video)
+        let duration = videoObj.duration
         let w = videoObj.videoWidth
         let h = videoObj.videoHeight
-        let valid = video_size.find(ele => {
+        let valid_size = video_size.find(ele => {
           return ele.width === w && ele.height === h
         })
-        valid = true
-        valid ? resolve(true) : reject('视频尺寸错误')
+        let valid_duration = duration <= video_duration ? true : false
+        if (!valid_size) {
+          return reject('视频尺寸错误')
+        }
+        if (!valid_duration) {
+          return reject('视频时长错误')
+        }
+        return resolve(true)
       }
       videoObj.src = video
       videoObj.load()
     })
     const judgeTyle = new Promise(function (resolve, reject) {
       let file_type = rawFile.type
-      console.log(file_type, video_type_reg)
       let valid = video_type_reg.test(file_type)
       valid ? resolve(true) : reject('视频类型错误')
     })
@@ -105,9 +129,17 @@ const validate = async (rawFile, type) => {
       let valid = file_limit <= video_limit
       valid ? resolve(true) : reject('视频大小错误')
     })
-    return Promise.allSettled([judgeSize, judgeTyle, judgeLimit]).then(value => {
-      console.log(value)
+    const res = await Promise.allSettled([judgeTyle, judgeLimit, judgeSize,]).then(value => {
       return value
+    })
+    console.log(res)
+    return new Promise((resolve, reject) => {
+      let result: any = handleRes(res)
+      if (result.status) {
+        resolve(result)
+      } else {
+        reject('error')
+      }
     })
   }
 }
@@ -117,6 +149,7 @@ const uploadHttpRequest: UploadProps['httpRequest'] = async(
 ) => {
   const formData = new FormData()
   formData.append("logo_url", param.file)
+  console.log(process.env.NODE_ENV)
   if (process.env.NODE_ENV === 'serve-dev') {
     return void 0
   } else {
@@ -129,23 +162,25 @@ const handleRes = (res) => {
   let errArr = res.filter(ele => {
     return ele.status === 'rejected'
   })
+  let result: any = {}
   if (errArr.length !== 0) {
-    return {
-      status: 0,
+    result = {
+      status: false,
       msg: errArr.map(ele => {
         return ele.reason
       }).join(',')
     }
+    ElMessage.error(result.msg)
   } else {
-    return {
-      status: 1,
+    result = {
+      status: true,
       msg: 'success'
     }
   }
+  return result
 }
 
 export default {
   validate,
-  uploadHttpRequest,
-  handleRes
+  uploadHttpRequest
 }
