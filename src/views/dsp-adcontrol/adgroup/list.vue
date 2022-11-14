@@ -150,7 +150,8 @@
         align="center"
       >
         <template #default="scope">
-          <span>{{scope.row.ad}}</span>
+          <!-- <span>{{scope.row.ad}}</span> -->
+          <span class="color_primary cp" @click="goAdList(scope)">{{scope.row.ad ? scope.row.ad.length : NaN}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -324,7 +325,7 @@ let state = reactive({
       {value: 2, label: '限定周期'}
     ]
   },
-  list: [],
+  list: [{ id: 1 }],
   pagination: {
     pageSizes: [20, 50, 100, 500, 1000],
     total: 1,
@@ -418,6 +419,16 @@ const createFilter = (queryString: string) => {
       restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
     )
   }
+}
+
+const goAdList = ({row}: any) => {
+  goNewUrl({
+    url: `/adcontrol/ad/list`,
+    query: {
+      adseries: row.id,
+      type: 'list'
+    }
+  })
 }
 
 const createFn = () => {

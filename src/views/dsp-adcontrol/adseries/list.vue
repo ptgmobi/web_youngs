@@ -172,7 +172,7 @@
       >
         <template #default="scope">
           <!-- <span>{{scope.row.ad_group}}</span> -->
-          <span class="color_primary cp" @click="goAdGroupList(scope)">{{scope.row.ad_group ? scope.row.ad_group.length : 6}}</span>
+          <span class="color_primary cp" @click="goAdGroupList(scope)">{{scope.row.ad_group ? scope.row.ad_group.length : NaN}}</span>
         </template>
       </el-table-column>
       <el-table-column sortable
@@ -182,7 +182,7 @@
       >
         <template #default="scope">
           <!-- <span>{{scope.row.ad}}</span> -->
-          <span class="color_primary cp" @click="goAdList(scope)">{{scope.row.ad ? scope.row.ad.length : 8}}</span>
+          <span class="color_primary cp" @click="goAdList(scope)">{{scope.row.ad ? scope.row.ad.length : NaN}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -357,7 +357,9 @@ let state = reactive({
       {value: 'desc', label: '描述'},
     ]
   },
-  list: [],
+  list: [
+    { id: 1 }
+  ],
   pagination: {
     pageSizes: [20, 50, 100, 500, 1000],
     total: 1,
@@ -529,6 +531,7 @@ const goAdList = ({row}: any) => {
     url: `/adcontrol/ad/list`,
     query: {
       adseries: row.id,
+      adgroup: row.id,
       type: 'list'
     }
   })

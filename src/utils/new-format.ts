@@ -223,7 +223,7 @@ export function handleOneDataArrayFn(obj, arr) {
             } else {
               return ele.toString()
             }
-          }) : [element.toString()]
+          }) : [isFinite(element) ? Number(element) : element]
         }
       } else {
         finalObj[key] = element

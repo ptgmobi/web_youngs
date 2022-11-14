@@ -864,6 +864,7 @@ const setDataFn = async (id) => {
   result.adx_price = JSON.parse(result.adx_price)
   handleAdxDataFn(result.adx_price)
   let finalResult = handleOneDataArrayFn(result, arrayKeyArr)
+  console.log(finalResult)
   state.ruleForm = {
     ...state.ruleForm,
     ...finalResult

@@ -103,7 +103,7 @@ export function ApiChangeAdGroupStatus(data: ObjTy) {
 
 export function ApiDeleteAdGroup(data: ObjTy) {
   return request({
-    url: '/d/dvg/delete',
+    url: '/d/dvg/del',
     data,
     method: 'delete',
     bfLoading: false,
