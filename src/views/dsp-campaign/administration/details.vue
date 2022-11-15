@@ -336,8 +336,6 @@ type ruleFormType =  {
   brand: string
   // 封面
   cover_url: string
-  // 视频
-  video_url: string
 }
 
 const defaultRuleForm: ruleFormType = {
@@ -360,7 +358,6 @@ const defaultRuleForm: ruleFormType = {
   actions: '',
   brand: '',
   cover_url: '',
-  video_url: ''
 
 }
 
@@ -400,22 +397,30 @@ const validatorMaxQps = (rule: any, value: string, callback: (arg0: Error | unde
 const state = reactive({
   ruleForm: defaultRuleForm,
   rules: {
-    adv_series_name: [
-      {required: true, message: message.required, trigger: ['blur', 'change']},
-      {validator: validatorStrLenValue, max: 100, trigger: ['blur', 'change']}
+    name: [
+      {required: true, message: message.required, trigger: ['blur', 'change']}
     ],
-    adv_id: [
-      {required: true, message: message.required, trigger: ['blur', 'change']},
-    ],
-    desc: [
-      {validator: validatorStrLenValue, max: 200, trigger: ['blur', 'change']}
-    ],
-    adv_series_type: [
+    url: [
       {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
-    adv_series_budget: [
+    logo_url: [
       {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
+    title: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
+    ],
+    main_body: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
+    ],
+    actions: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
+    ],
+    brand: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
+    ],
+    cover_url: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
+    ]
   },
   options: {
     type: [

@@ -9,7 +9,7 @@ const validate = async (rawFile, type, options) => {
     limit,
     duration
   } = options
-  console.log(rawFile, type)
+  console.log(rawFile, type, options)
   if (type === 'image') {
     const judgeSize = new Promise(function (resolve, reject) {
       let URL = window.URL || window.webkitURL
