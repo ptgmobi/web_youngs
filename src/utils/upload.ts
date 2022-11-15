@@ -2,7 +2,7 @@ import type { UploadProps, UploadUserFile, genFileId } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ApiUploadImg } from '@/api/dsp-advertiser'
 
-const validate = async (rawFile, type, options) => {
+const validate = async (controlType, rawFile, type, options) => {
   const {
     type_reg,
     size,
@@ -18,8 +18,15 @@ const validate = async (rawFile, type, options) => {
       type: rawFile.type
     }
     const judgeSize = new Promise(function (resolve, reject) {
-      let imageData: any = {}
       let URL = window.URL || window.webkitURL
+      let url = ''
+      if (controlType === 'file') {
+        url = URL.createObjectURL(rawFile)
+      }
+      if (controlType === 'url') {
+        url = rawFile
+      }
+      let imageData: any = {}
       let image = new Image()
       image.onload = function () {
         let w = image.width
@@ -31,7 +38,7 @@ const validate = async (rawFile, type, options) => {
         imageData.h = h
         valid ? resolve(imageData) : reject('图片尺寸错误')
       }
-      image.src = URL.createObjectURL(rawFile)
+      image.src = url
     })
     const judgeTyle = new Promise(function (resolve, reject) {
       let file_type = rawFile.type
@@ -66,10 +73,16 @@ const validate = async (rawFile, type, options) => {
       duration: ''
     }
     const judgeSize = new Promise(function (resolve, reject) {
-      let video = URL.createObjectURL(rawFile)
+      let url = ''
+      if (controlType === 'file') {
+        url = URL.createObjectURL(rawFile)
+      }
+      if (controlType === 'url') {
+        url = rawFile
+      }
       let videoObj = document.createElement('video')
       videoObj.onloadedmetadata = function (evt) {
-        URL.revokeObjectURL(video)
+        URL.revokeObjectURL(url)
         let duration_time = videoObj.duration
         let w = videoObj.videoWidth
         let h = videoObj.videoHeight
@@ -88,7 +101,7 @@ const validate = async (rawFile, type, options) => {
         videoData.duration = duration_time
         return resolve(videoData)
       }
-      videoObj.src = video
+      videoObj.src = url
       videoObj.load()
     })
     const judgeTyle = new Promise(function (resolve, reject) {

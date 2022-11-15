@@ -66,6 +66,7 @@
             class="avatar-uploader"
             name="url"
             action=""
+            :limit="1"
             list-type="picture-card"
             v-model:file-list="fileListUrl"
             :on-preview="handlePictureCardPreview"
@@ -90,7 +91,7 @@
             class="avatar-uploader"
             name="url"
             action=""
-            accept="mp4"
+            accept=""
             :limit="1"
             :show-file-list="false"
             v-model:file-list="fileListVideoUrl"
@@ -115,6 +116,7 @@
             class="avatar-uploader"
             name="cover_url"
             action=""
+            :limit="1"
             list-type="picture-card"
             v-model:file-list="fileListCoverUrl"
             :on-preview="handlePictureCardPreview"
@@ -123,7 +125,7 @@
             :before-upload="beforeUploadCoverImage"
             :http-request="uploadHttpRequest"
           >
-            <!-- <img v-if="state.ruleForm.url" :src="state.ruleForm.url" :preview-src-list="[state.ruleForm.url]" class="avatar" />
+            <!-- <img v-if="state.ruleForm.cover_url" :src="state.ruleForm.cover_url" :preview-src-list="[state.ruleForm.cover_url]" class="avatar" />
             <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon> -->
             <el-icon><Plus /></el-icon>
           </el-upload>
@@ -139,6 +141,7 @@
             class="avatar-uploader"
             name="logo_url"
             action=""
+            :limit="1"
             list-type="picture-card"
             v-model:file-list="fileListLogoUrl"
             :on-preview="handlePictureCardPreview"
@@ -210,7 +213,16 @@
         </el-form-item>
         <!-- {{state.ruleForm.raw_file_image}}
         <br>
-        {{state.ruleForm.raw_file_video}} -->
+        {{state.ruleForm.raw_file_video}}
+        <br>
+        {{fileListUrl}}
+        <br>
+        {{fileListVideoUrl}}
+        <br>
+        {{fileListLogoUrl}}
+        <br>
+        {{fileListCoverUrl}}
+        <br> -->
       </div>
     </el-form>
     <!-- form -->
@@ -481,6 +493,80 @@ const setDataFn = async (id, campaign_type) => {
     ...result
   }
   console.log(state.ruleForm)
+  // let fileListUrl = ref<UploadUserFile[]>([])
+  // let fileListVideoUrl = ref<UploadUserFile[]>([])
+  // let fileListLogoUrl = ref<UploadUserFile[]>([])
+  // let fileListCoverUrl = ref<UploadUserFile[]>([])
+  if (state.ruleForm.type === 1) {
+    if (state.ruleForm.url) {
+      fileListUrl.value.push({
+        name: '',
+        url: state.ruleForm.url
+      })
+      const options = {
+        type_reg: image_type_reg,
+        limit: image_limit,
+        size: image_size
+      }
+      let result: any = await validateUpload('url', state.ruleForm.url, 'image', options)
+      console.log(result)
+      state.ruleForm.raw_file_image = result.data
+    }
+  }
+  if (state.ruleForm.type === 2) {
+    if (state.ruleForm.url) {
+      fileListVideoUrl.value.push({
+        name: '',
+        url: state.ruleForm.url
+      })
+      state.ruleForm.video_url = state.ruleForm.url
+      const options = {
+        type_reg: video_type_reg,
+        limit: video_limit,
+        size: video_size,
+        duration: video_duration
+      }
+      let result: any = await validateUpload('url', state.ruleForm.video_url, 'video', options)
+      console.log(result)
+      state.ruleForm.raw_file_video = result.data
+    }
+    
+    if (state.ruleForm.logo_url) {
+      fileListLogoUrl.value.push({
+        name: '',
+        url: state.ruleForm.logo_url
+      })
+    }
+    if (state.ruleForm.cover_url) {
+      fileListCoverUrl.value.push({
+        name: '',
+        url: state.ruleForm.cover_url
+      })
+    }
+  }
+  if (state.ruleForm.type === 3) {
+    if (state.ruleForm.url) {
+      fileListUrl.value.push({
+        name: '',
+        url: state.ruleForm.url
+      })
+      const options = {
+        type_reg: image_type_reg,
+        limit: image_limit,
+        size: image_size
+      }
+      let result: any = await validateUpload('url', state.ruleForm.url, 'image', options)
+      console.log(result)
+      state.ruleForm.raw_file_image = result.data
+    }
+    
+    if (state.ruleForm.logo_url) {
+      fileListLogoUrl.value.push({
+        name: '',
+        url: state.ruleForm.logo_url
+      })
+    }
+  }
 }
 
 const setRawFileToAjaxDataFn = (ajaxData) => {
@@ -500,6 +586,7 @@ const setRawFileToAjaxDataFn = (ajaxData) => {
     ajaxData.memory_size = `${(data.limit / (1024 * 1024)).toFixed(2)}MB`
     ajaxData.format = data.type
     ajaxData.duration = data.duration
+    ajaxData.url = ajaxData.video_url
   }
   // delete ajaxData.raw_file_image
   // delete ajaxData.raw_file_video
@@ -571,7 +658,7 @@ const handleSuccessForLogoUrl: UploadProps['onSuccess'] = (
   uploadFile
 ) => {
   // state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
-  state.ruleForm.url = response?.data
+  state.ruleForm.logo_url = response?.data
   fileListLogoUrl.value.splice(0)
   fileListLogoUrl.value.push({
     name: '',
@@ -643,7 +730,7 @@ const beforeUploadLogo = async (rawFile) => {
     limit: logo_limit,
     size: logo_size
   }
-  let result = validateUpload(rawFile, 'image', options)
+  let result = validateUpload('file', rawFile, 'image', options)
   return result
 }
 
@@ -653,7 +740,7 @@ const beforeUploadImage = async(rawFile) => {
     limit: image_limit,
     size: image_size
   }
-  let result: any = await validateUpload(rawFile, 'image', options)
+  let result: any = await validateUpload('file', rawFile, 'image', options)
   console.log(result)
   state.ruleForm.raw_file_image = result.data
   return result
@@ -665,7 +752,7 @@ const beforeUploadCoverImage = async (rawFile) => {
     limit: cover_image_limit,
     size: cover_image_size
   }
-  return validateUpload(rawFile, 'image', options)
+  return validateUpload('file', rawFile, 'image', options)
 }
 
 const beforeUploadVideo = async (rawFile) => {
@@ -675,7 +762,7 @@ const beforeUploadVideo = async (rawFile) => {
     size: video_size,
     duration: video_duration
   }
-  let result: any =  await validateUpload(rawFile, 'video', options)
+  let result: any =  await validateUpload('file', rawFile, 'video', options)
   console.log(result)
   state.ruleForm.raw_file_video = result.data
   return result

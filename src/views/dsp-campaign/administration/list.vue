@@ -7,13 +7,12 @@
         class="flex jc-between w100 ai-end"
       >
         <div class="flex jc-start flex-wrap w100">
-          <!-- 广告主 -->
-          <el-form-item label="">
+          <!-- <el-form-item label="">
             <el-select
               v-model="state.searchForm.status"
               filterable
               clearable
-              placeholder="所有广告主"
+              placeholder="所有状态"
             >
               <el-option
                 v-for="item in state.options.status"
@@ -22,17 +21,17 @@
                 :value="item.value"
               ></el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <!-- 所有样式 -->
           <el-form-item label="">
             <el-select
-              v-model="state.searchForm.status"
+              v-model="state.searchForm.type"
               filterable
               clearable
               placeholder="所有样式"
             >
               <el-option
-                v-for="item in state.options.status"
+                v-for="item in state.options.type"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -42,13 +41,13 @@
           <!-- 所有审核状态 -->
           <el-form-item label="">
             <el-select
-              v-model="state.searchForm.status"
+              v-model="state.searchForm.audit_status"
               filterable
               clearable
               placeholder="所有审核状态"
             >
               <el-option
-                v-for="item in state.options.status"
+                v-for="item in state.options.audit_status"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -127,25 +126,48 @@
       <!-- 名称 -->
       <el-table-column sortable
         width="120"
-        prop="adv_series_name"
+        prop="name"
         label="名称"
         align="center"
       ></el-table-column>
       <!-- 缩略图 -->
       <el-table-column
         width="120"
-        prop="adv_series_name"
+        prop="url"
         label="缩略图"
         align="center"
       >
         <template #default="scope">
-          <el-image
-            style="width: 100px; height: 100px"
-            :src="scope.row.logo"
-            :preview-src-list="[scope.row.logo]"
-            :initial-index="4"
-            fit="cover"
-          />
+          <div class="pr">
+            <el-image
+              :z-index="9999"
+              v-if="scope.row.logo_url"
+              style="width: 100px; height: 100px"
+              :src="scope.row.logo_url"
+              :preview-src-list="[scope.row.logo_url]"
+              :initial-index="4"
+              fit="cover"
+            />
+          </div>
+          <!-- <div v-if="scope.row.type !== 2">
+            <el-image
+              v-if="scope.row.url"
+              style="width: 100px; height: 100px"
+              :src="scope.row.url"
+              :preview-src-list="[scope.row.url]"
+              :initial-index="4"
+              fit="cover"
+            />
+          </div>
+          <div v-if="scope.row.type === 2">
+            <video
+              v-if="scope.row.url"
+              width="320"
+              height="320"
+              controls
+              :src="scope.row.url"
+            ></video>
+          </div> -->
         </template>
       </el-table-column>
       <!-- 操作 -->
@@ -181,7 +203,7 @@
         </template>
       </el-table-column>
       <!-- 开关 -->
-      <el-table-column sortable
+      <!-- <el-table-column sortable
         prop="status"
         label="开关"
         align="center"
@@ -193,82 +215,69 @@
             :inactive-value="2"
             @click="changeStatus(scope)"
           />
-          <!-- <span>{{getOptionsValue(scope.row.status, state.options.status)}}</span> -->
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <!-- 样式 -->
       <el-table-column sortable
-        prop="status"
+        prop="type"
         label="样式"
         align="center"
       >
         <template #default="scope">
-          <span>{{getOptionsValue(scope.row.status, state.options.status)}}</span>
+          <span>{{getOptionsValue(scope.row.type, state.options.type)}}</span>
         </template>
       </el-table-column>
       <!-- 审核状态 -->
       <el-table-column sortable
-        prop="status"
+        prop="audit_status"
         label="审核状态"
         align="center"
       >
         <template #default="scope">
-          <span>{{getOptionsValue(scope.row.status, state.options.status)}}</span>
+          <span>{{getOptionsValue(scope.row.audit_status, state.options.audit_status)}}</span>
         </template>
       </el-table-column>
       <!-- 尺寸 -->
       <el-table-column sortable
         width="120"
-        prop="adv_series_type"
+        prop="size"
         label="尺寸"
         align="center"
       >
-        <template #default="scope">
-          <span>{{getOptionsValue(scope.row.adv_type, state.options.adv_series_type)}}</span>
-        </template>
       </el-table-column>
       <!-- 格式 -->
       <el-table-column sortable
         width="120"
-        prop="marbet_target"
+        prop="format"
         label="格式"
         align="center"
       >
-        <template #default="scope">
-          <span>{{getOptionsValue(scope.row.adv_type, state.options.marbet_target)}}</span>
-        </template>
       </el-table-column>
       <!-- 大小 -->
       <el-table-column sortable
         width="120"
-        prop="marbet_target"
+        prop="memory_size"
         label="大小"
         align="center"
       >
-        <template #default="scope">
-          <span>{{getOptionsValue(scope.row.adv_type, state.options.marbet_target)}}</span>
-        </template>
       </el-table-column>
       <!-- 时长 -->
       <el-table-column sortable
         width="120"
-        prop="marbet_target"
+        prop="duration"
         label="时长"
         align="center"
       >
-        <template #default="scope">
-          <span>{{getOptionsValue(scope.row.adv_type, state.options.marbet_target)}}</span>
-        </template>
       </el-table-column>
       <!-- 关联广告 -->
       <el-table-column sortable
         width="120"
-        prop="marbet_target"
+        prop="ads"
         label="关联广告"
         align="center"
       >
         <template #default="scope">
-          <span>{{getOptionsValue(scope.row.adv_type, state.options.marbet_target)}}</span>
+          <span></span>
         </template>
       </el-table-column>
       <!-- 创建人 -->
@@ -321,6 +330,7 @@
 </template>
 <script lang="ts" setup name="adserieslist">
 import optionsSetting from '@/self-options-setting'
+import mysetting from '../setting'
 import Pagination from '@/components/Pagination/index.vue' // secondary package based on el-pagination
 import { messageFun } from '@/utils/message'
 import _ from 'lodash'
@@ -342,12 +352,17 @@ const {
   return_mode, 
 } = optionsSetting
 
+const {
+  type,
+  audit_status
+} = mysetting
+
 const { goNewUrl, openAlert } = useUtils()
 
 const searchData = shallowRef({
   status: '',
-  adv_series_type: '',
-  marbet_target: '',
+  type: '',
+  audit_status: '',
   is_del: '1',
   value_type: 'name',
   value: ''
@@ -371,16 +386,8 @@ let state = reactive({
   loading: true,
   options: {
     status,
-    // 广告类型
-    adv_series_type: [
-      {value: 1, label: '动态商品促销'},
-      {value: 2, label: '固定链接推广'},
-    ],
-    // 营销目标
-    marbet_target: [
-      {value: 1, label: '再营销'},
-      {value: 2, label: '拉新'},
-    ],
+    type,
+    audit_status,
     value_type: [
       {value: 'name', label: '名称'},
       {value: 'id', label: 'ID'},
