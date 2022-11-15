@@ -8,7 +8,7 @@ export default [
     meta: {
       title: '创意中心',
       elSvgIcon: 'Setting',
-      code: 150000
+      code: 140000
     },
     children: [
       {
@@ -19,7 +19,7 @@ export default [
         meta: {
           title: '创意管理',
           elSvgIcon: 'Edit',
-          code: 150100,
+          code: 140100,
           cachePage: true,
           leaveRmCachePage: false
         },
@@ -31,7 +31,7 @@ export default [
             meta: {
               title: '创意管理',
               elSvgIcon: 'Edit',
-              code: 150101,
+              code: 140101,
               cachePage: true,
               leaveRmCachePage: false
             }
@@ -42,7 +42,7 @@ export default [
             component: () => import('@/views/dsp-campaign/administration/details'),
             meta: {
               title: '新建创意',
-              code: 150102
+              code: 140102
             },
             hidden: true
           },
@@ -52,7 +52,7 @@ export default [
             component: () => import('@/views/dsp-campaign/administration/details'),
             meta: {
               title: '修改广告创意',
-              code: 150103
+              code: 140103
             },
             hidden: true
           },
@@ -66,7 +66,7 @@ export default [
         meta: {
           title: 'DPA模板管理',
           elSvgIcon: 'Edit',
-          code: 150200,
+          code: 140200,
           cachePage: true,
           leaveRmCachePage: false
         },
@@ -79,7 +79,7 @@ export default [
             meta: {
               title: 'DPA模板管理',
               elSvgIcon: 'Edit',
-              code: 150201,
+              code: 140201,
               cachePage: true,
               leaveRmCachePage: false
             }

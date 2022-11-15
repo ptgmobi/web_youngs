@@ -260,6 +260,7 @@ import _, { isArguments } from 'lodash'
 import type { UploadProps, UploadUserFile, genFileId } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import uploadFn from '@/utils/upload'
+import campaign from '@/router/dspmodules/campaign'
 const { validate: validateUpload, uploadHttpRequest } = uploadFn
 
 const {
@@ -468,9 +469,12 @@ const numberKeyArr = ['id', 'adv_series_type', 'adv_series_budget']
 // 数组转换为字符串
 const arrayKeyArr = []
 
-const setDataFn = async (id) => {
+const setDataFn = async (id, campaign_type) => {
   // 获取单个
-  const res = await ApiGetCampaignOne(id)
+  let params = new URLSearchParams()
+  params.append('type', campaign_type)
+  let params_str = `type=${params.get('type')}`
+  const res = await ApiGetCampaignOne(id, params_str)
   const {data: result} = res
   state.ruleForm = {
     ...state.ruleForm,
@@ -688,7 +692,8 @@ const init = () => {
   }
   if (type.value === 'edit') {
     const { id } = params
-    setDataFn(id)
+    const { campaign_type } = query
+    setDataFn(id, campaign_type)
   }
 }
 

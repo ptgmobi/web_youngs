@@ -452,7 +452,6 @@ const batchFn = async () => {
     if (messageFun(res)) {
       init()
     }
-    
   }
 }
 
@@ -539,7 +538,8 @@ const editFn = ({row}: any) => {
   goNewUrl({
     url: `/campaign/administration/edit/${id}`,
     query: {
-      type: 'edit'
+      type: 'edit',
+      campaign_type: row.type
     }
   })
 }

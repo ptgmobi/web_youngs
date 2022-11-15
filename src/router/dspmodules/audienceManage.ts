@@ -1,13 +1,13 @@
 import Layout from '@/layout'
 export default [
   {
-    path: '/media',
+    path: '/audienceManage',
     component: Layout,
-    name: 'media',
+    name: 'audience-manage',
     meta: {
-      title: '媒体管理',
+      title: '受众包管理',
       elSvgIcon: 'Setting',
-      code: 120000
+      code: 130000
     }
   }
 ]

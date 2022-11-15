@@ -17,6 +17,8 @@ import light from './modules/light'
 import tool from './dspmodules/tool'
 import dspadvertiser from './dspmodules/advertiser'
 import dspadcontrol from './dspmodules/adcontrol'
+import media from './dspmodules/media'
+import audienceManage from './dspmodules/audienceManage'
 import campaign from './dspmodules/campaign'
 
 
@@ -45,6 +47,8 @@ if (pageTitle === 'Dsp') {
   routerBox = [
     ...dspadvertiser,
     ...dspadcontrol,
+    ...media,
+    ...audienceManage,
     ...campaign,
     ...tool,
     ...administer

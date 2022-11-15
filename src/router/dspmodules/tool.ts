@@ -6,7 +6,7 @@ export default [
     component: Layout,
     name: 'tool',
     meta: {
-      title: 'Tool',
+      title: '投放工具',
       elSvgIcon: 'Setting',
       code: 12
     },

@@ -1,13 +1,13 @@
 import Layout from '@/layout'
 export default [
   {
-    path: '/media',
+    path: '/report',
     component: Layout,
-    name: 'media',
+    name: 'report',
     meta: {
-      title: '媒体管理',
+      title: '数据报表',
       elSvgIcon: 'Setting',
-      code: 120000
+      code: 150000
     }
   }
 ]

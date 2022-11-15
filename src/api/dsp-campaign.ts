@@ -57,9 +57,9 @@ export function ApiCampaignEdit(params: string, data: ObjTy) {
   })
 }
 
-export function ApiGetCampaignOne(params: string) {
+export function ApiGetCampaignOne(params: string, query: string) {
   return request({
-    url: `/d/dio/view/${params}`,
+    url: `/d/dio/view/${params}?${query}`,
     method: 'get',
     bfLoading: false,
     isParams: true,
