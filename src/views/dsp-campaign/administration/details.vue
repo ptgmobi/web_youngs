@@ -57,7 +57,7 @@
         </el-form-item>
         <!-- 上传素材 --- 图片 -->
         <el-form-item
-          v-if="state.ruleForm.type === 1"
+          v-if="state.ruleForm.type === 1 || state.ruleForm.type === 3"
           class="self-el-form-item"
           label="上传图片素材:"
           prop="url"
@@ -100,7 +100,7 @@
             :before-upload="beforeUploadVideo"
             :http-request="uploadHttpRequest"
           >
-            <video v-if="state.ruleForm.url" :src="state.ruleForm.url" alt="Video" controls></video>
+            <video v-if="state.ruleForm.video_url" :src="state.ruleForm.video_url" alt="Video" controls></video>
             <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
           </el-upload>
         </el-form-item>
@@ -208,6 +208,9 @@
           >
           </el-input>
         </el-form-item>
+        <!-- {{state.ruleForm.raw_file_image}}
+        <br>
+        {{state.ruleForm.raw_file_video}} -->
       </div>
     </el-form>
     <!-- form -->
@@ -238,7 +241,7 @@
 <script lang="ts" setup>
 import optionsSetting from '@/self-options-setting'
 import uploadSetting from '@/self-upload-setting'
-import { ApiAdSeriesCreate, ApiGetAdSeriesOne, ApiAdSeriesEdit } from '@/api/dsp-adcontrol'
+import { ApiCampaignCreate, ApiGetCampaignOne, ApiCampaignEdit } from '@/api/dsp-campaign'
 import { ApiUploadImg } from '@/api/dsp-advertiser'
 import { ApiGetAdvertiserList } from '@/api/dsp-advertiser'
 import { messageFun } from '@/utils/message'
@@ -335,7 +338,12 @@ type ruleFormType =  {
   // 品牌
   brand: string
   // 封面
-  cover_url: string
+  cover_url: string,
+  // 视频
+  video_url: string
+  // 素材相关数据
+  raw_file_image: any
+  raw_file_video: any
 }
 
 const defaultRuleForm: ruleFormType = {
@@ -358,6 +366,9 @@ const defaultRuleForm: ruleFormType = {
   actions: '',
   brand: '',
   cover_url: '',
+  video_url: '',
+  raw_file_image: {},
+  raw_file_video: {}
 
 }
 
@@ -400,12 +411,6 @@ const state = reactive({
     name: [
       {required: true, message: message.required, trigger: ['blur', 'change']}
     ],
-    url: [
-      {required: true, message: message.required, trigger: ['blur', 'change']},
-    ],
-    logo_url: [
-      {required: true, message: message.required, trigger: ['blur', 'change']},
-    ],
     title: [
       {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
@@ -418,9 +423,15 @@ const state = reactive({
     brand: [
       {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
-    cover_url: [
-      {required: true, message: message.required, trigger: ['blur', 'change']},
-    ]
+    // url: [
+    //   {required: true, message: message.required, trigger: ['blur', 'change']},
+    // ],
+    // logo_url: [
+    //   {required: true, message: message.required, trigger: ['blur', 'change']},
+    // ],
+    // cover_url: [
+    //   {required: true, message: message.required, trigger: ['blur', 'change']},
+    // ]
   },
   options: {
     type: [
@@ -459,7 +470,7 @@ const arrayKeyArr = []
 
 const setDataFn = async (id) => {
   // 获取单个
-  const res = await ApiGetAdSeriesOne(id)
+  const res = await ApiGetCampaignOne(id)
   const {data: result} = res
   state.ruleForm = {
     ...state.ruleForm,
@@ -468,24 +479,52 @@ const setDataFn = async (id) => {
   console.log(state.ruleForm)
 }
 
+const setRawFileToAjaxDataFn = (ajaxData) => {
+  let type = ajaxData.type
+  if (type === 1 || type === 3) {
+    let data = ajaxData.raw_file_image
+    console.log(data)
+    ajaxData.size = `${data.w}*${data.h}`
+    ajaxData.memory_size = `${(data.limit / (1024 * 1024)).toFixed(2)}MB`
+    ajaxData.format = data.type
+    delete ajaxData.duration
+  }
+  if (type === 2) {
+    let data = ajaxData.raw_file_video
+    console.log(data)
+    ajaxData.size = `${data.w}*${data.h}`
+    ajaxData.memory_size = `${(data.limit / (1024 * 1024)).toFixed(2)}MB`
+    ajaxData.format = data.type
+    ajaxData.duration = data.duration
+  }
+  // delete ajaxData.raw_file_image
+  // delete ajaxData.raw_file_video
+}
+
 const submitFn = async () => {
   let baseData = toRaw(state.ruleForm)
   let ajaxData: any = baseData
+  let params = new URLSearchParams()
+  params.append('type', ajaxData.type)
+  let params_str = `type=${params.get('type')}`
+  console.log(params, params_str)
+  setRawFileToAjaxDataFn(ajaxData)
+  
   // 先删除为空的字段
   ajaxData = handleAjaxDataDelNo2KeyFn(ajaxData)
   ajaxData = handleAjaxNumberKeyFn(ajaxData, numberKeyArr)
   // ajaxData = handleAjaxArrayKeyFn(ajaxData, arrayKeyArr)
-  console.log(ajaxData)
+  console.log(type.value, ajaxData)
   // return false
   if (type.value === 'create') {
     delete ajaxData.id
-    const res = await ApiAdSeriesCreate(ajaxData)
+    const res = await ApiCampaignCreate(params_str, ajaxData)
     if(messageFun(res)) {
       cancelFn()
     }
   }
   if (type.value === 'edit') {
-    const res = await ApiAdSeriesEdit(ajaxData)
+    const res = await ApiCampaignEdit(params_str, ajaxData)
     if(messageFun(res)) {
       cancelFn()
     }
@@ -493,7 +532,7 @@ const submitFn = async () => {
 }
 
 const cancelFn = () => {
-  let url = '/adcontrol/adseries/list'
+  let url = '/campaign/administration/list'
   goNewUrl({
     url: url
   })
@@ -567,7 +606,7 @@ const handleSuccessForVideo: UploadProps['onSuccess'] = (
   uploadFile
 ) => {
   // state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
-  state.ruleForm.url = response?.data
+  state.ruleForm.video_url = response?.data
   fileListVideoUrl.value.splice(0)
   fileListVideoUrl.value.push({
     name: '',
@@ -600,16 +639,20 @@ const beforeUploadLogo = async (rawFile) => {
     limit: logo_limit,
     size: logo_size
   }
-  return validateUpload(rawFile, 'image', options)
+  let result = validateUpload(rawFile, 'image', options)
+  return result
 }
 
-const beforeUploadImage = (rawFile) => {
+const beforeUploadImage = async(rawFile) => {
   const options = {
     type_reg: image_type_reg,
     limit: image_limit,
     size: image_size
   }
-  return validateUpload(rawFile, 'image', options)
+  let result: any = await validateUpload(rawFile, 'image', options)
+  console.log(result)
+  state.ruleForm.raw_file_image = result.data
+  return result
 }
 
 const beforeUploadCoverImage = async (rawFile) => {
@@ -628,13 +671,17 @@ const beforeUploadVideo = async (rawFile) => {
     size: video_size,
     duration: video_duration
   }
-  return validateUpload(rawFile, 'video', options)
+  let result: any =  await validateUpload(rawFile, 'video', options)
+  console.log(result)
+  state.ruleForm.raw_file_video = result.data
+  return result
 }
 
 const init = () => {
   console.info('init')
   let { query, params } = getRouterData()
   type.value = query.type?.toString() ?? ''
+  console.log(type.value)
   getConfig()
   if (type.value === 'create') {
     state.ruleForm = _.cloneDeep(defaultRuleForm)

@@ -25,7 +25,7 @@ export function ApiChangeAdSeriesStatus(data: ObjTy) {
 
 export function ApiDeleteAdSeries(data: ObjTy) {
   return request({
-    url: 'd/dvs/del',
+    url: '/d/dvs/del',
     data,
     method: 'delete',
     bfLoading: false,

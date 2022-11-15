@@ -11,7 +11,14 @@ const validate = async (rawFile, type, options) => {
   } = options
   console.log(rawFile, type, options)
   if (type === 'image') {
+    let imageData: any = {
+      w: '',
+      h: '',
+      limit: rawFile.size,
+      type: rawFile.type
+    }
     const judgeSize = new Promise(function (resolve, reject) {
+      let imageData: any = {}
       let URL = window.URL || window.webkitURL
       let image = new Image()
       image.onload = function () {
@@ -20,7 +27,9 @@ const validate = async (rawFile, type, options) => {
         let valid = size.find(ele => {
           return ele.width === w && ele.height === h
         })
-        valid ? resolve(true) : reject('图片尺寸错误')
+        imageData.w = w
+        imageData.h = h
+        valid ? resolve(imageData) : reject('图片尺寸错误')
       }
       image.src = URL.createObjectURL(rawFile)
     })
@@ -28,14 +37,14 @@ const validate = async (rawFile, type, options) => {
       let file_type = rawFile.type
       let valid = type_reg.test(file_type)
       console.log(valid)
-      valid ? resolve(true) : reject('图片类型错误')
+      valid ? resolve(imageData) : reject('图片类型错误')
     })
     const judgeLimit = new Promise(function (resolve, reject) {
       let file_limit = rawFile.size
       let valid = file_limit <= limit
-      valid ? resolve(true) : reject('图片大小错误')
+      valid ? resolve(imageData) : reject('图片大小错误')
     })
-    const res = await Promise.allSettled([judgeTyle, judgeLimit, judgeSize,]).then(value => {
+    const res = await Promise.allSettled([judgeSize, judgeTyle, judgeLimit]).then(value => {
       return value
     })
     console.log(res)
@@ -49,6 +58,13 @@ const validate = async (rawFile, type, options) => {
     })
   }
   if (type === 'video') {
+    let videoData: any = {
+      w: '',
+      h: '',
+      limit: rawFile.size,
+      type: rawFile.type,
+      duration: ''
+    }
     const judgeSize = new Promise(function (resolve, reject) {
       let video = URL.createObjectURL(rawFile)
       let videoObj = document.createElement('video')
@@ -67,7 +83,10 @@ const validate = async (rawFile, type, options) => {
         if (!valid_duration) {
           return reject('视频时长错误')
         }
-        return resolve(true)
+        videoData.w = w
+        videoData.h = h
+        videoData.duration = duration_time
+        return resolve(videoData)
       }
       videoObj.src = video
       videoObj.load()
@@ -75,14 +94,14 @@ const validate = async (rawFile, type, options) => {
     const judgeTyle = new Promise(function (resolve, reject) {
       let file_type = rawFile.type
       let valid = type_reg.test(file_type)
-      valid ? resolve(true) : reject('视频类型错误')
+      valid ? resolve(videoData) : reject('视频类型错误')
     })
     const judgeLimit = new Promise(function (resolve, reject) {
       let file_limit = rawFile.size
       let valid = file_limit <= limit
-      valid ? resolve(true) : reject('视频大小错误')
+      valid ? resolve(videoData) : reject('视频大小错误')
     })
-    const res = await Promise.allSettled([judgeTyle, judgeLimit, judgeSize,]).then(value => {
+    const res = await Promise.allSettled([judgeSize, judgeTyle, judgeLimit]).then(value => {
       return value
     })
     console.log(res)
@@ -103,7 +122,7 @@ const uploadHttpRequest: UploadProps['httpRequest'] = async(
   const formData = new FormData()
   formData.append("logo_url", param.file)
   console.log(process.env.NODE_ENV)
-  if (process.env.NODE_ENV === 'serve-dev') {
+  if (process.env.NODE_ENV === 'serve-dev-no') {
     return void 0
   } else {
     const res = await ApiUploadImg(formData)
@@ -125,9 +144,22 @@ const handleRes = (res) => {
     }
     ElMessage.error(result.msg)
   } else {
+    let data: any = {}
+    res.map(ele => {
+      let object = ele.value
+      for (const key in object) {
+        if (Object.prototype.hasOwnProperty.call(object, key)) {
+          const element = object[key]
+          if (element) {
+            data[key] = element
+          }
+        }
+      }
+    })
     result = {
       status: true,
-      msg: 'success'
+      msg: 'success',
+      data
     }
   }
   return result

@@ -327,7 +327,7 @@ import _ from 'lodash'
 import { handleAjaxDataObjectFn, handleAjaxEmptyKeyFn, handleAjaxDataDelNoKeyFn, getOptionsValue } from '@/utils/new-format'
 import useUtils from '@/hooks/self/useUtils'
 import { clipboardFn } from '@/utils/clipboard'
-import { ApiGetAdSeriesList, ApiChangeAdSeriesStatus, ApiDeleteAdSeries } from '@/api/dsp-adcontrol'
+import { ApiGetCampaignList, ApiChangeCampaignStatus, ApiDeleteCampaign } from '@/api/dsp-campaign'
 import { ElTable } from 'element-plus'
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
@@ -471,7 +471,7 @@ const changeStatus = async ({row}) => {
     id: row.id,
     status: row.status
   }
-  let res = await ApiChangeAdSeriesStatus(ajaxData)
+  let res = await ApiChangeCampaignStatus(ajaxData)
   messageFun(res)
 }
 
@@ -545,7 +545,7 @@ const editFn = ({row}: any) => {
 }
 
 const deleteFunction = async (ids) => {
-  const res = await ApiDeleteAdSeries({
+  const res = await ApiDeleteCampaign({
     ids,
     is_del: 2
   })
@@ -592,7 +592,7 @@ const init = async () => {
   delete ajaxData.value
   // ajaxData = handleAjaxEmptyKeyFn(ajaxData, ['status', 'adv_type'])
   ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
-  const res = await ApiGetAdSeriesList(ajaxData)
+  const res = await ApiGetCampaignList(ajaxData)
   if (res) {
     const { data: result } = res
     state.list = result?.data
