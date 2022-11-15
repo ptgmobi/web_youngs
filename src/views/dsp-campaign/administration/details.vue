@@ -73,6 +73,7 @@
             :on-remove="handleRemove"
             :on-success="handleSuccessForUrl"
             :before-upload="beforeUploadImage"
+            :on-exceed="handleExceed"
             :http-request="uploadHttpRequest"
           >
             <!-- <img v-if="state.ruleForm.url" :src="state.ruleForm.url" :preview-src-list="[state.ruleForm.url]" class="avatar" />
@@ -93,16 +94,42 @@
             action=""
             accept=""
             :limit="1"
-            :show-file-list="false"
+            list-type="picture-card"
             v-model:file-list="fileListVideoUrl"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
             :on-success="handleSuccessForVideo"
             :before-upload="beforeUploadVideo"
+            :on-exceed="handleExceed"
             :http-request="uploadHttpRequest"
           >
-            <video v-if="state.ruleForm.video_url" :src="state.ruleForm.video_url" alt="Video" controls></video>
-            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+            <template #file="{ file }">
+              <div>
+                <div v-if="fileListVideoUrl.length !== 0">
+                  <video
+                    :src="state.ruleForm.video_url"
+                    class="avatar video-avatar"
+                  >
+                    您的浏览器不支持视频播放
+                  </video>
+                  <div class="upload-video-control-box el-upload-list__item-actions flex">
+                    <span
+                      class="el-upload-list__item-preview cp"
+                      @click="handlePictureCardPreview(file)"
+                    >
+                      <el-icon><zoom-in /></el-icon>
+                    </span>
+                    <span
+                      class="el-upload-list__item-preview cp"
+                      @click="handleRemoveVideo"
+                    >
+                      <el-icon><Delete /></el-icon>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </template>
+            <el-icon><Plus /></el-icon>
           </el-upload>
         </el-form-item>
         <!-- 上传封面 -->
@@ -123,10 +150,10 @@
             :on-remove="handleRemove"
             :on-success="handleSuccessForCoverUrl"
             :before-upload="beforeUploadCoverImage"
+            :on-exceed="handleExceed"
             :http-request="uploadHttpRequest"
           >
-            <!-- <img v-if="state.ruleForm.cover_url" :src="state.ruleForm.cover_url" :preview-src-list="[state.ruleForm.cover_url]" class="avatar" />
-            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon> -->
+            <!-- <img v-if="fileListCoverUrl.length !== 0" :src="state.ruleForm.cover_url" :preview-src-list="[state.ruleForm.cover_url]" class="avatar" /> -->
             <el-icon><Plus /></el-icon>
           </el-upload>
         </el-form-item>
@@ -148,6 +175,7 @@
             :on-remove="handleRemove"
             :on-success="handleSuccessForLogoUrl"
             :before-upload="beforeUploadLogo"
+            :on-exceed="handleExceed"
             :http-request="uploadHttpRequest"
           >
             <!-- <img v-if="state.ruleForm.url" :src="state.ruleForm.url" :preview-src-list="[state.ruleForm.url]" class="avatar" />
@@ -215,6 +243,7 @@
         <br>
         {{state.ruleForm.raw_file_video}}
         <br>
+        {{fileListVideoUrl}}
         {{fileListUrl}}
         <br>
         {{fileListVideoUrl}}
@@ -269,10 +298,10 @@ import {
 import { selfJudgeStringLength, selfValidatorIsInteger } from '@/utils/validate.ts'
 import validator from 'validator';
 import _, { isArguments } from 'lodash'
-import type { UploadProps, UploadUserFile, genFileId } from 'element-plus'
+import type { UploadProps, UploadUserFile, genFileId, UploadFile } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import uploadFn from '@/utils/upload'
-import campaign from '@/router/dspmodules/campaign'
+import { ElMessage } from 'element-plus'
 const { validate: validateUpload, uploadHttpRequest } = uploadFn
 
 const {
@@ -380,8 +409,8 @@ const defaultRuleForm: ruleFormType = {
   brand: '',
   cover_url: '',
   video_url: '',
-  raw_file_image: {},
-  raw_file_video: {}
+  raw_file_image: void 0,
+  raw_file_video: void 0
 
 }
 
@@ -500,46 +529,29 @@ const setDataFn = async (id, campaign_type) => {
   if (state.ruleForm.type === 1) {
     if (state.ruleForm.url) {
       fileListUrl.value.push({
-        name: '',
+        name: state.ruleForm.url,
         url: state.ruleForm.url
       })
-      const options = {
-        type_reg: image_type_reg,
-        limit: image_limit,
-        size: image_size
-      }
-      let result: any = await validateUpload('url', state.ruleForm.url, 'image', options)
-      console.log(result)
-      state.ruleForm.raw_file_image = result.data
     }
   }
   if (state.ruleForm.type === 2) {
     if (state.ruleForm.url) {
       fileListVideoUrl.value.push({
-        name: '',
+        name: state.ruleForm.url,
         url: state.ruleForm.url
       })
       state.ruleForm.video_url = state.ruleForm.url
-      const options = {
-        type_reg: video_type_reg,
-        limit: video_limit,
-        size: video_size,
-        duration: video_duration
-      }
-      let result: any = await validateUpload('url', state.ruleForm.video_url, 'video', options)
-      console.log(result)
-      state.ruleForm.raw_file_video = result.data
     }
     
     if (state.ruleForm.logo_url) {
       fileListLogoUrl.value.push({
-        name: '',
+        name: state.ruleForm.logo_url,
         url: state.ruleForm.logo_url
       })
     }
     if (state.ruleForm.cover_url) {
       fileListCoverUrl.value.push({
-        name: '',
+        name: state.ruleForm.cover_url,
         url: state.ruleForm.cover_url
       })
     }
@@ -547,22 +559,14 @@ const setDataFn = async (id, campaign_type) => {
   if (state.ruleForm.type === 3) {
     if (state.ruleForm.url) {
       fileListUrl.value.push({
-        name: '',
+        name: state.ruleForm.url,
         url: state.ruleForm.url
       })
-      const options = {
-        type_reg: image_type_reg,
-        limit: image_limit,
-        size: image_size
-      }
-      let result: any = await validateUpload('url', state.ruleForm.url, 'image', options)
-      console.log(result)
-      state.ruleForm.raw_file_image = result.data
     }
     
     if (state.ruleForm.logo_url) {
       fileListLogoUrl.value.push({
-        name: '',
+        name: state.ruleForm.logo_url,
         url: state.ruleForm.logo_url
       })
     }
@@ -573,20 +577,23 @@ const setRawFileToAjaxDataFn = (ajaxData) => {
   let type = ajaxData.type
   if (type === 1 || type === 3) {
     let data = ajaxData.raw_file_image
-    console.log(data)
-    ajaxData.size = `${data.w}*${data.h}`
-    ajaxData.memory_size = `${(data.limit / (1024 * 1024)).toFixed(2)}MB`
-    ajaxData.format = data.type
-    delete ajaxData.duration
+    if (data) {
+      ajaxData.size = `${data.w}*${data.h}`
+      ajaxData.memory_size = `${(data.limit / (1024 * 1024)).toFixed(2)}MB`
+      ajaxData.format = data.type
+      delete ajaxData.duration
+    }
+    
   }
   if (type === 2) {
     let data = ajaxData.raw_file_video
-    console.log(data)
-    ajaxData.size = `${data.w}*${data.h}`
-    ajaxData.memory_size = `${(data.limit / (1024 * 1024)).toFixed(2)}MB`
-    ajaxData.format = data.type
-    ajaxData.duration = data.duration
-    ajaxData.url = ajaxData.video_url
+    if (data) {
+      ajaxData.size = `${data.w}*${data.h}`
+      ajaxData.memory_size = `${(data.limit / (1024 * 1024)).toFixed(2)}MB`
+      ajaxData.format = data.type
+      ajaxData.duration = data.duration
+      ajaxData.url = ajaxData.video_url
+    }
   }
   // delete ajaxData.raw_file_image
   // delete ajaxData.raw_file_video
@@ -638,6 +645,11 @@ const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
   // console.log(uploadFile, uploadFiles)
 }
 
+const handleRemoveVideo: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
+  // console.log(uploadFile, uploadFiles)
+  fileListVideoUrl.value.splice(0)
+}
+
 const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
   dialogImageUrl.value = uploadFile.url!
   let imgType = ''
@@ -658,11 +670,12 @@ const handleSuccessForLogoUrl: UploadProps['onSuccess'] = (
   uploadFile
 ) => {
   // state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
-  state.ruleForm.logo_url = response?.data
+  let url = response?.data
+  state.ruleForm.logo_url = url
   fileListLogoUrl.value.splice(0)
   fileListLogoUrl.value.push({
-    name: '',
-    url: response?.data
+    name: url,
+    url: url
   })
 }
 
@@ -671,11 +684,12 @@ const handleSuccessForUrl: UploadProps['onSuccess'] = (
   uploadFile
 ) => {
   // state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
-  state.ruleForm.url = response?.data
+  let url = response?.data
+  state.ruleForm.url = url
   fileListUrl.value.splice(0)
   fileListUrl.value.push({
-    name: '',
-    url: response?.data
+    name: url,
+    url: url
   })
 }
 
@@ -684,11 +698,12 @@ const handleSuccessForCoverUrl: UploadProps['onSuccess'] = (
   uploadFile
 ) => {
   // state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
-  state.ruleForm.cover_url = response?.data
+  let url = response?.data
+  state.ruleForm.cover_url = url
   fileListCoverUrl.value.splice(0)
   fileListCoverUrl.value.push({
-    name: '',
-    url: response?.data
+    name: url,
+    url: url
   })
 }
 
@@ -697,11 +712,12 @@ const handleSuccessForVideo: UploadProps['onSuccess'] = (
   uploadFile
 ) => {
   // state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
-  state.ruleForm.video_url = response?.data
+  let url = response?.data
+  state.ruleForm.video_url = url
   fileListVideoUrl.value.splice(0)
   fileListVideoUrl.value.push({
-    name: '',
-    url: response?.data
+    name: url,
+    url: url
   })
 }
 
@@ -724,13 +740,17 @@ const handleSuccessForVideo: UploadProps['onSuccess'] = (
 //   cover_image_size,
 // } = uploadSetting
 
+const handleDownload = (file: UploadFile) => {
+  console.log(file)
+}
+
 const beforeUploadLogo = async (rawFile) => {
   const options = {
     type_reg: logo_type_reg,
     limit: logo_limit,
     size: logo_size
   }
-  let result = validateUpload('file', rawFile, 'image', options)
+  let result = validateUpload(rawFile, 'image', options)
   return result
 }
 
@@ -740,7 +760,7 @@ const beforeUploadImage = async(rawFile) => {
     limit: image_limit,
     size: image_size
   }
-  let result: any = await validateUpload('file', rawFile, 'image', options)
+  let result: any = await validateUpload(rawFile, 'image', options)
   console.log(result)
   state.ruleForm.raw_file_image = result.data
   return result
@@ -752,20 +772,29 @@ const beforeUploadCoverImage = async (rawFile) => {
     limit: cover_image_limit,
     size: cover_image_size
   }
-  return validateUpload('file', rawFile, 'image', options)
+  return validateUpload(rawFile, 'image', options)
 }
 
 const beforeUploadVideo = async (rawFile) => {
+  console.log(rawFile)
   const options = {
     type_reg: video_type_reg,
     limit: video_limit,
     size: video_size,
     duration: video_duration
   }
-  let result: any =  await validateUpload('file', rawFile, 'video', options)
+  let result: any =  await validateUpload(rawFile, 'video', options)
   console.log(result)
   state.ruleForm.raw_file_video = result.data
   return result
+}
+
+const handleExceed = (files, uploadFile) => {
+  console.log(files, uploadFile)
+  ElMessage({
+    message: '只能上传一个，请删除后重试',
+    type: 'warning',
+  })
 }
 
 const init = () => {
@@ -795,9 +824,9 @@ onMounted(() => {
   height: 148px;
   display: block;
 }
-</style>
-
-<style>
+.upload-video-control-box{
+  width: 148px;
+}
 .avatar-uploader .el-upload {
   border: 1px dashed var(--el-border-color);
   border-radius: 6px;
@@ -812,7 +841,7 @@ onMounted(() => {
   border-color: var(--el-color-primary);
 }
 
-.el-icon.avatar-uploader-icon {
+.el-icon .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
   width: 148px;

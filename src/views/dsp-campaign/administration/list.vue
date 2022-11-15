@@ -140,11 +140,20 @@
         <template #default="scope">
           <div class="pr">
             <el-image
+              v-if="scope.row.type !== 2"
               :z-index="9999"
-              v-if="scope.row.logo_url"
               style="width: 100px; height: 100px"
-              :src="scope.row.logo_url"
-              :preview-src-list="[scope.row.logo_url]"
+              :src="scope.row.url"
+              :preview-src-list="[scope.row.url]"
+              :initial-index="4"
+              fit="cover"
+            />
+            <el-image
+              v-if="scope.row.type === 2"
+              :z-index="9999"
+              style="width: 100px; height: 100px"
+              :src="scope.row.cover_url"
+              :preview-src-list="[scope.row.cover_url]"
               :initial-index="4"
               fit="cover"
             />
@@ -571,7 +580,7 @@ const deleteFun = (scope: any) => {
 
 const deleteFn = async(scope: any) => {
   openAlert({
-    text: `确认归档${scope.row.adv_series_name}？`,
+    text: `确认归档${scope.row.name}？`,
     title: '归档操作',
     buttonText: '确认'
   }, deleteFun(scope))

@@ -2,7 +2,7 @@ import type { UploadProps, UploadUserFile, genFileId } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ApiUploadImg } from '@/api/dsp-advertiser'
 
-const validate = async (controlType, rawFile, type, options) => {
+const validate = async (rawFile, type, options) => {
   const {
     type_reg,
     size,
@@ -19,13 +19,7 @@ const validate = async (controlType, rawFile, type, options) => {
     }
     const judgeSize = new Promise(function (resolve, reject) {
       let URL = window.URL || window.webkitURL
-      let url = ''
-      if (controlType === 'file') {
-        url = URL.createObjectURL(rawFile)
-      }
-      if (controlType === 'url') {
-        url = rawFile
-      }
+      let url = URL.createObjectURL(rawFile)
       let imageData: any = {}
       let image = new Image()
       image.onload = function () {
@@ -73,13 +67,7 @@ const validate = async (controlType, rawFile, type, options) => {
       duration: ''
     }
     const judgeSize = new Promise(function (resolve, reject) {
-      let url = ''
-      if (controlType === 'file') {
-        url = URL.createObjectURL(rawFile)
-      }
-      if (controlType === 'url') {
-        url = rawFile
-      }
+      let url = URL.createObjectURL(rawFile)
       let videoObj = document.createElement('video')
       videoObj.onloadedmetadata = function (evt) {
         URL.revokeObjectURL(url)
