@@ -540,7 +540,7 @@ import { ElMessage } from 'element-plus'
 // import { useRouter } from 'vue-router'
 import Device from './device.vue'
 import cutOff from '../components/cutOff.vue'
-import { getToday, getAddNumYear } from '@/utils/format.js'
+import { getTodayUTC, getAddNumYearUTC } from '@/utils/format.js'
 import moment from 'moment'
 
 let { proxy }: any = getCurrentInstance()
@@ -727,8 +727,8 @@ let bus: any = reactive({
   cacheDevice: {}
 })
 
-let line_arr_0 = getToday()
-let line_arr_1 = getAddNumYear(1)
+let line_arr_0 = getTodayUTC()
+let line_arr_1 = getAddNumYearUTC(1)
 
 let pageType = ref('')
 let name: any = ref('')

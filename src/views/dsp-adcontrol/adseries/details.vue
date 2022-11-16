@@ -47,10 +47,10 @@
         <el-form-item
           class="self-el-form-item"
           label="描述:"
-          prop="desc"
+          prop="descs"
         >
           <el-input
-            v-model.trim="state.ruleForm.desc"
+            v-model.trim="state.ruleForm.descs"
             class="form-one"
             placeholder=""
             type="textarea"
@@ -163,7 +163,7 @@ type ruleFormType =  {
   id: number | undefined
   adv_id: string
   adv_series_name: string
-  desc: string
+  descs: string
   // 1：再营销；2：拉新
   marbet_target: number
   // 1：动态商品促销；2：固定链接推广
@@ -179,7 +179,7 @@ const defaultRuleForm: ruleFormType = {
   id: void 0,
   adv_id: '',
   adv_series_name: '',
-  desc: '',
+  descs: '',
   // 营销目标
   marbet_target: 1,
   // 广告类型
@@ -233,7 +233,7 @@ const state = reactive({
     adv_id: [
       {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
-    desc: [
+    descs: [
       {validator: validatorStrLenValue, max: 200, trigger: ['blur', 'change']}
     ],
     adv_series_type: [

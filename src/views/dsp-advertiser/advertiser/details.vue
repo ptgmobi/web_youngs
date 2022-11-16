@@ -36,10 +36,10 @@
         <el-form-item
           class="self-el-form-item"
           label="描述:"
-          prop="desc"
+          prop="descs"
         >
           <el-input
-            v-model.trim="state.ruleForm.desc"
+            v-model.trim="state.ruleForm.descs"
             class="form-one"
             placeholder=""
             type="textarea"
@@ -315,7 +315,7 @@ type ruleFormType =  {
   id: number | undefined
   adv_id: string
   name: string
-  desc: string
+  descs: string
   adv_type: string
   adv_address: string
   ind_cla: string
@@ -337,7 +337,7 @@ const defaultRuleForm: ruleFormType = {
   id: void 0,
   adv_id: '',
   name: '',
-  desc: '',
+  descs: '',
   adv_type: '',
   adv_address: '',
   ind_cla: '',
@@ -393,7 +393,7 @@ const state = reactive({
       {required: true, message: message.required, trigger: ['blur', 'change']},
       {validator: validatorStrLenValue, max: 100, trigger: ['blur', 'change']}
     ],
-    desc: [
+    descs: [
       {validator: validatorStrLenValue, max: 200, trigger: ['blur', 'change']}
     ],
     adv_type: [

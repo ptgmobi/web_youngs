@@ -1,43 +1,45 @@
 <template>
   <div>
     <div class="controlBox w100 mb-10">
-      <search/>
       <el-form
         v-model="state.searchForm"
         :inline="true"
         class="flex jc-between w100 ai-end"
       >
         <div class="flex jc-start flex-wrap w100">
+          <!-- 全部受众包类型 -->
           <el-form-item label="">
             <el-select
-              v-model="state.searchForm.status"
+              v-model="state.searchForm.type"
               filterable
               clearable
-              placeholder="全部状态"
+              placeholder="全部受众包类型"
             >
               <el-option
-                v-for="item in state.options.status"
+                v-for="item in state.options.audience_manage_type"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
               ></el-option>
             </el-select>
           </el-form-item>
+          <!-- 全部生成状态 -->
           <el-form-item label="">
             <el-select
-              v-model="state.searchForm.adv_series_id"
+              v-model="state.searchForm.build_status"
               filterable
               clearable
-              placeholder="广告系列"
+              placeholder="全部生成状态"
             >
               <el-option
-                v-for="item in state.options.adv_series_id"
+                v-for="item in state.options.build_status"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
               ></el-option>
             </el-select>
           </el-form-item>
+          <!-- 输入 -->
           <el-form-item label="">
             <el-input
               v-model="state.searchForm.value"
@@ -83,77 +85,38 @@
           </el-form-item>
         </div>
       </el-form>
+      <!-- <el-input placeholder="请输入内容" v-model="state.searchForm.data" class='search-input'>
+        <el-button slot="append" icon="Search" @click='searchFun'></el-button>
+      </el-input> -->
       <div class="mb-10 w100">
-        <el-button type="primary" @click="createFn">新建广告组</el-button>
-        <el-select
-          class="ml-10"
-          v-model="batch.data.mode"
-          filterable
-          placeholder="批量操作"
-          @change="batchFn"
-        >
-          <el-option
-            v-for="item in batch.options.mode"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
+        <el-button type="primary" @click="createFn">创建受众包</el-button>
       </div>
     </div>
     <!-- table -->
     <el-table
+      ref="multipleTableRef"
       v-loading="state.loading"
       center
       :data="state.list"
       class="w100"
       border
+      @selection-change="handleSelectionChange"
     >
-      <el-table-column sortable
-        prop="id"
-        label="广告组ID"
-        align="center"
-      ></el-table-column>
+      <!-- 受众包ID -->
       <el-table-column sortable
         width="120"
-        prop="adv_series_name"
-        label="广告组名称"
+        prop="id"
+        label="受众包ID"
         align="center"
       ></el-table-column>
+      <!-- 受众包名称 -->
       <el-table-column sortable
-        prop="status"
-        label="开关"
+        width="120"
+        prop="name"
+        label="受众包名称"
         align="center"
-      >
-        <template #default="scope">
-          <el-switch
-            v-model="scope.row.status"
-            :active-value="1"
-            :inactive-value="2"
-            @click="changeStatus(scope)"
-          />
-          <!-- <span>{{getOptionsValue(scope.row.status, state.options.status)}}</span> -->
-        </template>
-      </el-table-column>
-      <el-table-column sortable
-        prop="status"
-        label="状态"
-        align="center"
-      >
-        <template #default="scope">
-          <span>{{getOptionsValue(scope.row.status, state.options.status)}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column sortable
-        prop="ad"
-        label="广告"
-        align="center"
-      >
-        <template #default="scope">
-          <!-- <span>{{scope.row.ad}}</span> -->
-          <span class="color_primary cp" @click="goAdList(scope)">{{scope.row.ad ? scope.row.ad.length : NaN}}</span>
-        </template>
-      </el-table-column>
+      ></el-table-column>
+      <!-- 操作 -->
       <el-table-column
         width="200"
         label="操作"
@@ -166,10 +129,6 @@
               type="primary"
               @click="editFn(scope)"
             >编辑</el-button>
-            <el-button
-              class="cp"
-              type="primary"
-            >复制</el-button>
             <!-- <el-button
               v-if="scope.row.is_del === 2"
               class="cp"
@@ -185,49 +144,87 @@
           </div>
         </template>
       </el-table-column>
+      <!-- 开关 -->
+      <!-- <el-table-column sortable
+        prop="status"
+        label="开关"
+        align="center"
+      >
+        <template #default="scope">
+          <el-switch
+            v-model="scope.row.status"
+            :active-value="1"
+            :inactive-value="2"
+            @click="changeStatus(scope)"
+          />
+        </template>
+      </el-table-column> -->
+      <!-- 国家 -->
       <el-table-column sortable
-        width="120"
+        width="240"
         prop="country"
-        label="国家"
+        label="受众包所在国家/地区"
         align="center"
       >
         <template #default="scope">
-          <span>{{scope.row.country}}</span>
+          <!-- <span>{{getOptionsValue(scope.row.type, state.options.country)}}</span> -->
+          <p>{{scope.row.country}}</p>
         </template>
       </el-table-column>
+      <!-- 生成状态 -->
       <el-table-column sortable
         width="120"
-        prop="promotion_cycle"
-        label="推广周期"
+        prop="build_status"
+        label="生成状态"
         align="center"
       >
         <template #default="scope">
-          <span>{{getOptionsValue(scope.row.promotion_cycle, state.options.promotion_cycle)}}</span>
+          <span>{{getOptionsValue(scope.row.build_status, state.options.build_status)}}</span>
         </template>
       </el-table-column>
-      
+      <!-- 覆盖人数 -->
+      <el-table-column sortable
+        width="120"
+        prop="num_people"
+        label="覆盖人数"
+        align="center"
+      >
+      </el-table-column>
+      <!-- 描述 -->
+      <el-table-column sortable
+        width="120"
+        prop="descs"
+        label="描述"
+        align="center"
+      >
+      </el-table-column>
+      <!-- 关联广告组 -->
+      <el-table-column sortable
+        width="120"
+        prop="ad_group"
+        label="关联广告组"
+        align="center"
+      >
+      </el-table-column>
+      <!-- 创建人 -->
       <el-table-column sortable
         width="120"
         prop="user"
         label="创建人"
         align="center"
       ></el-table-column>
+      <!-- 创建时间 -->
       <el-table-column sortable
         width="160"
         prop="create_date"
         label="创建时间"
         align="center"
       ></el-table-column>
+      <!-- 更新时间 -->
       <el-table-column sortable
         width="160"
         prop="update_date"
         label="更新时间"
-        align="center"
-      ></el-table-column>
-      <el-table-column sortable
-        width="160"
-        prop="imp_number"
-        label="展示数"
         align="center"
       ></el-table-column>
     </el-table>
@@ -259,33 +256,43 @@
 </template>
 <script lang="ts" setup name="adserieslist">
 import optionsSetting from '@/self-options-setting'
+import mysetting from '../setting'
 import Pagination from '@/components/Pagination/index.vue' // secondary package based on el-pagination
 import { messageFun } from '@/utils/message'
 import _ from 'lodash'
 import { handleAjaxDataObjectFn, handleAjaxEmptyKeyFn, handleAjaxDataDelNoKeyFn, getOptionsValue } from '@/utils/new-format'
 import useUtils from '@/hooks/self/useUtils'
 import { clipboardFn } from '@/utils/clipboard'
-import { ApiGetAdGroupList, ApiChangeAdGroupStatus, ApiDeleteAdGroup } from '@/api/dsp-adcontrol'
-import search from '../components/search.vue'
+import { ApiGetAudienceManageList, ApiChangeAudienceManageStatus, ApiDeleteAudienceManage } from '@/api/dsp-audience-manage'
+import { ElTable } from 'element-plus'
+
+const multipleTableRef = ref<InstanceType<typeof ElTable>>()
+
 const handleSelectionArr = ref([{id: ''}])
+
 const {
-  status, 
-  adv_type, 
-  ind_cla,
-  third_party,
-  return_mode, 
+  status,
 } = optionsSetting
 
-const { goNewUrl, getRouterData, getCommonCountryList, openAlert } = useUtils()
-const searchData: any = reactive({
-  adv_series_id: '',
+const {
+  adv_type,
+  audience_manage_type,
+  build_status,
+  audit_status
+} = mysetting
+
+const { goNewUrl, openAlert } = useUtils()
+
+const searchData = shallowRef({
   status: '',
-  adv_series_type: '',
-  marbet_target: '',
+  type: '',
+  build_status: '',
   is_del: '1',
-  value_type: 'adv_group_name',
+  value_type: 'name',
   value: ''
 })
+
+const topSearchData = ref({})
 
 const dialogVisibleReportApi = ref(false)
 
@@ -298,34 +305,23 @@ let state = reactive({
   cache: {
     item: {}
   },
-  searchForm: searchData,
-  useData: searchData,
+  searchForm: searchData.value,
+  useData: searchData.value,
   loading: true,
   options: {
-    adv_series_id: [],
-    status,
-    // 广告类型
-    adv_series_type: [
-      {value: 1, label: '动态商品促销'},
-      {value: 2, label: '固定链接推广'},
-    ],
-    // 营销目标
-    marbet_target: [
-      {value: 1, label: '再营销'},
-      {value: 2, label: '拉新'},
-    ],
+    adv_type,
+    audience_manage_type,
+    build_status,
+    country: [],
     value_type: [
-      {value: 'adv_group_name', label: '广告组名称'},
-      {value: 'id', label: '广告组ID'},
+      {value: 'id', label: '受众包ID'},
+      {value: 'name', label: '受众包名称'},
       {value: 'descs', label: '描述'},
-    ],
-    // 推广周期
-    promotion_cycle: [
-      {value: 1, label: '从现在开始长期有效'},
-      {value: 2, label: '限定周期'}
     ]
   },
-  list: [{ id: 1 }],
+  list: [
+    { id: 1 }
+  ],
   pagination: {
     pageSizes: [20, 50, 100, 500, 1000],
     total: 1,
@@ -362,6 +358,37 @@ let batch = reactive({
   }
 })
 
+// 批量操作
+const handleSelectionChange = ((val: any) => {
+  handleSelectionArr.value = val
+})
+
+const batchFn = async () => {
+  let ids = handleSelectionArr.value.map(ele => {
+    return ele.id
+  })
+  console.log(ids)
+  // 当前操作方式
+  let batchMode = batch.data.mode
+  // 批量开启
+  if (batchMode.toString() === '1') {
+    
+  }
+  // 批量暂停
+  if (batchMode.toString() === '2') {
+    
+  }
+  // 批量归档
+  if (batchMode.toString() === '0') {
+    console.log('批量归档')
+    const res = await deleteFunction(ids)
+    if (messageFun(res)) {
+      init()
+    }
+  }
+}
+
+
 const copyFn = (text) => {
   clipboardFn(text)
 }
@@ -376,7 +403,7 @@ const changeStatus = async ({row}) => {
     id: row.id,
     status: row.status
   }
-  let res = await ApiChangeAdGroupStatus(ajaxData)
+  let res = await ApiChangeAudienceManageStatus(ajaxData)
   messageFun(res)
 }
 
@@ -421,21 +448,11 @@ const createFilter = (queryString: string) => {
   }
 }
 
-const goAdList = ({row}: any) => {
-  goNewUrl({
-    url: `/adcontrol/ad/list`,
-    query: {
-      adseries: row.id,
-      type: 'list'
-    }
-  })
-}
-
 const createFn = () => {
   // detailsType.value = 'create'
   // dialogVisibleEdit.value = true
   goNewUrl({
-    url: '/adcontrol/adgroup/create',
+    url: '/audienceManage/create',
     query: {
       type: 'create'
     }
@@ -452,19 +469,26 @@ const editFn = ({row}: any) => {
   // state.cache = row
   const { id } = row
   goNewUrl({
-    url: `/adcontrol/adgroup/edit/${id}`,
+    url: `/audienceManage/edit/${id}`,
     query: {
-      type: 'edit'
+      type: 'edit',
+      campaign_type: row.type
     }
   })
+}
+
+const deleteFunction = async (ids) => {
+  const res = await ApiDeleteAudienceManage({
+    ids,
+    is_del: 2
+  })
+  return res
 }
 
 const deleteFun = (scope: any) => {
   return async () => {
     const {row, $index: index} = scope
-    const res = await ApiDeleteAdGroup({
-      id: row.id
-    })
+    const res = await deleteFunction([row.id])
     if (messageFun(res)) {
       state.list.splice(index, 1)
     }
@@ -479,47 +503,29 @@ const deleteFn = async(scope: any) => {
   }, deleteFun(scope))
 }
 
-const batchFn = async () => {
-  let ids = handleSelectionArr.value.map(ele => {
-    return ele.id
-  })
-  console.log(ids)
-  // 当前操作方式
-  let batchMode = batch.data.mode
-  // 批量开启
-  if (batchMode.toString() === '1') {
-    
-  }
-  // 批量暂停
-  if (batchMode.toString() === '2') {
-    
-  }
-  // 批量归档
-  if (batchMode.toString() === '0') {
-    console.log('批量归档')
-    // const res = await deleteFunction(ids)
-    // if (messageFun(res)) {
-    //   init()
-    // }
+const changeTopSearch = (data) => {
+  console.log(data)
+  topSearchData.value = {
+    adv_id: data.adv,
+    st: data.date[0],
+    et: data.date[1]
   }
 }
 
 const init = async () => {
   state.loading = true
-  let { query, params } = getRouterData()
-  let { adseries } = query
-  searchData.adv_series_id = adseries
   let ajaxData: any = {
     page: state.pagination.listQuery.page,
     limit: state.pagination.listQuery.limit,
-    ...searchData
+    ...searchData.value,
+    ...topSearchData.value
   }
   ajaxData[ajaxData.value_type] = ajaxData.value
   delete ajaxData.value_type
   delete ajaxData.value
   // ajaxData = handleAjaxEmptyKeyFn(ajaxData, ['status', 'adv_type'])
   ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
-  const res = await ApiGetAdGroupList(ajaxData)
+  const res = await ApiGetAudienceManageList(ajaxData)
   if (res) {
     const { data: result } = res
     state.list = result?.data

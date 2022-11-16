@@ -354,7 +354,7 @@ let state = reactive({
     value_type: [
       {value: 'adv_series_name', label: '广告系列名称'},
       {value: 'ads_id', label: '广告系列ID'},
-      {value: 'desc', label: '描述'},
+      {value: 'descs', label: '描述'},
     ]
   },
   list: [

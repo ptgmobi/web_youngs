@@ -51,7 +51,8 @@ if (pageTitle === 'Dsp') {
     ...audienceManage,
     ...campaign,
     ...tool,
-    ...administer
+    ...administer,
+    ...password,
   ]
   indexModule = import('@/views/dsp-index/index')
 }

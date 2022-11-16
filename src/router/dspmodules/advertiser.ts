@@ -6,7 +6,7 @@ export default [
     component: Layout,
     name: 'advertiser',
     meta: {
-      title: 'Advertiser',
+      title: '广告主管理',
       elSvgIcon: 'Setting',
       code: 100000
     },
@@ -17,7 +17,7 @@ export default [
         component: () => import('@/views/dsp-advertiser/advertiser/list'),
         default: true,
         meta: {
-          title: 'Advertiser',
+          title: '广告主管理',
           elSvgIcon: 'Edit',
           code: 100001,
           cachePage: true,

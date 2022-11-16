@@ -235,8 +235,9 @@ export function handleOneDataArrayFn(obj, arr) {
 
 // 获取options中对应的值
 export function getOptionsValue (key, arr) {
-  return arr.find(ele => {
+  let label = arr.find(ele => {
     return ele.value === key
   })?.label
+  return label ? label : '-'
 }
 

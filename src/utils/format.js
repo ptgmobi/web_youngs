@@ -245,6 +245,16 @@ export function getAddNumYear(num) {
   return moment().add(num, 'year').format('YYYY-MM-DD HH:mm:ss')
 }
 
+// 获取今日时间
+export function getTodayUTC() {
+  return moment().utc().format('YYYY-MM-DD HH:mm:ss')
+}
+
+// 获取某年时间
+export function getAddNumYearUTC(num) {
+  return moment().utc().add(num, 'year').format('YYYY-MM-DD HH:mm:ss')
+}
+
 
 // 获取昨日时间
 export function getYestenday() {

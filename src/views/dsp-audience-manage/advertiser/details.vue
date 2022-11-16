@@ -13,37 +13,40 @@
     >
       <split-button title="基础信息"></split-button>
       <div class="content-con from-one flex column">
+        <!-- 受众包名称 -->
         <el-form-item
           class="self-el-form-item"
-          label="广告主系列名称:"
-          prop="adv_series_name"
+          label="受众包名称:"
+          prop="name"
         >
           <el-input
-            v-model.trim="state.ruleForm.adv_series_name"
+            v-model.trim="state.ruleForm.name"
             class="form-one"
             placeholder=""
           >
           </el-input>
         </el-form-item>
+        <!-- 所属广告主 -->
         <el-form-item
           class="self-el-form-item"
           label="广告主名称:"
           prop="adv_name"
         >
           <el-select
-            v-model="state.ruleForm.adv_name"
+            v-model="state.ruleForm.adv_id"
             filterable
             placeholder="请选择"
             class="form-one"
           >
             <el-option
-              v-for="item in state.options.adv_name"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="item in state.options.advertiser"
+              :key="item.adv_id"
+              :label="item.name"
+              :value="item.adv_id"
             ></el-option>
           </el-select>
         </el-form-item>
+        <!-- 描述 -->
         <el-form-item
           class="self-el-form-item"
           label="描述:"
@@ -58,52 +61,63 @@
           </el-input>
         </el-form-item>
       </div>
-      <split-button title="目标与预算"></split-button>
+      <split-button title="数据源"></split-button>
       <div class="content-con from-one flex column">
+        <!-- 广告主类型 -->
         <el-form-item
           class="self-el-form-item"
-          label="营销目标:"
-          prop="marbet_target"
-        >
-          <el-radio-group class="form-one" v-model="state.ruleForm.marbet_target">
-            <template v-for="item in state.options.marbet_target">
-              <el-radio :label="item.value">{{item.label}}</el-radio>
-            </template>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item
-          class="self-el-form-item"
-          label="广告类型:"
-          prop="adv_series_type"
+          label="广告主名称:"
+          prop="adv_type"
         >
           <el-select
-            v-model="state.ruleForm.adv_series_type"
+            v-model="state.ruleForm.adv_type"
             filterable
             placeholder="请选择"
             class="form-one"
           >
             <el-option
-              v-for="item in state.options.adv_series_type"
+              v-for="item in state.options.adv_type"
               :key="item.value"
               :label="item.label"
               :value="item.value"
             ></el-option>
           </el-select>
         </el-form-item>
+        <!-- 国家 -->
+        <el-form-item
+          label="受众所在国家/地区"
+          prop="country"
+          class="self-el-form-item"
+        >
+          <el-select
+            v-model="state.ruleForm.country"
+            filterable
+            clearable
+            placeholder=""
+            multiple
+            class="form-one"
+          >
+            <el-option
+              v-for="item in state.options.country"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <!-- 受众包类型 -->
         <el-form-item
           class="self-el-form-item"
-          label="广告日预算（美元）:"
-          prop="adv_series_budget"
+          label="受众包类型:"
+          prop="type"
         >
-          <el-input
-            v-model.trim="state.ruleForm.adv_series_budget"
-            class="form-one"
-            placeholder=""
-          >
-          </el-input>
+          <el-radio-group class="form-one" v-model="state.ruleForm.type">
+            <template v-for="item in state.options.audience_manage_type">
+              <el-radio :label="item.value">{{item.label}}</el-radio>
+            </template>
+          </el-radio-group>
         </el-form-item>
       </div>
-      
     </el-form>
     <!-- form -->
     <!-- footer -->
@@ -125,7 +139,10 @@
 </template>
 <script lang="ts" setup>
 import optionsSetting from '@/self-options-setting'
-import { ApiAdSeriesCreate, ApiGetAdSeriesOne, ApiAdSeriesEdit } from '@/api/dsp-adcontrol'
+import selfSetting from '../setting'
+import { ApiAudienceManageCreate, ApiGetAudienceManageOne, ApiAudienceManageEdit } from '@/api/dsp-audience-manage'
+import { ApiUploadImg } from '@/api/dsp-advertiser'
+import { ApiGetAdvertiserList } from '@/api/dsp-advertiser'
 import { messageFun } from '@/utils/message'
 import splitButton from '@/components/Self/SplitButton'
 import useUtils from '@/hooks/self/useUtils'
@@ -139,53 +156,70 @@ import {
 import { selfJudgeStringLength, selfValidatorIsInteger } from '@/utils/validate.ts'
 import validator from 'validator';
 import _, { isArguments } from 'lodash'
-import type { UploadProps, UploadUserFile } from 'element-plus'
+import type { UploadProps, UploadUserFile, genFileId, UploadFile } from 'element-plus'
+import { Plus } from '@element-plus/icons-vue'
+import uploadFn from '@/utils/upload'
+import { ElMessage } from 'element-plus'
+const { validate: validateUpload, uploadHttpRequest } = uploadFn
+
 const {
-  adv_type, 
-  ind_cla,
-  third_party,
-  return_mode,
-  time_zone
+  status,
 } = optionsSetting
+
+const {
+  adv_type,
+  audience_manage_type,
+} = selfSetting
 
 const { getRouterData, getCommonCountryList, goNewUrl } = useUtils()
 let { proxy }: any = getCurrentInstance()
-
+const dialogImageUrl = ref('')
+const dialogImageUrlType = ref('')
+const dialogVisible = ref(false)
 const message = {
   required: '此项必填'
 }
 
 let type: any = ref('create')
 
+let fileListUrl = ref<UploadUserFile[]>([])
+let fileListVideoUrl = ref<UploadUserFile[]>([])
+let fileListLogoUrl = ref<UploadUserFile[]>([])
+let fileListCoverUrl = ref<UploadUserFile[]>([])
+
 type ruleFormType =  {
   id: number | undefined
-  adv_name: string
-  adv_series_name: string
+  // 受众包名称
+  name: string
+  // 广告主id
+  adv_id: string
+  // 描述
   descs: string
-  // 1：再营销；2：拉新
-  marbet_target: number
-  // 1：动态商品促销；2：固定链接推广
-  adv_series_type: number
-  // 广告系列预算
-  adv_series_budget: number | undefined
-  // 1开2关
-  status: number
-  is_del: number
+  // 广告主类型：1：android,2:ios,3:web
+  adv_type: number | undefined
+  // 国家ID,多个用逗号隔开
+  country: Array<any>
+  // 受众包类型：1：rta预定义，2：离线人群包，3：系统自定义
+  type: number | undefined
+  // 生成状态：1：已生成，2：未生成
+  build_status: number | undefined
+  // 覆盖人数
+  num_people: number | undefined
+  // 是否归档:1:正常，2：归档
+  is_del: number | undefined
 }
 
 const defaultRuleForm: ruleFormType = {
   id: void 0,
-  adv_name: '',
-  adv_series_name: '',
+  name: '',
+  adv_id: '',
   descs: '',
-  // 营销目标
-  marbet_target: 1,
-  // 广告类型
-  adv_series_type: 1,
-  // 广告日预算
-  adv_series_budget: void 0,
-  status: 1,
-  is_del: 0
+  adv_type: void 0,
+  country: [],
+  type: 1,
+  build_status: void 0,
+  num_people: void 0,
+  is_del: void 0,
 }
 
 // selfJudgeStringLength
@@ -224,37 +258,23 @@ const validatorMaxQps = (rule: any, value: string, callback: (arg0: Error | unde
 const state = reactive({
   ruleForm: defaultRuleForm,
   rules: {
-    adv_series_name: [
-      {required: true, message: message.required, trigger: ['blur', 'change']},
-      {validator: validatorStrLenValue, max: 100, trigger: ['blur', 'change']}
+    name: [
+      {required: true, message: message.required, trigger: ['blur', 'change']}
     ],
-    adv_name: [
-      {required: true, message: message.required, trigger: ['blur', 'change']},
-    ],
-    descs: [
-      {validator: validatorStrLenValue, max: 200, trigger: ['blur', 'change']}
-    ],
-    adv_series_type: [
-      {required: true, message: message.required, trigger: ['blur', 'change']},
-    ],
-    adv_series_budget: [
-      {required: true, message: message.required, trigger: ['blur', 'change']},
-    ],
+    
   },
   options: {
+    country: [
+      {value: '', label: '', id: ''}
+    ],
+    advertiser: [
+      {
+        adv_id: '',
+        name: ''
+      }
+    ],
     adv_type,
-    // 广告类型
-    adv_series_type: [
-      {value: 1, label: '动态商品促销'},
-      {value: 2, label: '固定链接推广'},
-    ],
-    // 营销目标
-    marbet_target: [
-      {value: 1, label: '再营销'},
-      {value: 2, label: '拉新'},
-    ],
-    adv_name: []
-    
+    audience_manage_type
   }
 })
 
@@ -272,15 +292,15 @@ const saveFun = () => {
 }
 
 // 为数字的字段
-const numberKeyArr = ['id', 'adv_id', 'adv_series_type', 'adv_series_budget']
+const numberKeyArr = ['id', 'adv_type', 'type', 'build_status', 'num_people']
 
 // 数组转换为字符串
-const arrayKeyArr = []
+const arrayKeyArr = ['country']
 
-const setDataFn = async (id) => {
-  // 获取单个
-  const res = await ApiGetAdSeriesOne(id)
+const setDataFn = async (id, campaign_type) => {
+  const res = await ApiGetAudienceManageOne(id)
   const {data: result} = res
+  result.country = result.country ? result.country.split(',') : []
   state.ruleForm = {
     ...state.ruleForm,
     ...result
@@ -288,24 +308,25 @@ const setDataFn = async (id) => {
   console.log(state.ruleForm)
 }
 
+
 const submitFn = async () => {
   let baseData = toRaw(state.ruleForm)
   let ajaxData: any = baseData
   // 先删除为空的字段
   ajaxData = handleAjaxDataDelNo2KeyFn(ajaxData)
   ajaxData = handleAjaxNumberKeyFn(ajaxData, numberKeyArr)
-  // ajaxData = handleAjaxArrayKeyFn(ajaxData, arrayKeyArr)
-  console.log(ajaxData)
+  ajaxData = handleAjaxArrayKeyFn(ajaxData, arrayKeyArr)
+  console.log(type.value, ajaxData)
   // return false
   if (type.value === 'create') {
     delete ajaxData.id
-    const res = await ApiAdSeriesCreate(ajaxData)
+    const res = await ApiAudienceManageCreate(ajaxData)
     if(messageFun(res)) {
       cancelFn()
     }
   }
   if (type.value === 'edit') {
-    const res = await ApiAdSeriesEdit(ajaxData)
+    const res = await ApiAudienceManageEdit(ajaxData)
     if(messageFun(res)) {
       cancelFn()
     }
@@ -313,26 +334,40 @@ const submitFn = async () => {
 }
 
 const cancelFn = () => {
-  let url = '/adcontrol/adseries/list'
+  let url = '/audienceManage/list'
   goNewUrl({
     url: url
   })
 }
 
 const getConfig = async () => {
+  Promise.all([
+    getCommonCountryList(),
+    ApiGetAdvertiserList({
+      limit: 10000,
+      page: 1
+    })
+  ]).then(data => {
+    let countryData = data[0]
+    state.options.country = countryData
+    let advertiserData = data[1]
+    state.options.advertiser = advertiserData.data.data
+  })
 }
 
 const init = () => {
   console.info('init')
   let { query, params } = getRouterData()
   type.value = query.type?.toString() ?? ''
+  console.log(type.value)
   getConfig()
   if (type.value === 'create') {
     state.ruleForm = _.cloneDeep(defaultRuleForm)
   }
   if (type.value === 'edit') {
     const { id } = params
-    setDataFn(id)
+    const { campaign_type } = query
+    setDataFn(id, campaign_type)
   }
 }
 
@@ -343,13 +378,13 @@ onMounted(() => {
 </script>
 <style scoped>
 .avatar-uploader .avatar {
-  width: 50px;
-  height: 50px;
+  width: 148px;
+  height: 148px;
   display: block;
 }
-</style>
-
-<style>
+.upload-video-control-box{
+  width: 148px;
+}
 .avatar-uploader .el-upload {
   border: 1px dashed var(--el-border-color);
   border-radius: 6px;
@@ -357,17 +392,18 @@ onMounted(() => {
   position: relative;
   overflow: hidden;
   transition: var(--el-transition-duration-fast);
+  background-color: #f4f5f5;
 }
 
 .avatar-uploader .el-upload:hover {
   border-color: var(--el-color-primary);
 }
 
-.el-icon.avatar-uploader-icon {
+.el-icon .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
-  width: 50px;
-  height: 50px;
+  width: 148px;
+  height: 148px;
   text-align: center;
 }
 </style>

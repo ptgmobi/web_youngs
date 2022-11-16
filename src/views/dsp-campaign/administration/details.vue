@@ -30,10 +30,10 @@
         <el-form-item
           class="self-el-form-item"
           label="描述:"
-          prop="desc"
+          prop="descs"
         >
           <el-input
-            v-model.trim="state.ruleForm.desc"
+            v-model.trim="state.ruleForm.descs"
             class="form-one"
             placeholder=""
             type="textarea"
@@ -350,7 +350,7 @@ let fileListCoverUrl = ref<UploadUserFile[]>([])
 type ruleFormType =  {
   id: number | undefined
   name: string
-  desc: string
+  descs: string
   // 创意样式： 1图片，2视频，3原生
   type: number | undefined
   // 素材
@@ -391,7 +391,7 @@ type ruleFormType =  {
 const defaultRuleForm: ruleFormType = {
   id: void 0,
   name: '',
-  desc: '',
+  descs: '',
   type: 1,
   url: '',
   audit_status: void 0,
@@ -465,15 +465,15 @@ const state = reactive({
     brand: [
       {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
-    // url: [
-    //   {required: true, message: message.required, trigger: ['blur', 'change']},
-    // ],
-    // logo_url: [
-    //   {required: true, message: message.required, trigger: ['blur', 'change']},
-    // ],
-    // cover_url: [
-    //   {required: true, message: message.required, trigger: ['blur', 'change']},
-    // ]
+    url: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
+    ],
+    logo_url: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
+    ],
+    cover_url: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
+    ]
   },
   options: {
     type: [

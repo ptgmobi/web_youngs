@@ -63,10 +63,10 @@
         <el-form-item
           class="self-el-form-item"
           label="描述:"
-          prop="desc"
+          prop="descs"
         >
           <el-input
-            v-model.trim="state.ruleForm.desc"
+            v-model.trim="state.ruleForm.descs"
             class="form-one"
             placeholder=""
             type="textarea"
@@ -586,7 +586,7 @@ type ruleFormType =  {
   rta_id: string
   // 所属广告系列
   adv_series_id: number | undefined
-  desc: string
+  descs: string
   // 受众包
   target_pkg_ids: string
   // 国家/地区类型：1包含，2排除
@@ -655,7 +655,7 @@ const defaultRuleForm: ruleFormType = {
   rta_id: '',
   // 所属广告系列
   adv_series_id: void 0,
-  desc: '',
+  descs: '',
   // 受众包
   target_pkg_ids: '',
   // 国家/地区类型：1包含，2排除
