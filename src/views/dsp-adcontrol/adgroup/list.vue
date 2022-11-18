@@ -31,10 +31,10 @@
               placeholder="广告系列"
             >
               <el-option
-                v-for="item in state.options.adv_series_id"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="item in state.options.adv_series"
+                :key="item.id"
+                :label="item.adv_series_name"
+                :value="item.id"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -116,7 +116,7 @@
       ></el-table-column>
       <el-table-column sortable
         width="120"
-        prop="adv_series_name"
+        prop="adv_group_name"
         label="广告组名称"
         align="center"
       ></el-table-column>
@@ -151,7 +151,7 @@
       >
         <template #default="scope">
           <!-- <span>{{scope.row.ad}}</span> -->
-          <span class="color_primary cp" @click="goAdList(scope)">{{scope.row.ad ? scope.row.ad.length : NaN}}</span>
+          <span class="color_primary cp" @click="goAdList(scope)">{{scope.row.ad ? scope.row.ad.length : 0}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -202,7 +202,10 @@
         align="center"
       >
         <template #default="scope">
-          <span>{{getOptionsValue(scope.row.promotion_cycle, state.options.promotion_cycle)}}</span>
+          <!-- <span>{{getOptionsValue(scope.row.promotion_cycle, state.options.promotion_cycle)}}</span> -->
+          <span>{{scope.row.promotion_cycle_st}}</span>
+          -
+          <span>{{scope.row.promotion_cycle_et}}</span>
         </template>
       </el-table-column>
       
@@ -265,7 +268,8 @@ import _ from 'lodash'
 import { handleAjaxDataObjectFn, handleAjaxEmptyKeyFn, handleAjaxDataDelNoKeyFn, getOptionsValue } from '@/utils/new-format'
 import useUtils from '@/hooks/self/useUtils'
 import { clipboardFn } from '@/utils/clipboard'
-import { ApiGetAdGroupList, ApiChangeAdGroupStatus, ApiDeleteAdGroup } from '@/api/dsp-adcontrol'
+import { ApiGetAdGroupList, ApiChangeAdGroupStatus, ApiDeleteAdGroup, ApiGetAdxList, ApiGetAdSeriesList } from '@/api/dsp-adcontrol'
+import { ApiGetAdvertiserList } from '@/api/dsp-advertiser'
 import search from '../components/search.vue'
 const handleSelectionArr = ref([{id: ''}])
 const {
@@ -302,7 +306,6 @@ let state = reactive({
   useData: searchData,
   loading: true,
   options: {
-    adv_series_id: [],
     status,
     // 广告类型
     adv_series_type: [
@@ -323,7 +326,11 @@ let state = reactive({
     promotion_cycle: [
       {value: 1, label: '从现在开始长期有效'},
       {value: 2, label: '限定周期'}
-    ]
+    ],
+    country: [],
+    advertiser: [],
+    adv_series: [],
+    adx: [],
   },
   list: [{ id: 1 }],
   pagination: {
@@ -508,7 +515,9 @@ const init = async () => {
   state.loading = true
   let { query, params } = getRouterData()
   let { adseries } = query
-  searchData.adv_series_id = adseries
+  if (adseries) {
+    searchData.adv_series_id = Number(adseries)
+  }
   let ajaxData: any = {
     page: state.pagination.listQuery.page,
     limit: state.pagination.listQuery.limit,
@@ -528,7 +537,25 @@ const init = async () => {
   state.loading = false
 }
 
+const getConfig = () => {
+  let ajaxData = {
+    limit: 10000,
+    page: 1
+  }
+  return Promise.all([getCommonCountryList(), ApiGetAdvertiserList(ajaxData), ApiGetAdSeriesList(ajaxData), ApiGetAdxList()]).then(data => {
+    let countryData = data[0]
+    let advertiserData = data[1]
+    let advSeriesData = data[2]
+    let adxData = data[3]
+    state.options.country = countryData
+    state.options.advertiser = advertiserData.data.data
+    state.options.adv_series = advSeriesData.data.data
+    state.options.adx = adxData.data.data
+  })
+}
+
 onMounted(() => {
+  getConfig()
   searchFn()
 })
 

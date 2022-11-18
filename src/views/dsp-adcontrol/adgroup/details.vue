@@ -327,6 +327,7 @@
           class="self-el-form-item"
           label=""
           prop="promotion_cycle_arr"
+          v-if="state.ruleForm.promotion_cycle === 2"
         >
           <!-- 日期组件 -->
           <el-date-picker
@@ -355,38 +356,40 @@
             </template>
           </el-radio-group>
         </el-form-item>
-        <!-- 投放时段--天 -->
-        <el-form-item
-          class="self-el-form-item"
-          label=""
-          prop="launch_period_day"
-        >
-          <!-- 周 -->
-          <el-checkbox-group class="w100-super" v-model="state.ruleForm.launch_period_day">
-            <template v-for="item in state.options.launch_period_day">
-              <el-checkbox :label="item.value">{{item.label}}</el-checkbox>
-            </template>
-          </el-checkbox-group>
+        <template v-if="state.ruleForm.launch_period_type === 2">
+          <!-- 投放时段--天 -->
+          <el-form-item
+            class="self-el-form-item"
+            label=""
+            prop="launch_period_day"
+          >
+            <!-- 周 -->
+            <el-checkbox-group class="w100-super" v-model="state.ruleForm.launch_period_day">
+              <template v-for="item in state.options.launch_period_day">
+                <el-checkbox :label="item.value">{{item.label}}</el-checkbox>
+              </template>
+            </el-checkbox-group>
 
-        </el-form-item>
-        <!-- 投放时段--小时 -->
-        <el-form-item
-          class="self-el-form-item"
-          label=""
-          prop="launch_period_hour"
-        >
-          <!-- 小时 -->
-          <el-time-picker
-            class="w100-super"
-            v-model="state.ruleForm.launch_period_hour"
-            is-range
-            format="HH:mm"
-            value-format="HH:mm"
-            range-separator="至"
-            start-placeholder="开始时间"
-            end-placeholder="结束时间"
-          />
-        </el-form-item>
+          </el-form-item>
+          <!-- 投放时段--小时 -->
+          <el-form-item
+            class="self-el-form-item"
+            label=""
+            prop="launch_period_hour"
+          >
+            <!-- 小时 -->
+            <el-time-picker
+              class="w100-super"
+              v-model="state.ruleForm.launch_period_hour"
+              is-range
+              format="HH:mm"
+              value-format="HH:mm"
+              range-separator="至"
+              start-placeholder="开始时间"
+              end-placeholder="结束时间"
+            />
+          </el-form-item>
+        </template>
         <!-- 频次控制 -->
         <el-form-item
           class="self-el-form-item" 
@@ -399,7 +402,7 @@
             </template>
           </el-radio-group>
         </el-form-item>
-        <div class="flex">
+        <div class="flex" v-if="state.ruleForm.frequency_control_type === 2">
           <el-form-item
             class="self-el-form-item" 
             label=""
@@ -495,11 +498,21 @@
             </template>
           </el-radio-group>
         </el-form-item>
+        <!-- 出价方式为统一出价时 -->
+        <el-form-item
+          class="self-el-form-item" 
+          label=""
+          prop="adx_price"
+          v-if="state.ruleForm.price_method === 1"
+        >
+          
+        </el-form-item>
         <!-- 出价方式为分adx出价时 -->
         <el-form-item
           class="self-el-form-item" 
           label=""
           prop="adx_price"
+          v-if="state.ruleForm.price_method === 2"
         >
           <Adx
             class="w100"
@@ -754,7 +767,18 @@ const state = reactive({
     adv_group_name: [
       {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
-    
+    adv_series_id: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
+    ],
+    target_pkg_ids: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
+    ],
+    speed_limit_day: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
+    ],
+    payment_method: [
+      {required: true, message: message.required, trigger: ['blur', 'change']},
+    ]
   },
   options: {
     choice_type,

@@ -172,7 +172,7 @@
       >
         <template #default="scope">
           <!-- <span>{{scope.row.ad_group}}</span> -->
-          <span class="color_primary cp" @click="goAdGroupList(scope)">{{scope.row.ad_group ? scope.row.ad_group.length : NaN}}</span>
+          <span class="color_primary cp" @click="goAdGroupList(scope)">{{scope.row.ad_group ? scope.row.ad_group.length : 0}}</span>
         </template>
       </el-table-column>
       <el-table-column sortable
@@ -182,7 +182,7 @@
       >
         <template #default="scope">
           <!-- <span>{{scope.row.ad}}</span> -->
-          <span class="color_primary cp" @click="goAdList(scope)">{{scope.row.ad ? scope.row.ad.length : NaN}}</span>
+          <span class="color_primary cp" @click="goAdList(scope)">{{scope.row.ad ? scope.row.ad.length : 0}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -223,7 +223,7 @@
         align="center"
       >
         <template #default="scope">
-          <span>{{getOptionsValue(scope.row.adv_type, state.options.adv_series_type)}}</span>
+          <span>{{getOptionsValue(scope.row.adv_series_type, state.options.adv_series_type)}}</span>
         </template>
       </el-table-column>
       <el-table-column sortable
@@ -233,7 +233,7 @@
         align="center"
       >
         <template #default="scope">
-          <span>{{getOptionsValue(scope.row.adv_type, state.options.marbet_target)}}</span>
+          <span>{{getOptionsValue(scope.row.marbet_target, state.options.marbet_target)}}</span>
         </template>
       </el-table-column>
       

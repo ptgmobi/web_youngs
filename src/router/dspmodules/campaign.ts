@@ -51,7 +51,7 @@ export default [
             name: 'campaign-administration-edit',
             component: () => import('@/views/dsp-campaign/administration/details'),
             meta: {
-              title: '修改广告创意',
+              title: '修改创意',
               code: 140103
             },
             hidden: true

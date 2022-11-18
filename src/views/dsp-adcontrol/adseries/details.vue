@@ -142,6 +142,11 @@ import { selfJudgeStringLength, selfValidatorIsInteger } from '@/utils/validate.
 import validator from 'validator';
 import _, { isArguments } from 'lodash'
 import type { UploadProps, UploadUserFile } from 'element-plus'
+import { useDspStore } from '@/store/dsp'
+
+
+const topsearchData: any = useDspStore().topsearch
+let {adv, date} = topsearchData
 const {
   adv_type, 
   ind_cla,
@@ -177,7 +182,7 @@ type ruleFormType =  {
 
 const defaultRuleForm: ruleFormType = {
   id: void 0,
-  adv_id: '',
+  adv_id: adv,
   adv_series_name: '',
   descs: '',
   // 营销目标
