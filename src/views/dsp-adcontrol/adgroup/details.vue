@@ -357,6 +357,13 @@
           </el-radio-group>
         </el-form-item>
         <template v-if="state.ruleForm.launch_period_type === 2">
+          <!-- {{mult_timeRange}}
+          <DragWeektime
+            v-model="mult_timeRange"
+            :data="myWeektimeData"
+            :value="[]"
+          >
+          </DragWeektime> -->
           <!-- 投放时段--天 -->
           <el-form-item
             class="self-el-form-item"
@@ -434,7 +441,7 @@
                 placeholder=""
                 type="number"
               ></el-input>
-              <span class="center" style="width:50px;">次/日</span>
+              <span class="right" style="width:50px;">次/日</span>
             </div>
           </el-form-item>
         </div>
@@ -499,14 +506,36 @@
           </el-radio-group>
         </el-form-item>
         <!-- 出价方式为统一出价时 -->
-        <el-form-item
-          class="self-el-form-item" 
-          label=""
-          prop="adx_price"
-          v-if="state.ruleForm.price_method === 1"
-        >
-          
-        </el-form-item>
+        <div class="flex form-one" v-if="state.ruleForm.price_method === 1">
+          <el-form-item
+            class="self-el-form-item" 
+            label=""
+            prop="unified_price"
+          >
+            <div class="flex jc-between">
+              <el-input
+                v-model.trim="state.ruleForm.unified_price"
+                placeholder="请输入单价"
+                type="number"
+              ></el-input>
+              <span class="center" style="width:150px;">美元/千次曝光</span>
+            </div>
+          </el-form-item>
+          <el-form-item
+            class="self-el-form-item-no-label" 
+            label=""
+            prop="unified_rate"
+          >
+            <div class="flex jc-between">
+              <el-input
+                v-model.trim="state.ruleForm.unified_rate"
+                placeholder="自动点击率"
+                type="number"
+              ></el-input>
+              <span class="right" style="width:20px;">%</span>
+            </div>
+          </el-form-item>
+        </div>
         <!-- 出价方式为分adx出价时 -->
         <el-form-item
           class="self-el-form-item" 
@@ -556,6 +585,8 @@
 <script lang="ts" setup>
 import optionsSetting from '@/self-options-setting'
 import { ApiAdGroupCreate, ApiGetAdGroupOne, ApiAdGroupEdit, ApiGetAdGroupList, ApiGetAdxList, ApiGetAdSeriesList } from '@/api/dsp-adcontrol'
+// 受众包列表
+import { ApiGetAudienceManageList } from '@/api/dsp-audience-manage'
 import { ApiGetAdvertiserList } from '@/api/dsp-advertiser'
 import { messageFun } from '@/utils/message'
 import splitButton from '@/components/Self/SplitButton'
@@ -572,7 +603,9 @@ import validator from 'validator';
 import _, { isArguments } from 'lodash'
 import { getSectionTime, getSectionAnyTime, choiceDefaultProduct } from '@/utils/format'
 import Adx from './components/adx.vue'
-import { Console } from 'console'
+import weektimeData from '@/utils/weektime_data'
+import { splicing } from '@/utils/weektime_data_fn'
+import DragWeektime from '@/components/self/drag-weektime'
 const {
   choice_type,
   system,
@@ -590,6 +623,8 @@ const message = {
 }
 
 let type: any = ref('create')
+
+let myWeektimeData = reactive(weektimeData)
 
 type ruleFormType =  {
   id: number | undefined
@@ -653,6 +688,10 @@ type ruleFormType =  {
   payment_method: number | undefined
   // 出价方式： 1：统一出价，2：adx出价
   price_method: number | undefined
+  // 统一出价
+  unified_price: number | undefined
+  // 统一出价比例
+  unified_rate: number | undefined
   // 分adx出价；json数据
   adx_price: Array<any>
   // 出价方式: 1: 自动出价，2：手动出价
@@ -721,6 +760,8 @@ const defaultRuleForm: ruleFormType = {
   payment_method: 1,
   // 出价方式： 1：统一出价，2：adx出价
   price_method: 2,
+  unified_price: void 0,
+  unified_rate: void 0,
   // 分adx出价；json数据
   adx_price: [],
   // 出价方式: 1: 自动出价，2：手动出价
@@ -770,9 +811,9 @@ const state = reactive({
     adv_series_id: [
       {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
-    target_pkg_ids: [
-      {required: true, message: message.required, trigger: ['blur', 'change']},
-    ],
+    // target_pkg_ids: [
+    //   {required: true, message: message.required, trigger: ['blur', 'change']},
+    // ],
     speed_limit_day: [
       {required: true, message: message.required, trigger: ['blur', 'change']},
     ],
@@ -874,7 +915,7 @@ const saveFun = () => {
 }
 
 // 为数字的字段
-const numberKeyArr = ['id', 'adv_id', 'adv_series_type', 'adv_series_budget', 'speed_limit_day']
+const numberKeyArr = ['id', 'adv_id', 'adv_series_type', 'adv_series_budget', 'speed_limit_day', 'unified_price', 'unified_rate']
 
 // 数组转换为字符串
 const arrayKeyArr = ['adx', 'system', 'terminal_type', 'network_type', 'flow_type', 'launch_period_day', 'launch_period_hour', 'country', 'media', 'custem_media']
@@ -944,6 +985,16 @@ const submitFn = async () => {
   }
 }
 
+const mult_timeRange = computed(() => {
+  return myWeektimeData.map(item => {
+    return {
+      id: item.row,
+      week: item.value,
+      value: splicing(item.child)
+    }
+  })
+})
+
 const saveAdxPrice = (data) => {
   state.ruleForm.adx_price = data
 }
@@ -960,15 +1011,17 @@ const getConfig = () => {
     limit: 10000,
     page: 1
   }
-  return Promise.all([getCommonCountryList(), ApiGetAdvertiserList(ajaxData), ApiGetAdSeriesList(ajaxData), ApiGetAdxList()]).then(data => {
+  return Promise.all([getCommonCountryList(), ApiGetAdvertiserList(ajaxData), ApiGetAdSeriesList(ajaxData), ApiGetAdxList(), ApiGetAudienceManageList(ajaxData)]).then(data => {
     let countryData = data[0]
     let advertiserData = data[1]
     let advSeriesData = data[2]
     let adxData = data[3]
+    let audienceManageData = data[4]
     state.options.country = countryData
     state.options.advertiser = advertiserData.data.data
     state.options.adv_series = advSeriesData.data.data
     state.options.adx = adxData.data.data
+    state.options.target_pkg_ids = audienceManageData.data.data
   })
 
 }
