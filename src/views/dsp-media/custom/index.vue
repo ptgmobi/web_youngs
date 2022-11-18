@@ -5,7 +5,7 @@
     />
   </router-view>
 </template>
-<script lang="ts" setup name="dsp-advertiser">
+<script lang="ts" setup name="dsp-media-custom">
 onActivated(() => {
   console.log('onActivated')
 })
