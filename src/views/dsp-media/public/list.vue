@@ -116,16 +116,31 @@
     </div>
     <!-- 复制 -->
     <el-dialog
-      v-model="dialogVisibleReportApi"
-      title="Report Api"
+      v-model="dialogVisible"
+      title="添加公共媒体黑名单"
       width="90%"
     >
-      <p>{{bus.report_api}}</p>
-      <el-button
-        class="cp mr-10"
-        type="default"
-        @click="copyFn(bus.report_api)"
-      >复制</el-button>
+      <el-form
+        v-model="state.searchForm"
+        :inline="true"
+        class="flex w100"
+      >
+        <el-input
+          v-model.trim="state.ruleForm.bundle"
+          class="w100"
+          placeholder=""
+          type="textarea"
+        >
+        </el-input>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="saveFn()">
+            保存
+          </el-button>
+        </span>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -147,7 +162,7 @@ const multipleTableRef = ref<InstanceType<typeof ElTable>>()
 const handleSelectionArr = ref([{id: ''}])
 
 let detailsType = ref('')
-let dialogVisibleEdit = ref('false')
+let dialogVisible = ref(false)
 
 const {
   status,
@@ -177,7 +192,6 @@ const topSearchData = reactive({
   et: ''
 })
 
-const dialogVisibleReportApi = ref(false)
 
 const bus = reactive({
   report_api: ''
@@ -185,6 +199,9 @@ const bus = reactive({
 
 let state = reactive({
   dialogVisible: false,
+  ruleForm: {
+    bundle: ''
+  },
   cache: {
     item: {}
   },
@@ -271,6 +288,10 @@ const batchFn = async () => {
   }
 }
 
+const saveFn = () => {
+  // 保存
+}
+
 
 const copyFn = (text) => {
   clipboardFn(text)
@@ -333,7 +354,8 @@ const createFilter = (queryString: string) => {
 
 const createFn = () => {
   detailsType.value = 'create'
-  dialogVisibleEdit.value = true
+  dialogVisible.value = true
+  state.ruleForm.bundle = ''
   // goNewUrl({
   //   url: '/media/public/create',
   //   query: {
