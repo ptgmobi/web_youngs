@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="controlBox w100 mb-10">
-      <search/>
+      <search
+        @up="changeTopSearch"
+        :arr="['adv','date']"
+      />
       <el-form
         v-model="state.searchForm"
         :inline="true"
@@ -270,7 +273,7 @@ import useUtils from '@/hooks/self/useUtils'
 import { clipboardFn } from '@/utils/clipboard'
 import { ApiGetAdGroupList, ApiChangeAdGroupStatus, ApiDeleteAdGroup, ApiGetAdxList, ApiGetAdSeriesList } from '@/api/dsp-adcontrol'
 import { ApiGetAdvertiserList } from '@/api/dsp-advertiser'
-import search from '../components/search.vue'
+import search from '@/components/Self/Search'
 const handleSelectionArr = ref([{id: ''}])
 const {
   status, 
@@ -369,6 +372,12 @@ let batch = reactive({
   }
 })
 
+const topSearchData = reactive({
+  adv_id: '',
+  st: '',
+  et: ''
+})
+
 const copyFn = (text) => {
   clipboardFn(text)
 }
@@ -376,6 +385,15 @@ const copyFn = (text) => {
 const searchFn = () => {
   state.useData = _.cloneDeep(state.searchForm)
   init()
+}
+
+const changeTopSearch = (data) => {
+  console.log(data)
+  topSearchData.adv_id = data.adv
+  if (data.date) {
+    topSearchData.st = data.date[0]
+    topSearchData.et = data.date[1]
+  }
 }
 
 const changeStatus = async ({row}) => {
@@ -521,7 +539,8 @@ const init = async () => {
   let ajaxData: any = {
     page: state.pagination.listQuery.page,
     limit: state.pagination.listQuery.limit,
-    ...searchData
+    ...searchData,
+    ...topSearchData
   }
   ajaxData[ajaxData.value_type] = ajaxData.value
   delete ajaxData.value_type

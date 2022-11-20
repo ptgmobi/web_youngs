@@ -1,14 +1,15 @@
 <template>
   <div class="mb-10 search-box flex jc-between ai-start">
-    <div class="button-box"></div>
+    <div class="button-box">{{searchForm}}</div>
     <el-form
       v-model="searchForm"
       :inline="true"
       class="flex w100 ai-start jc-end"
     >
       <!-- 广告主 -->
-      <el-form-item label="">
+      <el-form-item label="" v-if="props.arr.includes('adv')">
         <el-select
+          
           v-model="searchForm.adv"
           filterable
           clearable
@@ -22,7 +23,7 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item>
+      <el-form-item label="" v-if="props.arr.includes('date')">
         <!-- 日期 -->
         <el-date-picker
           v-model="searchForm.date"
@@ -45,6 +46,15 @@
 import { getSectionTime, getSectionAnyTime, choiceDefaultProduct } from '@/utils/format'
 import { ApiGetAdvertiserList } from '@/api/dsp-advertiser'
 import { useDspStore } from '@/store/dsp'
+const props = defineProps({
+  arr: {
+    require: true,
+    default: () => {
+      return ['adv']
+    },
+    type:Array,
+  },
+})
 
 const emit = defineEmits(['up'])
 
@@ -108,10 +118,10 @@ watchEffect(() => {
   let date = toRaw(searchForm.date)
   // 存到pinia
   const dspStore = useDspStore()
-  const ajaxData = {
-    adv,
-    date
-  }
+  const ajaxData: any = {}
+  props.arr.map((ele: any) => {
+    ajaxData[ele]  = searchForm[ele]
+  })
   console.log(ajaxData)
   dspStore
     .setSearchData(ajaxData)

@@ -1,6 +1,9 @@
 <template>
   <div>
     <div class="controlBox w100 mb-10">
+      <search
+        @up="changeTopSearch"
+      />
       <el-form
         v-model="state.searchForm"
         :inline="true"
@@ -206,6 +209,7 @@ import useUtils from '@/hooks/self/useUtils'
 import { clipboardFn } from '@/utils/clipboard'
 import { ApiGetAudienceManageList, ApiChangeAudienceManageStatus, ApiDeleteAudienceManage } from '@/api/dsp-audience-manage'
 import { ElTable } from 'element-plus'
+import search from '@/components/Self/Search'
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
 
@@ -232,8 +236,6 @@ const searchData = shallowRef({
   value_type: 'name',
   value: ''
 })
-
-const topSearchData = ref({})
 
 const dialogVisibleReportApi = ref(false)
 
@@ -298,6 +300,21 @@ let batch = reactive({
     ]
   }
 })
+
+const topSearchData = reactive({
+  adv_id: '',
+  st: '',
+  et: ''
+})
+
+const changeTopSearch = (data) => {
+  console.log(data)
+  topSearchData.adv_id = data.adv
+  if (data.date) {
+    topSearchData.st = data.date[0]
+    topSearchData.et = data.date[1]
+  }
+}
 
 // 批量操作
 const handleSelectionChange = ((val: any) => {
@@ -444,22 +461,13 @@ const deleteFn = async(scope: any) => {
   }, deleteFun(scope))
 }
 
-const changeTopSearch = (data) => {
-  console.log(data)
-  topSearchData.value = {
-    adv_id: data.adv,
-    st: data.date[0],
-    et: data.date[1]
-  }
-}
-
 const init = async () => {
   state.loading = true
   let ajaxData: any = {
     page: state.pagination.listQuery.page,
     limit: state.pagination.listQuery.limit,
     ...searchData.value,
-    ...topSearchData.value
+    ...topSearchData
   }
   ajaxData[ajaxData.value_type] = ajaxData.value
   delete ajaxData.value_type
