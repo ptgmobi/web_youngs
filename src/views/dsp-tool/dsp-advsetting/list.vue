@@ -75,12 +75,12 @@
         align="center"
       ></el-table-column>
       <el-table-column
-        prop="create_user"
+        prop="create_email"
         label="创建人"
         align="center"
       ></el-table-column>
       <el-table-column
-        prop="update_user"
+        prop="update_email"
         label="更新人"
         align="center"
       ></el-table-column>

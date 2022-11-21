@@ -1,6 +1,6 @@
 <template>
   <div class="mb-10 search-box flex jc-between ai-start">
-    <div class="button-box">{{searchForm}}</div>
+    <div class="button-box"></div>
     <el-form
       v-model="searchForm"
       :inline="true"

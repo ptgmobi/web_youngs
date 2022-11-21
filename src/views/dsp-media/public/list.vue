@@ -19,14 +19,6 @@
             >
             </el-input>
           </el-form-item>
-          <el-form-item label="">
-            <el-checkbox
-              v-model="state.searchForm.is_del"
-              true-label=""
-              false-label="1"
-              label="包含已归档"
-            />
-          </el-form-item>
         </div>
         <div class="flex">
           <el-form-item
@@ -70,7 +62,7 @@
       ></el-table-column>
       <!-- 媒体bundle -->
       <el-table-column sortable
-        prop="name"
+        prop="bundle"
         label="媒体bundle"
         align="center"
       ></el-table-column>
@@ -92,13 +84,13 @@
       </el-table-column>
       <!-- 创建人 -->
       <el-table-column sortable
-        prop="user"
+        prop="create_email"
         label="创建人"
         align="center"
       ></el-table-column>
       <!-- 创建时间 -->
       <el-table-column sortable
-        prop="create_date"
+        prop="create_time"
         label="创建时间"
         align="center"
       ></el-table-column>
@@ -128,7 +120,7 @@
         <el-input
           v-model="state.ruleForm.bundle"
           class="form-one"
-          placeholder="请输入bundle\n多个媒体bundle请换行，一行一个bundle，最多支持1000行。"
+          placeholder="请输入bundle，多个媒体bundle请换行，一行一个bundle，最多支持1000行。"
           :rows="8"
           type="textarea"
         >
@@ -183,7 +175,7 @@ const searchData = shallowRef({
   type: '',
   build_status: '',
   is_del: '1',
-  value_type: 'name',
+  value_type: 'bundle',
   value: ''
 })
 
@@ -298,6 +290,7 @@ const saveFn = async () => {
   if (messageFun(res)) {
     searchFn()
   }
+  dialogVisible.value = false
 }
 
 

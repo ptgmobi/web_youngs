@@ -169,7 +169,7 @@
       </el-table-column>
       <el-table-column sortable
         width="120"
-        prop="user"
+        prop="create_email"
         label="创建人"
         align="center"
       ></el-table-column>
