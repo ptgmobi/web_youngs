@@ -293,6 +293,9 @@ import { selfJudgeStringLength, selfValidatorIsInteger } from '@/utils/validate.
 import validator from 'validator';
 import _, { isArguments } from 'lodash'
 import type { UploadProps, UploadUserFile } from 'element-plus'
+
+import uploadFn from '@/utils/upload'
+const { validate: validateUpload, uploadHttpRequest } = uploadFn
 const {
   uploadUrl,
   adv_type, 
@@ -495,15 +498,6 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (
 ) => {
   // state.ruleForm.logo = URL.createObjectURL(uploadFile.raw!)
   state.ruleForm.logo = response.data
-}
-
-const uploadHttpRequest: UploadProps['httpRequest'] = async(
-  param
-) => {
-  const formData = new FormData()
-  formData.append("logo_url", param.file)
-  const res = await ApiUploadImg(formData)
-  return res
 }
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = async (rawFile) => {

@@ -79,6 +79,7 @@ export function ApiGetConfig() {
 }
 
 export function ApiUploadImg(data: ObjTy) {
+  console.log(data)
   return request({
     url: `/d/dv/pic`,
     method: 'post',

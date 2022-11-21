@@ -207,7 +207,7 @@ import _ from 'lodash'
 import { handleAjaxDataObjectFn, handleAjaxEmptyKeyFn, handleAjaxDataDelNoKeyFn, getOptionsValue } from '@/utils/new-format'
 import useUtils from '@/hooks/self/useUtils'
 import { clipboardFn } from '@/utils/clipboard'
-import { ApiGetAudienceManageList, ApiChangeAudienceManageStatus, ApiDeleteAudienceManage } from '@/api/dsp-audience-manage'
+import { ApiGetMediaCustomList, ApiChangeMediaCustomStatus, ApiDeleteMediaCustom } from '@/api/dsp-media'
 import { ElTable } from 'element-plus'
 import search from '@/components/Self/Search'
 
@@ -257,9 +257,9 @@ let state = reactive({
     build_status,
     country: [],
     value_type: [
-      {value: 'id', label: '媒体列表名称'},
-      {value: 'name', label: '媒体列表id'},
-      {value: 'descs', label: '创建人'},
+      {value: 'name', label: '媒体列表名称'},
+      {value: 'id', label: '媒体列表id'},
+      {value: 'user', label: '创建人'},
     ]
   },
   list: [
@@ -361,7 +361,7 @@ const changeStatus = async ({row}) => {
     id: row.id,
     status: row.status
   }
-  let res = await ApiChangeAudienceManageStatus(ajaxData)
+  let res = await ApiChangeMediaCustomStatus(ajaxData)
   messageFun(res)
 }
 
@@ -436,7 +436,7 @@ const editFn = ({row}: any) => {
 }
 
 const deleteFunction = async (ids) => {
-  const res = await ApiDeleteAudienceManage({
+  const res = await ApiDeleteMediaCustom({
     ids,
     is_del: 2
   })
@@ -474,7 +474,7 @@ const init = async () => {
   delete ajaxData.value
   // ajaxData = handleAjaxEmptyKeyFn(ajaxData, ['status', 'adv_type'])
   ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
-  const res = await ApiGetAudienceManageList(ajaxData)
+  const res = await ApiGetMediaCustomList(ajaxData)
   if (res) {
     const { data: result } = res
     state.list = result?.data

@@ -126,9 +126,10 @@
         class="flex w100"
       >
         <el-input
-          v-model.trim="state.ruleForm.bundle"
-          class="w100"
-          placeholder=""
+          v-model="state.ruleForm.bundle"
+          class="form-one"
+          placeholder="请输入bundle\n多个媒体bundle请换行，一行一个bundle，最多支持1000行。"
+          :rows="8"
           type="textarea"
         >
         </el-input>
@@ -153,7 +154,7 @@ import _ from 'lodash'
 import { handleAjaxDataObjectFn, handleAjaxEmptyKeyFn, handleAjaxDataDelNoKeyFn, getOptionsValue } from '@/utils/new-format'
 import useUtils from '@/hooks/self/useUtils'
 import { clipboardFn } from '@/utils/clipboard'
-import { ApiGetAudienceManageList, ApiChangeAudienceManageStatus, ApiDeleteAudienceManage } from '@/api/dsp-audience-manage'
+import { ApiGetMediaPublicList, ApiDeleteMediaPublic, ApiMediaPublicCreate } from '@/api/dsp-media'
 import { ElTable } from 'element-plus'
 import search from '@/components/Self/Search'
 
@@ -288,8 +289,15 @@ const batchFn = async () => {
   }
 }
 
-const saveFn = () => {
+const saveFn = async () => {
   // 保存
+  const ajaxData = {
+    ...state.ruleForm
+  }
+  const res = await ApiMediaPublicCreate(ajaxData)
+  if (messageFun(res)) {
+    searchFn()
+  }
 }
 
 
@@ -307,8 +315,6 @@ const changeStatus = async ({row}) => {
     id: row.id,
     status: row.status
   }
-  let res = await ApiChangeAudienceManageStatus(ajaxData)
-  messageFun(res)
 }
 
 interface RestaurantItem {
@@ -383,7 +389,7 @@ const editFn = ({row}: any) => {
 }
 
 const deleteFunction = async (ids) => {
-  const res = await ApiDeleteAudienceManage({
+  const res = await ApiDeleteMediaPublic({
     ids,
     is_del: 2
   })
@@ -430,7 +436,7 @@ const init = async () => {
   delete ajaxData.value
   // ajaxData = handleAjaxEmptyKeyFn(ajaxData, ['status', 'adv_type'])
   ajaxData = handleAjaxDataDelNoKeyFn(ajaxData)
-  const res = await ApiGetAudienceManageList(ajaxData)
+  const res = await ApiGetMediaPublicList(ajaxData)
   if (res) {
     const { data: result } = res
     state.list = result?.data

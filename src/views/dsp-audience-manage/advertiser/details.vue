@@ -158,8 +158,8 @@ import validator from 'validator';
 import _, { isArguments } from 'lodash'
 import type { UploadProps, UploadUserFile, genFileId, UploadFile } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
-import uploadFn from '@/utils/upload'
 import { ElMessage } from 'element-plus'
+import uploadFn from '@/utils/upload'
 const { validate: validateUpload, uploadHttpRequest } = uploadFn
 
 const {

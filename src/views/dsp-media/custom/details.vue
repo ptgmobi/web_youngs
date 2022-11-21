@@ -90,7 +90,7 @@
 <script lang="ts" setup>
 import optionsSetting from '@/self-options-setting'
 import selfSetting from '../setting'
-import { ApiAudienceManageCreate, ApiGetAudienceManageOne, ApiAudienceManageEdit } from '@/api/dsp-audience-manage'
+import { ApiMediaCustomCreate, ApiGetMediaCustomOne, ApiMediaCustomEdit } from '@/api/dsp-media'
 import { ApiUploadImg } from '@/api/dsp-advertiser'
 import { ApiGetAdvertiserList } from '@/api/dsp-advertiser'
 import { messageFun } from '@/utils/message'
@@ -109,6 +109,8 @@ import _, { isArguments } from 'lodash'
 import type { UploadProps, UploadUserFile, genFileId, UploadFile } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
+import uploadFn from '@/utils/upload'
+const { validate: validateUpload, uploadHttpRequest } = uploadFn
 
 const {
   status,
@@ -227,12 +229,17 @@ const numberKeyArr = ['id', 'media_num']
 const arrayKeyArr = ['country']
 
 const setDataFn = async (id, campaign_type) => {
-  const res = await ApiGetAudienceManageOne(id)
+  const res = await ApiGetMediaCustomOne(id)
   const {data: result} = res
-  result.country = result.country ? result.country.split(',') : []
   state.ruleForm = {
     ...state.ruleForm,
     ...result
+  }
+  if (state.ruleForm.file_url) {
+    fileListUrl.value.push({
+      name: state.ruleForm.file_url,
+      url: state.ruleForm.file_url
+    })
   }
   console.log(state.ruleForm)
 }
@@ -249,13 +256,13 @@ const submitFn = async () => {
   // return false
   if (type.value === 'create') {
     delete ajaxData.id
-    const res = await ApiAudienceManageCreate(ajaxData)
+    const res = await ApiMediaCustomCreate(ajaxData)
     if(messageFun(res)) {
       cancelFn()
     }
   }
   if (type.value === 'edit') {
-    const res = await ApiAudienceManageEdit(ajaxData)
+    const res = await ApiMediaCustomEdit(ajaxData)
     if(messageFun(res)) {
       cancelFn()
     }
@@ -294,15 +301,6 @@ const handleExceed = (files, uploadFile) => {
     message: '只能上传一个，请删除后重试',
     type: 'warning',
   })
-}
-
-const uploadHttpRequest: UploadProps['httpRequest'] = async(
-  param
-) => {
-  const formData = new FormData()
-  formData.append("logo_url", param.file)
-  const res = await ApiUploadImg(formData)
-  return res
 }
 
 const beforeUpload = async(rawFile) => {

@@ -18,9 +18,10 @@
           prop="descs"
         >
           <el-input
-            v-model.trim="state.ruleForm.bundle"
+            v-model="state.ruleForm.bundle"
             class="form-one"
             placeholder=""
+            :rows="8"
             type="textarea"
           >
           </el-input>
@@ -48,7 +49,7 @@
 <script lang="ts" setup>
 import optionsSetting from '@/self-options-setting'
 import selfSetting from '../setting'
-import { ApiAudienceManageCreate, ApiGetAudienceManageOne, ApiAudienceManageEdit } from '@/api/dsp-audience-manage'
+import { ApiMediaPublicCreate } from '@/api/dsp-media'
 import { ApiUploadImg } from '@/api/dsp-advertiser'
 import { ApiGetAdvertiserList } from '@/api/dsp-advertiser'
 import { messageFun } from '@/utils/message'
@@ -123,14 +124,7 @@ const numberKeyArr = ['id', 'adv_type', 'type', 'build_status', 'num_people']
 const arrayKeyArr = ['country']
 
 const setDataFn = async (id, campaign_type) => {
-  const res = await ApiGetAudienceManageOne(id)
-  const {data: result} = res
-  result.country = result.country ? result.country.split(',') : []
-  state.ruleForm = {
-    ...state.ruleForm,
-    ...result
-  }
-  console.log(state.ruleForm)
+  
 }
 
 
@@ -145,13 +139,7 @@ const submitFn = async () => {
   // return false
   if (type.value === 'create') {
     delete ajaxData.id
-    const res = await ApiAudienceManageCreate(ajaxData)
-    if(messageFun(res)) {
-      cancelFn()
-    }
-  }
-  if (type.value === 'edit') {
-    const res = await ApiAudienceManageEdit(ajaxData)
+    const res = await ApiMediaPublicCreate(ajaxData)
     if(messageFun(res)) {
       cancelFn()
     }
