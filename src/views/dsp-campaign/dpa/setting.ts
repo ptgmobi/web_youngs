@@ -10,6 +10,7 @@ feeds_num_base_arr.map((index, ele: any) => {
   return ele
 })
 const setting: any = {
+  // 适配尺寸
   size: [
     { value: '160x600', label: '160x600' },
     { value: '250x250', label: '250x250' },
@@ -25,16 +26,14 @@ const setting: any = {
     { value: '970x250', label: '970x250' },
     { value: '1200x628', label: '1200x628' },
   ],
+  // Feeds个数
   feeds_num: feeds_num_arr,
-  product_type: [
-    { value: 1, label: '动物/宠物用品' },
-    { value: 2, label: '服饰与配饰' },
-    { value: 3, label: '艺术与娱乐' },
-  ],
+  // 创意目标：1：节日，2：常规，3：促销
+  // 1、常规normal ；2、节日festival； 3、促销sale
   creative_goals: [
-    { value: 1, label: '节日' },
-    { value: 2, label: '常规' },
-    { value: 3, label: '促销' },
+    { value: 'normal', label: '节日' },
+    { value: 'festival', label: '常规' },
+    { value: 'sale', label: '促销' },
   ],
   // 审核状态： 1未审核，2审核通过，3审核未通过
   audit_status: [

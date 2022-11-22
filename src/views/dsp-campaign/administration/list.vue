@@ -117,6 +117,7 @@
       border
       @selection-change="handleSelectionChange"
     >
+      <el-table-column align="center" type="selection" width="55" />
       <!-- ID -->
       <el-table-column sortable
         prop="id"
@@ -147,6 +148,7 @@
               :preview-src-list="[scope.row.url]"
               :initial-index="4"
               fit="cover"
+              @click="toBus(scope.row.url)"
             />
             <img
               v-if="scope.row.type === 2"
@@ -156,6 +158,7 @@
               :preview-src-list="[scope.row.cover_url]"
               :initial-index="4"
               fit="cover"
+              @click="toBus(scope.row.cover_url)"
             />
           </div>
         </template>
@@ -303,18 +306,15 @@
         @pagination="init"
       />
     </div>
-    <!-- 复制 -->
+    <!-- 预览 -->
     <el-dialog
-      v-model="dialogVisibleReportApi"
-      title="Report Api"
-      width="90%"
+      v-model="dialogVisible"
+      title="图片预览"
+      width="50%"
     >
-      <p>{{bus.report_api}}</p>
-      <el-button
-        class="cp mr-10"
-        type="default"
-        @click="copyFn(bus.report_api)"
-      >复制</el-button>
+      <div class="img-box">
+        <img :src="bus.preview_img" alt="">
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -360,10 +360,10 @@ const searchData = shallowRef({
 
 const topSearchData = ref({})
 
-const dialogVisibleReportApi = ref(false)
+const dialogVisible = ref(false)
 
 const bus = reactive({
-  report_api: ''
+  preview_img: ''
 })
 
 let state = reactive({
@@ -574,6 +574,19 @@ const changeTopSearch = (data) => {
     st: data.date[0],
     et: data.date[1]
   }
+}
+
+watch(() => handleSelectionArr, (newVal, oldVal) => {
+  console.log('改变选择项')
+  console.log(newVal.value)
+}, {
+  immediate: true,
+  deep: true
+})
+
+const toBus = (url) => {
+  bus.preview_img = url
+  dialogVisible.value = true
 }
 
 const init = async () => {

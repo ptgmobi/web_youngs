@@ -84,16 +84,16 @@
         <el-form-item
           class="self-el-form-item"
           label="适用商品:"
-          prop="product_type"
+          prop="dsp_category_id"
         >
           <el-select
-            v-model="state.ruleForm.product_type"
+            v-model="state.ruleForm.dsp_category_id"
             filterable
             placeholder="请选择"
             class="form-one"
           >
             <el-option
-              v-for="item in state.options.product_type"
+              v-for="item in state.options.category"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -134,13 +134,21 @@
             filterable
             placeholder="请选择"
             class="form-one"
+            :disabled="type !== 'create'"
           >
             <el-option
               v-for="item in handleDpaTemplate"
               :key="item.value"
               :label="item.label"
               :value="item.value"
-            ></el-option>
+            >
+              <div class="w100 flex jc-between ai-start">
+                <span>{{item.label}}</span>
+                <!-- <div class="img-box">
+                  <img :src="item.url" alt="">
+                </div> -->
+              </div>
+            </el-option>
           </el-select>
         </el-form-item>
       </div>
@@ -166,7 +174,8 @@
 <script lang="ts" setup>
 import optionsSetting from '@/self-options-setting'
 import selfSetting from './setting'
-import { ApiGetCampaignDpaList, ApiCampaignDpaCreate, ApiGetCampaignDpaOne, ApiCampaignDpaEdit } from '@/api/dsp-campaign'
+import {ApiGetCommonCategoryList, ApiGetCommonTemplateSizeList} from '@/api/dsp-common'
+import { ApiGetCampaignDpaList, ApiCampaignDpaCreate, ApiGetCampaignDpaOne, ApiCampaignDpaEdit, ApiGetDpaTplList } from '@/api/dsp-campaign'
 import { ApiUploadImg } from '@/api/dsp-advertiser'
 import { ApiGetAdvertiserList } from '@/api/dsp-advertiser'
 import { messageFun } from '@/utils/message'
@@ -194,9 +203,8 @@ const {
 
 const {
   audit_status,
-  size,
   feeds_num,
-  product_type,
+  dsp_category_id,
   creative_goals,
 } = selfSetting
 
@@ -221,9 +229,9 @@ type ruleFormType =  {
   // Feeds个数
   feeds_num: number | undefined
   // 适用商品
-  product_type: number | undefined
+  dsp_category_id: number | undefined
   // 创意目标：1：节日，2：常规，3：促销
-  creative_goals: number | undefined
+  creative_goals: string
   // 关联模板ID
   follow_template_id: number | undefined
   // 审核状态： 1未审核，2审核通过，3审核未通过
@@ -238,8 +246,8 @@ const defaultRuleForm: ruleFormType = {
   descs: '',
   size: '',
   feeds_num: void 0,
-  product_type: void 0,
-  creative_goals: void 0,
+  dsp_category_id: void 0,
+  creative_goals: '',
   follow_template_id: void 0,
   audit_status: 3,
   is_del: 1,
@@ -290,7 +298,7 @@ const state = reactive({
     feeds_num: [
       {required: true, message: message.required, trigger: ['blur', 'change']}
     ],
-    product_type: [
+    dsp_category_id: [
       {required: true, message: message.required, trigger: ['blur', 'change']}
     ],
     creative_goals: [
@@ -302,18 +310,13 @@ const state = reactive({
   },
   options: {
     audit_status,
-    size,
+    size: [],
     feeds_num,
-    product_type,
+    category: [],
     creative_goals,
-    follow_template_id: []
+    dpa_tpl: [],
+    dpa: []
   }
-})
-
-const handleDpaTemplate = computed(() => {
-  state.options.follow_template_id.map(ele => {
-
-  })
 })
 
 const saveFun = () => {
@@ -330,7 +333,7 @@ const saveFun = () => {
 }
 
 // 为数字的字段
-const numberKeyArr = ['id', 'media_num']
+const numberKeyArr = ['id', 'feeds_num', 'dsp_category_id', 'follow_template_id', 'audit_status', 'is_del']
 
 // 数组转换为字符串
 const arrayKeyArr = ['country']
@@ -371,7 +374,7 @@ const submitFn = async () => {
 }
 
 const cancelFn = () => {
-  let url = '/media/custom/list'
+  let url = '/campaign/dpa/list'
   goNewUrl({
     url: url
   })
@@ -383,13 +386,42 @@ const getConfig = async () => {
     page: 1
   }
   Promise.all([
-    ApiGetCampaignDpaList({
-      ajaxData
-    })
+    ApiGetCampaignDpaList(ajaxData),
+    ApiGetDpaTplList(),
+    ApiGetCommonCategoryList(),
+    ApiGetCommonTemplateSizeList()
   ]).then(data => {
     console.log(data)
+    // dpalist
+    state.options.dpa = data[0].data.data
+    // dpatpllist
+    let dpa_tpl = data[1].data.data
+    state.options.dpa_tpl = dpa_tpl.map(ele => {
+      ele.value = ele.id
+      ele.label = `${ele.format}_${ele.tpl_type}`
+      ele.url = `https://staticdn.cloudmobi.net/dpa/demo/${ele.format}_${ele.tpl_type}_bg.png`
+      return ele
+    })
+    // Category
+    let category = data[2].data
+    state.options.category = category.map(ele => {
+      ele.value = ele.id
+      ele.label = `${ele.cn}-${ele.en}`
+      return ele
+    })
+    // size
+    let size = data[3].data
+    state.options.size = size.map(ele => {
+      ele.value = ele.size
+      ele.label = ele.size
+      return ele
+    })
   })
 }
+
+const handleDpaTemplate = computed(() => {
+  return state.options.dpa_tpl
+})
 
 const init = () => {
   console.info('init')
@@ -411,8 +443,18 @@ onMounted(() => {
 })
 
 </script>
-<style>
+<style lang="scss">
 .el-upload-list{
   margin-top: 0 !important;
+}
+.img-box{
+  width: 100px;
+  height: 100%;
+  img{
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+  }
 }
 </style>

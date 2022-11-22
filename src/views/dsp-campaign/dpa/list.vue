@@ -11,13 +11,13 @@
           <!-- 选择适用商品 -->
           <el-form-item label="">
             <el-select
-              v-model="state.searchForm.product_type"
+              v-model="state.searchForm.dsp_category_id"
               filterable
               clearable
               placeholder="选择适用商品"
             >
               <el-option
-                v-for="item in state.options.product_type"
+                v-for="item in state.options.category"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -142,12 +142,14 @@
         <template #default="scope">
           <div class="pr">
             <img
+              class="logo-img cp"
               :z-index="9999"
               style="width: 100px; height: auto"
-              :src="scope.row.url"
-              :preview-src-list="[scope.row.url]"
+              :src="getDpaTplDataFn(scope)"
+              :preview-src-list="[getDpaTplDataFn(scope)]"
               :initial-index="4"
               fit="cover"
+              @click="toBus(scope.row.url)"
             />
           </div>
         </template>
@@ -227,12 +229,12 @@
       <!-- 适用商品 -->
       <el-table-column sortable
         width="120"
-        prop="product_type"
+        prop="dsp_category_id"
         label="适用商品"
         align="center"
       >
         <template #default="scope">
-          <span>{{getOptionsValue(scope.row.product_type, state.options.product_type)}}</span>
+          <span>{{getOptionsValue(scope.row.dsp_category_id, state.options.category)}}</span>
         </template>
       </el-table-column>
       <!-- 创意目标 -->
@@ -275,19 +277,17 @@
         @pagination="init"
       />
     </div>
-    <!-- 复制 -->
+    <!-- 预览 -->
     <el-dialog
-      v-model="dialogVisibleReportApi"
-      title="Report Api"
-      width="90%"
+      v-model="dialogVisible"
+      title="图片预览"
+      width="50%"
     >
-      <p>{{bus.report_api}}</p>
-      <el-button
-        class="cp mr-10"
-        type="default"
-        @click="copyFn(bus.report_api)"
-      >复制</el-button>
+      <div class="img-box">
+        <img :src="bus.preview_img" alt="">
+      </div>
     </el-dialog>
+    
   </div>
 </template>
 <script lang="ts" setup name="adserieslist">
@@ -299,7 +299,8 @@ import _ from 'lodash'
 import { handleAjaxDataObjectFn, handleAjaxEmptyKeyFn, handleAjaxDataDelNoKeyFn, getOptionsValue } from '@/utils/new-format'
 import useUtils from '@/hooks/self/useUtils'
 import { clipboardFn } from '@/utils/clipboard'
-import { ApiGetCampaignDpaList, ApiChangeCampaignDpaStatus, ApiDeleteCampaignDpa } from '@/api/dsp-campaign'
+import {ApiGetCommonCategoryList, ApiGetCommonTemplateSizeList} from '@/api/dsp-common'
+import { ApiGetCampaignDpaList, ApiChangeCampaignDpaStatus, ApiDeleteCampaignDpa, ApiGetDpaTplList } from '@/api/dsp-campaign'
 import { ElTable } from 'element-plus'
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
@@ -312,9 +313,7 @@ const {
 
 const {
   audit_status,
-  size,
   feeds_num,
-  product_type,
   creative_goals,
 } = selfSetting
 
@@ -323,7 +322,7 @@ const { goNewUrl, openAlert } = useUtils()
 const searchData = shallowRef({
   status: '',
   // 适用商品
-  product_type: '',
+  dsp_category_id: '',
   // 创意目标：1：节日，2：常规，3：促销
   creative_goals: '',
   // 审核状态
@@ -335,10 +334,10 @@ const searchData = shallowRef({
 
 const topSearchData = ref({})
 
-const dialogVisibleReportApi = ref(false)
+const dialogVisible = ref(false)
 
 const bus = reactive({
-  report_api: ''
+  preview_img: ''
 })
 
 let state = reactive({
@@ -352,10 +351,11 @@ let state = reactive({
   options: {
     status,
     audit_status,
-    size,
+    size: [],
     feeds_num,
-    product_type,
+    category: [],
     creative_goals,
+    dpa_tpl: [],
     value_type: [
       {value: 'name', label: '模板名称'},
       {value: 'id', label: '模板ID'},
@@ -505,6 +505,11 @@ const copyTokenFn = (text) => {
   clipboardFn(text)
 }
 
+const toBus = (url) => {
+  bus.preview_img = url
+  dialogVisible.value = true
+}
+
 const editFn = ({row}: any) => {
   // detailsType.value = 'edit'
   // dialogVisibleEdit.value = true
@@ -554,7 +559,56 @@ const changeTopSearch = (data) => {
   }
 }
 
+const getConfig = async () => {
+  const ajaxData = {
+    limit: 10000,
+    page: 1
+  }
+  Promise.all([
+    ApiGetDpaTplList(),
+    ApiGetCommonCategoryList(),
+    ApiGetCommonTemplateSizeList()
+  ]).then(data => {
+    // dpatpllist
+    let dpa_tpl = data[0].data.data
+    state.options.dpa_tpl = dpa_tpl.map(ele => {
+      ele.value = ele.id
+      ele.label = `${ele.format}_${ele.tpl_type}`
+      ele.url = `https://staticdn.cloudmobi.net/dpa/demo/${ele.format}_${ele.tpl_type}_bg.png`
+      return ele
+    })
+    // Category
+    let category = data[1].data
+    state.options.category = category.map(ele => {
+      ele.value = ele.id
+      ele.label = `${ele.cn}-${ele.en}`
+      return ele
+    })
+    // size
+    let size = data[2].data
+    state.options.size = size.map(ele => {
+      ele.value = ele.size
+      ele.label = ele.size
+      return ele
+    })
+  })
+}
+
+const getDpaTplDataFn =(scope) => {
+  let obj: any = state.options.dpa_tpl.find((ele: any) => {
+    console.log(ele)
+    return ele.id == scope.row.follow_template_id
+  })
+  if (obj) {
+    scope.row.url = obj.url
+    return obj.url
+  } else {
+    return ''
+  }
+}
+
 const init = async () => {
+  await getConfig()
   state.loading = true
   let ajaxData: any = {
     page: state.pagination.listQuery.page,
@@ -576,6 +630,10 @@ const init = async () => {
   state.loading = false
 }
 
+onBeforeMount(() => {
+  
+})
+
 onMounted(() => {
   searchFn()
 })
@@ -584,9 +642,5 @@ onMounted(() => {
 <style lang="scss" scoped>
 .search-input-select{
   width: 80px;
-}
-.logo-img{
-  width: 50px;
-  height: 50px;
 }
 </style>

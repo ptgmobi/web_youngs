@@ -30,7 +30,7 @@ export default [
         component: () => import('@/views/dsp-adcontrol/adseries'),
         redirect: '/adcontrol/adseries/list',
         meta: {
-          title: '广告系列sheet',
+          title: '广告系列',
           elSvgIcon: 'Edit',
           code: 110200,
           cachePage: true,
@@ -42,7 +42,7 @@ export default [
             name: 'adcontrol-adseries-list',
             component: () => import('@/views/dsp-adcontrol/adseries/list'),
             meta: {
-              title: '广告系列sheet',
+              title: '广告系列',
               elSvgIcon: 'Edit',
               code: 110201,
               cachePage: true,
@@ -78,7 +78,7 @@ export default [
         name: 'adcontrol-adgroup',
         component: () => import('@/views/dsp-adcontrol/adgroup'),
         meta: {
-          title: '广告组sheet',
+          title: '广告组',
           elSvgIcon: 'Edit',
           code: 110300,
           cachePage: true,
@@ -91,7 +91,7 @@ export default [
             component: () => import('@/views/dsp-adcontrol/adgroup/list'),
             default: true,
             meta: {
-              title: '广告组sheet',
+              title: '广告组',
               elSvgIcon: 'Edit',
               code: 110301,
               cachePage: true,
@@ -127,7 +127,7 @@ export default [
         name: 'adcontrol-ad',
         component: () => import('@/views/dsp-adcontrol/ad'),
         meta: {
-          title: '广告sheet',
+          title: '广告',
           elSvgIcon: 'Edit',
           code: 110400,
           cachePage: true,
@@ -140,7 +140,7 @@ export default [
             component: () => import('@/views/dsp-adcontrol/ad/list'),
             default: true,
             meta: {
-              title: '广告sheet',
+              title: '广告',
               elSvgIcon: 'Edit',
               code: 110401,
               cachePage: true,

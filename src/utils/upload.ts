@@ -1,6 +1,7 @@
 import type { UploadProps, UploadUserFile, genFileId } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { ApiUploadImg } from '@/api/dsp-advertiser'
+import { ApiUploadFile } from '@/api/dsp-common'
 
 const validate = async (rawFile, type, options) => {
   const {
@@ -122,13 +123,14 @@ const uploadHttpRequest: UploadProps['httpRequest'] = async(
 ) => {
   console.log(param)
   const formData = new FormData()
-  formData.append("logo_url", param.file)
+  // formData.append("logo_url", param.file)
+  formData.append("f", param.file)
   formData.append("file_name", param.file.name)
   console.log(process.env.NODE_ENV)
   if (process.env.NODE_ENV === 'serve-dev-no') {
     return void 0
   } else {
-    const res = await ApiUploadImg(formData)
+    const res = await ApiUploadFile(formData)
     return res
   }
 }

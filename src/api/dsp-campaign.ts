@@ -73,7 +73,7 @@ export function ApiGetCampaignOne(params: string, query: string) {
 
 export function ApiGetCampaignDpaList(data: ObjTy) {
   return request({
-    url: '/d/dio/list',
+    url: '/d/ddt/list',
     data,
     method: 'get',
     bfLoading: false,
@@ -84,7 +84,7 @@ export function ApiGetCampaignDpaList(data: ObjTy) {
 
 export function ApiChangeCampaignDpaStatus(data: ObjTy) {
   return request({
-    url: '/d/dio/status',
+    url: '/d/ddt/status',
     data,
     method: 'patch',
     bfLoading: false,
@@ -95,7 +95,7 @@ export function ApiChangeCampaignDpaStatus(data: ObjTy) {
 
 export function ApiDeleteCampaignDpa(data: ObjTy) {
   return request({
-    url: '/d/dio/del',
+    url: '/d/ddt/del',
     data,
     method: 'delete',
     bfLoading: false,
@@ -107,7 +107,7 @@ export function ApiDeleteCampaignDpa(data: ObjTy) {
 // ! details
 export function ApiCampaignDpaCreate(data: ObjTy) {
   return request({
-    url: `/d/dio`,
+    url: `/d/ddt`,
     data,
     method: 'post',
     bfLoading: false,
@@ -118,7 +118,7 @@ export function ApiCampaignDpaCreate(data: ObjTy) {
 
 export function ApiCampaignDpaEdit(data: ObjTy) {
   return request({
-    url: `/d/dio`,
+    url: `/d/ddt`,
     data,
     method: 'put',
     bfLoading: false,
@@ -129,7 +129,18 @@ export function ApiCampaignDpaEdit(data: ObjTy) {
 
 export function ApiGetCampaignDpaOne(params: string) {
   return request({
-    url: `/d/dio/view/${params}`,
+    url: `/d/ddt/view/${params}`,
+    method: 'get',
+    bfLoading: false,
+    isParams: true,
+    isAlertErrorMsg: false
+  })
+}
+
+// 获取dpa模板列表
+export function ApiGetDpaTplList() {
+  return request({
+    url: `/d/ddt/dpa`,
     method: 'get',
     bfLoading: false,
     isParams: true,
