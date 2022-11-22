@@ -83,7 +83,27 @@ export default [
               cachePage: true,
               leaveRmCachePage: false
             }
-          }
+          },
+          {
+            path: 'create',
+            name: 'campaign-dpa-create',
+            component: () => import('@/views/dsp-campaign/dpa/details'),
+            meta: {
+              title: '新建DPA模板',
+              code: 140102
+            },
+            hidden: true
+          },
+          {
+            path: 'edit/:id',
+            name: 'campaign-dpa-edit',
+            component: () => import('@/views/dsp-campaign/dpa/details'),
+            meta: {
+              title: '修改DPA模板',
+              code: 140103
+            },
+            hidden: true
+          },
         ]
       }
     ]

@@ -139,44 +139,25 @@
       >
         <template #default="scope">
           <div class="pr">
-            <el-image
+            <img
               v-if="scope.row.type !== 2"
               :z-index="9999"
-              style="width: 100px; height: 100px"
+              style="width: 100px; height: auto"
               :src="scope.row.url"
               :preview-src-list="[scope.row.url]"
               :initial-index="4"
               fit="cover"
             />
-            <el-image
+            <img
               v-if="scope.row.type === 2"
               :z-index="9999"
-              style="width: 100px; height: 100px"
+              style="width: 100px; height: auto"
               :src="scope.row.cover_url"
               :preview-src-list="[scope.row.cover_url]"
               :initial-index="4"
               fit="cover"
             />
           </div>
-          <!-- <div v-if="scope.row.type !== 2">
-            <el-image
-              v-if="scope.row.url"
-              style="width: 100px; height: 100px"
-              :src="scope.row.url"
-              :preview-src-list="[scope.row.url]"
-              :initial-index="4"
-              fit="cover"
-            />
-          </div>
-          <div v-if="scope.row.type === 2">
-            <video
-              v-if="scope.row.url"
-              width="320"
-              height="320"
-              controls
-              :src="scope.row.url"
-            ></video>
-          </div> -->
         </template>
       </el-table-column>
       <!-- 操作 -->
