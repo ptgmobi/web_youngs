@@ -141,6 +141,7 @@
               :key="item.value"
               :label="item.label"
               :value="item.value"
+              :disabled="item.disable"
             >
               <div class="w100 flex jc-between ai-start">
                 <span>{{item.label}}</span>
@@ -400,6 +401,7 @@ const getConfig = async () => {
       ele.value = ele.id
       ele.label = `${ele.format}_${ele.tpl_type}`
       ele.url = `https://staticdn.cloudmobi.net/dpa/demo/${ele.format}_${ele.tpl_type}_bg.png`
+      ele.disabled = false
       return ele
     })
     // Category
@@ -420,7 +422,16 @@ const getConfig = async () => {
 }
 
 const handleDpaTemplate = computed(() => {
-  return state.options.dpa_tpl
+  state.options.dpa_tpl.map((ele: any) => {
+    state.options.dpa.map((o: any) => {
+      if (ele.id === o.follow_template_id) {
+        console.log(ele.id)
+        ele.disabled = true
+      }
+    })
+    return ele
+  })
+  console.log(state.options.dpa_tpl)
 })
 
 const init = () => {
