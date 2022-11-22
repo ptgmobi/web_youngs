@@ -103,8 +103,8 @@
         <!-- 创意目标 -->
         <el-form-item
           class="self-el-form-item"
-          label="creative_goals:"
-          prop="product_type"
+          label="创意目标:"
+          prop="creative_goals"
         >
           <el-select
             v-model="state.ruleForm.creative_goals"
@@ -126,7 +126,7 @@
         <!-- 关联模板ID -->
         <el-form-item
           class="self-el-form-item"
-          label="creative_goals:"
+          label="关联模板ID:"
           prop="follow_template_id"
         >
           <el-select
@@ -136,7 +136,7 @@
             class="form-one"
           >
             <el-option
-              v-for="item in state.options.follow_template_id"
+              v-for="item in handleDpaTemplate"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -166,7 +166,7 @@
 <script lang="ts" setup>
 import optionsSetting from '@/self-options-setting'
 import selfSetting from './setting'
-import { ApiMediaCustomCreate, ApiGetMediaCustomOne, ApiMediaCustomEdit } from '@/api/dsp-media'
+import { ApiGetCampaignDpaList, ApiCampaignDpaCreate, ApiGetCampaignDpaOne, ApiCampaignDpaEdit } from '@/api/dsp-campaign'
 import { ApiUploadImg } from '@/api/dsp-advertiser'
 import { ApiGetAdvertiserList } from '@/api/dsp-advertiser'
 import { messageFun } from '@/utils/message'
@@ -310,6 +310,12 @@ const state = reactive({
   }
 })
 
+const handleDpaTemplate = computed(() => {
+  state.options.follow_template_id.map(ele => {
+
+  })
+})
+
 const saveFun = () => {
   proxy.$refs['ruleForm'].validate((valid: boolean) => {
     console.log(valid)
@@ -330,7 +336,7 @@ const numberKeyArr = ['id', 'media_num']
 const arrayKeyArr = ['country']
 
 const setDataFn = async (id) => {
-  const res = await ApiGetMediaCustomOne(id)
+  const res = await ApiGetCampaignDpaOne(id)
   const {data: result} = res
   state.ruleForm = {
     ...state.ruleForm,
@@ -351,13 +357,13 @@ const submitFn = async () => {
   // return false
   if (type.value === 'create') {
     delete ajaxData.id
-    const res = await ApiMediaCustomCreate(ajaxData)
+    const res = await ApiCampaignDpaCreate(ajaxData)
     if(messageFun(res)) {
       cancelFn()
     }
   }
   if (type.value === 'edit') {
-    const res = await ApiMediaCustomEdit(ajaxData)
+    const res = await ApiCampaignDpaEdit(ajaxData)
     if(messageFun(res)) {
       cancelFn()
     }
@@ -372,14 +378,16 @@ const cancelFn = () => {
 }
 
 const getConfig = async () => {
+  const ajaxData = {
+    limit: 10000,
+    page: 1
+  }
   Promise.all([
-    getCommonCountryList(),
-    ApiGetAdvertiserList({
-      limit: 10000,
-      page: 1
+    ApiGetCampaignDpaList({
+      ajaxData
     })
   ]).then(data => {
-
+    console.log(data)
   })
 }
 

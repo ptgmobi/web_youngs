@@ -1,3 +1,14 @@
+let feeds_num_base_arr: Array<any> = [...new Array(11)]
+let feeds_num_arr: Array<any> = []
+feeds_num_base_arr.map((index, ele: any) => {
+  feeds_num_arr.push(
+    {
+      value: ele,
+      label: ele
+    }
+  )
+  return ele
+})
 const setting: any = {
   size: [
     { value: '160x600', label: '160x600' },
@@ -14,10 +25,7 @@ const setting: any = {
     { value: '970x250', label: '970x250' },
     { value: '1200x628', label: '1200x628' },
   ],
-  feeds_num: [
-    { value: 1, label: '1' },
-    { value: 2, label: '2' },
-  ],
+  feeds_num: feeds_num_arr,
   product_type: [
     { value: 1, label: '动物/宠物用品' },
     { value: 2, label: '服饰与配饰' },
