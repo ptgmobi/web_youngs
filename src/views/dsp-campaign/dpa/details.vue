@@ -200,10 +200,10 @@ const { validate: validateUpload, uploadHttpRequest } = uploadFn
 
 const {
   status,
+  audit_status
 } = optionsSetting
 
 const {
-  audit_status,
   feeds_num,
   dsp_category_id,
   creative_goals,

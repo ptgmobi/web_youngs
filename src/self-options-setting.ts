@@ -117,7 +117,19 @@ const setting: any = {
     {value: 'UTC+12:45', label: 'UTC+12:45（CHAST — 查塔姆群岛标准时间）'},
     {value: 'UTC+13', label: 'UTC+13（PHOT — 菲尼克斯群岛标准时间）'},
     {value: 'UTC+14', label: 'UTC+14（LINT — 莱恩群岛标准时间）'},
-  ]
+  ],
+  // 广告样式
+  ad_type: [
+    { value: 1, label: '图片' },
+    { value: 2, label: '视频' },
+    { value: 3, label: '原生' },
+  ],
+  // 审核状态： 1未审核，2审核通过，3审核未通过
+  audit_status: [
+    { value: 1, label: '未审核' },
+    { value: 2, label: '审核通过' },
+    { value: 3, label: '审核未通过' },
+  ],
 
 }
 

@@ -311,10 +311,10 @@ const handleSelectionArr = ref([{id: ''}])
 
 const {
   status,
+  audit_status
 } = optionsSetting
 
 const {
-  audit_status,
   feeds_num,
   creative_goals,
 } = selfSetting

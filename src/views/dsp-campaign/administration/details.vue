@@ -305,11 +305,8 @@ import { ElMessage } from 'element-plus'
 const { validate: validateUpload, uploadHttpRequest } = uploadFn
 
 const {
-  adv_type, 
-  ind_cla,
-  third_party,
-  return_mode,
-  time_zone
+  ad_type,
+  audit_status
 } = optionsSetting
 
 const {
@@ -476,17 +473,9 @@ const state = reactive({
     ]
   },
   options: {
-    type: [
-      { value: 1, label: '图片' },
-      { value: 2, label: '视频' },
-      { value: 3, label: '原生' },
-    ],
+    type: ad_type,
     // 审核状态： 1未审核，2审核通过，3审核未通过
-    audit_status: [
-      { value: 1, label: '未审核' },
-      { value: 2, label: '审核通过' },
-      { value: 3, label: '审核未通过' },
-    ],
+    audit_status
     
   }
 })

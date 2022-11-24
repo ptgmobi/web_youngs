@@ -84,7 +84,7 @@
           label="广告样式:"
           prop="type"
         >
-          <el-select
+          <!-- <el-select
             v-model="state.ruleForm.type"
             filterable
             placeholder="请选择"
@@ -96,7 +96,12 @@
               :label="item.label"
               :value="item.value"
             ></el-option>
-          </el-select>
+          </el-select> -->
+          <el-radio-group class="form-one" v-model="state.ruleForm.type">
+            <template v-for="item in state.options.type">
+              <el-radio :label="item.value">{{item.label}}</el-radio>
+            </template>
+          </el-radio-group>
         </el-form-item>
         <el-form-item
           class="self-el-form-item"
@@ -278,7 +283,8 @@
 </template>
 <script lang="ts" setup>
 import optionsSetting from '@/self-options-setting'
-import { ApiAdSeriesCreate, ApiGetAdSeriesOne, ApiAdSeriesEdit } from '@/api/dsp-adcontrol'
+import { ApiGetCommonCategoryList } from '@/api/dsp-common'
+import { ApiAdSeriesCreate, ApiGetAdSeriesOne, ApiAdSeriesEdit, ApiGetAdGroupList } from '@/api/dsp-adcontrol'
 import { ApiGetCampaignList, ApiGetCampaignDpaList } from '@/api/dsp-campaign'
 import { messageFun } from '@/utils/message'
 import splitButton from '@/components/Self/SplitButton'
@@ -295,11 +301,8 @@ import validator from 'validator';
 import _, { isArguments } from 'lodash'
 import Campaign from '@/views/dsp-campaign/administration/list.vue'
 const {
-  adv_type, 
-  ind_cla,
-  third_party,
-  return_mode,
-  time_zone
+  adv_type,
+  ad_type
 } = optionsSetting
 
 const { getRouterData, getCommonCountryList, goNewUrl } = useUtils()
@@ -442,7 +445,7 @@ const state = reactive({
     dpa: [],
     ad_group: [],
     category: [],
-    type: []
+    type: ad_type
   }
 })
 
@@ -512,7 +515,7 @@ const getConfig = async () => {
     limit: 10000,
     page: 1
   }
-  await Promise.all([ApiGetCampaignList(ajaxData), ApiGetCampaignList(ajaxData)]).then(data => {
+  await Promise.all([ApiGetCampaignList(ajaxData), ApiGetCampaignList(ajaxData), ]).then(data => {
     // campaign
     let campaignData = data[0].data.data
     state.options.campaign = campaignData.map(ele => {
