@@ -103,7 +103,7 @@
       <!-- <el-input placeholder="请输入内容" v-model="state.searchForm.data" class='search-input'>
         <el-button slot="append" icon="Search" @click='searchFun'></el-button>
       </el-input> -->
-      <div class="mb-10 w100">
+      <div class="mb-10 w100" v-if="handlePageType === 'list'">
         <el-button type="primary" @click="createFn">新建创意</el-button>
       </div>
     </div>
@@ -116,8 +116,11 @@
       class="w100"
       border
       @selection-change="handleSelectionChange"
+      highlight-current-row
+      @current-change="handleCurrentChange"
+
     >
-      <el-table-column align="center" type="selection" width="55" />
+      <!-- <el-table-column align="center" type="selection" width="55" /> -->
       <!-- ID -->
       <el-table-column sortable
         prop="id"
@@ -139,8 +142,18 @@
         align="center"
       >
         <template #default="scope">
-          <div class="pr">
-            <img
+          <div>
+            <el-image
+              :z-index="9999"
+              style="width: 100px; height: auto"
+              :src="handleSrc(scope)"
+              :preview-src-list="handlePreviewSrcList(scope)"
+              :initial-index="4"
+              fit="cover"
+              :preview-teleported="true"
+              @click="toBus(scope.row.url)"
+            />
+            <!-- <el-image
               v-if="scope.row.type !== 2"
               :z-index="9999"
               style="width: 100px; height: auto"
@@ -148,9 +161,10 @@
               :preview-src-list="[scope.row.url]"
               :initial-index="4"
               fit="cover"
+              :preview-teleported="true"
               @click="toBus(scope.row.url)"
             />
-            <img
+            <el-image
               v-if="scope.row.type === 2"
               :z-index="9999"
               style="width: 100px; height: auto"
@@ -158,13 +172,15 @@
               :preview-src-list="[scope.row.cover_url]"
               :initial-index="4"
               fit="cover"
+              :preview-teleported="true"
               @click="toBus(scope.row.cover_url)"
-            />
+            /> -->
           </div>
         </template>
       </el-table-column>
       <!-- 操作 -->
       <el-table-column
+        v-if="handlePageType === 'list'"
         width="200"
         label="操作"
         align="center"
@@ -264,6 +280,7 @@
       </el-table-column>
       <!-- 关联广告 -->
       <el-table-column sortable
+        v-if="handlePageType === 'list'"
         width="120"
         prop="ads"
         label="关联广告"
@@ -330,9 +347,28 @@ import { clipboardFn } from '@/utils/clipboard'
 import { ApiGetCampaignList, ApiChangeCampaignStatus, ApiDeleteCampaign } from '@/api/dsp-campaign'
 import { ElTable } from 'element-plus'
 
+const props = defineProps({
+  pagaType: {
+    require: false,
+    default() {
+      return 'list'
+    },
+    type: String
+  },
+  choice: {
+    require: false,
+    default() {
+      return []
+    },
+    type: Number
+  }
+})
+
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
 
-const handleSelectionArr = ref([{id: ''}])
+const multipleSelection = ref([])
+
+const emit = defineEmits(['kk', 'up'])
 
 const {
   status, 
@@ -353,7 +389,7 @@ const searchData = shallowRef({
   status: '',
   type: '',
   audit_status: '',
-  is_del: '1',
+  is_del: '',
   value_type: 'name',
   value: ''
 })
@@ -422,13 +458,8 @@ let batch = reactive({
   }
 })
 
-// 批量操作
-const handleSelectionChange = ((val: any) => {
-  handleSelectionArr.value = val
-})
-
 const batchFn = async () => {
-  let ids = handleSelectionArr.value.map(ele => {
+  let ids = multipleSelection.value.map(ele => {
     return ele.id
   })
   console.log(ids)
@@ -451,6 +482,10 @@ const batchFn = async () => {
     }
   }
 }
+
+const handlePageType = computed(() => {
+  return props.pagaType
+})
 
 
 const copyFn = (text) => {
@@ -576,17 +611,45 @@ const changeTopSearch = (data) => {
   }
 }
 
-watch(() => handleSelectionArr, (newVal, oldVal) => {
-  console.log('改变选择项')
-  console.log(newVal.value)
-}, {
-  immediate: true,
-  deep: true
-})
+const handleSrc = ({row}) => {
+  if (row.type === 2) {
+    return row.cover_url
+  } else {
+    return row.url
+  }
+}
+
+const handlePreviewSrcList = ({row}) => {
+  if (row.type === 1) {
+    return [row.url]
+  }
+  if (row.type === 2) {
+    return [row.cover_url, row.logo_url]
+  }
+  if (row.type === 3) {
+    return [row.url, row.logo_url]
+  }
+}
+
+// 批量操作
+const handleSelectionChange = (val: any) => {
+  console.log(val)
+  multipleSelection.value = val
+}
+
+// 单选选中
+const handleCurrentChange = (val: any) => {
+  console.log(val)
+  emit('kk', val)
+}
+
+const setCurrent = (row?: any) => {
+  multipleTableRef.value!.setCurrentRow(row)
+}
 
 const toBus = (url) => {
   bus.preview_img = url
-  dialogVisible.value = true
+  // dialogVisible.value = true
 }
 
 const init = async () => {
@@ -606,6 +669,14 @@ const init = async () => {
   if (res) {
     const { data: result } = res
     state.list = result?.data
+    let choice = props.choice
+    state.list.map(ele => {
+      if (ele.id.toString() === choice.toString()) {
+        // handleSelectionChange(ele)
+        setCurrent(ele)
+      }
+    })
+    
     state.pagination.total = Number(result.count)
   }
   state.loading = false

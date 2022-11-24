@@ -10,22 +10,6 @@ feeds_num_base_arr.map((index, ele: any) => {
   return ele
 })
 const setting: any = {
-  // 适配尺寸
-  size: [
-    { value: '160x600', label: '160x600' },
-    { value: '250x250', label: '250x250' },
-    { value: '300x50', label: '300x50' },
-    { value: '300x250', label: '300x250' },
-    { value: '300x600', label: '300x600' },
-    { value: '320x50', label: '320x50' },
-    { value: '320x100', label: '320x100' },
-    { value: '320x480', label: '320x480' },
-    { value: '480x320', label: '480x320' },
-    { value: '628x1200', label: '628x1200' },
-    { value: '728x900', label: '728x900' },
-    { value: '970x250', label: '970x250' },
-    { value: '1200x628', label: '1200x628' },
-  ],
   // Feeds个数
   feeds_num: feeds_num_arr,
   // 创意目标：1：节日，2：常规，3：促销

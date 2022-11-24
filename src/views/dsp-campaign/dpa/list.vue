@@ -119,6 +119,7 @@
       border
       @selection-change="handleSelectionChange"
     >
+      <el-table-column align="center" type="selection" width="55" />
       <!-- 模板ID -->
       <el-table-column sortable
         prop="id"
@@ -141,7 +142,7 @@
       >
         <template #default="scope">
           <div class="pr">
-            <img
+            <el-image
               class="logo-img cp"
               :z-index="9999"
               style="width: 100px; height: auto"
@@ -149,6 +150,7 @@
               :preview-src-list="[getDpaTplDataFn(scope)]"
               :initial-index="4"
               fit="cover"
+              preview-teleported="true"
               @click="toBus(scope.row.url)"
             />
           </div>
@@ -558,6 +560,14 @@ const changeTopSearch = (data) => {
     et: data.date[1]
   }
 }
+
+watch(() => handleSelectionArr, (newVal, oldVal) => {
+  console.log('改变选择项')
+  console.log(newVal.value)
+}, {
+  immediate: true,
+  deep: true
+})
 
 const getConfig = async () => {
   const ajaxData = {

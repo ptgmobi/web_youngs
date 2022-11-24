@@ -492,6 +492,7 @@ const state = reactive({
 })
 
 const saveFun = () => {
+  setRawFileToAjaxDataFn(state.ruleForm)
   proxy.$refs['ruleForm'].validate((valid: boolean) => {
     console.log(valid)
     if (valid) {
@@ -505,7 +506,7 @@ const saveFun = () => {
 }
 
 // 为数字的字段
-const numberKeyArr = ['id', 'adv_series_type', 'adv_series_budget']
+const numberKeyArr = ['id', 'adv_series_type', 'adv_series_budget', 'duration']
 
 // 数组转换为字符串
 const arrayKeyArr = []
@@ -591,12 +592,13 @@ const setRawFileToAjaxDataFn = (ajaxData) => {
       ajaxData.size = `${data.w}*${data.h}`
       ajaxData.memory_size = `${(data.limit / (1024 * 1024)).toFixed(2)}MB`
       ajaxData.format = data.type
-      ajaxData.duration = data.duration
+      ajaxData.duration = data.duration.toFixed(0)
       ajaxData.url = ajaxData.video_url
     }
   }
   // delete ajaxData.raw_file_image
   // delete ajaxData.raw_file_video
+  return ajaxData
 }
 
 const submitFn = async () => {
@@ -606,8 +608,7 @@ const submitFn = async () => {
   params.append('type', ajaxData.type)
   let params_str = `type=${params.get('type')}`
   console.log(params, params_str)
-  setRawFileToAjaxDataFn(ajaxData)
-  
+  console.log(ajaxData)
   // 先删除为空的字段
   ajaxData = handleAjaxDataDelNo2KeyFn(ajaxData)
   ajaxData = handleAjaxNumberKeyFn(ajaxData, numberKeyArr)

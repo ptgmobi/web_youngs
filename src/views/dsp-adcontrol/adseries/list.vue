@@ -538,7 +538,7 @@ const goAdList = ({row}: any) => {
     url: `/adcontrol/ad/list`,
     query: {
       adseries: row.id,
-      adgroup: row.id,
+      // adgroup: row.id,
       type: 'list'
     }
   })

@@ -123,14 +123,15 @@ const uploadHttpRequest: UploadProps['httpRequest'] = async(
 ) => {
   console.log(param)
   const formData = new FormData()
-  // formData.append("logo_url", param.file)
+  formData.append("logo_url", param.file)
   formData.append("f", param.file)
   formData.append("file_name", param.file.name)
   console.log(process.env.NODE_ENV)
   if (process.env.NODE_ENV === 'serve-dev-no') {
     return void 0
   } else {
-    const res = await ApiUploadFile(formData)
+    // const res = await ApiUploadFile(formData)
+    const res = await ApiUploadImg(formData)
     return res
   }
 }

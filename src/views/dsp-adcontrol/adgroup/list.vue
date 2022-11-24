@@ -112,6 +112,7 @@
       class="w100"
       border
     >
+      <el-table-column align="center" type="selection" width="55" />
       <el-table-column sortable
         prop="id"
         label="广告组ID"
@@ -450,7 +451,8 @@ const goAdList = ({row}: any) => {
   goNewUrl({
     url: `/adcontrol/ad/list`,
     query: {
-      adseries: row.id,
+      adseries: row.adv_series_id,
+      adgroup: row.id,
       type: 'list'
     }
   })
