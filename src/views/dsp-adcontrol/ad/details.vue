@@ -134,7 +134,7 @@
                 multiple
               >
                 <el-option
-                  v-for="item in state.options.campaign"
+                  v-for="item in handleOptionsCampaign"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -260,10 +260,12 @@
         v-model="dialogVisibleCampaign"
         title="创意列表"
         width="90%"
+        :destroy-on-close="true"
       >
         <Campaign
           class="mb-10"
           paga-type="show"
+          :search-data="handleCampaignSearch"
           :choice-list="handleChoiceList"
           :choice-one="handleChoiceOne"
           :choice-type="type === 'create' ? 2 : 1"
@@ -363,7 +365,7 @@ const defaultRuleForm: ruleFormType = {
   ad_group_id: '',
   descs: '',
   category_id: void 0,
-  type: void 0,
+  type: 1,
   originality_id: void 0,
   deeplink: '',
   is_h5: 1,
@@ -533,6 +535,20 @@ const getConfig = async () => {
     })
   })
 }
+
+const handleOptionsCampaign = computed(() => {
+  let campaignType = state.ruleForm.type
+  return state.options.campaign.filter((ele: any) => {
+    return ele.type === campaignType
+  })
+})
+
+const handleCampaignSearch = computed(() => {
+  let campaignType = state.ruleForm.type
+  return {
+    type: campaignType
+  }
+})
 
 const showChoiceCampaign = () => {
   dialogVisibleCampaign.value = true

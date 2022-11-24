@@ -348,6 +348,13 @@ import { ApiGetCampaignList, ApiChangeCampaignStatus, ApiDeleteCampaign } from '
 import { ElTable } from 'element-plus'
 
 const props = defineProps({
+  searchData: {
+    require: false,
+    default() {
+      return {}
+    },
+    type: Object
+  },
   pagaType: {
     require: false,
     default() {
@@ -394,14 +401,19 @@ const {
 
 const { goNewUrl, openAlert } = useUtils()
 
-const searchData = shallowRef({
+const {
+  type: search_type
+} = props.searchData
+
+let  searchData: any = shallowRef({
   status: '',
-  type: '',
+  type: search_type ? search_type : void 0,
   audit_status: '',
   is_del: '',
   value_type: 'name',
   value: ''
 })
+
 
 const topSearchData = ref({})
 
