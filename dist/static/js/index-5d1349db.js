@@ -1,0 +1,1 @@
+import{d as s,o as t,c as a,x as e,y as l}from"./main-f5fc11c6.js";const c={class:"w100 flex jc-between p10-20"},i={class:"mr-10"},o=e("div",{class:"split-box"},null,-1),p=s({props:{title:{type:String,default:""}},setup(s){const p=s;return(s,r)=>(t(),a("div",c,[e("div",i,l(p.title),1),o]))}});export{p as _};
