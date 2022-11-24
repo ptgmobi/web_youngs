@@ -20,6 +20,7 @@ import dspadcontrol from './dspmodules/adcontrol'
 import media from './dspmodules/media'
 import audienceManage from './dspmodules/audienceManage'
 import campaign from './dspmodules/campaign'
+import report from './dspmodules/report'
 
 
 const pageTitle = document.title
@@ -45,6 +46,7 @@ if (pageTitle === 'Youngs' || pageTitle === '') {
 if (pageTitle === 'Dsp') {
   window.pageTitle = 'Dsp'
   routerBox = [
+    ...report,
     ...dspadvertiser,
     ...dspadcontrol,
     ...media,

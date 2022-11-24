@@ -18,7 +18,7 @@ export default [
         default: true,
         meta: {
           title: '广告主管理',
-          elSvgIcon: 'Edit',
+          elSvgIcon: 'Setting',
           code: 100001,
           cachePage: true,
           leaveRmCachePage: false

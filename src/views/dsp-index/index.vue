@@ -3,7 +3,7 @@
 </template>
 <script lang="ts" setup>
 let { proxy }: any = getCurrentInstance()
-const index = '/tool/advsetting/list'
+const index = '/report'
 proxy.$router.push({
   path: index,
   // query: {

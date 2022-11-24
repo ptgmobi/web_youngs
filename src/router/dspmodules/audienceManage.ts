@@ -18,7 +18,7 @@ export default [
         default: true,
         meta: {
           title: '受众包管理',
-          elSvgIcon: 'Edit',
+          elSvgIcon: 'Setting',
           code: 130001,
           cachePage: true,
           leaveRmCachePage: false
