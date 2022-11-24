@@ -102,10 +102,11 @@
           class="self-el-form-item"
           label="广告数量:"
           prop="marbet_target"
+          v-if="type==='create'"
         >
           <el-radio-group class="form-one" v-model="state.ruleForm.ad_num">
             <template v-for="item in state.options.ad_num">
-              <el-radio :label="item.value">{{item.label}}</el-radio>
+              <el-radio :disabled="type === 'edit'" :label="item.value">{{item.label}}</el-radio>
             </template>
           </el-radio-group>
         </el-form-item>
@@ -125,6 +126,7 @@
                 filterable
                 placeholder="请选择"
                 class="form-one mt-10"
+                multiple
               >
                 <el-option
                   v-for="item in state.options.campaign"
@@ -154,6 +156,7 @@
                 filterable
                 placeholder="请选择"
                 class="form-one mt-10"
+                multiple
               >
                 <el-option
                   v-for="item in state.options.dpa"
@@ -256,8 +259,11 @@
         <Campaign
           class="mb-10"
           paga-type="show"
-          :choice="handleChoice"
-          @kk="updateChoiceCampaign"
+          :choice-list="handleChoiceList"
+          :choice-one="handleChoiceOne"
+          :choice-type="type === 'create' ? 2 : 1"
+          @update-list="updateChoiceCampaignList"
+          @update-one="updateChoiceCampaignOne"
         />
         <div class="w100 flex">
           <el-button
@@ -304,7 +310,8 @@ const message = {
 }
 
 let bus: any = reactive({
-  campaign: {},
+  campaignList: [],
+  campaignOne: {},
   dpa: {}
 })
 
@@ -342,8 +349,8 @@ type ruleFormType =  {
   // 1开2关
   status: number
   is_del: number
-  campaign: number | undefined
-  dpa: number | undefined
+  campaign: Array<any>
+  dpa: Array<any>
 }
 
 const defaultRuleForm: ruleFormType = {
@@ -360,8 +367,8 @@ const defaultRuleForm: ruleFormType = {
   mobilelink: '',
   click_url: '',
   impression_url: '',
-  campaign: 300000001,
-  dpa: void 0,
+  campaign: [],
+  dpa: [],
   status: 1,
   is_del: 0
 }
@@ -528,13 +535,27 @@ const showChoiceCampaign = () => {
   dialogVisibleCampaign.value = true
 }
 
-const updateChoiceCampaign = (data) => {
+const updateChoiceCampaignList = (data) => {
   console.log(data)
-  bus.Campaign = data
+  bus.CampaignList = data
+}
+
+const updateChoiceCampaignOne = (data) => {
+  console.log(data)
+  bus.CampaignOne = data
 }
 
 const saveChoiceCampaign = () => {
-  state.ruleForm.campaign = bus.Campaign.id
+  if (type.value === 'create') {
+    console.log(bus.CampaignList)
+    state.ruleForm.campaign = bus.CampaignList.map(ele => {
+      return ele.id
+    })
+  }
+  if (type.value === 'edit') {
+    console.log(bus.CampaignOne)
+    state.ruleForm.campaign = bus.CampaignOne
+  }
   dialogVisibleCampaign.value = false
 }
 
@@ -551,7 +572,11 @@ const init = () => {
   }
 }
 
-const handleChoice = computed(() => {
+const handleChoiceList = computed(() => {
+  return state.ruleForm.campaign
+})
+
+const handleChoiceOne = computed(() => {
   return state.ruleForm.campaign
 })
 

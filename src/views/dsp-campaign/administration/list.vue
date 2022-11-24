@@ -115,12 +115,12 @@
       :data="state.list"
       class="w100"
       border
+      :highlight-current-row="choiceType === 1 ? true : false"
       @selection-change="handleSelectionChange"
-      highlight-current-row
       @current-change="handleCurrentChange"
 
     >
-      <!-- <el-table-column align="center" type="selection" width="55" /> -->
+      <el-table-column v-if="choiceType === 2" align="center" type="selection" width="55" />
       <!-- ID -->
       <el-table-column sortable
         prop="id"
@@ -355,20 +355,29 @@ const props = defineProps({
     },
     type: String
   },
-  choice: {
+  choiceList: {
     require: false,
     default() {
       return []
+    },
+    type: Array
+  },
+  choiceType: {
+    require: false,
+    default() {
+      return 2
     },
     type: Number
   }
 })
 
+console.log(props.choiceList, props.choiceType)
+
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
 
 const multipleSelection = ref([])
 
-const emit = defineEmits(['kk', 'up'])
+const emit = defineEmits(['updateList', 'updateOne'])
 
 const {
   status, 
@@ -456,6 +465,11 @@ let batch = reactive({
       },
     ]
   }
+})
+
+// 是创建页面还是修改页面，创建的话是多选，修改的话是单选
+const choiceType = computed(() => {
+  return props.choiceType
 })
 
 const batchFn = async () => {
@@ -631,20 +645,35 @@ const handlePreviewSrcList = ({row}) => {
   }
 }
 
-// 批量操作
+// 批量选择
 const handleSelectionChange = (val: any) => {
   console.log(val)
   multipleSelection.value = val
+  emit('updateList', val)
 }
 
-// 单选选中
+// 单选选择
 const handleCurrentChange = (val: any) => {
   console.log(val)
-  emit('kk', val)
+  emit('updateOne', val)
 }
 
 const setCurrent = (row?: any) => {
   multipleTableRef.value!.setCurrentRow(row)
+}
+
+const toggleSelection = (rows?: any) => {
+  console.log(rows)
+  if (rows) {
+    rows.forEach((row) => {
+      // TODO: improvement typing when refactor table
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      multipleTableRef.value!.toggleRowSelection(row, undefined)
+    })
+  } else {
+    multipleTableRef.value!.clearSelection()
+  }
 }
 
 const toBus = (url) => {
@@ -669,13 +698,16 @@ const init = async () => {
   if (res) {
     const { data: result } = res
     state.list = result?.data
-    let choice = props.choice
-    state.list.map(ele => {
-      if (ele.id.toString() === choice.toString()) {
-        // handleSelectionChange(ele)
-        setCurrent(ele)
-      }
-    })
+    // let choice = props.choiceList
+    // let choiceArr: any = []
+    // state.list.map((ele: any) => {
+    //   if (choice.includes(ele.id)) {
+    //     choiceArr.push(ele)
+    //   }
+    // })
+    // setTimeout(() => {
+    //   toggleSelection(choiceArr)
+    // }, 500);
     
     state.pagination.total = Number(result.count)
   }
