@@ -90,7 +90,7 @@ export default [
             component: () => import('@/views/dsp-campaign/dpa/details'),
             meta: {
               title: '新建DPA模板',
-              code: 140102
+              code: 140202
             },
             hidden: true
           },
@@ -100,7 +100,7 @@ export default [
             component: () => import('@/views/dsp-campaign/dpa/details'),
             meta: {
               title: '修改DPA模板',
-              code: 140103
+              code: 140203
             },
             hidden: true
           },
