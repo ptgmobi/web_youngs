@@ -1,0 +1,1 @@
+const l={adv_type:[{value:1,label:"App-Android"},{value:2,label:"App-iOS"},{value:3,label:"Web"}],audience_manage_type:[{value:1,label:"RTA预定义"},{value:2,label:"离线人群包"},{value:3,label:"系统自定义"}],build_status:[{value:1,label:"已生成"},{value:2,label:"未生成"}]};export{l as s};

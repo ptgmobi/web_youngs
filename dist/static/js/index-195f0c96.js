@@ -1,0 +1,1 @@
+import{d as r,g as s,o as t,c as e}from"./main-c289050e.js";const a=r({setup(r){let{proxy:a}=s();return a.$router.push({path:"/report"}),(r,s)=>(t(),e("div",null,"Dsp Index"))}});export{a as default};

@@ -1,0 +1,1 @@
+import{C as e}from"./clipboard-polyfill.text.esm-fc4f7791.js";import{E as s}from"./main-c289050e.js";function o(o){o&&e(o).then((()=>{s({message:"Copy Success !",type:"success"})}),(()=>{s({message:"Copy Error !",type:"error"})}))}export{o as c};
