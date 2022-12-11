@@ -1,0 +1,1 @@
+import{d as a,M as s,q as t,A as e,s as o,o as r,a2 as n}from"./main-0a777472.js";const p=a({name:"dsp-report-a"}),u=a({...p,setup:a=>(s((()=>{})),(a,s)=>{const p=t("router-view");return r(),e(p,null,{default:o((({Component:a})=>[(r(),e(n(a)))])),_:1})})});export{u as default};

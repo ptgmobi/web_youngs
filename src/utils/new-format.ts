@@ -118,7 +118,16 @@ export function randomStr (num: number = 0) {
   let str1 = str[n]
   // 生成7位长随机字符串
   let str2 = Math.random().toString(16).substring(2, num + 1)
-  return `${str1}${str2}`
+  // return `${str1}${str2}`
+  return randomString(4) + `_` + randomString(6)
+}
+
+function randomString(num: number = 0) {    
+  var t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz",
+  a = t.length,
+  n = "";
+  for (let i = 0; i < num; i++) n += t.charAt(Math.floor(Math.random() * a));
+  return n
 }
 
 // 提交表单的时候对表单提交数据进行美化

@@ -1,0 +1,1 @@
+import{d as a,M as s,q as t,A as n,s as o,o as e,a2 as r}from"./main-0a777472.js";const i=a({name:"dsp-campaign-administration"}),m=a({...i,setup:a=>(s((()=>{})),(a,s)=>{const i=t("router-view");return e(),n(i,null,{default:o((({Component:a})=>[(e(),n(r(a)))])),_:1})})});export{m as default};

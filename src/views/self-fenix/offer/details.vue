@@ -1152,8 +1152,8 @@ const searchAdvOffer = async () => {
     }
   } else {
     console.log('get offer for buzz')
-    let bzReg = /^bz(\S+)/
-    let bsReg = /^bs(\S+)/
+    let bzReg = /^3(\S+)/
+    let bsReg = /^1(\S+)/
     let lhReg = /^lh(\S+)/
     // bz开头的
     if (bzReg.test(str)) {
