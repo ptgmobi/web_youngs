@@ -1,1 +1,0 @@
-import{d as a,p as e,I as s,q as n,A as t,s as o,o as r,a3 as u,v as c,a2 as i}from"./main-0a777472.js";const d=a({name:"fenix-offer"}),f=a({...d,setup(a){const d=e(),f=s((()=>d.cachedViewsDeep));return(a,e)=>{const s=n("router-view");return r(),t(s,null,{default:o((({Component:a})=>[(r(),t(u,{include:c(f)},[(r(),t(i(a)))],1032,["include"]))])),_:1})}}});export{f as default};

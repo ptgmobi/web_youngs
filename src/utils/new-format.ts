@@ -116,18 +116,25 @@ export function randomStr (num: number = 0) {
     n = strLen - 1
   }
   let str1 = str[n]
-  // 生成7位长随机字符串
+  // 生成5位长随机字符串
   let str2 = Math.random().toString(16).substring(2, num + 1)
-  // return `${str1}${str2}`
-  return randomString(4) + `_` + randomString(6)
+  return getRandomNum() + `_` + randomString()
 }
 
-function randomString(num: number = 0) {    
+function randomString() {    
   var t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz",
   a = t.length,
   n = "";
-  for (let i = 0; i < num; i++) n += t.charAt(Math.floor(Math.random() * a));
+  for (let i = 0; i < 5; i++) n += t.charAt(Math.floor(Math.random() * a));
   return n
+}
+
+export function getRandomNum() {
+  let RandomSixStr = ''
+  for(let i = 0;i < 3; i++) {
+    RandomSixStr += String(Math.floor(Math.random()*10))
+  }
+  return RandomSixStr
 }
 
 // 提交表单的时候对表单提交数据进行美化

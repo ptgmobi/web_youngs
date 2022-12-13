@@ -1,0 +1,1 @@
+import{d as a,M as s,q as e,A as t,s as o,o as n,a2 as r}from"./main-ce43ffdd.js";const f=a({name:"api-offer-update"}),u=a({...f,setup:a=>(s((()=>{})),(a,s)=>{const f=e("router-view");return n(),t(f,null,{default:o((({Component:a})=>[(n(),t(r(a)))])),_:1})})});export{u as default};

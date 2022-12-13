@@ -1,0 +1,1 @@
+import{_ as a,q as e,A as r,s,o as n,a2 as o}from"./main-ce43ffdd.js";var t=a({},[["render",function(a,t){const f=e("router-view");return n(),r(f,null,{default:s((({Component:a})=>[(n(),r(o(a)))])),_:1})}]]);export{t as default};

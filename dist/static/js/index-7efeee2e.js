@@ -1,0 +1,1 @@
+import{d as s,p as a,I as e,q as n,A as t,s as d,o,a3 as r,v as u,a2 as c}from"./main-ce43ffdd.js";const i=s({name:"dsp-adxsetting-index"}),p=s({...i,setup(s){const i=a(),p=e((()=>i.cachedViewsDeep));return(s,a)=>{const e=n("router-view");return o(),t(e,null,{default:d((({Component:s})=>[(o(),t(r,{include:u(p)},[(o(),t(c(s)))],1032,["include"]))])),_:1})}}});export{p as default};

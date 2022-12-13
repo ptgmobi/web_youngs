@@ -1,0 +1,1 @@
+import{d as s,M as a,q as e,A as t,s as n,o,a2 as r}from"./main-ce43ffdd.js";const u=s({name:"buzz-sync"}),d=s({...u,setup:s=>(a((()=>{})),(s,a)=>{const u=e("router-view");return o(),t(u,null,{default:n((({Component:s})=>[(o(),t(r(s)))])),_:1})})});export{d as default};

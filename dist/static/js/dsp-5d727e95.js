@@ -1,0 +1,1 @@
+import{a7 as t}from"./main-ce43ffdd.js";const a=t("dsp",{state:()=>{let t=localStorage.getItem("search"),a={};return t&&(a=JSON.parse(t)),{topsearch:a}},actions:{M_topsearch(t){this.$patch((a=>{a.topsearch=t,localStorage.setItem("search",JSON.stringify(t))}))},setSearchData(t){this.M_topsearch(t)}},getters:{getTopSearchData:t=>t.topsearch}});export{a as u};

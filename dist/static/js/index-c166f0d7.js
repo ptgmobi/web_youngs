@@ -1,1 +1,0 @@
-import{d as a,M as s,q as o,A as t,s as e,o as n,a2 as r}from"./main-0a777472.js";const d=a({name:"dsp-adcontrol-ad"}),u=a({...d,setup:a=>(s((()=>{})),(a,s)=>{const d=o("router-view");return n(),t(d,null,{default:e((({Component:a})=>[(n(),t(r(a)))])),_:1})})});export{u as default};

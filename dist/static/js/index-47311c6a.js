@@ -1,0 +1,1 @@
+import{d as a,M as s,q as e,A as t,s as n,o,a2 as d}from"./main-ce43ffdd.js";const p=a({name:"dsp-campaign-dpa"}),r=a({...p,setup:a=>(s((()=>{})),(a,s)=>{const p=e("router-view");return o(),t(p,null,{default:n((({Component:a})=>[(o(),t(d(a)))])),_:1})})});export{r as default};

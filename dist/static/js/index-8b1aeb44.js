@@ -1,0 +1,1 @@
+import{d as e,p as a,I as s,q as n,A as t,s as o,o as r,a3 as u,v as c,a2 as d}from"./main-ce43ffdd.js";const f=e({name:"fenix-offer"}),i=e({...f,setup(e){const f=a(),i=s((()=>f.cachedViewsDeep));return(e,a)=>{const s=n("router-view");return r(),t(s,null,{default:o((({Component:e})=>[(r(),t(u,{include:c(i)},[(r(),t(d(e)))],1032,["include"]))])),_:1})}}});export{i as default};
